@@ -1,3 +1,53 @@
 .rplayer {
-  background: #000;
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  video {
+    max-width: 100%;
+  }
+
+  &_controls {
+
+    &-hide {
+      cursor: none;
+    }
+
+    &-hide &_bottom {
+      opacity: 0;
+    }
+
+    &_bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 30px;
+      background: rgba(0, 0, 0, .3);
+      transition: opacity .2s ease;
+      z-index: 2;
+    }
+
+    &_tc {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, .5);
+      opacity: 0;
+      transition: opacity .2s ease;
+
+      &-show {
+        opacity: 1;
+      }
+
+      &_mask {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }

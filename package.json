@@ -50,5 +50,8 @@
   "prettier": {
     "singleQuote": true,
     "tabWidth": 2
+  },
+  "dependencies": {
+    "eventemitter3": "^4.0.0"
   }
 }
