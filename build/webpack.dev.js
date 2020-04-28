@@ -17,5 +17,8 @@ module.exports = merge(base, {
     watchOptions: {
       ignored: /node_modules/,
     },
+    host: '0.0.0.0',
+    overlay: true,
+    public: 'localhost:8080',
   },
 });

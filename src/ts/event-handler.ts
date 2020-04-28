@@ -13,7 +13,7 @@ class EventHandler extends EventEmitter {
       this.player = player;
     }
 
-    if (events) {
+    if (events && player) {
       events.forEach((evName) => {
         const fnName = 'on' + evName;
         if (typeof (this as any)[fnName] === 'function') {

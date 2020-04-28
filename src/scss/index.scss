@@ -26,6 +26,7 @@
       background: rgba(0, 0, 0, .3);
       transition: opacity .2s ease;
       z-index: 2;
+      user-select: none;
     }
 
     &_tc {
@@ -48,6 +49,78 @@
         width: 100%;
         height: 100%;
       }
+    }
+  }
+
+  &_bar {
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 0;
+  }
+
+  &_dot {
+
+    &::after {
+      content: '';
+      display: block;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: green;
+      transform: scale(0);
+      transition: transform .15s ease;
+    }
+  }
+
+  &_progress {
+    cursor: pointer;
+
+    &_dot {
+      position: absolute;
+      left: -6.5px;
+      top: -4px;
+    }
+
+    &_bar_wrapper {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: rgba(0, 0, 0, .2);
+    }
+
+    &_bar {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+
+    &_played {
+      position: relative;
+      background: red;
+      transform: scaleX(0);
+      will-change: transform;
+    }
+
+    &_pad {
+      height: 16px;
+      touch-action: none;
+      z-index: 2;
+    }
+
+    &_hover {
+      width: 50%;
+      background: rgba(0, 0, 0, .2);
+    }
+
+    &:hover &_bar_wrapper,
+    &:active &_bar_wrapper{
+      transform: scaleY(1.3);
+    }
+
+    &:hover &_dot::after, 
+    &:active &_dot::after{
+      transform: scale(1);
     }
   }
 }

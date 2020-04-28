@@ -1,7 +1,9 @@
 import EventHandler from './event-handler';
 import RPlayer from './rplayer';
+import { isStr } from './utils';
 
 class Component extends EventHandler {
+  private _rect: DOMRect;
   dom: HTMLElement;
 
   constructor(
@@ -17,6 +19,24 @@ class Component extends EventHandler {
     }
   }
 
+  get rect(): DOMRect {
+    if (this._rect) return this._rect;
+    this._rect = this.dom.getBoundingClientRect();
+    return this._rect;
+  }
+
+  addStyle(style: Partial<CSSStyleDeclaration> | string): this {
+    if (isStr(style)) {
+      this.dom.style.cssText = style;
+    } else {
+      Object.keys(style).forEach((k) => {
+        this.dom.style[k as any] = style[k as any];
+      });
+    }
+
+    return this;
+  }
+
   appendChild(d: HTMLElement | Component): this {
     this.dom.appendChild(Component.isComponent(d) ? d.dom : d);
     return this;
@@ -28,7 +48,7 @@ class Component extends EventHandler {
   }
 
   addClass(cls: string): this {
-    this.dom.classList.add(cls);
+    this.dom.classList.add(...cls.split(' '));
     return this;
   }
 
