@@ -6,8 +6,9 @@
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #fff;
   font-size: 14px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 
   [hidden] {
     display: none;
@@ -195,7 +196,18 @@
 
   &_action {
     &_time {
+      font-size: 13px;
+      margin-left: 10px;
       margin-right: auto;
+      text-shadow: 0 0 2px rgba(0,0,0,.3);
+
+      :first-child::after {
+        content: '/';
+        display: inline-block;
+        font-size: 12px;
+        margin: 0 5px;
+        transform: translateY(-0.5px);
+      }
     }
 
     &_setting {
@@ -286,7 +298,6 @@
       padding: 5px 10px;
       border-radius: 3px;
       white-space: nowrap;
-      color: #fff;
       background: rgba(0, 0, 0, .7);
       transform: translate(-50%, 10px) scale(.8);
       transform-origin: 50% 100%;
@@ -317,7 +328,6 @@
       border-radius: 3px;
       margin-bottom: 10px;
       font-size: 14px;
-      color: #fff;
       background: rgba(0,0,0,.7);
       white-space: nowrap;
       opacity: 0;

@@ -12,7 +12,7 @@ class Actions extends Component {
     this.addClass('rplayer_controls_bottom_actions');
 
     this.appendChild(new PlayAction());
-    this.appendChild(new TimeAction());
+    this.appendChild(new TimeAction(this.player));
     this.appendChild(new SettingAction());
     this.appendChild(new FullscreenAction(this.player));
   }

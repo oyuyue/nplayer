@@ -2,6 +2,7 @@ import Component from './component';
 import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
+import setupMediaEvents from './media-events';
 import { getDomOr } from './utils';
 
 interface RPlayerOptions {
@@ -46,6 +47,7 @@ class RPlayer extends Component {
     this.controls = new Controls(this);
 
     this.setupFullscreen();
+    setupMediaEvents(this, this.media);
   }
 
   private setupFullscreen(): void {

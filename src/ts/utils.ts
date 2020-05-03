@@ -53,6 +53,30 @@ export function svgToDom(str: string, className?: string): HTMLElement {
   return dom;
 }
 
+export function padStart(v: string | number, len = 2, str = '0'): string {
+  v = String(v);
+  if (v.length >= 2) return v;
+  return (
+    Array(len - v.length)
+      .fill(str)
+      .join('') + v
+  );
+}
+
+export function formatTime(seconds: number): string {
+  if (!seconds) return '00:00';
+
+  seconds = Math.round(seconds);
+  if (seconds < 60) return `00:${padStart(seconds)}`;
+  if (seconds < 3600) {
+    return `${Math.floor(seconds / 60)}:${padStart(seconds % 60)}`;
+  }
+
+  return `${Math.floor(seconds / 3600)}:${padStart(
+    Math.floor((seconds % 3600) / 60)
+  )}:${padStart(seconds % 60)}`;
+}
+
 export const ua = {
   isEdge: window.navigator.userAgent.includes('Edge'),
   isWebkit:
