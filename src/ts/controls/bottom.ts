@@ -1,11 +1,13 @@
 import Component from '../component';
 import Events from '../events';
 import RPlayer from '../rplayer';
+import Actions from './actions';
 import ProgressBar from './progress-bar';
 
 class Bottom extends Component {
   private controlsTimer: NodeJS.Timeout;
   progressBar: ProgressBar;
+  actions: Component;
 
   constructor(player: RPlayer) {
     super(player, 'div', Events.BEFORE_MOUNT);
@@ -14,6 +16,9 @@ class Bottom extends Component {
     this.addClass('rplayer_controls_bottom');
 
     this.progressBar = new ProgressBar(player);
+    this.actions = new Actions(player);
+
+    this.appendChild(this.actions);
   }
 
   private addEvents(): void {

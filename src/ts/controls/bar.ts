@@ -16,6 +16,7 @@ class Bar extends Component {
   }
 
   set(x?: number): this {
+    if (this.x === x) return;
     this.x = clamp(x);
     this.addStyle({ transform: `scaleX(${this.x})` });
     return this;

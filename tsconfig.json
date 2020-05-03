@@ -9,7 +9,8 @@
     "noImplicitAny": true,
     "outDir": "./dist",
     "target": "es5",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "experimentalDecorators": true
   },
   "exclude": ["node_modules"]
 }

@@ -2,9 +2,69 @@
   position: relative;
   display: flex;
   justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Microsoft JhengHei', 'Microsoft YaHei', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  letter-spacing: 2px;
+
+  [hidden] {
+    display: none;
+  }
 
   video {
     max-width: 100%;
+  }
+
+  button {
+    font: inherit;
+    line-height: inherit;
+    color: inherit;
+    width: auto;
+    border: none;
+    padding: 0;
+    background: 0 0;
+    cursor: pointer;
+    overflow: visible;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #fff;
+  }
+
+  &_switch {
+    width: 36px;
+    height: 21px;
+    padding: 2px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.3);
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+      transition: transform .15s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    }
+
+    &-active {
+      &::after {
+        background: #00b3ff;
+        transform: translateX(15px);
+      }
+    }
   }
 
   &_controls {
@@ -22,11 +82,15 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 30px;
       background: rgba(0, 0, 0, .3);
       transition: opacity .2s ease;
       z-index: 2;
       user-select: none;
+
+      &_actions {
+        display: flex;
+        align-items: center;
+      }
     }
 
     &_tc {
@@ -73,12 +137,17 @@
   }
 
   &_progress {
+    position: absolute;
+    left: 0;
+    bottom: 41px;
+    width: 100%;
     cursor: pointer;
 
     &_dot {
       position: absolute;
       left: -6.5px;
       top: -4px;
+      pointer-events: none;
     }
 
     &_bar_wrapper {
@@ -123,4 +192,191 @@
       transform: scale(1);
     }
   }
+
+  &_actions {
+    &_time {
+      margin-right: auto;
+    }
+
+    &_setting {
+      &-active {
+        background: #00b3ff !important;
+
+        .rplayer_tooltip_text {
+          opacity: 0 !important;
+        }
+
+        .rplayer_settings_menu {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: initial;
+        }
+
+        .rplayer_actions_setting_mask {
+          display: block;
+        }
+      }
+
+      &_mask {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 3;
+        cursor: initial;
+      }
+    }
+  }
+
+  & &_tray {
+    padding: 7px;
+    border-radius: 3px;
+    transition: background .3s ease;
+    font-size: 0;
+
+    &:hover {
+      background: #00b3ff;
+    }
+  }
+
+  &_tooltip {
+    position: relative;
+    display: inline-block;
+
+    &:hover &_text{
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    &:hover &_text-left, &:hover &_text-right{
+      transform: translate(0, 0);
+    }
+
+    &_text {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+      color: #fff;
+      background: rgba(0, 0, 0, .7);
+      transform: translate(-50%, 10px) scale(.8);
+      transform-origin: 50% 100%;
+      pointer-events: none;
+      opacity: 0;
+      transition: transform .2s .1s ease,opacity .2s .1s ease;
+
+      &-left {
+        left: 0;
+        transform: translate(0,10px) scale(.8);
+        transform-origin: 0 100%;
+      }
+
+      &-right {
+        left: auto;
+        right: 0;
+        transform: translate(0,10px) scale(.8);
+        transform-origin: 100% 100%;
+      }
+    }
+  }
+
+  &_settings {
+    &_menu {
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      border-radius: 3px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #fff;
+      background: rgba(0,0,0,.7);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(10px);
+      z-index: 5;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease, height .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+      will-change: width, height;
+
+      &_page {
+        & &_back {
+          padding-left: 49px;
+          border-bottom: 1px solid rgba(255, 255, 255, .2);
+
+          &::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 20px;
+            border: 4px solid transparent;
+            border-right-color: #fff;
+          }
+        }
+      }
+
+      &_item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 20px;
+
+        &:hover {
+          background: rgba(255, 255, 255, .2);
+        }
+
+        :first-child {
+          padding-right: 50px;
+        }
+      }
+
+      &_radio {
+        padding-right: 35px;
+
+        &::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 0;
+          right: 15px;
+          border: 4px solid transparent;
+          border-left-color: #fff;
+        }
+      }
+    }
+
+    &_radio {
+      &_option {
+        position: relative;
+        justify-content: flex-start;
+
+        &::before {
+          content: '';
+          opacity: 0;
+          height: 5px;
+          width: 12px;
+          border: 1px solid #fff;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          margin-right: 15px;
+          margin-top: -5px;
+          transform: rotate(-45deg);
+        }
+
+        &-active {
+          &::before {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
 }

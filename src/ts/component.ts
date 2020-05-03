@@ -25,6 +25,22 @@ class Component extends EventHandler {
     return this._rect;
   }
 
+  get text(): string {
+    return this.dom.innerText;
+  }
+
+  set text(text: string) {
+    this.dom.innerText = text;
+  }
+
+  get html(): string {
+    return this.dom.innerHTML;
+  }
+
+  set html(html: string) {
+    this.dom.innerHTML = html;
+  }
+
   addStyle(style: Partial<CSSStyleDeclaration> | string): this {
     if (isStr(style)) {
       this.dom.style.cssText = style;
@@ -37,12 +53,20 @@ class Component extends EventHandler {
     return this;
   }
 
-  appendChild(d: HTMLElement | Component): this {
+  appendChild(d: Node | Component): this {
     this.dom.appendChild(Component.isComponent(d) ? d.dom : d);
     return this;
   }
 
-  removeChild(d: HTMLElement | Component): this {
+  insert(d: Node | Component, pos?: number): this {
+    this.dom.insertBefore(
+      Component.isComponent(d) ? d.dom : d,
+      this.dom.children[pos]
+    );
+    return this;
+  }
+
+  removeChild(d: Node | Component): this {
     this.dom.removeChild(Component.isComponent(d) ? d.dom : d);
     return this;
   }
@@ -62,18 +86,28 @@ class Component extends EventHandler {
     return this;
   }
 
-  appendTo(d: HTMLElement | Component): this {
+  appendTo(d: Node | Component): this {
     d.appendChild(this.dom);
     return this;
   }
 
-  removeFrom(d: HTMLElement | Component): this {
+  removeFrom(d: Node | Component): this {
     d.removeChild(this.dom);
     return this;
   }
 
   removeFromParent(): this {
     this.dom.parentNode.removeChild(this.dom);
+    return this;
+  }
+
+  hidden(): this {
+    this.dom.hidden = true;
+    return this;
+  }
+
+  visible(): this {
+    this.dom.hidden = false;
     return this;
   }
 

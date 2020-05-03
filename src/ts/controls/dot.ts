@@ -15,7 +15,6 @@ class Dot extends Component {
   }
 
   setX(x: number): this {
-    console.log(x);
     if (this.x === x) return;
     this.x = x;
     this.addStyle({ transform: `translateX(${x}px)` });
