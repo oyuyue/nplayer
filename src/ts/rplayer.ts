@@ -1,6 +1,7 @@
 import Component from './component';
 import Controls from './controls';
 import Events from './events';
+import Fullscreen from './fullscreen';
 import { getDomOr } from './utils';
 
 interface RPlayerOptions {
@@ -10,12 +11,15 @@ interface RPlayerOptions {
 }
 
 class RPlayer extends Component {
-  readonly media: HTMLVideoElement;
-
   el: HTMLElement;
-  controls: Controls;
-  options: RPlayerOptions = {};
+
+  readonly options: RPlayerOptions = {};
+  readonly media: HTMLVideoElement;
   readonly Events = Events;
+  readonly fullscreen: Fullscreen;
+  readonly controls: Controls;
+
+  fullscreenClass = 'rplayer-full';
 
   constructor(options: RPlayerOptions = {}) {
     super();
@@ -38,7 +42,29 @@ class RPlayer extends Component {
       });
     }
 
+    this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
+
+    this.setupFullscreen();
+  }
+
+  private setupFullscreen(): void {
+    this.on(Events.ENTER_FULLSCREEN, () => {
+      this.addClass(this.fullscreenClass);
+    });
+    this.on(Events.EXIT_FULLSCREEN, () => {
+      this.removeClass(this.fullscreenClass);
+    });
+
+    this.dom.addEventListener(
+      'dblclick',
+      (ev) => {
+        ev.preventDefault();
+        if (this.controls.bottom.dom.contains(ev.target as any)) return;
+        this.fullscreen.toggle();
+      },
+      true
+    );
   }
 
   mount(el?: HTMLElement): this {

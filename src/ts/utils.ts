@@ -43,6 +43,21 @@ const domParser = window.DOMParser ? new DOMParser() : null;
 export function strToDom(
   str: string,
   type: SupportedType = 'image/svg+xml'
-): ChildNode {
-  return domParser.parseFromString(str, type).firstChild;
+): HTMLElement {
+  return domParser.parseFromString(str, type).firstChild as HTMLElement;
 }
+
+export function svgToDom(str: string, className?: string): HTMLElement {
+  const dom = strToDom(str);
+  if (className) dom.classList.add(className);
+  return dom;
+}
+
+export const ua = {
+  isEdge: window.navigator.userAgent.includes('Edge'),
+  isWebkit:
+    'WebkitAppearance' in document.documentElement.style &&
+    !/Edge/.test(navigator.userAgent),
+  isIPhone: /(iPhone|iPod)/gi.test(navigator.platform),
+  isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
+};

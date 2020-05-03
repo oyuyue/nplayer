@@ -50,9 +50,11 @@ class SettingMenu extends Component {
     this.homePage.hidden = false;
 
     setTimeout(() => {
-      this.setWH(this.homeRect.width, this.homeRect.height);
+      if (this.homeRect) {
+        this.setWH(this.homeRect.width, this.homeRect.height);
+      }
     });
-    setTimeout(() => this.setWH(), 300);
+    setTimeout(() => this.setWH(), 220);
   }
 
   onRadioEntryClick = (i: number) => (): void => {

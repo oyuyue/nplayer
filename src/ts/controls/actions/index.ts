@@ -1,5 +1,6 @@
 import Component from '../../component';
 import RPlayer from '../../rplayer';
+import FullscreenAction from './fullscreen';
 import PlayAction from './play';
 import SettingAction from './settings';
 import TimeAction from './time';
@@ -13,6 +14,7 @@ class Actions extends Component {
     this.appendChild(new PlayAction());
     this.appendChild(new TimeAction());
     this.appendChild(new SettingAction());
+    this.appendChild(new FullscreenAction(this.player));
   }
 
   addAction(comp: Component, pos?: number): void {

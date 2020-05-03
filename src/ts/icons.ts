@@ -5,14 +5,14 @@ import pause from '../icons/pause.svg';
 import play from '../icons/play.svg';
 import settings from '../icons/settings.svg';
 import volume from '../icons/volume.svg';
-import { strToDom } from './utils';
+import { svgToDom } from './utils';
 
 export default {
-  play: strToDom(play),
-  pause: strToDom(pause),
-  enterFullscreen: strToDom(enterFullscreen),
-  exitFullscreen: strToDom(exitFullscreen),
-  volume: strToDom(volume),
-  muted: strToDom(muted),
-  settings: strToDom(settings),
+  play: svgToDom(play, 'rplayer_icon_play'),
+  pause: svgToDom(pause, 'rplayer_icon_pause'),
+  enterFullscreen: svgToDom(enterFullscreen, 'rplayer_icon_enter_fullscreen'),
+  exitFullscreen: svgToDom(exitFullscreen, 'rplayer_icon_exit_fullscreen'),
+  volume: svgToDom(volume, 'rplayer_icon_exit_volume'),
+  muted: svgToDom(muted, 'rplayer_icon_exit_muted'),
+  settings: svgToDom(settings),
 };

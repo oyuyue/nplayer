@@ -193,14 +193,22 @@
     }
   }
 
-  &_actions {
+  &_action {
     &_time {
       margin-right: auto;
     }
 
     &_setting {
+      svg {
+        transition: transform .2s ease;
+      }
+
       &-active {
         background: #00b3ff !important;
+
+        svg {
+          transform: rotate(90deg);
+        }
 
         .rplayer_tooltip_text {
           opacity: 0 !important;
@@ -212,7 +220,7 @@
           pointer-events: initial;
         }
 
-        .rplayer_actions_setting_mask {
+        .rplayer_action_setting_mask {
           display: block;
         }
       }
@@ -226,6 +234,21 @@
         bottom: 0;
         z-index: 3;
         cursor: initial;
+      }
+    }
+
+    &_fullscreen {
+      .rplayer_icon_exit_fullscreen {
+        display: none;
+      }
+
+      &-active {
+        .rplayer_icon_exit_fullscreen {
+          display: block;
+        }
+        .rplayer_icon_enter_fullscreen {
+          display: none;
+        }
       }
     }
   }
@@ -301,7 +324,7 @@
       transform: translateY(10px);
       z-index: 5;
       pointer-events: none;
-      transition: opacity .2s ease, transform .2s ease, height .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);
+      transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
       overflow: hidden;
       will-change: width, height;
 
