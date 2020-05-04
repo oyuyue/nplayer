@@ -17,7 +17,6 @@ class TouchControl extends Component {
     this.appendChild(this.mask);
 
     this.mask.dom.addEventListener('touchend', this.onTouchMask);
-    this.mask.dom.addEventListener('click', this.onClickMask);
     document.addEventListener('touchend', this.hide);
   }
 
@@ -37,11 +36,6 @@ class TouchControl extends Component {
     ev.preventDefault();
     ev.stopPropagation();
     this.toggle();
-  };
-
-  onClickMask = (ev: Event): void => {
-    ev.preventDefault();
-    this.player.toggle();
   };
 
   onBeforeMount(): void {

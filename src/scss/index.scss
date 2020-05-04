@@ -1,12 +1,15 @@
+@import './variables';
+
 .rplayer {
   position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Microsoft JhengHei', 'Microsoft YaHei', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #fff;
+  color: $color-font;
   font-size: 14px;
   letter-spacing: 1px;
 
@@ -36,9 +39,9 @@
   }
 
   svg {
-    width: 18px;
-    height: 18px;
-    fill: #fff;
+    width: $size-action-icon;
+    height: $size-action-icon;
+    fill: $color-font;
   }
 
   &_icon {
@@ -57,6 +60,10 @@
   }
 
   &-full {
+    video {
+      width: 100%;
+    }
+
     .rplayer_icon_exit_fullscreen {
       display: block;
     }
@@ -70,7 +77,7 @@
     height: 21px;
     padding: 2px;
     border-radius: 12px;
-    background: rgba(255,255,255,.3);
+    background: $color-bg-switch;
     cursor: pointer;
 
     &::after {
@@ -79,14 +86,14 @@
       width: 21px;
       height: 21px;
       border-radius: 50%;
-      background: #fff;
+      background: $color-font;
       box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
       transition: transform .15s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     }
 
     &-active {
       &::after {
-        background: #00b3ff;
+        background: $color-primary;
         transform: translateX(15px);
       }
     }
@@ -98,7 +105,7 @@
       cursor: none;
     }
 
-    &-hide &_bottom {
+    &-hide &_bottom, &-hide &_bottom_mask {
       opacity: 0;
     }
 
@@ -107,17 +114,29 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, .3);
+      padding: $size-bottom-padding;
       transition: opacity .2s ease;
       z-index: 2;
       user-select: none;
+
+      &_mask {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: $size-bottom-mask-top;
+        min-height: 55px;
+        background: $color-bg-bottom-mask;
+        pointer-events: none;
+        transition: opacity .2s ease;
+      }
 
       &_actions {
         display: flex;
         align-items: center;
 
         & > * {
-          margin-left: 3px;
+          margin-left: $size-action-gap;
         }
 
         & > :first-child {
@@ -136,9 +155,11 @@
       background: rgba(0, 0, 0, .5);
       opacity: 0;
       transition: opacity .2s ease;
+      pointer-events: none;
 
       &-show {
         opacity: 1;
+        pointer-events: initial;
       }
 
       &_mask {
@@ -150,22 +171,26 @@
   }
 
   &_bar {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     transform-origin: 0 0;
   }
 
   &_dot {
     position: absolute;
+    left: $size-dot / -2;
     pointer-events: none;
 
     &::after {
       content: '';
       display: block;
-      width: 13px;
-      height: 13px;
+      width: $size-dot;
+      height: $size-dot;
       border-radius: 50%;
-      background: green;
+      background: $color-primary;
       transform: scale(0);
       transition: transform .15s ease;
     }
@@ -173,50 +198,38 @@
 
   &_progress {
     position: absolute;
-    left: 0;
-    bottom: 41px;
-    width: 100%;
+    left: $size-bottom-padding;
+    right: $size-bottom-padding;
+    bottom: $size-progress-bar-bottom;
     cursor: pointer;
 
     &_dot {
-      left: -6.5px;
-      top: -4px;
+      top: $size-dot / -2 + 2px;
     }
 
     &_bar_wrapper {
       position: absolute;
       left: 0;
-      width: 100%;
-      height: 5px;
-      background: rgba(0, 0, 0, .2);
-    }
-
-    &_bar {
-      position: absolute;
-      left: 0;
-      bottom: 0;
+      right: 0;
+      height: 4px;
+      background: $color-bg-progress;
     }
 
     &_played {
-      position: relative;
-      background: red;
+      background: $color-primary;
       transform: scaleX(0);
       will-change: transform;
     }
 
     &_buf {
-      background: rgba(255,255,255,.5);
+      background: $color-bg-progress-buf;
     }
 
     &_pad {
+      top: -8px;
       height: 16px;
       touch-action: none;
       z-index: 2;
-    }
-
-    &_hover {
-      width: 50%;
-      background: rgba(0, 0, 0, .2);
     }
 
     &:hover &_bar_wrapper,
@@ -267,24 +280,22 @@
       }
 
       &_bar {
-        background: rgba(255,255,255,.8);
+        background: $color-bg-volume-progress-bar;
 
         &_wrapper {
+          position: relative;
           height: 4px;
           border-radius: 3px;
-          background: rgba(255,255,255,.3);
+          background: $color-bg-volume-progress;
           overflow: hidden;
         }
       }
 
       &_dot {
         top: 0;
-        left: -6px;
 
         &::after {
-          width: 12px;
-          height: 12px;
-          background: rgba(255,255,255,.8);
+          background: $color-bg-volume-progress-bar;
         }
       }
     }
@@ -294,7 +305,8 @@
       margin-left: 8px;
       margin-right: auto;
       margin-top: -1px;
-      text-shadow: 0 0 2px rgba(0,0,0,.3);
+      text-shadow: $shadow-text-time;
+      white-space: nowrap;
 
       :first-child::after {
         content: '/';
@@ -311,7 +323,7 @@
       }
 
       &-active {
-        background: #00b3ff !important;
+        background: $color-primary !important;
 
         svg {
           transform: rotate(90deg);
@@ -352,7 +364,7 @@
     font-size: 0;
 
     &:hover {
-      background: #00b3ff;
+      background: $color-primary;
     }
   }
 
@@ -374,11 +386,11 @@
       left: 50%;
       bottom: 100%;
       font-size: 12px;
-      margin-bottom: 10px;
+      margin-bottom: $size-tip-mb;
       padding: 5px 10px;
       border-radius: 3px;
       white-space: nowrap;
-      background: rgba(0, 0, 0, .7);
+      background: $color-bg-popup;
       transform: translate(-50%, 10px) scale(.8);
       transform-origin: 50% 100%;
       pointer-events: none;
@@ -406,9 +418,9 @@
       bottom: 100%;
       right: 0;
       border-radius: 3px;
-      margin-bottom: 10px;
+      margin-bottom: $size-tip-mb;
       font-size: 14px;
-      background: rgba(0,0,0,.7);
+      background: $color-bg-popup;
       white-space: nowrap;
       opacity: 0;
       transform: translateY(10px);
@@ -421,7 +433,7 @@
       &_page {
         & &_back {
           padding-left: 49px;
-          border-bottom: 1px solid rgba(255, 255, 255, .2);
+          border-bottom: 1px solid $color-bg-popup-item-hover;
 
           &::before {
             content: '';
@@ -430,7 +442,7 @@
             height: 0;
             left: 20px;
             border: 4px solid transparent;
-            border-right-color: #fff;
+            border-right-color: $color-font;
           }
         }
       }
@@ -442,7 +454,7 @@
         padding: 8px 20px;
 
         &:hover {
-          background: rgba(255, 255, 255, .2);
+          background: $color-bg-popup-item-hover;
         }
 
         :first-child {
@@ -460,7 +472,7 @@
           height: 0;
           right: 15px;
           border: 4px solid transparent;
-          border-left-color: #fff;
+          border-left-color: $color-font;
         }
       }
     }
@@ -475,7 +487,7 @@
           opacity: 0;
           height: 5px;
           width: 12px;
-          border: 1px solid #fff;
+          border: 1px solid $color-font;
           border-top-color: transparent;
           border-right-color: transparent;
           margin-right: 15px;

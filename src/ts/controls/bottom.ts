@@ -8,6 +8,7 @@ class Bottom extends Component {
   private controlsTimer: NodeJS.Timeout;
   progressBar: ProgressBar;
   actions: Component;
+  mask: HTMLElement;
 
   constructor(player: RPlayer) {
     super(player, 'div', Events.BEFORE_MOUNT);
@@ -17,6 +18,8 @@ class Bottom extends Component {
 
     this.progressBar = new ProgressBar(player);
     this.actions = new Actions(player);
+    this.mask = document.createElement('div');
+    this.mask.classList.add('rplayer_controls_bottom_mask');
 
     this.appendChild(this.actions);
   }
@@ -56,6 +59,7 @@ class Bottom extends Component {
 
   onBeforeMount(): void {
     this.player.controls.appendChild(this);
+    this.player.controls.appendChild(this.mask);
   }
 }
 

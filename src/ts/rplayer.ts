@@ -54,6 +54,7 @@ class RPlayer extends Component {
     this.setupFullscreen();
     setupMediaEvents(this, this.media);
     this.setupClassNames();
+    this.setupPlay();
   }
 
   private setupFullscreen(): void {
@@ -82,6 +83,14 @@ class RPlayer extends Component {
     this.on(Events.PLAY, () =>
       this.removeClass(this.pausedClass)
     ).on(Events.PAUSE, () => this.addClass(this.pausedClass));
+  }
+
+  private setupPlay(): void {
+    this.dom.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      if (this.controls.bottom.dom.contains(ev.target as any)) return;
+      this.toggle();
+    });
   }
 
   get currentTime(): number {
