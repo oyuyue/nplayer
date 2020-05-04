@@ -1,6 +1,8 @@
 enum Events {
   BEFORE_MOUNT = 'BeforeMount',
   MOUNTED = 'Mounted',
+  CONTROLS_SHOW = 'ControlsShow',
+  CONTROLS_HIDE = 'ControlsHide',
   ENTER_FULLSCREEN = 'EnterFullscreen',
   EXIT_FULLSCREEN = 'ExitFullscreen',
   DURATION_CHANGE = 'DurationChange',
@@ -9,6 +11,7 @@ enum Events {
   PLAY = 'Play',
   PAUSE = 'Pause',
   ENDED = 'Ended',
+  PROGRESS = 'Progress',
 }
 
 export default Events;

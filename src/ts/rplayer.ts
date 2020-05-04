@@ -92,6 +92,10 @@ class RPlayer extends Component {
     return this.media.duration;
   }
 
+  get buffered(): TimeRanges {
+    return this.media.buffered;
+  }
+
   mount(el?: HTMLElement): this {
     if (el) this.el = el;
     this.emit(Events.BEFORE_MOUNT);
@@ -99,6 +103,11 @@ class RPlayer extends Component {
     this.el.appendChild(this.dom);
     this.emit(Events.MOUNTED);
     return this;
+  }
+
+  seek(seconds: number): void {
+    seconds = clamp(seconds, 0, this.duration);
+    this.media.currentTime = seconds;
   }
 
   play(): void {

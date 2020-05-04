@@ -38,6 +38,16 @@ function handler(player: RPlayer, video: HTMLVideoElement): void {
       volumeChangePending = false;
     });
   });
+
+  let progressPending = false;
+  video.addEventListener('progress', () => {
+    if (progressPending) return;
+    progressPending = true;
+    requestAnimationFrame(() => {
+      player.emit(Events.PROGRESS);
+      progressPending = false;
+    });
+  });
 }
 
 export default handler;

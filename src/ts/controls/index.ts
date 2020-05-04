@@ -5,8 +5,10 @@ import Bottom from './bottom';
 import TouchControl from './touch-control';
 
 class Controls extends Component {
-  public bottom: Bottom;
-  public touchControl: TouchControl;
+  bottom: Bottom;
+  touchControl: TouchControl;
+
+  hideClass = 'rplayer_controls-hide';
 
   constructor(player: RPlayer) {
     super(player, 'div', Events.BEFORE_MOUNT);
@@ -16,12 +18,18 @@ class Controls extends Component {
     this.touchControl = new TouchControl(player);
   }
 
+  get isHide(): boolean {
+    return this.containsClass(this.hideClass);
+  }
+
   show(): void {
-    this.removeClass('rplayer_controls-hide');
+    this.removeClass(this.hideClass);
+    this.player.emit(Events.CONTROLS_SHOW);
   }
 
   hide(): void {
-    this.addClass('rplayer_controls-hide');
+    this.addClass(this.hideClass);
+    this.player.emit(Events.CONTROLS_HIDE);
   }
 
   onBeforeMount(): void {

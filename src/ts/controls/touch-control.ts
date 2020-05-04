@@ -3,8 +3,9 @@ import Events from '../events';
 import RPlayer from '../rplayer';
 
 class TouchControl extends Component {
-  private mask: Component;
-  private classNameShow = 'rplayer_controls_tc-show';
+  mask: Component;
+
+  showClass = 'rplayer_controls_tc-show';
 
   constructor(player: RPlayer) {
     super(player, 'div', Events.BEFORE_MOUNT);
@@ -21,15 +22,15 @@ class TouchControl extends Component {
   }
 
   show(): void {
-    this.addClass(this.classNameShow);
+    this.addClass(this.showClass);
   }
 
   hide = (): void => {
-    this.removeClass(this.classNameShow);
+    this.removeClass(this.showClass);
   };
 
   toggle(): void {
-    this.toggleClass(this.classNameShow);
+    this.toggleClass(this.showClass);
   }
 
   onTouchMask = (ev: Event): void => {

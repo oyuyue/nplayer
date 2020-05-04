@@ -8,7 +8,13 @@ class TimeAction extends Component {
   totalTime = document.createElement('span');
 
   constructor(player: RPlayer) {
-    super(player, 'div', Events.DURATION_CHANGE, Events.TIME_UPDATE);
+    super(
+      player,
+      'div',
+      Events.DURATION_CHANGE,
+      Events.TIME_UPDATE,
+      Events.CONTROLS_SHOW
+    );
     this.addClass('rplayer_action_time');
 
     this.updateCurTime();
@@ -16,6 +22,15 @@ class TimeAction extends Component {
 
     this.appendChild(this.curTime);
     this.appendChild(this.totalTime);
+  }
+
+  updateCurTime(): void {
+    if (this.player.controls && this.player.controls.isHide) return;
+    this.curTime.innerText = formatTime(this.player.currentTime);
+  }
+
+  updateTotalTime(time?: number): void {
+    this.totalTime.innerText = formatTime(time || this.player.duration);
   }
 
   onTimeUpdate(): void {
@@ -26,12 +41,8 @@ class TimeAction extends Component {
     this.updateTotalTime(duration);
   }
 
-  updateCurTime(time?: number): void {
-    this.curTime.innerHTML = formatTime(time || this.player.currentTime);
-  }
-
-  updateTotalTime(time?: number): void {
-    this.totalTime.innerHTML = formatTime(time || this.player.duration);
+  onControlsShow(): void {
+    this.updateCurTime();
   }
 }
 

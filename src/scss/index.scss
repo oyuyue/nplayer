@@ -204,6 +204,10 @@
       will-change: transform;
     }
 
+    &_buf {
+      background: rgba(255,255,255,.5);
+    }
+
     &_pad {
       height: 16px;
       touch-action: none;
