@@ -41,6 +41,30 @@
     fill: #fff;
   }
 
+  &_icon {
+    &_play, &_exit_fullscreen {
+      display: none;
+    }
+  }
+
+  &-paused {
+    .rplayer_icon_pause {
+      display: none;
+    }
+    .rplayer_icon_play {
+      display: block;
+    }
+  }
+
+  &-full {
+    .rplayer_icon_exit_fullscreen {
+      display: block;
+    }
+    .rplayer_icon_enter_fullscreen {
+      display: none;
+    }
+  }
+
   &_switch {
     width: 36px;
     height: 21px;
@@ -313,21 +337,6 @@
         bottom: 0;
         z-index: 3;
         cursor: initial;
-      }
-    }
-
-    &_fullscreen {
-      .rplayer_icon_exit_fullscreen {
-        display: none;
-      }
-
-      &-active {
-        .rplayer_icon_exit_fullscreen {
-          display: block;
-        }
-        .rplayer_icon_enter_fullscreen {
-          display: none;
-        }
       }
     }
   }

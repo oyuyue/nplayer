@@ -23,6 +23,7 @@ class RPlayer extends Component {
   prevVolume = 1;
 
   fullscreenClass = 'rplayer-full';
+  pausedClass = 'rplayer-paused';
 
   constructor(options: RPlayerOptions = {}) {
     super();
@@ -52,13 +53,15 @@ class RPlayer extends Component {
 
     this.setupFullscreen();
     setupMediaEvents(this, this.media);
+    this.setupClassNames();
   }
 
   private setupFullscreen(): void {
+    if (this.fullscreen.isActive) this.addClass(this.fullscreenClass);
+
     this.on(Events.ENTER_FULLSCREEN, () => {
       this.addClass(this.fullscreenClass);
-    });
-    this.on(Events.EXIT_FULLSCREEN, () => {
+    }).on(Events.EXIT_FULLSCREEN, () => {
       this.removeClass(this.fullscreenClass);
     });
 
@@ -71,6 +74,14 @@ class RPlayer extends Component {
       },
       true
     );
+  }
+
+  private setupClassNames(): void {
+    if (this.media.paused) this.addClass(this.pausedClass);
+
+    this.on(Events.PLAY, () =>
+      this.removeClass(this.pausedClass)
+    ).on(Events.PAUSE, () => this.addClass(this.pausedClass));
   }
 
   get currentTime(): number {
