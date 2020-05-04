@@ -12,6 +12,7 @@
   color: $color-font;
   font-size: 14px;
   letter-spacing: 1px;
+  overflow: hidden;
 
   [hidden] {
     display: none;
@@ -107,6 +108,20 @@
 
     &-hide &_bottom, &-hide &_bottom_mask {
       opacity: 0;
+    }
+
+    &_mask {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    &-hide &_mask {
+      pointer-events: auto;
     }
 
     &_bottom {
@@ -232,6 +247,12 @@
       z-index: 2;
     }
 
+    &:hover .rplayer_thumbnail,
+    &:active .rplayer_thumbnail {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
     &:hover &_bar_wrapper,
     &:active &_bar_wrapper{
       transform: scaleY(1.3);
@@ -240,6 +261,22 @@
     &:hover &_dot::after, 
     &:active &_dot::after{
       transform: scale(1);
+    }
+  }
+
+  &_thumbnail {
+    position: absolute;
+    left: 0;
+    bottom: $size-thumbnail-bottom;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(10px) scale(.8);
+    transition: $transition-tip;
+    pointer-events: none;
+
+    &_time {
+      text-shadow: $shadow-text-time;
+      transform: translateX(-50%);
     }
   }
 
@@ -387,15 +424,15 @@
       bottom: 100%;
       font-size: 12px;
       margin-bottom: $size-tip-mb;
-      padding: 5px 10px;
-      border-radius: 3px;
+      padding: $padding-popup;
+      border-radius: $size-popup-radius;
       white-space: nowrap;
       background: $color-bg-popup;
       transform: translate(-50%, 10px) scale(.8);
       transform-origin: 50% 100%;
       pointer-events: none;
       opacity: 0;
-      transition: transform .2s .1s ease,opacity .2s .1s ease;
+      transition: $transition-tip;
 
       &-left {
         left: 0;
@@ -417,7 +454,7 @@
       position: absolute;
       bottom: 100%;
       right: 0;
-      border-radius: 3px;
+      border-radius: $size-popup-radius;
       margin-bottom: $size-tip-mb;
       font-size: 14px;
       background: $color-bg-popup;

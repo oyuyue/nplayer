@@ -7,6 +7,7 @@ import TouchControl from './touch-control';
 class Controls extends Component {
   bottom: Bottom;
   touchControl: TouchControl;
+  mask: HTMLElement;
 
   hideClass = 'rplayer_controls-hide';
 
@@ -16,6 +17,10 @@ class Controls extends Component {
     this.addClass('rplayer_controls');
     this.bottom = new Bottom(player);
     this.touchControl = new TouchControl(player);
+
+    this.mask = document.createElement('div');
+    this.mask.classList.add('rplayer_controls_mask');
+    this.appendChild(this.mask);
   }
 
   get isHide(): boolean {

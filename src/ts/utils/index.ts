@@ -66,10 +66,10 @@ export function padStart(v: string | number, len = 2, str = '0'): string {
 }
 
 export function formatTime(seconds: number): string {
-  if (!seconds) return '00:00';
+  if (!seconds || seconds < 0) return '0:00';
 
   seconds = Math.round(seconds);
-  if (seconds < 60) return `00:${padStart(seconds)}`;
+  if (seconds < 60) return `0:${padStart(seconds)}`;
   if (seconds < 3600) {
     return `${Math.floor(seconds / 60)}:${padStart(seconds % 60)}`;
   }
