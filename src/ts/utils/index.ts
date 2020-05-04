@@ -1,3 +1,5 @@
+export { default as Drag } from './drag';
+
 export function getDomOr<T extends HTMLElement>(
   dom: HTMLElement | string,
   orReturn?: T

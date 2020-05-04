@@ -4,6 +4,7 @@ import FullscreenAction from './fullscreen';
 import PlayAction from './play';
 import SettingAction from './settings';
 import TimeAction from './time';
+import VolumeAction from './volume';
 
 class Actions extends Component {
   constructor(player: RPlayer) {
@@ -12,6 +13,7 @@ class Actions extends Component {
     this.addClass('rplayer_controls_bottom_actions');
 
     this.appendChild(new PlayAction());
+    this.appendChild(new VolumeAction(this.player));
     this.appendChild(new TimeAction(this.player));
     this.appendChild(new SettingAction());
     this.appendChild(new FullscreenAction(this.player));

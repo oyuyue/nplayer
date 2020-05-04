@@ -1,7 +1,7 @@
 import Component from '../component';
 import Events from '../events';
 import RPlayer from '../rplayer';
-import { clamp } from '../utils';
+import { clamp, Drag } from '../utils';
 import Bar from './bar';
 import Dot from './dot';
 
@@ -12,8 +12,7 @@ class ProgressBar extends Component {
   padBar: Bar;
   dot: Dot;
 
-  barPending = false;
-  barLastX = 0;
+  drag: Drag;
 
   constructor(player: RPlayer) {
     super(player, 'div', Events.BEFORE_MOUNT);
@@ -27,42 +26,13 @@ class ProgressBar extends Component {
     this.padBar = new Bar('rplayer_progress_bar rplayer_progress_pad');
     this.dot = new Dot('rplayer_progress_dot');
 
-    this.padBar.dom.addEventListener('pointerdown', this.onPointerStart, true);
-    this.padBar.dom.addEventListener('pointerup', this.onPointerEnd, true);
-    this.padBar.dom.addEventListener('pointercancel', this.onPointerEnd, true);
+    this.drag = new Drag(this.padBar.dom, this.onDrag, this.onDrag);
   }
 
-  onPointerStart = (ev: PointerEvent): void => {
-    ev.preventDefault();
-    this.padBar.dom.setPointerCapture(ev.pointerId);
-    this.padBar.dom.addEventListener('pointermove', this.onPointerMove, true);
-    this.barLastX = ev.pageX;
-    this.handlePlayedBarMove();
-  };
-
-  onPointerEnd = (ev: PointerEvent): void => {
-    ev.preventDefault();
-    this.padBar.dom.releasePointerCapture(ev.pointerId);
-    this.padBar.dom.removeEventListener(
-      'pointermove',
-      this.onPointerMove,
-      true
-    );
-  };
-
-  onPointerMove = (ev: PointerEvent): void => {
-    ev.preventDefault();
-    this.barLastX = ev.pageX;
-    if (this.barPending) return;
-    this.barPending = true;
-    requestAnimationFrame(this.handlePlayedBarMove);
-  };
-
-  handlePlayedBarMove = (): void => {
-    const x = this.barLastX - this.rect.x;
+  onDrag = (ev: PointerEvent): void => {
+    const x = ev.pageX - this.rect.x;
     this.dot.setX(clamp(x, 0, this.rect.width));
     this.playedBar.set(x / this.rect.width);
-    this.barPending = false;
   };
 
   onBeforeMount(): void {

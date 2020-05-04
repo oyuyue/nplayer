@@ -27,11 +27,11 @@ class TimeAction extends Component {
   }
 
   updateCurTime(time?: number): void {
-    this.curTime.innerHTML = formatTime(time || this.player.media.currentTime);
+    this.curTime.innerHTML = formatTime(time || this.player.currentTime);
   }
 
   updateTotalTime(time?: number): void {
-    this.totalTime.innerHTML = formatTime(time || this.player.media.duration);
+    this.totalTime.innerHTML = formatTime(time || this.player.duration);
   }
 }
 

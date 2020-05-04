@@ -76,6 +76,10 @@ class Component extends EventHandler {
     return this;
   }
 
+  containsClass(cls: string): boolean {
+    return this.dom.classList.contains(cls);
+  }
+
   toggleClass(cls: string, force?: boolean): this {
     this.dom.classList.toggle(cls, force);
     return this;

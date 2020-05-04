@@ -12,7 +12,7 @@ export default {
   pause: svgToDom(pause, 'rplayer_icon_pause'),
   enterFullscreen: svgToDom(enterFullscreen, 'rplayer_icon_enter_fullscreen'),
   exitFullscreen: svgToDom(exitFullscreen, 'rplayer_icon_exit_fullscreen'),
-  volume: svgToDom(volume, 'rplayer_icon_exit_volume'),
-  muted: svgToDom(muted, 'rplayer_icon_exit_muted'),
+  volume: svgToDom(volume, 'rplayer_icon_volume'),
+  muted: svgToDom(muted, 'rplayer_icon_muted'),
   settings: svgToDom(settings),
 };

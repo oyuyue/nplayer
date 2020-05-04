@@ -2,7 +2,7 @@ import Component from '../component';
 import { clamp } from '../utils';
 
 class Bar extends Component {
-  private x = 0;
+  private x: number;
 
   constructor(
     className?: string,

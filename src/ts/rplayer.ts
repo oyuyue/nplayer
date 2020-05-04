@@ -3,7 +3,7 @@ import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
 import setupMediaEvents from './media-events';
-import { getDomOr } from './utils';
+import { clamp, getDomOr } from './utils';
 
 interface RPlayerOptions {
   media?: string | HTMLVideoElement;
@@ -19,6 +19,8 @@ class RPlayer extends Component {
   readonly Events = Events;
   readonly fullscreen: Fullscreen;
   readonly controls: Controls;
+
+  prevVolume = 1;
 
   fullscreenClass = 'rplayer-full';
 
@@ -42,6 +44,8 @@ class RPlayer extends Component {
         (this.media as any)[key] = (rest as any)[key];
       });
     }
+
+    this.prevVolume = this.media.volume;
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
@@ -69,11 +73,20 @@ class RPlayer extends Component {
     );
   }
 
+  get currentTime(): number {
+    return this.media.currentTime;
+  }
+
+  get duration(): number {
+    return this.media.duration;
+  }
+
   mount(el?: HTMLElement): this {
     if (el) this.el = el;
     this.emit(Events.BEFORE_MOUNT);
     this.appendChild(this.media);
     this.el.appendChild(this.dom);
+    this.emit(Events.MOUNTED);
     return this;
   }
 
@@ -90,6 +103,26 @@ class RPlayer extends Component {
       this.play();
     } else {
       this.pause();
+    }
+  }
+
+  volume(v?: number): number {
+    if (v != null) this.media.volume = clamp(v);
+    return this.media.volume;
+  }
+
+  muted(v?: boolean): boolean {
+    if (v != null) this.media.muted = v;
+    return this.media.muted || this.volume() === 0;
+  }
+
+  toggleVolume(): void {
+    if (this.muted()) {
+      this.volume(this.prevVolume);
+      this.muted(false);
+    } else {
+      this.prevVolume = this.volume();
+      this.volume(0);
     }
   }
 }

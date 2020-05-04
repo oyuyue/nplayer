@@ -4,8 +4,8 @@ import RPlayer from '../rplayer';
 class Tray extends Component {
   protected tipComp = new Component();
 
-  constructor(player?: RPlayer) {
-    super(player, 'button');
+  constructor(player?: RPlayer, ...events: string[]) {
+    super(player, 'button', ...events);
     this.addClass('rplayer_tooltip rplayer_tray');
     this.tipComp.addClass('rplayer_tooltip_text');
     this.appendChild(this.tipComp);
