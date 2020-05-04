@@ -1,21 +1,31 @@
 import EventHandler from './event-handler';
+import Events from './events';
 import RPlayer from './rplayer';
-import { isStr } from './utils';
+import { isStr, newElement } from './utils';
+
+export interface ComponentOptions {
+  player?: RPlayer;
+  dom?: keyof HTMLElementTagNameMap | HTMLElement;
+  events?: string[];
+  autoUpdateRect?: boolean;
+}
 
 class Component extends EventHandler {
-  private _rect: DOMRect;
-  dom: HTMLElement;
+  protected _rect: DOMRect;
+  readonly dom: HTMLElement;
 
-  constructor(
-    player?: RPlayer,
-    dom: string | HTMLElement = 'div',
-    ...events: string[]
-  ) {
-    super(player, ...events);
-    if (typeof dom === 'string') {
-      this.dom = document.createElement(dom);
-    } else {
-      this.dom = dom;
+  constructor({
+    player,
+    dom = 'div',
+    events,
+    autoUpdateRect = false,
+  }: ComponentOptions = {}) {
+    super(player, events);
+
+    this.dom = isStr(dom) ? newElement(dom) : dom;
+
+    if (player && autoUpdateRect) {
+      player.on(Events.RESIZE, this._resizeHandler);
     }
   }
 
@@ -41,7 +51,15 @@ class Component extends EventHandler {
     this.dom.innerHTML = html;
   }
 
-  addStyle(style: Partial<CSSStyleDeclaration> | string): this {
+  private _resizeHandler = (): void => {
+    this.updateRect();
+  };
+
+  updateRect(): void {
+    this._rect = this.dom.getBoundingClientRect();
+  }
+
+  addStyle(style: Partial<CSSStyleDeclaration> | string): void {
     if (isStr(style)) {
       this.dom.style.cssText = style;
     } else {
@@ -49,70 +67,57 @@ class Component extends EventHandler {
         this.dom.style[k as any] = style[k as any];
       });
     }
-
-    return this;
   }
 
-  appendChild(d: Node | Component): this {
+  appendChild(d: Node | Component): void {
     this.dom.appendChild(Component.isComponent(d) ? d.dom : d);
-    return this;
   }
 
-  insert(d: Node | Component, pos?: number): this {
+  insert(d: Node | Component, pos?: number): void {
     this.dom.insertBefore(
       Component.isComponent(d) ? d.dom : d,
       this.dom.children[pos]
     );
-    return this;
   }
 
-  removeChild(d: Node | Component): this {
+  removeChild(d: Node | Component): void {
     this.dom.removeChild(Component.isComponent(d) ? d.dom : d);
-    return this;
   }
 
-  addClass(cls: string): this {
+  addClass(cls: string): void {
     this.dom.classList.add(...cls.split(' '));
-    return this;
   }
 
   containsClass(cls: string): boolean {
     return this.dom.classList.contains(cls);
   }
 
-  toggleClass(cls: string, force?: boolean): this {
+  toggleClass(cls: string, force?: boolean): void {
     this.dom.classList.toggle(cls, force);
-    return this;
   }
 
-  removeClass(cls: string): this {
+  removeClass(cls: string): void {
     this.dom.classList.remove(cls);
-    return this;
   }
 
-  appendTo(d: Node | Component): this {
+  appendTo(d: Node | Component): void {
     d.appendChild(this.dom);
-    return this;
   }
 
-  removeFrom(d: Node | Component): this {
+  removeFrom(d: Node | Component): void {
     d.removeChild(this.dom);
-    return this;
   }
 
-  removeFromParent(): this {
+  removeFromParent(): void {
     this.dom.parentNode.removeChild(this.dom);
-    return this;
   }
 
-  hidden(): this {
+  hidden(): void {
     this.dom.hidden = true;
-    return this;
   }
 
-  visible(): this {
+  visible(): void {
     this.dom.hidden = false;
-    return this;
   }
 
   static isComponent(obj: unknown): obj is Component {

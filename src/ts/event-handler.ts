@@ -1,25 +1,24 @@
 import { EventEmitter } from 'eventemitter3';
 import RPlayer from './rplayer';
+import { isFn, isStr } from './utils';
 
 class EventHandler extends EventEmitter {
-  protected player: RPlayer;
+  protected readonly player: RPlayer;
 
-  constructor(player?: RPlayer, ...events: string[]) {
+  constructor(player?: RPlayer, events?: string[]) {
     super();
 
-    if (typeof player === 'string') {
-      events.unshift(player);
-    } else {
+    if (player && !isStr(player)) {
       this.player = player;
-    }
 
-    if (events && player) {
-      events.forEach((evName) => {
-        const fnName = 'on' + evName;
-        if (typeof (this as any)[fnName] === 'function') {
-          player.on(evName, (this as any)[fnName].bind(this));
-        }
-      });
+      if (events) {
+        events.forEach((evName) => {
+          const fnName = 'on' + evName;
+          if (isFn((this as any)[fnName])) {
+            player.on(evName, (this as any)[fnName].bind(this));
+          }
+        });
+      }
     }
   }
 }

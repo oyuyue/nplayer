@@ -1,38 +1,38 @@
 import icons from '../../icons';
+import RPlayer from '../../rplayer';
+import { newElement } from '../../utils';
 import SettingMenu from '../setting-menu';
 import Tray from '../tray';
 
 class SettingAction extends Tray {
-  menu: SettingMenu;
-  mask = document.createElement('div');
-  resetPageTimer: NodeJS.Timeout;
+  private readonly menu: SettingMenu;
+  private readonly mask = newElement();
 
-  activeClass = 'rplayer_action_setting-active';
+  private resetPageTimer: NodeJS.Timeout;
 
-  constructor() {
-    super();
-    this.changeTipText('设置');
-    this.appendChild(icons.settings);
+  private readonly activeClass = 'rplayer_action_setting-active';
+
+  constructor(player: RPlayer) {
+    super(player);
 
     this.addClass('rplayer_action_setting');
+    this.changeTipText('设置');
 
     this.menu = new SettingMenu();
-    this.appendChild(this.menu);
-
-    this.addMask();
-  }
-
-  private addMask(): void {
     this.mask.classList.add('rplayer_action_setting_mask');
-    this.mask.addEventListener('click', this.onMaskClick, true);
+    this.mask.addEventListener('click', this.maskClickHandler);
+
+    this.appendChild(icons.settings);
+    this.appendChild(this.menu);
     this.appendChild(this.mask);
   }
 
-  private onMaskClick = (ev: MouseEvent): void => {
+  private maskClickHandler = (ev: MouseEvent): void => {
     ev.preventDefault();
     ev.stopPropagation();
 
     this.removeClass(this.activeClass);
+
     clearTimeout(this.resetPageTimer);
     this.resetPageTimer = setTimeout(() => {
       this.menu.resetPage();

@@ -4,16 +4,15 @@ import { clamp, formatTime } from '../utils';
 import ProgressBar from './progress-bar';
 
 class Thumbnail extends Component {
-  progressBar: ProgressBar;
-  time: HTMLElement;
-  img: HTMLElement;
+  private readonly progressBar: ProgressBar;
+  private readonly time: HTMLElement;
 
   constructor(player: RPlayer, progressBar: ProgressBar) {
-    super(player);
+    super({ player });
 
-    this.progressBar = progressBar;
     this.addClass('rplayer_thumbnail');
 
+    this.progressBar = progressBar;
     this.time = document.createElement('div');
     this.time.classList.add('rplayer_thumbnail_time');
 

@@ -1,12 +1,12 @@
 type Fn = (ev: PointerEvent) => any;
 
 class Drag {
-  dom: HTMLElement;
-  start: Fn;
-  move: Fn;
-  end: Fn;
-  pending = false;
-  lastEv: PointerEvent;
+  private readonly dom: HTMLElement;
+  private readonly start: Fn;
+  private readonly move: Fn;
+  private readonly end: Fn;
+  private pending = false;
+  private lastEv: PointerEvent;
 
   constructor(dom: HTMLElement, start: Fn, move: Fn, end?: Fn) {
     this.dom = dom;
@@ -14,19 +14,19 @@ class Drag {
     this.move = move;
     this.end = end;
 
-    dom.addEventListener('pointerdown', this.onDown, true);
-    dom.addEventListener('pointerup', this.onUp, true);
-    dom.addEventListener('pointercancel', this.onUp, true);
+    dom.addEventListener('pointerdown', this.downHandler, true);
+    dom.addEventListener('pointerup', this.upHandler, true);
+    dom.addEventListener('pointercancel', this.upHandler, true);
   }
 
-  private onDown = (ev: PointerEvent): void => {
+  private downHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
     this.dom.setPointerCapture(ev.pointerId);
-    this.dom.addEventListener('pointermove', this.onMove, true);
+    this.dom.addEventListener('pointermove', this.moveHandler, true);
     this.start(ev);
   };
 
-  private onMove = (ev: PointerEvent): void => {
+  private moveHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
     this.lastEv = ev;
     if (this.pending) return;
@@ -39,19 +39,19 @@ class Drag {
     this.pending = false;
   };
 
-  private onUp = (ev: PointerEvent): void => {
+  private upHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
     this.dom.releasePointerCapture(ev.pointerId);
-    this.dom.removeEventListener('pointermove', this.onMove, true);
+    this.dom.removeEventListener('pointermove', this.moveHandler, true);
 
     if (this.end) this.end(ev);
   };
 
-  close(): void {
-    this.dom.removeEventListener('pointerdown', this.onDown, true);
-    this.dom.removeEventListener('pointerup', this.onUp, true);
-    this.dom.removeEventListener('pointercancel', this.onUp, true);
-    this.dom.removeEventListener('pointermove', this.onMove, true);
+  destroy(): void {
+    this.dom.removeEventListener('pointerdown', this.downHandler, true);
+    this.dom.removeEventListener('pointerup', this.upHandler, true);
+    this.dom.removeEventListener('pointercancel', this.upHandler, true);
+    this.dom.removeEventListener('pointermove', this.moveHandler, true);
   }
 }
 

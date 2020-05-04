@@ -3,7 +3,7 @@ import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
 import setupMediaEvents from './media-events';
-import { clamp, getDomOr } from './utils';
+import { clamp, getDomOr, isStr, newElement } from './utils';
 
 interface RPlayerOptions {
   media?: string | HTMLVideoElement;
@@ -12,52 +12,49 @@ interface RPlayerOptions {
 }
 
 class RPlayer extends Component {
+  static readonly Events = Events;
+
   el: HTMLElement;
+  media: HTMLVideoElement;
+
+  fullscreen: Fullscreen;
+  controls: Controls;
 
   readonly options: RPlayerOptions = {};
-  readonly media: HTMLVideoElement;
-  readonly Events = Events;
-  readonly fullscreen: Fullscreen;
-  readonly controls: Controls;
 
-  prevVolume = 1;
+  private resizePending = false;
+  private prevVolume = 1;
+  private readonly fullscreenClass = 'rplayer-full';
+  private readonly pausedClass = 'rplayer-paused';
 
-  fullscreenClass = 'rplayer-full';
-  pausedClass = 'rplayer-paused';
-
-  constructor(options: RPlayerOptions = {}) {
+  constructor(opts: RPlayerOptions = {}) {
     super();
-    this.options = options;
 
-    this.media = getDomOr(this.options.media, document.createElement('video'));
-    this.el = getDomOr(this.options.el, document.body);
+    this.options = opts;
+
+    this.init();
+  }
+
+  private init(): void {
     this.addClass('rplayer');
 
-    if (options.video) {
-      const { src, ...rest } = options.video;
-      if (typeof src === 'string') {
-        this.media.src = src;
-      } else if (Array.isArray(src)) {
-        src.forEach((s) => this.media.canPlayType(s) && (this.media.src = s));
-      }
-
-      Object.keys(rest).forEach((key) => {
-        (this.media as any)[key] = (rest as any)[key];
-      });
-    }
-
+    this.media = getDomOr(this.options.media, () => newElement('video'));
+    this.el = getDomOr(this.options.el, () => document.body);
     this.prevVolume = this.media.volume;
+
+    if (this.options.video) this.setMediaAttrs(this.options.video);
+
+    setupMediaEvents(this, this.media);
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
 
-    this.setupFullscreen();
-    setupMediaEvents(this, this.media);
-    this.setupClassNames();
-    this.setupPlay();
+    this.initFullscreen();
+    this.initClassName();
+    this.initInteraction();
   }
 
-  private setupFullscreen(): void {
+  private initFullscreen(): void {
     if (this.fullscreen.isActive) this.addClass(this.fullscreenClass);
 
     this.on(Events.ENTER_FULLSCREEN, () => {
@@ -77,7 +74,7 @@ class RPlayer extends Component {
     );
   }
 
-  private setupClassNames(): void {
+  private initClassName(): void {
     if (this.media.paused) this.addClass(this.pausedClass);
 
     this.on(Events.PLAY, () =>
@@ -85,13 +82,24 @@ class RPlayer extends Component {
     ).on(Events.PAUSE, () => this.addClass(this.pausedClass));
   }
 
-  private setupPlay(): void {
+  private initInteraction(): void {
     this.dom.addEventListener('click', (ev) => {
       ev.preventDefault();
       if (this.controls.bottom.dom.contains(ev.target as any)) return;
       this.toggle();
     });
+
+    window.addEventListener('resize', () => {
+      if (this.resizePending) return;
+      this.resizePending = true;
+      requestAnimationFrame(this.resizeHandler);
+    });
   }
+
+  private resizeHandler = (): void => {
+    this.emit(Events.RESIZE);
+    this.resizePending = false;
+  };
 
   get currentTime(): number {
     return this.media.currentTime;
@@ -105,8 +113,23 @@ class RPlayer extends Component {
     return this.media.buffered;
   }
 
+  setMediaAttrs(map: RPlayerOptions['video']): void {
+    Object.entries(map).forEach(([k, v]) => {
+      if (k === 'src') {
+        if (isStr(v)) {
+          this.media.src = v;
+        } else if (Array.isArray(v)) {
+          v.forEach((s) => this.media.canPlayType(s) && (this.media.src = s));
+        }
+      } else {
+        (this.media as any)[k] = v;
+      }
+    });
+  }
+
   mount(el?: HTMLElement): this {
     if (el) this.el = el;
+    this.appendChild(this.controls);
     this.emit(Events.BEFORE_MOUNT);
     this.appendChild(this.media);
     this.el.appendChild(this.dom);

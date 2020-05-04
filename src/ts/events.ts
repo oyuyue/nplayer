@@ -1,6 +1,7 @@
 enum Events {
   BEFORE_MOUNT = 'BeforeMount',
   MOUNTED = 'Mounted',
+  RESIZE = 'Resize',
   CONTROLS_SHOW = 'ControlsShow',
   CONTROLS_HIDE = 'ControlsHide',
   ENTER_FULLSCREEN = 'EnterFullscreen',

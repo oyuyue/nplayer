@@ -3,8 +3,8 @@ import RPlayer from './rplayer';
 import { isFn, ua } from './utils';
 
 class Fullscreen {
-  player: RPlayer;
-  prefix = this.getPrefix();
+  private readonly player: RPlayer;
+  readonly prefix = this.getPrefix();
 
   constructor(player: RPlayer) {
     this.player = player;
@@ -13,20 +13,18 @@ class Fullscreen {
       this.prefix === 'ms'
         ? 'MSFullscreenChange'
         : `${this.prefix}fullscreenchange`,
-      this.onChange,
+      this.changeHandler,
       true
     );
   }
 
-  private onChange = (ev: Event): void => {
-    ev.preventDefault();
-
+  private changeHandler = (): void => {
     this.player.emit(
       this.isActive ? Events.ENTER_FULLSCREEN : Events.EXIT_FULLSCREEN
     );
   };
 
-  getPrefix(): string {
+  private getPrefix(): string {
     if (isFn(document.exitFullscreen)) return '';
 
     let prefix = '';

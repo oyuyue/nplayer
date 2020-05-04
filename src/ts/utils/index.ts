@@ -1,14 +1,5 @@
 export { default as Drag } from './drag';
 
-export function getDomOr<T extends HTMLElement>(
-  dom: HTMLElement | string,
-  orReturn?: T
-): T {
-  let ret: T = dom as T;
-  if (typeof dom === 'string') ret = document.querySelector(dom);
-  return ret || orReturn;
-}
-
 export function clamp(n: number, lower = 0, upper = 1): number {
   return Math.max(Math.min(n, upper), lower);
 }
@@ -21,10 +12,25 @@ export function isFn(o: any): o is Function {
   return typeof o === 'function';
 }
 
+export function getDomOr<T extends HTMLElement>(
+  dom: HTMLElement | string,
+  orReturn?: (() => T) | T
+): T {
+  let ret: T = dom as T;
+  if (typeof dom === 'string') ret = document.querySelector(dom);
+  return ret || (isFn(orReturn) ? orReturn() : orReturn);
+}
+
 export function htmlDom(html: string, tag = 'span'): HTMLElement {
   const d = document.createElement(tag);
   d.innerHTML = html;
   return d;
+}
+
+export function newElement<T extends HTMLElement>(
+  tag: keyof HTMLElementTagNameMap = 'div'
+): T {
+  return document.createElement(tag) as any;
 }
 
 export function findEventDataset(

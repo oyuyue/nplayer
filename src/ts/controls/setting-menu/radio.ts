@@ -1,5 +1,5 @@
 import Component from '../../component';
-import { htmlDom, isFn } from '../../utils';
+import { htmlDom, isFn, newElement } from '../../utils';
 
 export interface RadioOption {
   label: string;
@@ -16,14 +16,15 @@ export interface RadioOpts {
 
 class Radio extends Component {
   private prevSelect: HTMLElement;
-  opts: RadioOpts;
-  options: HTMLElement[];
-  entry: HTMLElement;
-  entryLabel: HTMLElement;
-  entryValue: HTMLElement;
-  value: number;
+  private value: number;
 
-  onEntryClick: (radio: Radio) => any;
+  readonly opts: RadioOpts;
+  private readonly options: HTMLElement[];
+  private readonly entry: HTMLElement;
+  private readonly entryLabel: HTMLElement;
+  private readonly entryValue: HTMLElement;
+
+  private readonly onEntryClick: (radio: Radio) => any;
 
   constructor(opts: RadioOpts, onEntryClick?: (radio: Radio) => any) {
     super();
@@ -31,9 +32,9 @@ class Radio extends Component {
     this.onEntryClick = onEntryClick;
 
     this.options = opts.options.map((o, i) => {
-      const div = document.createElement('div');
+      const div = newElement();
       div.innerHTML = o.html || o.label;
-      div.addEventListener('click', this.onOptionClick(i), true);
+      div.addEventListener('click', this.optionClickHandler(i), true);
       div.classList.add('rplayer_settings_menu_item');
       div.classList.add('rplayer_settings_radio_option');
       return div;
@@ -43,11 +44,11 @@ class Radio extends Component {
 
     this.value = opts.defaultValue || 0;
 
-    this.entry = document.createElement('div');
+    this.entry = newElement();
     this.entry.classList.add('rplayer_settings_menu_radio');
     this.entry.classList.add('rplayer_settings_menu_item');
     this.entryLabel = htmlDom(opts.label);
-    this.entryValue = document.createElement('span');
+    this.entryValue = newElement('span');
     this.select(this.value);
 
     this.entry.appendChild(this.entryLabel);
@@ -64,7 +65,7 @@ class Radio extends Component {
     );
   }
 
-  onOptionClick = (i: number) => (ev: MouseEvent): void => {
+  private optionClickHandler = (i: number) => (ev: MouseEvent): void => {
     ev.preventDefault();
     ev.stopPropagation();
     if (this.value === i) return;
@@ -75,7 +76,7 @@ class Radio extends Component {
     }
   };
 
-  select(index: number): void {
+  private select(index: number): void {
     const opt = this.options[index];
     if (!opt) return;
     if (this.prevSelect) {

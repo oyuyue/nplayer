@@ -1,16 +1,19 @@
 import Component from '../../component';
+import { newElement } from '../../utils';
 import Radio from './radio';
 import Switch from './switch';
 
 class SettingMenu extends Component {
-  items: (Radio | Switch)[];
-  homePage: HTMLElement;
-  optionPages: HTMLElement[];
-  homeRect: DOMRect;
-  optionRects: DOMRect[] = [];
+  private readonly items: (Radio | Switch)[];
+  private readonly homePage: HTMLElement;
+  private readonly optionPages: HTMLElement[];
+
+  private homeRect: DOMRect;
+  private readonly optionRects: DOMRect[] = [];
 
   constructor() {
     super();
+
     this.addClass('rplayer_settings_menu');
 
     this.items = [
@@ -22,15 +25,15 @@ class SettingMenu extends Component {
           label: '字幕',
           options: [{ label: '正常' }, { label: '1正常' }, { label: '2正常' }],
         },
-        this.onRadioEntryClick(0)
+        this.radioEntryClickHandler(0)
       ),
       new Radio(
         { label: '速度', options: [{ label: '正常' }] },
-        this.onRadioEntryClick(1)
+        this.radioEntryClickHandler(1)
       ),
       new Radio(
         { label: '画质', options: [{ label: '正常' }] },
-        this.onRadioEntryClick(2)
+        this.radioEntryClickHandler(2)
       ),
     ];
 
@@ -43,21 +46,7 @@ class SettingMenu extends Component {
     this.optionPages.forEach((page) => this.appendChild(page));
   }
 
-  resetPage(): void {
-    this.optionPages.forEach((opt) => {
-      opt.hidden = true;
-    });
-    this.homePage.hidden = false;
-
-    setTimeout(() => {
-      if (this.homeRect) {
-        this.setWH(this.homeRect.width, this.homeRect.height);
-      }
-    });
-    setTimeout(() => this.setWH(), 220);
-  }
-
-  onRadioEntryClick = (i: number) => (): void => {
+  private radioEntryClickHandler = (i: number) => (): void => {
     if (!this.homeRect) this.homeRect = this.dom.getBoundingClientRect();
     this.homePage.hidden = true;
     this.optionPages[i].hidden = false;
@@ -72,31 +61,31 @@ class SettingMenu extends Component {
     });
   };
 
-  onBackClick = (ev: MouseEvent): void => {
+  private backClickHandler = (ev: MouseEvent): void => {
     ev.preventDefault();
     ev.stopPropagation();
     this.resetPage();
   };
 
-  setWH(w?: number, h?: number): void {
+  private setWH(w?: number, h?: number): void {
     this.addStyle({
       width: w ? w + 'px' : '',
       height: h ? h + 'px' : '',
     });
   }
 
-  getBack(html: string): HTMLElement {
-    const div = document.createElement('div');
+  private getBack(html: string): HTMLElement {
+    const div = newElement();
     div.classList.add('rplayer_settings_menu_page_back');
     div.classList.add('rplayer_settings_menu_item');
     div.innerHTML = html;
-    div.addEventListener('click', this.onBackClick, true);
+    div.addEventListener('click', this.backClickHandler, true);
     return div;
   }
 
-  getHomePage(): HTMLElement {
+  private getHomePage(): HTMLElement {
     if (this.homePage) return this.homePage;
-    const home = document.createElement('div');
+    const home = newElement();
     this.items.forEach((item: any) => {
       home.appendChild(item.entry);
     });
@@ -104,10 +93,10 @@ class SettingMenu extends Component {
     return home;
   }
 
-  getOptionPage(radio: Radio | Switch): HTMLElement {
+  private getOptionPage(radio: Radio | Switch): HTMLElement {
     if (!(radio instanceof Radio)) return null;
 
-    const div = document.createElement('div');
+    const div = newElement();
     div.classList.add('rplayer_settings_menu_page');
 
     const back = this.getBack(radio.opts.label);
@@ -116,6 +105,20 @@ class SettingMenu extends Component {
 
     div.hidden = true;
     return div;
+  }
+
+  resetPage(): void {
+    this.optionPages.forEach((opt) => {
+      opt.hidden = true;
+    });
+    this.homePage.hidden = false;
+
+    setTimeout(() => {
+      if (this.homeRect) {
+        this.setWH(this.homeRect.width, this.homeRect.height);
+      }
+    });
+    setTimeout(() => this.setWH(), 220);
   }
 }
 

@@ -10,44 +10,32 @@ function transEvent(
   video.addEventListener(from, () => player.emit(to));
 }
 
-function handler(player: RPlayer, video: HTMLVideoElement): void {
-  video.addEventListener('durationchange', () => {
-    player.emit(Events.DURATION_CHANGE, video.duration);
+function transThrottleEvent(
+  player: RPlayer,
+  video: HTMLVideoElement,
+  from: string,
+  to: string
+): void {
+  let pending = false;
+  video.addEventListener(from, () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {
+      player.emit(to);
+      pending = false;
+    });
   });
+}
 
+function handler(player: RPlayer, video: HTMLVideoElement): void {
+  transEvent(player, video, 'durationchange', Events.DURATION_CHANGE);
   transEvent(player, video, 'play', Events.PLAY);
   transEvent(player, video, 'pause', Events.PAUSE);
   transEvent(player, video, 'ended', Events.ENDED);
 
-  let timeUpdatePending = false;
-  video.addEventListener('timeupdate', () => {
-    if (timeUpdatePending) return;
-    timeUpdatePending = true;
-    requestAnimationFrame(() => {
-      player.emit(Events.TIME_UPDATE);
-      timeUpdatePending = false;
-    });
-  });
-
-  let volumeChangePending = false;
-  video.addEventListener('volumechange', () => {
-    if (volumeChangePending) return;
-    volumeChangePending = true;
-    requestAnimationFrame(() => {
-      player.emit(Events.VOLUME_CHANGE);
-      volumeChangePending = false;
-    });
-  });
-
-  let progressPending = false;
-  video.addEventListener('progress', () => {
-    if (progressPending) return;
-    progressPending = true;
-    requestAnimationFrame(() => {
-      player.emit(Events.PROGRESS);
-      progressPending = false;
-    });
-  });
+  transThrottleEvent(player, video, 'timeupdate', Events.TIME_UPDATE);
+  transThrottleEvent(player, video, 'volumechange', Events.VOLUME_CHANGE);
+  transThrottleEvent(player, video, 'progress', Events.PROGRESS);
 }
 
 export default handler;

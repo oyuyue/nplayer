@@ -8,14 +8,14 @@ import VolumeAction from './volume';
 
 class Actions extends Component {
   constructor(player: RPlayer) {
-    super(player);
+    super({ player });
 
     this.addClass('rplayer_controls_bottom_actions');
 
     this.appendChild(new PlayAction(player));
     this.appendChild(new VolumeAction(player));
     this.appendChild(new TimeAction(player));
-    this.appendChild(new SettingAction());
+    this.appendChild(new SettingAction(player));
     this.appendChild(new FullscreenAction(player));
   }
 

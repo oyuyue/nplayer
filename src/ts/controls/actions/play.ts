@@ -8,9 +8,10 @@ class PlayAction extends Tray {
     super(player, Events.PLAY, Events.PAUSE);
 
     this.changeTipText('播放');
+    this.setLeft();
+
     this.appendChild(icons.play);
     this.appendChild(icons.pause);
-    this.setLeft();
   }
 
   onClick(): void {
