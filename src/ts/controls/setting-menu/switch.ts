@@ -2,7 +2,7 @@ import { htmlDom, isFn, newElement } from '../../utils';
 
 export interface SwitchOpts {
   label: string;
-  defaultValue?: false;
+  defaultValue?: boolean;
   onChange?: (v: boolean, next: () => void) => any;
 }
 
