@@ -16,7 +16,7 @@ npm i -S rplayer
 
 或者使用 CDN
 
-```
+```html
 <script src="https://unpkg.com/rplayer@latest/dist/RPlayer.js"></script>
 ```
 
@@ -63,6 +63,7 @@ interface RadioOpts {
   options: RadioOption[];
   defaultValue?: number;
   onChange?: (o: RadioOption, next: () => void) => any;
+  // 调用 next 将更新 UI
 }
 
 interface SwitchOpts {
@@ -79,6 +80,7 @@ interface SwitchOpts {
 - [ ] Loading 动画
 - [ ] 交互提示
 - [ ] 右键菜单
+- [ ] 字幕
 - [ ] 响应式
 - [ ] 移动版控件
 - [ ] 广告插件
