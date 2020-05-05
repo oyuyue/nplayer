@@ -1,8 +1,8 @@
 {
   "name": "rplayer",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "responsive video player",
-  "main": "dist/DPlayer.js",
+  "main": "dist/RPlayer.js",
   "license": "MIT",
   "authors": "wopen",
   "files": [

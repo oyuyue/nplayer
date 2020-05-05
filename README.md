@@ -8,9 +8,23 @@
 
 目前兼容 IE11, Edge, Chrome, FireFox, Safari 等现代浏览器
 
+## 安装
+
+```
+npm i -S rplayer
+```
+
+或者使用 CDN
+
+```
+<script src="https://unpkg.com/rplayer@latest/dist/RPlayer.js"></script>
+```
+
 ## 使用
 
 ```javascript
+import RPlayer from 'rplayer'
+
 const player = new RPlayer({
   video: {
     src: 'http://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm'
