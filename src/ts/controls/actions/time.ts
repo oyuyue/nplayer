@@ -8,8 +8,7 @@ class TimeAction extends Component {
   private readonly totalTime = newElement('span');
 
   constructor(player: RPlayer) {
-    super({
-      player,
+    super(player, {
       events: [
         Events.DURATION_CHANGE,
         Events.TIME_UPDATE,

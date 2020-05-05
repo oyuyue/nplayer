@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -12,7 +13,7 @@
   color: $color-font;
   font-size: 14px;
   letter-spacing: 1px;
-  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 
   [hidden] {
     display: none;
@@ -20,23 +21,6 @@
 
   video {
     max-width: 100%;
-  }
-
-  button {
-    font: inherit;
-    line-height: inherit;
-    color: inherit;
-    width: auto;
-    border: none;
-    padding: 0;
-    background: 0 0;
-    cursor: pointer;
-    overflow: visible;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
   }
 
   svg {
@@ -226,7 +210,7 @@
     &:hover .rplayer_thumbnail,
     &:active .rplayer_thumbnail {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translate(-50%, 0) scale(1);
     }
 
     &:hover &_bar_wrapper,
@@ -246,13 +230,12 @@
     bottom: $size-thumbnail-bottom;
     font-size: 12px;
     opacity: 0;
-    transform: translateY(10px) scale(.8);
+    transform: translate(-50%, 10px) scale(.8);
     transition: $transition-tip;
     pointer-events: none;
 
     &_time {
       text-shadow: $shadow-text-time;
-      transform: translateX(-50%);
     }
   }
 
@@ -365,7 +348,7 @@
         top: 0;
         bottom: 0;
         z-index: 3;
-        cursor: initial;
+        cursor: default;
       }
     }
   }
@@ -375,6 +358,7 @@
     border-radius: 3px;
     transition: background .3s ease;
     font-size: 0;
+    cursor: pointer;
 
     &:hover {
       background: $color-primary;
@@ -445,15 +429,15 @@
 
       &_page {
         & &_back {
-          padding-left: 49px;
+          justify-content: flex-start;
           border-bottom: 1px solid $color-bg-popup-item-hover;
 
           &::before {
             content: '';
-            position: absolute;
+            display: block;
             width: 0;
             height: 0;
-            left: 20px;
+            margin-right: 21px;
             border: 4px solid transparent;
             border-right-color: $color-font;
           }
@@ -472,18 +456,17 @@
 
         :first-child {
           padding-right: 50px;
+          margin-right: auto;
         }
       }
 
       &_radio {
-        padding-right: 35px;
-
         &::after {
           content: '';
-          position: absolute;
+          display: block;
           width: 0;
           height: 0;
-          right: 15px;
+          margin-left: 10px;
           border: 4px solid transparent;
           border-left-color: $color-font;
         }
@@ -497,6 +480,7 @@
 
         &::before {
           content: '';
+          display: block;
           opacity: 0;
           height: 5px;
           width: 12px;

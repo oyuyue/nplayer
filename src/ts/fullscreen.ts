@@ -13,8 +13,7 @@ class Fullscreen {
       this.prefix === 'ms'
         ? 'MSFullscreenChange'
         : `${this.prefix}fullscreenchange`,
-      this.changeHandler,
-      true
+      this.changeHandler
     );
   }
 

@@ -11,7 +11,7 @@ class Bottom extends Component {
   private readonly mask: HTMLElement;
 
   constructor(player: RPlayer) {
-    super({ player, events: [Events.BEFORE_MOUNT] });
+    super(player, { events: [Events.BEFORE_MOUNT] });
 
     this.addClass('rplayer_controls_bottom');
 

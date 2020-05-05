@@ -2,13 +2,11 @@ import Component from '../component';
 import RPlayer from '../rplayer';
 import { newElement } from '../utils';
 
-class Tray extends Component {
+abstract class Tray extends Component {
   protected readonly tip = newElement();
 
   constructor(player?: RPlayer, ...events: string[]) {
-    super({
-      player,
-      dom: 'button',
+    super(player, {
       events,
     });
 
@@ -25,8 +23,7 @@ class Tray extends Component {
     this.onClick(ev);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onClick(ev?: MouseEvent): any {}
+  abstract onClick(ev?: MouseEvent): any;
 
   setLeft(): void {
     this.tip.classList.add('rplayer_tooltip_text-left');

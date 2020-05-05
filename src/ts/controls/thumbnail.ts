@@ -8,7 +8,7 @@ class Thumbnail extends Component {
   private readonly time: HTMLElement;
 
   constructor(player: RPlayer, progressBar: ProgressBar) {
-    super({ player });
+    super(player);
 
     this.addClass('rplayer_thumbnail');
 

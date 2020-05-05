@@ -1,5 +1,7 @@
 export { default as Drag } from './drag';
 
+export function noop(): void {}
+
 export function clamp(n: number, lower = 0, upper = 1): number {
   return Math.max(Math.min(n, upper), lower);
 }
@@ -8,8 +10,33 @@ export function isStr(o: any): o is string {
   return typeof o === 'string';
 }
 
+export function isNum(o: any): o is number {
+  return typeof o === 'number';
+}
+
 export function isFn(o: any): o is Function {
   return typeof o === 'function';
+}
+
+export function isObj(o: any): o is Record<string, any> {
+  return typeof o === 'object';
+}
+
+export function isCatchable(o: any): o is { catch: Function } {
+  return isObj(o) && isFn(o.catch);
+}
+
+export function findIndex<T>(
+  arr: T[],
+  predicate: (value: T, index: number, obj: T[]) => unknown
+): number {
+  if (arr.findIndex) return arr.findIndex(predicate);
+
+  for (let i = 0, l = arr.length; i < l; i++) {
+    if (predicate(arr[i], i, arr)) return i;
+  }
+
+  return -1;
 }
 
 export function getDomOr<T extends HTMLElement>(
@@ -27,24 +54,28 @@ export function htmlDom(html: string, tag = 'span'): HTMLElement {
   return d;
 }
 
+export function measureElementSize(
+  dom: HTMLElement
+): { width: number; height: number } {
+  const clone = dom.cloneNode(true) as HTMLElement;
+  clone.style.position = 'absolute';
+  clone.style.opacity = '0';
+  clone.removeAttribute('hidden');
+
+  dom.parentNode.appendChild(clone);
+
+  const width = clone.scrollWidth;
+  const height = clone.scrollHeight;
+
+  dom.parentNode.removeChild(clone);
+
+  return { width, height };
+}
+
 export function newElement<T extends HTMLElement>(
   tag: keyof HTMLElementTagNameMap = 'div'
 ): T {
   return document.createElement(tag) as any;
-}
-
-export function findEventDataset(
-  ev: Event,
-  predicate: (map: DOMStringMap) => boolean
-): DOMStringMap {
-  if (!ev || ev.composedPath) return;
-  const path = ev.composedPath() as HTMLElement[];
-  if (path) {
-    for (let i = 0; i < path.length; i++) {
-      const d = path[i].dataset;
-      if (d && predicate(d)) return d;
-    }
-  }
 }
 
 const domParser = window.DOMParser ? new DOMParser() : null;
@@ -57,18 +88,25 @@ export function strToDom(
 
 export function svgToDom(str: string, className?: string): HTMLElement {
   const dom = strToDom(str);
-  if (className) dom.classList.add(className);
+  if (className) {
+    if (dom.classList) {
+      dom.classList.add(className);
+    } else {
+      dom.setAttribute('class', className);
+    }
+  }
   return dom;
 }
 
 export function padStart(v: string | number, len = 2, str = '0'): string {
   v = String(v);
   if (v.length >= 2) return v;
-  return (
-    Array(len - v.length)
-      .fill(str)
-      .join('') + v
-  );
+
+  for (let i = 0, l = len - v.length; i < l; i++) {
+    v = str + v;
+  }
+
+  return v;
 }
 
 export function formatTime(seconds: number): string {
@@ -86,10 +124,5 @@ export function formatTime(seconds: number): string {
 }
 
 export const ua = {
-  isEdge: window.navigator.userAgent.includes('Edge'),
-  isWebkit:
-    'WebkitAppearance' in document.documentElement.style &&
-    !/Edge/.test(navigator.userAgent),
-  isIPhone: /(iPhone|iPod)/gi.test(navigator.platform),
   isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
 };

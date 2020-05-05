@@ -49,6 +49,7 @@ class Radio extends Component {
     this.entry.classList.add('rplayer_settings_menu_item');
     this.entryLabel = htmlDom(opts.label);
     this.entryValue = newElement('span');
+
     this.select(this.value);
 
     this.entry.appendChild(this.entryLabel);

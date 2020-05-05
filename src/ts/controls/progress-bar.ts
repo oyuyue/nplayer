@@ -17,10 +17,10 @@ class ProgressBar extends Component {
 
   private mouseMovePending = false;
   private mouseMoveLastX = 0;
+  private dragging = false;
 
   constructor(player: RPlayer) {
-    super({
-      player,
+    super(player, {
       events: [Events.TIME_UPDATE, Events.PROGRESS, Events.CONTROLS_SHOW],
       autoUpdateRect: true,
     });
@@ -54,15 +54,17 @@ class ProgressBar extends Component {
   }
 
   private calcCurrentTime(x: number): number {
-    return ((x - this.rect.x) / this.rect.width) * this.player.duration;
+    return ((x - this.rect.left) / this.rect.width) * this.player.duration;
   }
 
-  private dragStartHandler = (): void => {
+  private dragStartHandler = (ev: PointerEvent): void => {
     this.player.pause();
+    this.dragging = true;
+    this.dragHandler(ev);
   };
 
   private dragHandler = (ev: PointerEvent): void => {
-    const x = ev.pageX - this.rect.x;
+    const x = ev.pageX - this.rect.left;
     this.dot.setX(clamp(x, 0, this.rect.width));
     this.playedBar.setX(x / this.rect.width);
     this.mouseMoveLastX = ev.pageX;
@@ -70,6 +72,7 @@ class ProgressBar extends Component {
   };
 
   private dragEndHandler = (ev: PointerEvent): void => {
+    this.dragging = false;
     this.player.seek(this.calcCurrentTime(ev.pageX));
     this.player.play();
   };
@@ -120,7 +123,7 @@ class ProgressBar extends Component {
 
   updateThumbnail = (): void => {
     this.thumbnail.update(
-      this.mouseMoveLastX - this.rect.x,
+      this.mouseMoveLastX - this.rect.left,
       this.calcCurrentTime(this.mouseMoveLastX)
     );
     this.mouseMovePending = false;
@@ -132,6 +135,7 @@ class ProgressBar extends Component {
   }
 
   onTimeUpdate(): void {
+    if (this.dragging) return;
     this.updatePlayedBar();
   }
 

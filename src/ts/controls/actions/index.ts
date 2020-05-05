@@ -8,7 +8,7 @@ import VolumeAction from './volume';
 
 class Actions extends Component {
   constructor(player: RPlayer) {
-    super({ player });
+    super(player);
 
     this.addClass('rplayer_controls_bottom_actions');
 

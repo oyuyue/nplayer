@@ -45,7 +45,7 @@ class Progress extends Component {
   private readonly drag: Drag;
 
   constructor(player: RPlayer) {
-    super({ player });
+    super(player);
 
     this.addClass('rplayer_action_volume_progress');
 
@@ -59,11 +59,25 @@ class Progress extends Component {
     this.appendChild(barWrapper);
     this.appendChild(this.dot);
 
-    this.drag = new Drag(this.dom, this.dragHandler, this.dragHandler);
+    this.drag = new Drag(
+      this.dom,
+      this.dragStartHandler,
+      this.dragHandler,
+      this.dragEndHandler
+    );
   }
 
+  private dragStartHandler = (ev: PointerEvent): void => {
+    this.player.controls.requireShow();
+    this.dragHandler(ev);
+  };
+
   private dragHandler = (ev: PointerEvent): void => {
-    this.player.volume((ev.pageX - this.rect.x) / this.rect.width);
+    this.player.volume((ev.pageX - this.rect.left) / this.rect.width);
+  };
+
+  private dragEndHandler = (): void => {
+    this.player.controls.releaseShow();
   };
 
   destroy(): void {
@@ -86,8 +100,7 @@ class VolumeAction extends Component {
   private readonly progress: Progress;
 
   constructor(player: RPlayer) {
-    super({
-      player,
+    super(player, {
       events: [Events.VOLUME_CHANGE, Events.MOUNTED],
     });
 

@@ -12,8 +12,10 @@ class Controls extends Component {
 
   private readonly hideClass = 'rplayer_controls-hide';
 
+  private showLatch = 0;
+
   constructor(player: RPlayer) {
-    super({ player, events: [Events.PLAY, Events.PAUSE] });
+    super(player, { events: [Events.PLAY, Events.PAUSE] });
 
     this.addClass('rplayer_controls');
 
@@ -50,10 +52,19 @@ class Controls extends Component {
     if (ev) ev.preventDefault();
     const media = this.player.media;
 
-    if (media.played.length && !media.paused) {
+    if (media.played.length && !media.paused && !this.showLatch) {
       this.hide();
     }
   };
+
+  requireShow(): void {
+    this.showLatch++;
+  }
+
+  releaseShow(): void {
+    this.showLatch--;
+    if (this.showLatch < 0) this.showLatch = 0;
+  }
 
   show(): void {
     if (!this.isHide) return;

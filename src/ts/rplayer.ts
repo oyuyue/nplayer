@@ -3,39 +3,30 @@ import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
 import setupMediaEvents from './media-events';
-import { clamp, getDomOr, isStr, newElement } from './utils';
-
-interface RPlayerOptions {
-  media?: string | HTMLVideoElement;
-  el?: string | HTMLElement;
-  video?: HTMLVideoElement & { src?: string | string[] };
-}
+import processOptions, { RPlayerOptions } from './options';
+import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
 class RPlayer extends Component {
   static readonly Events = Events;
 
   el: HTMLElement;
-  media: HTMLVideoElement;
+  readonly media: HTMLVideoElement;
 
-  fullscreen: Fullscreen;
-  controls: Controls;
+  readonly fullscreen: Fullscreen;
+  readonly controls: Controls;
 
-  readonly options: RPlayerOptions = {};
+  readonly options: RPlayerOptions;
 
   private resizePending = false;
   private prevVolume = 1;
   private readonly fullscreenClass = 'rplayer-full';
   private readonly pausedClass = 'rplayer-paused';
 
-  constructor(opts: RPlayerOptions = {}) {
+  constructor(opts: RPlayerOptions) {
     super();
 
-    this.options = opts;
+    this.options = processOptions(this, opts);
 
-    this.init();
-  }
-
-  private init(): void {
     this.addClass('rplayer');
 
     this.media = getDomOr(this.options.media, () => newElement('video'));
@@ -75,7 +66,7 @@ class RPlayer extends Component {
   }
 
   private initClassName(): void {
-    if (this.media.paused) this.addClass(this.pausedClass);
+    if (this.paused) this.addClass(this.pausedClass);
 
     this.on(Events.PLAY, () =>
       this.removeClass(this.pausedClass)
@@ -113,8 +104,13 @@ class RPlayer extends Component {
     return this.media.buffered;
   }
 
+  get paused(): boolean {
+    return this.media.paused;
+  }
+
   setMediaAttrs(map: RPlayerOptions['video']): void {
-    Object.entries(map).forEach(([k, v]) => {
+    Object.keys(map).forEach((k) => {
+      const v = (map as any)[k];
       if (k === 'src') {
         if (isStr(v)) {
           this.media.src = v;
@@ -127,23 +123,22 @@ class RPlayer extends Component {
     });
   }
 
-  mount(el?: HTMLElement): this {
+  mount(el?: HTMLElement): void {
     if (el) this.el = el;
     this.appendChild(this.controls);
     this.emit(Events.BEFORE_MOUNT);
     this.appendChild(this.media);
     this.el.appendChild(this.dom);
     this.emit(Events.MOUNTED);
-    return this;
   }
 
   seek(seconds: number): void {
-    seconds = clamp(seconds, 0, this.duration);
-    this.media.currentTime = seconds;
+    this.media.currentTime = clamp(seconds, 0, this.duration);
   }
 
   play(): void {
-    this.media.play();
+    const p = this.media.play();
+    if (isCatchable(p)) p.catch(noop);
   }
 
   pause(): void {
@@ -151,7 +146,7 @@ class RPlayer extends Component {
   }
 
   toggle(): void {
-    if (this.media.paused) {
+    if (this.paused) {
       this.play();
     } else {
       this.pause();
@@ -176,6 +171,11 @@ class RPlayer extends Component {
       this.prevVolume = this.volume();
       this.volume(0);
     }
+  }
+
+  playbackRate(rate: number): number {
+    if (rate != null) this.media.playbackRate = rate;
+    return this.media.playbackRate;
   }
 }
 

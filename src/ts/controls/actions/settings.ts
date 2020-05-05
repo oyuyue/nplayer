@@ -18,9 +18,9 @@ class SettingAction extends Tray {
     this.addClass('rplayer_action_setting');
     this.changeTipText('设置');
 
-    this.menu = new SettingMenu();
+    this.menu = new SettingMenu(player);
     this.mask.classList.add('rplayer_action_setting_mask');
-    this.mask.addEventListener('click', this.maskClickHandler);
+    this.mask.addEventListener('click', this.maskClickHandler, true);
 
     this.appendChild(icons.settings);
     this.appendChild(this.menu);

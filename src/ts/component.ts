@@ -14,12 +14,10 @@ class Component extends EventHandler {
   protected _rect: DOMRect;
   readonly dom: HTMLElement;
 
-  constructor({
-    player,
-    dom = 'div',
-    events,
-    autoUpdateRect = false,
-  }: ComponentOptions = {}) {
+  constructor(
+    player?: RPlayer,
+    { dom = 'div', events, autoUpdateRect = false }: ComponentOptions = {}
+  ) {
     super(player, events);
 
     this.dom = isStr(dom) ? newElement(dom) : dom;
@@ -85,7 +83,9 @@ class Component extends EventHandler {
   }
 
   addClass(cls: string): void {
-    this.dom.classList.add(...cls.split(' '));
+    cls.split(' ').forEach((c) => {
+      this.dom.classList.add(c);
+    });
   }
 
   containsClass(cls: string): boolean {

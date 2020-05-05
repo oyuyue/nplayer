@@ -1,5 +1,7 @@
 import Component from '../../component';
-import { newElement } from '../../utils';
+import Events from '../../events';
+import RPlayer from '../../rplayer';
+import { measureElementSize, newElement } from '../../utils';
 import Radio from './radio';
 import Switch from './switch';
 
@@ -9,33 +11,22 @@ class SettingMenu extends Component {
   private readonly optionPages: HTMLElement[];
 
   private homeRect: DOMRect;
-  private readonly optionRects: DOMRect[] = [];
+  private readonly optionRects: { width: number; height: number }[] = [];
 
-  constructor() {
-    super();
+  constructor(player: RPlayer) {
+    super(player, { events: [Events.MOUNTED] });
 
     this.addClass('rplayer_settings_menu');
 
-    this.items = [
-      new Switch({
-        label: '自动播放',
-      }),
-      new Radio(
-        {
-          label: '字幕',
-          options: [{ label: '正常' }, { label: '1正常' }, { label: '2正常' }],
-        },
-        this.radioEntryClickHandler(0)
-      ),
-      new Radio(
-        { label: '速度', options: [{ label: '正常' }] },
-        this.radioEntryClickHandler(1)
-      ),
-      new Radio(
-        { label: '画质', options: [{ label: '正常' }] },
-        this.radioEntryClickHandler(2)
-      ),
-    ];
+    let radioIndex = -1;
+    this.items = this.player.options.settings.map((s) => {
+      if ((s as any).options) {
+        radioIndex++;
+        return new Radio(s as any, this.radioEntryClickHandler(radioIndex));
+      } else {
+        return new Switch(s as any);
+      }
+    });
 
     this.homePage = this.getHomePage();
     this.optionPages = this.items
@@ -48,17 +39,15 @@ class SettingMenu extends Component {
 
   private radioEntryClickHandler = (i: number) => (): void => {
     if (!this.homeRect) this.homeRect = this.dom.getBoundingClientRect();
+
     this.homePage.hidden = true;
     this.optionPages[i].hidden = false;
 
     if (!this.optionRects[i]) {
-      this.optionRects[i] = this.dom.getBoundingClientRect();
+      this.optionRects[i] = measureElementSize(this.optionPages[i]);
     }
 
-    this.setWH(this.homeRect.width, this.homeRect.height);
-    setTimeout(() => {
-      this.setWH(this.optionRects[i].width, this.optionRects[i].height);
-    });
+    this.setWH(this.optionRects[i].width, this.optionRects[i].height);
   };
 
   private backClickHandler = (ev: MouseEvent): void => {
@@ -113,12 +102,14 @@ class SettingMenu extends Component {
     });
     this.homePage.hidden = false;
 
-    setTimeout(() => {
-      if (this.homeRect) {
-        this.setWH(this.homeRect.width, this.homeRect.height);
-      }
-    });
-    setTimeout(() => this.setWH(), 220);
+    if (this.homeRect) {
+      this.setWH(this.homeRect.width, this.homeRect.height);
+    }
+  }
+
+  onMounted(): void {
+    if (!this.homeRect) this.homeRect = this.dom.getBoundingClientRect();
+    this.setWH(this.homeRect.width, this.homeRect.height);
   }
 }
 
