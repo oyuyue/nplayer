@@ -11,7 +11,7 @@ export function isStr(o: any): o is string {
 }
 
 export function isNum(o: any): o is number {
-  return typeof o === 'number';
+  return typeof o === 'number' && !isNaN(o);
 }
 
 export function isFn(o: any): o is Function {

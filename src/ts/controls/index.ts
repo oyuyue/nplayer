@@ -66,6 +66,10 @@ class Controls extends Component {
     if (this.showLatch < 0) this.showLatch = 0;
   }
 
+  showTemporary(): void {
+    this.delayHide();
+  }
+
   show(): void {
     if (!this.isHide) return;
     this.removeClass(this.hideClass);

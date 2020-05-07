@@ -4,16 +4,16 @@ import Events from './events';
 import Fullscreen from './fullscreen';
 import setupMediaEvents from './media-events';
 import processOptions, { RPlayerOptions } from './options';
+import Shortcut from './shortcut';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
 class RPlayer extends Component {
-  static readonly Events = Events;
-
   el: HTMLElement;
   readonly media: HTMLVideoElement;
 
   readonly fullscreen: Fullscreen;
   readonly controls: Controls;
+  readonly shortcut: Shortcut;
 
   readonly options: RPlayerOptions;
 
@@ -28,6 +28,7 @@ class RPlayer extends Component {
     this.options = processOptions(this, opts);
 
     this.addClass('rplayer');
+    this.canFocus();
 
     this.media = getDomOr(this.options.media, () => newElement('video'));
     this.el = getDomOr(this.options.el, () => document.body);
@@ -39,6 +40,7 @@ class RPlayer extends Component {
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
+    this.shortcut = new Shortcut(this);
 
     this.initFullscreen();
     this.initClassName();
@@ -94,6 +96,37 @@ class RPlayer extends Component {
 
   get currentTime(): number {
     return this.media.currentTime;
+  }
+
+  set currentTime(v: number) {
+    if (!this.duration) return;
+    this.media.currentTime = clamp(v, 0, this.duration);
+    this.emit(Events.TIME_UPDATE);
+  }
+
+  get volume(): number {
+    return this.media.volume;
+  }
+
+  set volume(v: number) {
+    this.media.volume = clamp(v);
+    if (this.muted && v > 0) this.muted = false;
+  }
+
+  get muted(): boolean {
+    return this.media.muted || this.volume === 0;
+  }
+
+  set muted(v: boolean) {
+    this.media.muted = v;
+  }
+
+  get playbackRate(): number {
+    return this.media.playbackRate;
+  }
+
+  set playbackRate(v: number) {
+    this.media.playbackRate = v;
   }
 
   get duration(): number {
@@ -153,29 +186,30 @@ class RPlayer extends Component {
     }
   }
 
-  volume(v?: number): number {
-    if (v != null) this.media.volume = clamp(v);
-    return this.media.volume;
+  incVolume(v = 0.1): void {
+    this.volume += v;
   }
 
-  muted(v?: boolean): boolean {
-    if (v != null) this.media.muted = v;
-    return this.media.muted || this.volume() === 0;
+  decVolume(v = 0.1): void {
+    this.volume -= v;
+  }
+
+  forward(v = 10): void {
+    this.currentTime += v;
+  }
+
+  rewind(v = 10): void {
+    this.currentTime -= v;
   }
 
   toggleVolume(): void {
-    if (this.muted()) {
-      this.volume(this.prevVolume);
-      this.muted(false);
+    if (this.muted) {
+      this.volume = this.prevVolume;
+      this.muted = false;
     } else {
-      this.prevVolume = this.volume();
-      this.volume(0);
+      this.prevVolume = this.volume;
+      this.volume = 0;
     }
-  }
-
-  playbackRate(rate: number): number {
-    if (rate != null) this.media.playbackRate = rate;
-    return this.media.playbackRate;
   }
 }
 

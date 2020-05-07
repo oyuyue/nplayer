@@ -9,12 +9,20 @@ export interface OptionPreset {
     | { position?: number; steps?: { label?: string; value?: number }[] };
 }
 
+export interface Shortcut {
+  enable?: boolean;
+  time?: number;
+  volume?: number;
+  global?: boolean;
+}
+
 export interface RPlayerOptions {
   media?: string | HTMLVideoElement;
   el?: string | HTMLElement;
   video?: HTMLVideoElement & { src?: string | string[] };
   settings?: (RadioOpts | SwitchOpts)[];
   preset?: OptionPreset;
+  shortcut?: Shortcut;
 }
 
 const DEFAULT_PLAY_RATE = {
@@ -29,9 +37,16 @@ const DEFAULT_PLAY_RATE = {
   ],
 };
 
+const DEFAULT_SHORTCUT = {
+  enable: true,
+  time: 10,
+  volume: 0.1,
+  global: false,
+};
+
 function processPlaybackRate(
-  player: RPlayer,
-  opts?: RPlayerOptions
+  opts: RPlayerOptions,
+  player: RPlayer
 ): RPlayerOptions {
   if (opts.preset.playbackRate === false) return opts;
 
@@ -45,12 +60,10 @@ function processPlaybackRate(
     defaultValue: 2,
     options: playbackRate.steps,
     onChange(opt: RadioOption, next: Function) {
-      player.playbackRate(opt.value);
+      player.playbackRate = opt.value;
       next();
     },
   };
-
-  findIndex;
 
   let pos = isNum(playbackRate.position)
     ? playbackRate.position
@@ -59,6 +72,11 @@ function processPlaybackRate(
 
   opts.settings.splice(pos, 0, setting);
 
+  return opts;
+}
+
+function processShortcut(opts: RPlayerOptions): RPlayerOptions {
+  opts.shortcut = { ...opts.shortcut, ...DEFAULT_SHORTCUT };
   return opts;
 }
 
@@ -71,7 +89,8 @@ function processOptions(
   opts.settings = opts.settings || [];
   opts.preset = opts.preset || {};
 
-  opts = processPlaybackRate(player, opts);
+  opts = processPlaybackRate(opts, player);
+  opts = processShortcut(opts);
 
   return opts;
 }

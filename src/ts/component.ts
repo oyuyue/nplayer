@@ -120,6 +120,10 @@ class Component extends EventHandler {
     this.dom.hidden = false;
   }
 
+  canFocus(): void {
+    this.dom.setAttribute('tabindex', '0');
+  }
+
   static isComponent(obj: unknown): obj is Component {
     return obj instanceof Component;
   }

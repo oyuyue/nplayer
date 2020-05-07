@@ -20,7 +20,7 @@ class Icon extends Tray {
   }
 
   private update(): void {
-    if (this.player.muted()) {
+    if (this.player.muted) {
       this.addClass(this.mutedClass);
       this.changeTipText('取消静音');
     } else {
@@ -34,7 +34,7 @@ class Icon extends Tray {
   }
 
   onVolumeChange(): void {
-    if (this.player.muted() && this.containsClass(this.mutedClass)) return;
+    if (this.player.muted && this.containsClass(this.mutedClass)) return;
     this.update();
   }
 }
@@ -73,7 +73,7 @@ class Progress extends Component {
   };
 
   private dragHandler = (ev: PointerEvent): void => {
-    this.player.volume((ev.pageX - this.rect.left) / this.rect.width);
+    this.player.volume = (ev.pageX - this.rect.left) / this.rect.width;
   };
 
   private dragEndHandler = (): void => {
@@ -85,7 +85,7 @@ class Progress extends Component {
   }
 
   onVolumeChange(): void {
-    const vol = this.player.volume();
+    const vol = this.player.volume;
     this.bar.setX(vol);
     this.dot.setX(this.rect.width * vol);
   }
