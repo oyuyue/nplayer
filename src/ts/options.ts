@@ -1,5 +1,7 @@
+import { NORMAL, SPEED } from './config/lang';
 import { RadioOption, RadioOpts } from './controls/setting-menu/radio';
 import { SwitchOpts } from './controls/setting-menu/switch';
+import { t } from './i18n';
 import RPlayer from './rplayer';
 import { findIndex, isNum, isObj } from './utils';
 
@@ -23,26 +25,8 @@ export interface RPlayerOptions {
   settings?: (RadioOpts | SwitchOpts)[];
   preset?: OptionPreset;
   shortcut?: Shortcut;
+  lang?: string;
 }
-
-const DEFAULT_PLAY_RATE = {
-  steps: [
-    { label: '0.5x', value: 0.5 },
-    { label: '0.75x', value: 0.75 },
-    { label: '正常', value: 1 },
-    { label: '1.25x', value: 1.25 },
-    { label: '1.5x', value: 1.5 },
-    { label: '1.75x', value: 1.75 },
-    { label: '2x', value: 2 },
-  ],
-};
-
-const DEFAULT_SHORTCUT = {
-  enable: true,
-  time: 10,
-  volume: 0.1,
-  global: false,
-};
 
 function processPlaybackRate(
   opts: RPlayerOptions,
@@ -50,13 +34,25 @@ function processPlaybackRate(
 ): RPlayerOptions {
   if (opts.preset.playbackRate === false) return opts;
 
+  const DEFAULT_PLAY_RATE = {
+    steps: [
+      { label: '0.5x', value: 0.5 },
+      { label: '0.75x', value: 0.75 },
+      { label: t(NORMAL, opts.lang), value: 1 },
+      { label: '1.25x', value: 1.25 },
+      { label: '1.5x', value: 1.5 },
+      { label: '1.75x', value: 1.75 },
+      { label: '2x', value: 2 },
+    ],
+  };
+
   const playbackRate: any =
     isObj(opts.preset.playbackRate) && opts.preset.playbackRate.steps
       ? opts.preset.playbackRate
       : DEFAULT_PLAY_RATE;
 
   const setting: RadioOpts = {
-    label: '速度',
+    label: t(SPEED, opts.lang),
     defaultValue: 2,
     options: playbackRate.steps,
     onChange(opt: RadioOption, next: Function) {
@@ -76,7 +72,19 @@ function processPlaybackRate(
 }
 
 function processShortcut(opts: RPlayerOptions): RPlayerOptions {
+  const DEFAULT_SHORTCUT = {
+    enable: true,
+    time: 10,
+    volume: 0.1,
+    global: false,
+  };
   opts.shortcut = { ...opts.shortcut, ...DEFAULT_SHORTCUT };
+  return opts;
+}
+
+function processLang(opts: RPlayerOptions): RPlayerOptions {
+  opts.lang =
+    opts.lang || navigator.language || (navigator as any).userLanguage;
   return opts;
 }
 
@@ -89,6 +97,7 @@ function processOptions(
   opts.settings = opts.settings || [];
   opts.preset = opts.preset || {};
 
+  opts = processLang(opts);
   opts = processPlaybackRate(opts, player);
   opts = processShortcut(opts);
 

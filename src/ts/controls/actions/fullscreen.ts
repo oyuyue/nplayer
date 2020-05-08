@@ -1,3 +1,4 @@
+import { EXIT_FULL_SCREEN, FULL_SCREEN } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
@@ -7,7 +8,7 @@ class FullscreenAction extends Tray {
   constructor(player: RPlayer) {
     super(player, Events.ENTER_FULLSCREEN, Events.EXIT_FULLSCREEN);
 
-    this.changeTipText('全屏');
+    this.changeTipText(player.t(FULL_SCREEN));
     this.setRight();
 
     this.appendChild(icons.enterFullscreen);
@@ -19,11 +20,11 @@ class FullscreenAction extends Tray {
   }
 
   onEnterFullscreen(): void {
-    this.changeTipText('退出全屏');
+    this.changeTipText(this.player.t(EXIT_FULL_SCREEN));
   }
 
   onExitFullscreen(): void {
-    this.changeTipText('全屏');
+    this.changeTipText(this.player.t(FULL_SCREEN));
   }
 }
 

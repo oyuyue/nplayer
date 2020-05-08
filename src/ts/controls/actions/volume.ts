@@ -1,4 +1,5 @@
 import Component from '../../component';
+import { MUTE, UNMUTE } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
@@ -22,10 +23,10 @@ class Icon extends Tray {
   private update(): void {
     if (this.player.muted) {
       this.addClass(this.mutedClass);
-      this.changeTipText('取消静音');
+      this.changeTipText(this.player.t(UNMUTE));
     } else {
       this.removeClass(this.mutedClass);
-      this.changeTipText('静音');
+      this.changeTipText(this.player.t(MUTE));
     }
   }
 

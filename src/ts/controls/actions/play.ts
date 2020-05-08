@@ -1,3 +1,4 @@
+import { PAUSE, PLAY } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
@@ -7,7 +8,7 @@ class PlayAction extends Tray {
   constructor(player: RPlayer) {
     super(player, Events.PLAY, Events.PAUSE);
 
-    this.changeTipText('播放');
+    this.changeTipText(player.t(PLAY));
     this.setLeft();
 
     this.appendChild(icons.play);
@@ -19,11 +20,11 @@ class PlayAction extends Tray {
   }
 
   onPlay(): void {
-    this.changeTipText('暂停');
+    this.changeTipText(this.player.t(PAUSE));
   }
 
   onPause(): void {
-    this.changeTipText('播放');
+    this.changeTipText(this.player.t(PLAY));
   }
 }
 

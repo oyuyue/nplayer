@@ -1,3 +1,4 @@
+import { SETTINGS } from '../../config/lang';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
 import { newElement } from '../../utils';
@@ -16,7 +17,7 @@ class SettingAction extends Tray {
     super(player);
 
     this.addClass('rplayer_action_setting');
-    this.changeTipText('设置');
+    this.changeTipText(player.t(SETTINGS));
 
     this.menu = new SettingMenu(player);
     this.mask.classList.add('rplayer_action_setting_mask');

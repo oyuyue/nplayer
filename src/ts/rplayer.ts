@@ -2,6 +2,7 @@ import Component from './component';
 import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
+import I18n from './i18n';
 import setupMediaEvents from './media-events';
 import processOptions, { RPlayerOptions } from './options';
 import Shortcut from './shortcut';
@@ -14,6 +15,7 @@ class RPlayer extends Component {
   readonly fullscreen: Fullscreen;
   readonly controls: Controls;
   readonly shortcut: Shortcut;
+  readonly i18n: I18n;
 
   readonly options: RPlayerOptions;
 
@@ -30,6 +32,7 @@ class RPlayer extends Component {
     this.addClass('rplayer');
     this.canFocus();
 
+    this.i18n = new I18n(this.options);
     this.media = getDomOr(this.options.media, () => newElement('video'));
     this.el = getDomOr(this.options.el, () => document.body);
     this.prevVolume = this.media.volume;
@@ -210,6 +213,10 @@ class RPlayer extends Component {
       this.prevVolume = this.volume;
       this.volume = 0;
     }
+  }
+
+  t(key: string): string {
+    return this.i18n.t(key);
   }
 }
 
