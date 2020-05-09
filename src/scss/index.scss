@@ -1,4 +1,5 @@
 @import './variables';
+@import './mixins';
 
 .rplayer {
   position: relative;
@@ -275,6 +276,10 @@
     &_volume {
       display: flex;
       align-items: center;
+
+      @include respond(phone) {
+        display: none;
+      }
 
       .rplayer_icon_muted {
         display: none;

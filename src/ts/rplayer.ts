@@ -7,7 +7,7 @@ import I18n from './i18n';
 import Loading from './loading';
 import setupMediaEvents from './media-events';
 import processOptions, { RPlayerOptions } from './options';
-import Responsive from './responsive';
+import Respond from './respond';
 import Shortcut from './shortcut';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
@@ -22,7 +22,7 @@ class RPlayer extends Component {
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
   readonly loading: Loading;
-  readonly responsive: Responsive;
+  readonly respond: Respond;
 
   private prevVolume = 1;
 
@@ -46,7 +46,7 @@ class RPlayer extends Component {
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
     this.loading = new Loading(this);
-    this.responsive = new Responsive(this);
+    this.respond = new Respond(this);
   }
 
   get currentTime(): number {
