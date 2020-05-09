@@ -3,6 +3,7 @@ import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
 import I18n from './i18n';
+import Loading from './loading';
 import setupMediaEvents from './media-events';
 import processOptions, { RPlayerOptions } from './options';
 import Shortcut from './shortcut';
@@ -16,6 +17,7 @@ class RPlayer extends Component {
   readonly controls: Controls;
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
+  readonly loading: Loading;
 
   readonly options: RPlayerOptions;
 
@@ -44,6 +46,7 @@ class RPlayer extends Component {
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
+    this.loading = new Loading(this);
 
     this.initFullscreen();
     this.initClassName();

@@ -13,6 +13,10 @@ enum Events {
   PAUSE = 'Pause',
   ENDED = 'Ended',
   PROGRESS = 'Progress',
+  CANPLAY = 'Canplay',
+  WAITING = 'Waiting',
+  PLAYING = 'Playing',
+  STALLED = 'Stalled',
 }
 
 export default Events;
