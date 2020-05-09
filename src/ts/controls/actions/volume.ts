@@ -102,7 +102,7 @@ class VolumeAction extends Component {
 
   constructor(player: RPlayer) {
     super(player, {
-      events: [Events.VOLUME_CHANGE, Events.MOUNTED],
+      events: [Events.VOLUME_CHANGE, Events.MOUNTED, Events.BREAK_POINT_CHANGE],
     });
 
     this.addClass('rplayer_action_volume');
@@ -121,6 +121,14 @@ class VolumeAction extends Component {
 
   onMounted(): void {
     this.progress.onMounted();
+  }
+
+  onBreakPointChange(): void {
+    if (this.player.isPhone) {
+      this.hidden();
+    } else {
+      this.visible();
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import RPlayer from './rplayer';
-import { isNum } from './utils';
+import { isNum, makeDictionary } from './utils';
 
 export type ShortcutHandler = (player: RPlayer) => any;
 
@@ -12,13 +12,13 @@ class Shortcut {
   constructor(player: RPlayer) {
     this.player = player;
 
-    this.handler = {
+    this.handler = makeDictionary({
       38: (p): void => p.incVolume(p.options.shortcut.volume), // 🠝
       40: (p): void => p.decVolume(p.options.shortcut.volume), // 🠟
       39: (p): void => p.forward(p.options.shortcut.time), // 🠞
       37: (p): void => p.rewind(p.options.shortcut.time), // 🠜
       32: (p): void => p.toggle(), // space
-    };
+    });
 
     if (player.options.shortcut.enable) {
       this.enable(player.options.shortcut.global);

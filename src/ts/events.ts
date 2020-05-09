@@ -17,6 +17,7 @@ enum Events {
   WAITING = 'Waiting',
   PLAYING = 'Playing',
   STALLED = 'Stalled',
+  BREAK_POINT_CHANGE = 'BreakPointChange',
 }
 
 export default Events;

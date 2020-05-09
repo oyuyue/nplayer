@@ -5,22 +5,40 @@ import { isFn, ua } from './utils';
 class Fullscreen {
   private readonly player: RPlayer;
   readonly prefix = this.getPrefix();
+  private readonly fullscreenClass = 'rplayer-full';
 
   constructor(player: RPlayer) {
     this.player = player;
 
-    (document as any).addEventListener(
-      this.prefix === 'ms'
-        ? 'MSFullscreenChange'
-        : `${this.prefix}fullscreenchange`,
-      this.changeHandler
-    );
+    if (this.support) {
+      (document as any).addEventListener(
+        this.prefix === 'ms'
+          ? 'MSFullscreenChange'
+          : `${this.prefix}fullscreenchange`,
+        this.changeHandler
+      );
+
+      if (this.isActive) player.addClass(this.fullscreenClass);
+      player.dom.addEventListener('dblclick', this.playerDblClickHandler, true);
+    }
   }
 
+  private playerDblClickHandler = (ev: Event): void => {
+    ev.preventDefault();
+    if (this.player.controls.bottom.dom.contains(ev.target as any)) return;
+    this.toggle();
+  };
+
   private changeHandler = (): void => {
-    this.player.emit(
-      this.isActive ? Events.ENTER_FULLSCREEN : Events.EXIT_FULLSCREEN
-    );
+    let evt = '';
+    if (this.isActive) {
+      this.player.addClass(this.fullscreenClass);
+      evt = Events.ENTER_FULLSCREEN;
+    } else {
+      this.player.removeClass(this.fullscreenClass);
+      evt = Events.EXIT_FULLSCREEN;
+    }
+    this.player.emit(evt);
   };
 
   private getPrefix(): string {
@@ -60,6 +78,7 @@ class Fullscreen {
 
   get fullscreenElement(): HTMLElement {
     return (
+      document.fullscreenElement ||
       (document as any).mozFullScreenElement ||
       (document as any).msFullscreenElement ||
       (document as any).webkitFullscreenElement
@@ -72,6 +91,10 @@ class Fullscreen {
 
   get isActive(): boolean {
     return this.fullscreenElement === this.target;
+  }
+
+  get support(): boolean {
+    return !!this.requestFullscreen && !!this.exitFullscreen;
   }
 
   enter(): void {

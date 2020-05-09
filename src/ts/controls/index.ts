@@ -11,6 +11,7 @@ class Controls extends Component {
   private readonly mask: HTMLElement;
 
   private readonly hideClass = 'rplayer_controls-hide';
+  private readonly pausedClass = 'rplayer-paused';
 
   private showLatch = 0;
 
@@ -18,6 +19,7 @@ class Controls extends Component {
     super(player, { events: [Events.PLAY, Events.PAUSE] });
 
     this.addClass('rplayer_controls');
+    if (player.paused) player.addClass(this.pausedClass);
 
     this.mask = newElement();
     this.mask.classList.add('rplayer_controls_mask');
@@ -38,8 +40,16 @@ class Controls extends Component {
 
     container.addEventListener('mousemove', this.delayHide);
     container.addEventListener('mouseleave', this.tryHideControls);
-    container.addEventListener('click', this.delayHide);
+    container.addEventListener('click', this.playerClickHandler);
   }
+
+  private playerClickHandler = (ev: Event): void => {
+    ev.preventDefault();
+    if (!this.bottom.dom.contains(ev.target as any)) {
+      this.player.toggle();
+    }
+    this.delayHide();
+  };
 
   private delayHide = (ev?: Event): void => {
     if (ev) ev.preventDefault();
@@ -67,7 +77,9 @@ class Controls extends Component {
   }
 
   showTemporary(): void {
-    this.delayHide();
+    this.show();
+    clearTimeout(this.controlsTimer);
+    this.controlsTimer = setTimeout(this.tryHideControls, 3000);
   }
 
   show(): void {
@@ -84,10 +96,12 @@ class Controls extends Component {
 
   onPlay(): void {
     this.delayHide();
+    this.player.removeClass(this.pausedClass);
   }
 
   onPause(): void {
     this.show();
+    this.player.addClass(this.pausedClass);
   }
 }
 

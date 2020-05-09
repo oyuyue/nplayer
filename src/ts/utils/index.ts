@@ -126,3 +126,9 @@ export function formatTime(seconds: number): string {
 export const ua = {
   isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
 };
+
+export const makeDictionary = <T>(obj: T): T => {
+  (obj as any).__ = undefined;
+  delete (obj as any).__;
+  return obj;
+};

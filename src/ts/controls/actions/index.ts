@@ -16,7 +16,9 @@ class Actions extends Component {
     this.appendChild(new VolumeAction(player));
     this.appendChild(new TimeAction(player));
     this.appendChild(new SettingAction(player));
-    this.appendChild(new FullscreenAction(player));
+    if (this.player.fullscreen.support) {
+      this.appendChild(new FullscreenAction(player));
+    }
   }
 
   addAction(comp: Component, pos?: number): void {

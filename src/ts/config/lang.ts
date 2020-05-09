@@ -1,3 +1,5 @@
+import { makeDictionary } from '../utils';
+
 export interface Language {
   [key: string]: Record<string, string>;
 }
@@ -12,7 +14,7 @@ export const UNMUTE = 'Unmute';
 export const NORMAL = 'Normal';
 export const SPEED = 'Speed';
 
-const language: Language = {
+const language: Language = makeDictionary({
   'zh-CN': {
     [FULL_SCREEN]: '全屏',
     [EXIT_FULL_SCREEN]: '取消全屏',
@@ -24,6 +26,6 @@ const language: Language = {
     [NORMAL]: '正常',
     [SPEED]: '速度',
   },
-};
+});
 
 export default language;

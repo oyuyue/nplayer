@@ -1,4 +1,5 @@
 import Component from './component';
+import { BP } from './config';
 import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
@@ -6,25 +7,24 @@ import I18n from './i18n';
 import Loading from './loading';
 import setupMediaEvents from './media-events';
 import processOptions, { RPlayerOptions } from './options';
+import Responsive from './responsive';
 import Shortcut from './shortcut';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
 class RPlayer extends Component {
   el: HTMLElement;
+  curBreakPoint: string;
   readonly media: HTMLVideoElement;
+  readonly options: RPlayerOptions;
 
   readonly fullscreen: Fullscreen;
   readonly controls: Controls;
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
   readonly loading: Loading;
+  readonly responsive: Responsive;
 
-  readonly options: RPlayerOptions;
-
-  private resizePending = false;
   private prevVolume = 1;
-  private readonly fullscreenClass = 'rplayer-full';
-  private readonly pausedClass = 'rplayer-paused';
 
   constructor(opts: RPlayerOptions) {
     super();
@@ -36,69 +36,18 @@ class RPlayer extends Component {
 
     this.i18n = new I18n(this.options);
     this.media = getDomOr(this.options.media, () => newElement('video'));
-    this.el = getDomOr(this.options.el, () => document.body);
+    this.el = getDomOr(this.options.el, document.body);
+
     this.prevVolume = this.media.volume;
-
     if (this.options.video) this.setMediaAttrs(this.options.video);
-
     setupMediaEvents(this, this.media);
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
     this.loading = new Loading(this);
-
-    this.initFullscreen();
-    this.initClassName();
-    this.initInteraction();
+    this.responsive = new Responsive(this);
   }
-
-  private initFullscreen(): void {
-    if (this.fullscreen.isActive) this.addClass(this.fullscreenClass);
-
-    this.on(Events.ENTER_FULLSCREEN, () => {
-      this.addClass(this.fullscreenClass);
-    }).on(Events.EXIT_FULLSCREEN, () => {
-      this.removeClass(this.fullscreenClass);
-    });
-
-    this.dom.addEventListener(
-      'dblclick',
-      (ev) => {
-        ev.preventDefault();
-        if (this.controls.bottom.dom.contains(ev.target as any)) return;
-        this.fullscreen.toggle();
-      },
-      true
-    );
-  }
-
-  private initClassName(): void {
-    if (this.paused) this.addClass(this.pausedClass);
-
-    this.on(Events.PLAY, () =>
-      this.removeClass(this.pausedClass)
-    ).on(Events.PAUSE, () => this.addClass(this.pausedClass));
-  }
-
-  private initInteraction(): void {
-    this.dom.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      if (this.controls.bottom.dom.contains(ev.target as any)) return;
-      this.toggle();
-    });
-
-    window.addEventListener('resize', () => {
-      if (this.resizePending) return;
-      this.resizePending = true;
-      requestAnimationFrame(this.resizeHandler);
-    });
-  }
-
-  private resizeHandler = (): void => {
-    this.emit(Events.RESIZE);
-    this.resizePending = false;
-  };
 
   get currentTime(): number {
     return this.media.currentTime;
@@ -145,6 +94,10 @@ class RPlayer extends Component {
 
   get paused(): boolean {
     return this.media.paused;
+  }
+
+  get isPhone(): boolean {
+    return this.curBreakPoint === BP.BREAKPOINT_PHONE;
   }
 
   setMediaAttrs(map: RPlayerOptions['video']): void {
