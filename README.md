@@ -1,6 +1,6 @@
 # RPlayer
 
-响应式播放器 `开发中...`
+美观、可定制的响应式播放器 `开发中...`
 
 ![](https://i.loli.net/2020/05/05/ZCG8zrSlHXoe1fF.png)
 
@@ -49,6 +49,9 @@ interface RPlayerOptions {
   video?: HTMLVideoElement & { src?: string | string[] };
   settings?: (RadioOpts | SwitchOpts)[];
   preset?: OptionPreset;
+  shortcut?: Shortcut;
+  lang?: string; // 语言，默认用户当前浏览器使用的语言。
+  thumbnail?: ThumbnailOpts;
 }
 
 interface OptionPreset {
@@ -71,13 +74,30 @@ interface SwitchOpts {
   defaultValue?: false;
   onChange?: (v: boolean, next: () => void) => any;
 }
+
+interface Shortcut {
+  enable?: boolean; // 是否启用
+  time?: number; // 每次递增递减的时间，默认 10s
+  volume?: number; // 每次递增递减的音量，默认 0.1
+  global?: boolean; // 是否捕获全局键盘事件，默认只捕获播放器的键盘事件
+}
+
+interface ThumbnailOpts {
+  startTime?: number; // 缩略图的开始时间，默认 0
+  gapSec?: number; // 每张缩略图的间隔时长，默认 10s
+  col?: number; // 每张图片的有几列缩略图
+  row?: number; // 每张图片的有几行缩略图
+  width?: number; // 缩略图的宽度
+  height?: number; // 缩略图的高度
+  images?: string[]; // 所有的图片
+  handler?: (seconds: number) => { x: number; y: number; url: string; }; // 手动控制缩略图显示，x, y 表示 background position 为正数
+}
 ```
 
 ## 待完成
 
-- [ ] 快捷键
-- [ ] 多语言
-- [ ] Loading 动画
+- [ ] 配置持久化
+- [ ] 主题
 - [ ] 交互提示
 - [ ] 右键菜单
 - [ ] 字幕
