@@ -12,6 +12,11 @@ declare enum Events {
     PLAY = "Play",
     PAUSE = "Pause",
     ENDED = "Ended",
-    PROGRESS = "Progress"
+    PROGRESS = "Progress",
+    CANPLAY = "Canplay",
+    WAITING = "Waiting",
+    PLAYING = "Playing",
+    STALLED = "Stalled",
+    BREAK_POINT_CHANGE = "BreakPointChange"
 }
 export default Events;

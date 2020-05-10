@@ -3,6 +3,7 @@ import RPlayer from '../rplayer';
 declare class ProgressBar extends Component {
     private readonly barWrapper;
     private readonly bufBar;
+    private readonly hoverBar;
     private readonly playedBar;
     private readonly padBar;
     private readonly dot;
@@ -23,7 +24,9 @@ declare class ProgressBar extends Component {
     updateRect: () => void;
     updatePlayedBar(): void;
     updateBufBar(): void;
-    updateThumbnail: () => void;
+    updateHoverBarAndThumb: () => void;
+    updateHoverBar(left: number): void;
+    updateThumbnail(left: number): void;
     onControlsShow(): void;
     onTimeUpdate(): void;
     onProgress(): void;

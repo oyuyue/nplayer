@@ -30,6 +30,7 @@ declare class Component extends EventHandler {
     removeFromParent(): void;
     hidden(): void;
     visible(): void;
+    canFocus(): void;
     static isComponent(obj: unknown): obj is Component;
 }
 export default Component;

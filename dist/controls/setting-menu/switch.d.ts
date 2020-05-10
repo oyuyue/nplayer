@@ -1,6 +1,6 @@
 export interface SwitchOpts {
     label: string;
-    defaultValue?: false;
+    defaultValue?: boolean;
     onChange?: (v: boolean, next: () => void) => any;
 }
 declare class Switch {

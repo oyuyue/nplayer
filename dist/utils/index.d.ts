@@ -15,7 +15,7 @@ export declare function measureElementSize(dom: HTMLElement): {
     width: number;
     height: number;
 };
-export declare function newElement<T extends HTMLElement>(tag?: keyof HTMLElementTagNameMap): T;
+export declare function newElement<T extends HTMLElement>(tag?: keyof HTMLElementTagNameMap, className?: string): T;
 export declare function strToDom(str: string, type?: SupportedType): HTMLElement;
 export declare function svgToDom(str: string, className?: string): HTMLElement;
 export declare function padStart(v: string | number, len?: number, str?: string): string;
@@ -23,3 +23,4 @@ export declare function formatTime(seconds: number): string;
 export declare const ua: {
     isIos: boolean;
 };
+export declare const makeDictionary: <T>(obj: T) => T;
