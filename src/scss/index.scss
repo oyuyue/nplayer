@@ -11,9 +11,8 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $color-font;
+  color: $color-white;
   font-size: 14px;
-  letter-spacing: 1px;
   -webkit-tap-highlight-color: transparent;
   outline: none;
 
@@ -28,7 +27,7 @@
   svg {
     width: $size-action-icon;
     height: $size-action-icon;
-    fill: $color-font;
+    fill: $color-white;
   }
 
   &_icon {
@@ -68,7 +67,7 @@
     height: 21px;
     padding: 2px;
     border-radius: 12px;
-    background: $color-bg-switch;
+    background: $color-white-low;
     cursor: pointer;
 
     &::after {
@@ -77,7 +76,7 @@
       width: 21px;
       height: 21px;
       border-radius: 50%;
-      background: $color-font;
+      background: $color-white;
       box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
       transition: transform .15s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     }
@@ -92,6 +91,7 @@
 
   &_loading {
     display: none;
+    z-index: 3;
 
     div {
       position: absolute;
@@ -99,10 +99,10 @@
       top: 50%;
       width: 70px;
       height: 70px;
-      border: 6px solid $color-font;
+      border: 6px solid $color-white;
       border-radius: 50%;
       animation: rplayer-loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      border-color: $color-font transparent transparent transparent;
+      border-color: $color-white transparent transparent transparent;
     }
     div:nth-child(1) {
       background: rgba(0,0,0,0.15);
@@ -219,7 +219,7 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: $color-bg-progress;
+      background: $color-white-low;
     }
 
     &_played {
@@ -229,7 +229,12 @@
     }
 
     &_buf {
-      background: $color-bg-progress-buf;
+      background: $color-white-half;
+    }
+
+    &_hover {
+      opacity: 0;
+      background: $color-white-half;
     }
 
     &_pad {
@@ -239,8 +244,13 @@
       z-index: 2;
     }
 
-    &:hover .rplayer_thumbnail,
-    &:active .rplayer_thumbnail {
+    &:hover .rplayer_progress_hover,
+    &:active .rplayer_progress_hover {
+      opacity: 1;
+    }
+
+    &:hover .rplayer_thumb,
+    &:active .rplayer_thumb {
       opacity: 1;
       transform: translate(-50%, 0) scale(1);
     }
@@ -256,18 +266,28 @@
     }
   }
 
-  &_thumbnail {
+  &_thumb {
     position: absolute;
     left: 0;
     bottom: $size-thumbnail-bottom;
     font-size: 12px;
     opacity: 0;
-    transform: translate(-50%, 10px) scale(.8);
+    transform: translate(-50%, 15px) scale(.8);
     transition: $transition-tip;
+    text-align: center;
     pointer-events: none;
 
     &_time {
+      margin-top: 10px;
       text-shadow: $shadow-text-time;
+    }
+
+    &_img {
+      border-radius: 2px;
+      border: 1px solid $color-white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: $color-white-half;
+      background-repeat: no-repeat;
     }
   }
 
@@ -312,13 +332,13 @@
       }
 
       &_bar {
-        background: $color-bg-volume-progress-bar;
+        background: $color-white-high;
 
         &_wrapper {
           position: relative;
           height: 4px;
           border-radius: 3px;
-          background: $color-bg-volume-progress;
+          background: $color-white-low;
           overflow: hidden;
         }
       }
@@ -327,7 +347,7 @@
         top: 0;
 
         &::after {
-          background: $color-bg-volume-progress-bar;
+          background: $color-white-high;
         }
       }
     }
@@ -339,6 +359,7 @@
       margin-top: -1px;
       text-shadow: $shadow-text-time;
       white-space: nowrap;
+      letter-spacing: 1px;
 
       :first-child::after {
         content: '/';
@@ -475,7 +496,7 @@
             height: 0;
             margin-right: 21px;
             border: 4px solid transparent;
-            border-right-color: $color-font;
+            border-right-color: $color-white;
           }
         }
       }
@@ -504,7 +525,7 @@
           height: 0;
           margin-left: 10px;
           border: 4px solid transparent;
-          border-left-color: $color-font;
+          border-left-color: $color-white;
         }
       }
     }
@@ -520,7 +541,7 @@
           opacity: 0;
           height: 5px;
           width: 12px;
-          border: 1px solid $color-font;
+          border: 1px solid $color-white;
           border-top-color: transparent;
           border-right-color: transparent;
           margin-right: 15px;

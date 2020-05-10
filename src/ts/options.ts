@@ -1,6 +1,7 @@
 import { NORMAL, SPEED } from './config/lang';
 import { RadioOption, RadioOpts } from './controls/setting-menu/radio';
 import { SwitchOpts } from './controls/setting-menu/switch';
+import { ThumbnailImgBg } from './controls/thumbnail';
 import { t } from './i18n';
 import RPlayer from './rplayer';
 import { findIndex, isNum, isObj } from './utils';
@@ -18,6 +19,17 @@ export interface Shortcut {
   global?: boolean;
 }
 
+export interface ThumbnailOpts {
+  startTime?: number;
+  gapSec?: number;
+  col?: number;
+  row?: number;
+  width?: number;
+  height?: number;
+  images?: string[];
+  handler?: (seconds: number) => ThumbnailImgBg;
+}
+
 export interface RPlayerOptions {
   media?: string | HTMLVideoElement;
   el?: string | HTMLElement;
@@ -26,6 +38,7 @@ export interface RPlayerOptions {
   preset?: OptionPreset;
   shortcut?: Shortcut;
   lang?: string;
+  thumbnail?: ThumbnailOpts;
 }
 
 function processPlaybackRate(
@@ -88,6 +101,23 @@ function processLang(opts: RPlayerOptions): RPlayerOptions {
   return opts;
 }
 
+function processThumbnail(opts: RPlayerOptions): RPlayerOptions {
+  opts.thumbnail = {
+    ...{
+      startTime: 0,
+      gapSec: 10,
+      col: 5,
+      row: 5,
+      width: 160,
+      height: 90,
+      images: [],
+    },
+    ...opts.thumbnail,
+  };
+
+  return opts;
+}
+
 function processOptions(
   player: RPlayer,
   opts?: RPlayerOptions
@@ -100,6 +130,7 @@ function processOptions(
   opts = processLang(opts);
   opts = processPlaybackRate(opts, player);
   opts = processShortcut(opts);
+  opts = processThumbnail(opts);
 
   return opts;
 }

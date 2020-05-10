@@ -9,6 +9,7 @@ import Thumbnail from './thumbnail';
 class ProgressBar extends Component {
   private readonly barWrapper: HTMLElement;
   private readonly bufBar: Bar;
+  private readonly hoverBar: Bar;
   private readonly playedBar: Bar;
   private readonly padBar: Bar;
   private readonly dot: Dot;
@@ -31,6 +32,7 @@ class ProgressBar extends Component {
     this.barWrapper.classList.add('rplayer_progress_bar_wrapper');
 
     this.bufBar = new Bar('rplayer_progress_buf');
+    this.hoverBar = new Bar('rplayer_progress_hover');
     this.playedBar = new Bar('rplayer_progress_played');
     this.padBar = new Bar('rplayer_progress_pad');
     this.dot = new Dot('rplayer_progress_dot');
@@ -46,6 +48,7 @@ class ProgressBar extends Component {
     this.padBar.dom.addEventListener('mousemove', this.mouseMoveHandler, true);
 
     this.barWrapper.appendChild(this.bufBar.dom);
+    this.barWrapper.appendChild(this.hoverBar.dom);
     this.barWrapper.appendChild(this.playedBar.dom);
     this.barWrapper.appendChild(this.padBar.dom);
     this.appendChild(this.barWrapper);
@@ -68,7 +71,7 @@ class ProgressBar extends Component {
     this.dot.setX(clamp(x, 0, this.rect.width));
     this.playedBar.setX(x / this.rect.width);
     this.mouseMoveLastX = ev.pageX;
-    this.updateThumbnail();
+    this.updateThumbnail(x);
   };
 
   private dragEndHandler = (ev: PointerEvent): void => {
@@ -82,7 +85,7 @@ class ProgressBar extends Component {
     this.mouseMoveLastX = ev.pageX;
     if (this.mouseMovePending) return;
     this.mouseMovePending = true;
-    requestAnimationFrame(this.updateThumbnail);
+    requestAnimationFrame(this.updateHoverBarAndThumb);
   };
 
   /**
@@ -121,13 +124,20 @@ class ProgressBar extends Component {
     this.bufBar.setX(percentage);
   }
 
-  updateThumbnail = (): void => {
-    this.thumbnail.update(
-      this.mouseMoveLastX - this.rect.left,
-      this.calcCurrentTime(this.mouseMoveLastX)
-    );
+  updateHoverBarAndThumb = (): void => {
+    const left = this.mouseMoveLastX - this.rect.left;
+    this.updateHoverBar(left);
+    this.updateThumbnail(left);
     this.mouseMovePending = false;
   };
+
+  updateHoverBar(left: number): void {
+    this.hoverBar.setX(left / this.rect.width);
+  }
+
+  updateThumbnail(left: number): void {
+    this.thumbnail.update(left, this.calcCurrentTime(this.mouseMoveLastX));
+  }
 
   onControlsShow(): void {
     this.updatePlayedBar();

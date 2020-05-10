@@ -32,7 +32,7 @@ class Shortcut {
     if (focused) {
       const tag = focused.tagName.toLowerCase();
       const editable = focused.getAttribute('contenteditable');
-      if (this.editable.includes(tag) || editable || editable === '') {
+      if (this.editable.indexOf(tag) > -1 || editable || editable === '') {
         return;
       }
     }

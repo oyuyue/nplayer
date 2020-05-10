@@ -73,9 +73,12 @@ export function measureElementSize(
 }
 
 export function newElement<T extends HTMLElement>(
-  tag: keyof HTMLElementTagNameMap = 'div'
+  tag: keyof HTMLElementTagNameMap = 'div',
+  className?: string
 ): T {
-  return document.createElement(tag) as any;
+  const dom = document.createElement(tag) as any;
+  if (className) dom.classList.add(className);
+  return dom;
 }
 
 const domParser = window.DOMParser ? new DOMParser() : null;

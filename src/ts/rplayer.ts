@@ -85,7 +85,7 @@ class RPlayer extends Component {
   }
 
   get duration(): number {
-    return this.media.duration;
+    return this.media.duration || 0;
   }
 
   get buffered(): TimeRanges {
@@ -121,7 +121,7 @@ class RPlayer extends Component {
     this.emit(Events.BEFORE_MOUNT);
     this.appendChild(this.media);
     this.el.appendChild(this.dom);
-    this.emit(Events.MOUNTED);
+    requestAnimationFrame(() => this.emit(Events.MOUNTED));
   }
 
   seek(seconds: number): void {
