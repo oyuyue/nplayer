@@ -91,7 +91,7 @@
 
   &_loading {
     display: none;
-    z-index: 3;
+    z-index: 2;
 
     div {
       position: absolute;
@@ -128,16 +128,11 @@
 
     &_mask {
       position: absolute;
+      top: 0;
       left: 0;
       right: 0;
-      top: 0;
       bottom: 0;
       z-index: 1;
-      pointer-events: none;
-    }
-
-    &-hide &_mask {
-      pointer-events: auto;
     }
 
     &_bottom {
@@ -147,7 +142,6 @@
       bottom: 0;
       padding: $size-bottom-padding;
       transition: opacity .2s ease;
-      z-index: 2;
       user-select: none;
 
       &_mask {
@@ -172,6 +166,59 @@
 
         & > :first-child {
           margin-left: 0;
+        }
+      }
+    }
+
+    &_menu {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 5px 0;
+      border-radius: $size-popup-radius;
+      background: $color-bg-popup;
+      z-index: 2;
+  
+      &_item {
+        display: flex;
+        align-items: center;
+        padding: 8px 10px;
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+
+        &_icon {
+          width: 14px !important;
+          height: 14px !important;
+          margin-right: 8px;
+        }
+
+        & > :nth-child(2) {
+          flex: 1;
+        }
+  
+        &:hover {
+          background: $color-bg-popup-item-hover;
+        }
+
+        &::after {
+          content: '';
+          opacity: 0;
+          display: block;
+          height: 5px;
+          width: 12px;
+          border: 1px solid $color-white;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          margin-left: 15px;
+          margin-top: -3px;
+          transform: rotate(-45deg);
+        }
+
+        &-checked {
+          &::after {
+            opacity: 1;
+          }
         }
       }
     }
@@ -241,7 +288,6 @@
       top: -8px;
       height: 16px;
       touch-action: none;
-      z-index: 2;
     }
 
     &:hover .rplayer_progress_hover,
@@ -396,17 +442,6 @@
           display: block;
         }
       }
-
-      &_mask {
-        display: none;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 3;
-        cursor: default;
-      }
     }
   }
 
@@ -478,7 +513,7 @@
       white-space: nowrap;
       opacity: 0;
       transform: translateY(10px);
-      z-index: 5;
+      z-index: 2;
       pointer-events: none;
       transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
       overflow: hidden;

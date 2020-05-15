@@ -22,6 +22,10 @@ export function isObj(o: any): o is Record<string, any> {
   return typeof o === 'object';
 }
 
+export function isElement(o: any): o is Element {
+  return o instanceof Element;
+}
+
 export function isCatchable(o: any): o is { catch: Function } {
   return isObj(o) && isFn(o.catch);
 }
@@ -48,7 +52,7 @@ export function getDomOr<T extends HTMLElement>(
   return ret || (isFn(orReturn) ? orReturn() : orReturn);
 }
 
-export function htmlDom(html: string, tag = 'span'): HTMLElement {
+export function htmlDom(html = '', tag = 'span'): HTMLElement {
   const d = document.createElement(tag);
   d.innerHTML = html;
   return d;
@@ -134,4 +138,8 @@ export const makeDictionary = <T>(obj: T): T => {
   (obj as any).__ = undefined;
   delete (obj as any).__;
   return obj;
+};
+
+export const getClientWH = (): [number, number] => {
+  return [document.body.clientWidth, document.documentElement.clientHeight];
 };

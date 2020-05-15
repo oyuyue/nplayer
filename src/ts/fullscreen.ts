@@ -19,13 +19,13 @@ class Fullscreen {
       );
 
       if (this.isActive) player.addClass(this.fullscreenClass);
-      player.dom.addEventListener('dblclick', this.playerDblClickHandler, true);
+      player.on(Events.PLAYER_DBLCLICK, this.playerDblClickHandler);
     }
   }
 
   private playerDblClickHandler = (ev: Event): void => {
     ev.preventDefault();
-    if (this.player.controls.bottom.dom.contains(ev.target as any)) return;
+    if (this.player.controls.dom.contains(ev.target as any)) return;
     this.toggle();
   };
 

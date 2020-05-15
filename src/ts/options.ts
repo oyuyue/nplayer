@@ -10,6 +10,7 @@ export interface OptionPreset {
   playbackRate?:
     | boolean
     | { position?: number; steps?: { label?: string; value?: number }[] };
+  version?: boolean;
 }
 
 export interface Shortcut {
@@ -30,6 +31,19 @@ export interface ThumbnailOpts {
   handler?: (seconds: number) => ThumbnailImgBg;
 }
 
+export interface ContextMenuItem {
+  icon?: string | HTMLElement;
+  label?: string | HTMLElement;
+  checked?: boolean;
+  onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
+}
+
+export interface ContextMenuOpts {
+  toggle?: boolean;
+  enable?: boolean;
+  items?: ContextMenuItem[];
+}
+
 export interface RPlayerOptions {
   media?: string | HTMLVideoElement;
   el?: string | HTMLElement;
@@ -39,6 +53,7 @@ export interface RPlayerOptions {
   shortcut?: Shortcut;
   lang?: string;
   thumbnail?: ThumbnailOpts;
+  contextMenu?: ContextMenuOpts;
 }
 
 function processPlaybackRate(
@@ -118,6 +133,27 @@ function processThumbnail(opts: RPlayerOptions): RPlayerOptions {
   return opts;
 }
 
+function processContextMenu(opts: RPlayerOptions): RPlayerOptions {
+  opts.contextMenu = opts.contextMenu || {};
+  opts.contextMenu.items = opts.contextMenu.items || [];
+
+  if (opts.preset.version !== false) {
+    opts.contextMenu.items.push({
+      label: 'RPlayer: v' + __VERSION,
+    });
+  }
+
+  opts.contextMenu = {
+    ...{
+      enable: true,
+      toggle: true,
+    },
+    ...opts.contextMenu,
+  };
+
+  return opts;
+}
+
 function processOptions(
   player: RPlayer,
   opts?: RPlayerOptions
@@ -131,6 +167,7 @@ function processOptions(
   opts = processPlaybackRate(opts, player);
   opts = processShortcut(opts);
   opts = processThumbnail(opts);
+  opts = processContextMenu(opts);
 
   return opts;
 }

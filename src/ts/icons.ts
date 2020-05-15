@@ -8,11 +8,25 @@ import volume from '../icons/volume.svg';
 import { svgToDom } from './utils';
 
 export default {
-  play: svgToDom(play, 'rplayer_icon_play'),
-  pause: svgToDom(pause, 'rplayer_icon_pause'),
-  enterFullscreen: svgToDom(enterFullscreen, 'rplayer_icon_enter_fullscreen'),
-  exitFullscreen: svgToDom(exitFullscreen, 'rplayer_icon_exit_fullscreen'),
-  volume: svgToDom(volume, 'rplayer_icon_volume'),
-  muted: svgToDom(muted, 'rplayer_icon_muted'),
-  settings: svgToDom(settings),
+  play(cls?: string): Element {
+    return svgToDom(play, cls);
+  },
+  pause(cls?: string): Element {
+    return svgToDom(pause, cls);
+  },
+  enterFullscreen(cls?: string): Element {
+    return svgToDom(enterFullscreen, cls);
+  },
+  exitFullscreen(cls?: string): Element {
+    return svgToDom(exitFullscreen, cls);
+  },
+  volume(cls?: string): Element {
+    return svgToDom(volume, cls);
+  },
+  muted(cls?: string): Element {
+    return svgToDom(muted, cls);
+  },
+  settings(cls?: string): Element {
+    return svgToDom(settings, cls);
+  },
 };

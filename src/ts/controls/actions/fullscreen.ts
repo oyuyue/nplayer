@@ -11,8 +11,8 @@ class FullscreenAction extends Tray {
     this.changeTipText(player.t(FULL_SCREEN));
     this.setRight();
 
-    this.appendChild(icons.enterFullscreen);
-    this.appendChild(icons.exitFullscreen);
+    this.appendChild(icons.enterFullscreen('rplayer_icon_enter_fullscreen'));
+    this.appendChild(icons.exitFullscreen('rplayer_icon_exit_fullscreen'));
   }
 
   onClick(): void {

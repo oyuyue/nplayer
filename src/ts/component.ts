@@ -23,7 +23,7 @@ class Component extends EventHandler {
     this.dom = isStr(dom) ? newElement(dom) : dom;
 
     if (player && autoUpdateRect) {
-      player.on(Events.RESIZE, this._resizeHandler);
+      player.on(Events.PLAYER_RESIZE, this._resizeHandler);
     }
   }
 

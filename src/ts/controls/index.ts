@@ -1,14 +1,16 @@
 import Component from '../component';
 import Events from '../events';
 import RPlayer from '../rplayer';
-import { newElement } from '../utils';
 import Bottom from './bottom';
+import ContextMenu from './contextmenu';
+import Mask from './mask';
 
 class Controls extends Component {
   private controlsTimer: NodeJS.Timeout;
 
   readonly bottom: Bottom;
-  private readonly mask: HTMLElement;
+  readonly mask: Mask;
+  readonly contextMenu: ContextMenu;
 
   private readonly hideClass = 'rplayer_controls-hide';
   private readonly pausedClass = 'rplayer-paused';
@@ -16,47 +18,32 @@ class Controls extends Component {
   private showLatch = 0;
 
   constructor(player: RPlayer) {
-    super(player, { events: [Events.PLAY, Events.PAUSE] });
+    super(player, {
+      events: [
+        Events.PLAY,
+        Events.PAUSE,
+        Events.PLAYER_MOUSE_MOVE,
+        Events.PLAYER_MOUSE_LEAVE,
+        Events.PLAYER_CLICK,
+      ],
+    });
 
     this.addClass('rplayer_controls');
     if (player.paused) player.addClass(this.pausedClass);
 
-    this.mask = newElement();
-    this.mask.classList.add('rplayer_controls_mask');
     this.bottom = new Bottom(player);
+    this.mask = new Mask(player);
+    this.contextMenu = new ContextMenu(player);
 
-    this.appendChild(this.mask);
+    this.appendChild(this.bottom.mask);
     this.appendChild(this.bottom);
-
-    this.initEvents();
+    this.appendChild(this.contextMenu);
+    this.appendChild(this.mask.dom);
   }
 
   get isHide(): boolean {
     return this.containsClass(this.hideClass);
   }
-
-  private initEvents(): void {
-    const container = this.player.dom;
-
-    container.addEventListener('mousemove', this.delayHide);
-    container.addEventListener('mouseleave', this.tryHideControls);
-    container.addEventListener('click', this.playerClickHandler);
-  }
-
-  private playerClickHandler = (ev: Event): void => {
-    ev.preventDefault();
-    if (!this.bottom.dom.contains(ev.target as any)) {
-      this.player.toggle();
-    }
-    this.delayHide();
-  };
-
-  private delayHide = (ev?: Event): void => {
-    if (ev) ev.preventDefault();
-    this.show();
-    clearTimeout(this.controlsTimer);
-    this.controlsTimer = setTimeout(this.tryHideControls, 3000);
-  };
 
   private tryHideControls = (ev?: MouseEvent): void => {
     if (ev) ev.preventDefault();
@@ -95,13 +82,29 @@ class Controls extends Component {
   }
 
   onPlay(): void {
-    this.delayHide();
+    this.showTemporary();
     this.player.removeClass(this.pausedClass);
   }
 
   onPause(): void {
     this.show();
     this.player.addClass(this.pausedClass);
+  }
+
+  onPlayerClick(ev: Event): void {
+    ev.preventDefault();
+    if (!this.bottom.dom.contains(ev.target as any)) {
+      this.player.toggle();
+    }
+    this.showTemporary();
+  }
+
+  onPlayerMouseMove(): void {
+    this.showTemporary();
+  }
+
+  onPlayerMouseLeave(): void {
+    this.tryHideControls();
   }
 }
 

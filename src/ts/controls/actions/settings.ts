@@ -1,47 +1,56 @@
 import { SETTINGS } from '../../config/lang';
+import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
-import { newElement } from '../../utils';
 import SettingMenu from '../setting-menu';
 import Tray from '../tray';
 
 class SettingAction extends Tray {
   private readonly menu: SettingMenu;
-  private readonly mask = newElement();
-
   private resetPageTimer: NodeJS.Timeout;
-
   private readonly activeClass = 'rplayer_action_setting-active';
 
   constructor(player: RPlayer) {
-    super(player);
+    super(
+      player,
+      Events.CLICK_CONTROL_MASK,
+      Events.CLICK_OUTSIDE,
+      Events.PLAYER_CONTEXT_MENU
+    );
 
     this.addClass('rplayer_action_setting');
     this.changeTipText(player.t(SETTINGS));
 
     this.menu = new SettingMenu(player);
-    this.mask.classList.add('rplayer_action_setting_mask');
-    this.mask.addEventListener('click', this.maskClickHandler, true);
 
-    this.appendChild(icons.settings);
+    this.appendChild(icons.settings());
     this.appendChild(this.menu);
-    this.appendChild(this.mask);
   }
 
-  private maskClickHandler = (ev: MouseEvent): void => {
-    ev.preventDefault();
-    ev.stopPropagation();
-
+  private hide(): void {
     this.removeClass(this.activeClass);
-
+    this.player.controls.mask.hide();
     clearTimeout(this.resetPageTimer);
     this.resetPageTimer = setTimeout(() => {
       this.menu.resetPage();
     }, 500);
-  };
+  }
 
   onClick(): void {
     this.addClass(this.activeClass);
+    this.player.controls.mask.show();
+  }
+
+  onPlayerContextMenu(): void {
+    this.hide();
+  }
+
+  onClickControlMask(): void {
+    this.hide();
+  }
+
+  onClickOutside(): void {
+    this.hide();
   }
 }
 

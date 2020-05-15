@@ -1,7 +1,6 @@
 enum Events {
   BEFORE_MOUNT = 'BeforeMount',
   MOUNTED = 'Mounted',
-  RESIZE = 'Resize',
   CONTROLS_SHOW = 'ControlsShow',
   CONTROLS_HIDE = 'ControlsHide',
   ENTER_FULLSCREEN = 'EnterFullscreen',
@@ -18,6 +17,14 @@ enum Events {
   PLAYING = 'Playing',
   STALLED = 'Stalled',
   BREAK_POINT_CHANGE = 'BreakPointChange',
+  CLICK_CONTROL_MASK = 'ClickControlMask',
+  CLICK_OUTSIDE = 'ClickOutside',
+  PLAYER_CLICK = 'PlayerClick',
+  PLAYER_CONTEXT_MENU = 'PlayerContextMenu',
+  PLAYER_DBLCLICK = 'PlayerDblclick',
+  PLAYER_MOUSE_MOVE = 'PlayerMouseMove',
+  PLAYER_MOUSE_LEAVE = 'PlayerMouseLeave',
+  PLAYER_RESIZE = 'PlayerResize',
 }
 
 export default Events;

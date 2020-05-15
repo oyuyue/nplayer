@@ -14,8 +14,8 @@ class Icon extends Tray {
   constructor(player: RPlayer) {
     super(player);
 
-    this.appendChild(icons.volume);
-    this.appendChild(icons.muted);
+    this.appendChild(icons.volume('rplayer_icon_volume'));
+    this.appendChild(icons.muted('rplayer_icon_muted'));
 
     this.update();
   }

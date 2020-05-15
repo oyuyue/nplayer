@@ -3,11 +3,10 @@ import { BP } from './config';
 import Controls from './controls';
 import Events from './events';
 import Fullscreen from './fullscreen';
+import setupEvents from './handle-events';
 import I18n from './i18n';
 import Loading from './loading';
-import setupMediaEvents from './media-events';
 import processOptions, { RPlayerOptions } from './options';
-import Respond from './respond';
 import Shortcut from './shortcut';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
@@ -22,7 +21,6 @@ class RPlayer extends Component {
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
   readonly loading: Loading;
-  readonly respond: Respond;
 
   private prevVolume = 1;
 
@@ -40,13 +38,12 @@ class RPlayer extends Component {
 
     this.prevVolume = this.media.volume;
     if (this.options.video) this.setMediaAttrs(this.options.video);
-    setupMediaEvents(this, this.media);
+    setupEvents(this, this.media);
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
     this.loading = new Loading(this);
-    this.respond = new Respond(this);
   }
 
   get currentTime(): number {
@@ -117,9 +114,9 @@ class RPlayer extends Component {
 
   mount(el?: HTMLElement): void {
     if (el) this.el = el;
+    this.appendChild(this.media);
     this.appendChild(this.controls);
     this.emit(Events.BEFORE_MOUNT);
-    this.appendChild(this.media);
     this.el.appendChild(this.dom);
     requestAnimationFrame(() => this.emit(Events.MOUNTED));
   }
