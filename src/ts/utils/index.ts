@@ -19,7 +19,7 @@ export function isFn(o: any): o is Function {
 }
 
 export function isObj(o: any): o is Record<string, any> {
-  return typeof o === 'object';
+  return typeof o === 'object' && o != null;
 }
 
 export function isElement(o: any): o is Element {
@@ -142,4 +142,46 @@ export const makeDictionary = <T>(obj: T): T => {
 
 export const getClientWH = (): [number, number] => {
   return [document.body.clientWidth, document.documentElement.clientHeight];
+};
+
+export const safeJsonParse = <T extends Record<string, any>>(
+  str: string,
+  orRet?: T
+): T | string => {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return orRet || str;
+  }
+};
+
+export const safeJsonStringify = (
+  obj: Record<string, any>,
+  orRet = ''
+): string => {
+  try {
+    return JSON.stringify(obj);
+  } catch (e) {
+    return orRet;
+  }
+};
+
+export const extend = (
+  target: Record<string, any> = {},
+  source: Record<string, any>
+): Record<string, any> => {
+  if (!source) return target;
+
+  Object.keys(source).forEach((key) => {
+    if (isObj(source[key])) {
+      if (!Object.keys(target).includes(key)) {
+        Object.assign(target, { [key]: {} });
+      }
+      extend(target[key], source[key]);
+    } else {
+      Object.assign(target, { [key]: source[key] });
+    }
+  });
+
+  return target;
 };
