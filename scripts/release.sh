@@ -24,5 +24,7 @@ then
   # publish
   git push origin refs/tags/v$VERSION
   git push
+  nrm use npm
   npm publish
+  npm use taobao
 fi

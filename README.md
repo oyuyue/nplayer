@@ -54,6 +54,8 @@ interface RPlayerOptions {
   shortcut?: Shortcut;
   lang?: string; // 语言，默认用户当前浏览器使用的语言。
   thumbnail?: ThumbnailOpts;
+  contextMenu?: ContextMenuOpts;
+  storage?: StorageOpts;
 }
 
 interface OptionPreset {
@@ -61,6 +63,7 @@ interface OptionPreset {
     | boolean
     | { position?: number; steps?: { label?: string; value?: number }[] };
   // 默认会显示 0.5 ~ 2.0 的播放速度在设置菜单中
+  version?: boolean; // 是否在右键菜单显示版本信息
 }
 
 interface RadioOpts {
@@ -94,16 +97,43 @@ interface ThumbnailOpts {
   images?: string[]; // 所有的图片
   handler?: (seconds: number) => { x: number; y: number; url: string; }; // 手动控制缩略图显示，x, y 表示 background position 为正数
 }
+
+interface StorageOpts {
+  enable?: boolean; // 是否开启持久化
+  key?: string; // localStorage 的 key，默认 rplayer
+}
+
+interface ContextMenuOpts {
+  toggle?: boolean; // 是否和浏览器菜单交替显示
+  enable?: boolean; // 是否启用右键菜单
+  items?: ContextMenuItem[];
+}
+
+interface ContextMenuItem {
+  icon?: string | Element; // 菜单项的 icon
+  label?: string | Element; // 菜单项的值
+  checked?: boolean; // 是否选中
+  onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
+  // update 用来更新 UI
+}
+```
+
+## 主题
+
+主题色使用 css 变量，可以通过覆盖来自定义主题色。IE 11 可以使用这个 [polyfill ](https://github.com/nuxodin/ie11CustomProperties)。
+
+```css
+:root {
+  --rplayer-primary: #448AFF;
+  --rplayer-switch: #67cd67;
+}
 ```
 
 ## 待完成
 
-- [ ] 配置持久化
-- [ ] 主题
-- [ ] 交互提示
-- [ ] 右键菜单
 - [ ] 字幕
-- [ ] 响应式
 - [ ] 移动版控件
+- [ ] 视频信息面板
+- [ ] 交互日志
 - [ ] 广告插件
 - [ ] 弹幕插件
