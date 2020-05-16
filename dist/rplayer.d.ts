@@ -1,5 +1,6 @@
 import Component from './component';
 import Controls from './controls';
+import Events from './events';
 import Fullscreen from './fullscreen';
 import I18n from './i18n';
 import Loading from './loading';
@@ -7,6 +8,7 @@ import { RPlayerOptions } from './options';
 import Shortcut from './shortcut';
 import Storage from './storage';
 declare class RPlayer extends Component {
+    static readonly Events: typeof Events;
     el: HTMLElement;
     curBreakPoint: string;
     readonly media: HTMLVideoElement;
@@ -44,5 +46,6 @@ declare class RPlayer extends Component {
     rewind(v?: number): void;
     toggleVolume(): void;
     t(key: string): string;
+    eachBuffer(fn: (start: number, end: number) => boolean | void): void;
 }
 export default RPlayer;

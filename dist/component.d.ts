@@ -16,7 +16,8 @@ declare class Component extends EventHandler {
     get html(): string;
     set html(html: string);
     private _resizeHandler;
-    updateRect(): void;
+    autoUpdateRect(player?: RPlayer): void;
+    updateRect: () => void;
     addStyle(style: Partial<CSSStyleDeclaration> | string): void;
     appendChild(d: Node | Component): void;
     insert(d: Node | Component, pos?: number): void;
