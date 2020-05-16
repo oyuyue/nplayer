@@ -1,6 +1,11 @@
 @import './variables';
 @import './mixins';
 
+:root {
+  --rplayer-primary: #{$color-primary};
+  --rplayer-switch: #{$color-green};
+}
+
 .rplayer {
   position: relative;
   display: flex;
@@ -8,7 +13,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Microsoft JhengHei', 'Microsoft YaHei', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Microsoft JhengHei', 'Microsoft YaHei';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $color-white;
@@ -64,27 +69,29 @@
 
   &_switch {
     width: 36px;
-    height: 21px;
     padding: 2px;
     border-radius: 12px;
     background: $color-white-low;
+    transition: background-color .3s cubic-bezier(.4, 0, .2, 1);
     cursor: pointer;
 
     &::after {
       content: '';
       display: block;
-      width: 21px;
-      height: 21px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: $color-white;
-      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
-      transition: transform .15s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,.14), 0px 1px 3px 0px rgba(0,0,0,.12);
+      transition: transform .15s cubic-bezier(.4, 0, .2, 1);
     }
 
     &-active {
+      background: $color-green;
+      background: var(--rplayer-switch);
+
       &::after {
-        background: $color-primary;
-        transform: translateX(15px);
+        transform: translateX(16px);
       }
     }
   }
@@ -99,24 +106,24 @@
       top: 50%;
       width: 70px;
       height: 70px;
-      border: 6px solid $color-white;
+      border: 6px solid transparent;
+      border-top-color: $color-white;
       border-radius: 50%;
-      animation: rplayer-loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      border-color: $color-white transparent transparent transparent;
+      animation: rplayer-loading 1.2s cubic-bezier(.5, 0, .5, 1) infinite;
     }
     div:nth-child(1) {
       background: rgba(0,0,0,0.15);
-      animation-delay: -0.45s;
+      animation-delay: -.45s;
     }
     div:nth-child(2) {
-      animation-delay: -0.3s;
+      animation-delay: -.3s;
     }
     div:nth-child(3) {
-      animation-delay: -0.15s;
+      animation-delay: -.15s;
     }
   }
 
-  &_controls {
+  &_ctrl {
 
     &-hide {
       cursor: none;
@@ -244,7 +251,7 @@
       width: $size-dot;
       height: $size-dot;
       border-radius: 50%;
-      background: $color-primary;
+      background: var(--rplayer-primary);
       transform: scale(0);
       transition: transform .15s ease;
     }
@@ -270,7 +277,7 @@
     }
 
     &_played {
-      background: $color-primary;
+      background: var(--rplayer-primary);
       transform: scaleX(0);
       will-change: transform;
     }
@@ -422,7 +429,7 @@
       }
 
       &-active {
-        background: $color-primary !important;
+        background: var(--rplayer-primary) !important;
 
         svg {
           transform: rotate(90deg);
@@ -453,7 +460,7 @@
     cursor: pointer;
 
     &:hover {
-      background: $color-primary;
+      background: var(--rplayer-primary);
     }
   }
 

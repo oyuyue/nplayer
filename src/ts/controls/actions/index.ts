@@ -10,7 +10,7 @@ class Actions extends Component {
   constructor(player: RPlayer) {
     super(player);
 
-    this.addClass('rplayer_controls_bottom_actions');
+    this.addClass('rplayer_ctrl_bottom_actions');
 
     this.appendChild(new PlayAction(player));
     this.appendChild(new VolumeAction(player));

@@ -12,7 +12,7 @@ class Controls extends Component {
   readonly mask: Mask;
   readonly contextMenu: ContextMenu;
 
-  private readonly hideClass = 'rplayer_controls-hide';
+  private readonly hideClass = 'rplayer_ctrl-hide';
   private readonly pausedClass = 'rplayer-paused';
 
   private showLatch = 0;
@@ -28,7 +28,7 @@ class Controls extends Component {
       ],
     });
 
-    this.addClass('rplayer_controls');
+    this.addClass('rplayer_ctrl');
     if (player.paused) player.addClass(this.pausedClass);
 
     this.bottom = new Bottom(player);

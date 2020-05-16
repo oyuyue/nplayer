@@ -8,7 +8,7 @@ class Mask {
 
   constructor(player: RPlayer) {
     this.player = player;
-    this.dom = newElement('div', 'rplayer_controls_mask');
+    this.dom = newElement('div', 'rplayer_ctrl_mask');
 
     this.dom.addEventListener('click', this.clickHandler);
 

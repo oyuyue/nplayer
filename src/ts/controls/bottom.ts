@@ -12,12 +12,12 @@ class Bottom extends Component {
   constructor(player: RPlayer) {
     super(player);
 
-    this.addClass('rplayer_controls_bottom');
+    this.addClass('rplayer_ctrl_bottom');
 
     this.progressBar = new ProgressBar(player);
     this.actions = new Actions(player);
     this.mask = newElement();
-    this.mask.classList.add('rplayer_controls_bottom_mask');
+    this.mask.classList.add('rplayer_ctrl_bottom_mask');
 
     this.appendChild(this.progressBar);
     this.appendChild(this.actions);

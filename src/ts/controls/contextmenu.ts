@@ -10,9 +10,9 @@ class MenuItem {
   private readonly cb: ContextMenuItem['onClick'];
 
   constructor(item: ContextMenuItem, menu: ContextMenu) {
-    this.dom = newElement('div', 'rplayer_controls_menu_item');
+    this.dom = newElement('div', 'rplayer_ctrl_menu_item');
     const i = isElement(item.icon) ? item.icon : htmlDom(item.icon);
-    i.classList.add('rplayer_controls_menu_item_icon');
+    i.classList.add('rplayer_ctrl_menu_item_icon');
     this.dom.appendChild(i);
     this.dom.appendChild(
       isElement(item.label) ? item.label : htmlDom(item.label)
@@ -35,10 +35,7 @@ class MenuItem {
   };
 
   update(): void {
-    this.dom.classList.toggle(
-      'rplayer_controls_menu_item-checked',
-      this.checked
-    );
+    this.dom.classList.toggle('rplayer_ctrl_menu_item-checked', this.checked);
   }
 
   clickHandler = (ev: MouseEvent): void => {
@@ -61,7 +58,7 @@ class ContextMenu extends Component {
     });
 
     this.opts = this.player.options.contextMenu;
-    this.addClass('rplayer_controls_menu');
+    this.addClass('rplayer_ctrl_menu');
     this.hidden();
 
     this.showed = !this.opts.enable;
