@@ -1,3 +1,15 @@
+# [0.3.0](https://github.com/woopen/RPlayer/compare/v0.2.0...v0.3.0) (2020-05-16)
+
+
+### Features
+
+* 主题色配置 ([a6c8538](https://github.com/woopen/RPlayer/commit/a6c8538cfa567c1c02ecce4592eab4079357a72d))
+* 优化 loading & 修复兼容问题 ([5b21c09](https://github.com/woopen/RPlayer/commit/5b21c09b8772933d6bd2fe03e2c7e5ce59f85497))
+* 右键菜单 ([42f28dc](https://github.com/woopen/RPlayer/commit/42f28dc8f8584ba153b6171a15489a55c9a851b4))
+* 配置持久化 ([df14c33](https://github.com/woopen/RPlayer/commit/df14c335b3932947ba6c8876eb4817efd898650e))
+
+
+
 # [0.2.0](https://github.com/woopen/RPlayer/compare/cc8a7e0366e06b8a462fe63fa0b7d848fb2906f5...v0.2.0) (2020-05-10)
 
 
@@ -12,11 +24,8 @@
 * 显示隐藏控制器 ([cc8a7e0](https://github.com/woopen/RPlayer/commit/cc8a7e0366e06b8a462fe63fa0b7d848fb2906f5))
 * 添加 icon & 播放器设置设置 ([bb1ce6d](https://github.com/woopen/RPlayer/commit/bb1ce6dfb4b6eea4d49c2c8fbeb4ebc6ea0a0070))
 * 添加 Loading ([452ebba](https://github.com/woopen/RPlayer/commit/452ebba5ae6abfe33c666f0cce1731f91ed35082))
-* 添加发布脚本 ([1d61c20](https://github.com/woopen/RPlayer/commit/1d61c20414a67f2e373d3b910d1fcf9e8371c97a))
-* 添加安装信息 ([eed90f0](https://github.com/woopen/RPlayer/commit/eed90f0bdf77b10bbd7fee8c2d3e0dcd81d333c9))
 * 添加播放进度条 ([fb9e374](https://github.com/woopen/RPlayer/commit/fb9e374db8716d0b8688bcfc911ea8ad172865cb))
 * 添加进度条时间显示 ([5802e62](https://github.com/woopen/RPlayer/commit/5802e62c585a587b3f60d35a85f933a5ffdcb0ac))
-* 第一阶段 README ([8b2810f](https://github.com/woopen/RPlayer/commit/8b2810fa491495ff014f682bff3f65882a14d91a))
 * 缩略图预览 ([e360dec](https://github.com/woopen/RPlayer/commit/e360dec8f3a6007b0f7c82559325748d5f8d77f0))
 * 美化 UI ([2d5aae0](https://github.com/woopen/RPlayer/commit/2d5aae053165b93ababcc9489d9caec62f5bf206))
 * 进度条控制 ([90afbcd](https://github.com/woopen/RPlayer/commit/90afbcd0bf5db54d1dfa92c43da2e8975e7a2148))
