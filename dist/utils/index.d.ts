@@ -5,12 +5,13 @@ export declare function isStr(o: any): o is string;
 export declare function isNum(o: any): o is number;
 export declare function isFn(o: any): o is Function;
 export declare function isObj(o: any): o is Record<string, any>;
+export declare function isElement(o: any): o is Element;
 export declare function isCatchable(o: any): o is {
     catch: Function;
 };
 export declare function findIndex<T>(arr: T[], predicate: (value: T, index: number, obj: T[]) => unknown): number;
 export declare function getDomOr<T extends HTMLElement>(dom: HTMLElement | string, orReturn?: (() => T) | T): T;
-export declare function htmlDom(html: string, tag?: string): HTMLElement;
+export declare function htmlDom(html?: string, tag?: string): HTMLElement;
 export declare function measureElementSize(dom: HTMLElement): {
     width: number;
     height: number;
@@ -24,3 +25,7 @@ export declare const ua: {
     isIos: boolean;
 };
 export declare const makeDictionary: <T>(obj: T) => T;
+export declare const getClientWH: () => [number, number];
+export declare const safeJsonParse: <T extends Record<string, any>>(str: string, orRet?: T) => string | T;
+export declare const safeJsonStringify: (obj: Record<string, any>, orRet?: string) => string;
+export declare const extend: (target: Record<string, any>, source: Record<string, any>) => Record<string, any>;

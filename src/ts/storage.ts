@@ -16,7 +16,7 @@ class Storage {
         return false;
       }
 
-      const test = 'rplayer_test_';
+      const test = 'rplayer___';
       window.localStorage.setItem(test, test);
       window.localStorage.removeItem(test);
       return true;

@@ -3,8 +3,7 @@ import RPlayer from '../rplayer';
 declare class Bottom extends Component {
     private readonly progressBar;
     private readonly actions;
-    private readonly mask;
+    readonly mask: HTMLElement;
     constructor(player: RPlayer);
-    onBeforeMount(): void;
 }
 export default Bottom;

@@ -42,8 +42,8 @@ export interface ThumbnailOpts {
 }
 
 export interface ContextMenuItem {
-  icon?: string | HTMLElement;
-  label?: string | HTMLElement;
+  icon?: string | Element;
+  label?: string | Element;
   checked?: boolean;
   onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
 }

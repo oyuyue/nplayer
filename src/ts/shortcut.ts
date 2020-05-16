@@ -11,17 +11,18 @@ class Shortcut {
 
   constructor(player: RPlayer) {
     this.player = player;
+    const opts = player.options.shortcut;
 
     this.handler = makeDictionary({
-      38: (p): void => p.incVolume(p.options.shortcut.volume), // 🠝
-      40: (p): void => p.decVolume(p.options.shortcut.volume), // 🠟
-      39: (p): void => p.forward(p.options.shortcut.time), // 🠞
-      37: (p): void => p.rewind(p.options.shortcut.time), // 🠜
+      38: (p): void => p.incVolume(opts.volume), // 🠝
+      40: (p): void => p.decVolume(opts.volume), // 🠟
+      39: (p): void => p.forward(opts.time), // 🠞
+      37: (p): void => p.rewind(opts.time), // 🠜
       32: (p): void => p.toggle(), // space
     });
 
-    if (player.options.shortcut.enable) {
-      this.enable(player.options.shortcut.global);
+    if (opts.enable) {
+      this.enable(opts.global);
     }
   }
 

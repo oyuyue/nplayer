@@ -5,6 +5,7 @@ import { htmlDom } from './utils';
 
 class Loading extends EventHandler {
   private readonly loadingClass = 'rplayer-loading';
+  private showTimer: NodeJS.Timeout;
   private startWaitingTime = 0;
 
   constructor(player: RPlayer) {
@@ -19,6 +20,7 @@ class Loading extends EventHandler {
   private _checkCanplay = (): void => {
     if (this.startWaitingTime !== this.player.currentTime) {
       this.hide();
+      clearTimeout(this.showTimer);
       this.player.off(Events.TIME_UPDATE, this._checkCanplay);
     }
   };
@@ -29,23 +31,37 @@ class Loading extends EventHandler {
     this.player.on(Events.TIME_UPDATE, this._checkCanplay);
   }
 
+  private tryShow(): void {
+    this.checkCanplay();
+    this.showTimer = setTimeout(this.show, 100);
+  }
+
   onCanplay(): void {
     this.hide();
   }
 
   onWaiting(): void {
-    this.show();
-    this.checkCanplay();
+    this.tryShow();
   }
 
   onStalled(): void {
-    this.show();
-    this.checkCanplay();
+    const curTime = this.player.currentTime;
+    if (!curTime) return;
+
+    let show = true;
+    this.player.eachBuffer((start, end) => {
+      if (start <= curTime && end > curTime) {
+        show = false;
+        return true;
+      }
+    });
+
+    if (show) this.tryShow();
   }
 
-  show(): void {
+  show = (): void => {
     this.player.addClass(this.loadingClass);
-  }
+  };
 
   hide(): void {
     this.player.removeClass(this.loadingClass);

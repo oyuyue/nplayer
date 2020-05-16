@@ -38,10 +38,21 @@ function handler(player: RPlayer, video: HTMLVideoElement): void {
   trans(player, video, 'waiting', Events.WAITING);
   trans(player, video, 'stalled', Events.STALLED);
   trans(player, video, 'canplay', Events.CANPLAY);
+  trans(player, video, 'loadedmetadata', Events.LOADED_METADATA);
+  trans(player, video, 'error', Events.ERROR);
 
   transThrottle(player, video, 'timeupdate', Events.TIME_UPDATE);
   transThrottle(player, video, 'volumechange', Events.VOLUME_CHANGE);
   transThrottle(player, video, 'progress', Events.PROGRESS);
+
+  player.on(Events.LOADED_METADATA, () => {
+    if (player.media.paused) {
+      player.emit(Events.PAUSE);
+    } else {
+      player.emit(Events.PLAY);
+    }
+    requestAnimationFrame(player.updateRect);
+  });
 
   // player
   trans(player, player.dom, 'click', Events.PLAYER_CLICK);

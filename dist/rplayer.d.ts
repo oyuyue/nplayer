@@ -4,8 +4,8 @@ import Fullscreen from './fullscreen';
 import I18n from './i18n';
 import Loading from './loading';
 import { RPlayerOptions } from './options';
-import Respond from './respond';
 import Shortcut from './shortcut';
+import Storage from './storage';
 declare class RPlayer extends Component {
     el: HTMLElement;
     curBreakPoint: string;
@@ -16,7 +16,7 @@ declare class RPlayer extends Component {
     readonly shortcut: Shortcut;
     readonly i18n: I18n;
     readonly loading: Loading;
-    readonly respond: Respond;
+    storage: Storage;
     private prevVolume;
     constructor(opts: RPlayerOptions);
     get currentTime(): number;
@@ -31,6 +31,7 @@ declare class RPlayer extends Component {
     get buffered(): TimeRanges;
     get paused(): boolean;
     get isPhone(): boolean;
+    private restore;
     setMediaAttrs(map: RPlayerOptions['video']): void;
     mount(el?: HTMLElement): void;
     seek(seconds: number): void;

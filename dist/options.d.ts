@@ -5,11 +5,17 @@ import RPlayer from './rplayer';
 export interface OptionPreset {
     playbackRate?: boolean | {
         position?: number;
+        defaultIndex?: number;
         steps?: {
             label?: string;
             value?: number;
         }[];
     };
+    version?: boolean;
+}
+export interface StorageOpts {
+    enable?: boolean;
+    key?: string;
 }
 export interface Shortcut {
     enable?: boolean;
@@ -27,6 +33,17 @@ export interface ThumbnailOpts {
     images?: string[];
     handler?: (seconds: number) => ThumbnailImgBg;
 }
+export interface ContextMenuItem {
+    icon?: string | Element;
+    label?: string | Element;
+    checked?: boolean;
+    onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
+}
+export interface ContextMenuOpts {
+    toggle?: boolean;
+    enable?: boolean;
+    items?: ContextMenuItem[];
+}
 export interface RPlayerOptions {
     media?: string | HTMLVideoElement;
     el?: string | HTMLElement;
@@ -38,6 +55,8 @@ export interface RPlayerOptions {
     shortcut?: Shortcut;
     lang?: string;
     thumbnail?: ThumbnailOpts;
+    contextMenu?: ContextMenuOpts;
+    storage?: StorageOpts;
 }
 declare function processOptions(player: RPlayer, opts?: RPlayerOptions): RPlayerOptions;
 export default processOptions;

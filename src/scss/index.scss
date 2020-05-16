@@ -11,7 +11,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Microsoft JhengHei', 'Microsoft YaHei';
   -webkit-font-smoothing: antialiased;
@@ -26,6 +25,7 @@
   }
 
   video {
+    -ms-flex: 1;
     max-width: 100%;
   }
 
@@ -35,30 +35,31 @@
     fill: $color-white;
   }
 
-  &_icon {
-    &_play, &_exit_fullscreen {
+  &_i {
+    &_play, &_exit_fs {
       display: none;
     }
   }
 
   &-paused {
-    .rplayer_icon_pause {
+    .rplayer_i_pause {
       display: none;
     }
-    .rplayer_icon_play {
+    .rplayer_i_play {
       display: block;
     }
   }
 
   &-full {
+    width: 100%;
     video {
       width: 100%;
     }
 
-    .rplayer_icon_exit_fullscreen {
+    .rplayer_i_exit_fs {
       display: block;
     }
-    .rplayer_icon_enter_fullscreen {
+    .rplayer_i_enter_fs {
       display: none;
     }
   }
@@ -181,7 +182,8 @@
       position: absolute;
       top: 0;
       left: 0;
-      padding: 5px 0;
+      padding: 3px 0;
+      font-size: 12px;
       border-radius: $size-popup-radius;
       background: $color-bg-popup;
       z-index: 2;
@@ -189,19 +191,19 @@
       &_item {
         display: flex;
         align-items: center;
-        padding: 8px 10px;
+        padding: 5px 8px;
         white-space: nowrap;
         cursor: pointer;
         user-select: none;
 
-        &_icon {
-          width: 14px !important;
-          height: 14px !important;
-          margin-right: 8px;
+        &_i {
+          width: 12px !important;
+          height: 12px !important;
+          margin-right: 5px;
         }
 
         & > :nth-child(2) {
-          flex: 1;
+          margin-right: auto;
         }
   
         &:hover {
@@ -213,11 +215,11 @@
           opacity: 0;
           display: block;
           height: 5px;
-          width: 12px;
+          width: 10px;
           border: 1px solid $color-white;
           border-top-color: transparent;
           border-right-color: transparent;
-          margin-left: 15px;
+          margin-left: 10px;
           margin-top: -3px;
           transform: rotate(-45deg);
         }
@@ -251,6 +253,7 @@
       width: $size-dot;
       height: $size-dot;
       border-radius: 50%;
+      background: $color-primary;
       background: var(--rplayer-primary);
       transform: scale(0);
       transition: transform .15s ease;
@@ -277,6 +280,7 @@
     }
 
     &_played {
+      background: $color-primary;
       background: var(--rplayer-primary);
       transform: scaleX(0);
       will-change: transform;
@@ -297,9 +301,11 @@
       touch-action: none;
     }
 
-    &:hover .rplayer_progress_hover,
-    &:active .rplayer_progress_hover {
+    &:hover .rplayer_progress_hover {
       opacity: 1;
+    }
+    &:active .rplayer_progress_hover {
+      opacity: 0;
     }
 
     &:hover .rplayer_thumb,
@@ -354,16 +360,16 @@
         display: none;
       }
 
-      .rplayer_icon_muted {
+      .rplayer_i_muted {
         display: none;
       }
 
-      &_icon {
+      &_i {
         &-muted {
-          .rplayer_icon_muted {
+          .rplayer_i_muted {
             display: block;
           }
-          .rplayer_icon_volume {
+          .rplayer_i_volume {
             display: none;
           }
         }
@@ -423,12 +429,13 @@
       }
     }
 
-    &_setting {
+    &_set {
       svg {
         transition: transform .2s ease;
       }
 
       &-active {
+        background: $color-primary !important;
         background: var(--rplayer-primary) !important;
 
         svg {
@@ -439,13 +446,13 @@
           opacity: 0 !important;
         }
 
-        .rplayer_settings_menu {
+        .rplayer_sets_menu {
           opacity: 1;
           transform: translateY(0);
           pointer-events: initial;
         }
 
-        .rplayer_action_setting_mask {
+        .rplayer_action_set_mask {
           display: block;
         }
       }
@@ -460,6 +467,7 @@
     cursor: pointer;
 
     &:hover {
+      background: $color-primary;
       background: var(--rplayer-primary);
     }
   }
@@ -508,7 +516,7 @@
     }
   }
 
-  &_settings {
+  &_sets {
     &_menu {
       position: absolute;
       bottom: 100%;
@@ -573,7 +581,7 @@
     }
 
     &_radio {
-      &_option {
+      &_opt {
         position: relative;
         justify-content: flex-start;
 

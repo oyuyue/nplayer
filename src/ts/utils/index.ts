@@ -141,7 +141,7 @@ export const makeDictionary = <T>(obj: T): T => {
 };
 
 export const getClientWH = (): [number, number] => {
-  return [document.body.clientWidth, document.documentElement.clientHeight];
+  return [document.body.clientWidth, document.body.clientHeight];
 };
 
 export const safeJsonParse = <T extends Record<string, any>>(
@@ -175,11 +175,11 @@ export const extend = (
   Object.keys(source).forEach((key) => {
     if (isObj(source[key])) {
       if (!Object.keys(target).includes(key)) {
-        Object.assign(target, { [key]: {} });
+        target = { ...target, [key]: {} };
       }
       extend(target[key], source[key]);
     } else {
-      Object.assign(target, { [key]: source[key] });
+      target = { ...target, [key]: source[key] };
     }
   });
 

@@ -9,13 +9,13 @@ import Dot from '../dot';
 import Tray from '../tray';
 
 class Icon extends Tray {
-  private readonly mutedClass = 'rplayer_action_volume_icon-muted';
+  private readonly mutedClass = 'rplayer_action_volume_i-muted';
 
   constructor(player: RPlayer) {
     super(player);
 
-    this.appendChild(icons.volume('rplayer_icon_volume'));
-    this.appendChild(icons.muted('rplayer_icon_muted'));
+    this.appendChild(icons.volume('rplayer_i_volume'));
+    this.appendChild(icons.muted('rplayer_i_muted'));
 
     this.update();
   }

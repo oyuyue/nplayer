@@ -12,6 +12,7 @@ import Storage from './storage';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
 class RPlayer extends Component {
+  static readonly Events = Events;
   el: HTMLElement;
   curBreakPoint: string;
   readonly media: HTMLVideoElement;
@@ -43,11 +44,16 @@ class RPlayer extends Component {
     setupEvents(this, this.media);
     this.prevVolume = this.media.volume;
     this.volume = this.prevVolume;
+    this.autoUpdateRect(this);
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
     this.loading = new Loading(this);
+
+    this.dom.addEventListener('resize', function () {
+      console.log('player resize');
+    });
   }
 
   get currentTime(): number {
@@ -179,6 +185,14 @@ class RPlayer extends Component {
 
   t(key: string): string {
     return this.i18n.t(key);
+  }
+
+  eachBuffer(fn: (start: number, end: number) => boolean | void): void {
+    for (let l = this.buffered.length, i = l - 1; i >= 0; i--) {
+      if (fn(this.buffered.start(i), this.buffered.end(i))) {
+        break;
+      }
+    }
   }
 }
 

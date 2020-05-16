@@ -8,11 +8,12 @@ class MenuItem {
   readonly dom: HTMLElement;
   private checked = false;
   private readonly cb: ContextMenuItem['onClick'];
+  private readonly checkedClass = 'rplayer_ctrl_menu_item-checked';
 
   constructor(item: ContextMenuItem, menu: ContextMenu) {
     this.dom = newElement('div', 'rplayer_ctrl_menu_item');
     const i = isElement(item.icon) ? item.icon : htmlDom(item.icon);
-    i.classList.add('rplayer_ctrl_menu_item_icon');
+    i.classList.add('rplayer_ctrl_menu_item_i');
     this.dom.appendChild(i);
     this.dom.appendChild(
       isElement(item.label) ? item.label : htmlDom(item.label)
@@ -35,7 +36,11 @@ class MenuItem {
   };
 
   update(): void {
-    this.dom.classList.toggle('rplayer_ctrl_menu_item-checked', this.checked);
+    if (this.checked) {
+      this.dom.classList.add(this.checkedClass);
+    } else {
+      this.dom.classList.remove(this.checkedClass);
+    }
   }
 
   clickHandler = (ev: MouseEvent): void => {
@@ -105,10 +110,8 @@ class ContextMenu extends Component {
 
       let l = ev.pageX - left;
       let t = ev.pageY - top;
-      if (l < 0) l = 0;
-      else if (ev.pageX + width > w) l = w - width;
-      if (t < 0) t = 0;
-      else if (ev.pageY + height > h) t = h - height;
+      if (ev.pageX + width > w) l = w - width;
+      if (ev.pageY + height > h) t = h - height;
 
       this.addStyle({
         left: l + 'px',

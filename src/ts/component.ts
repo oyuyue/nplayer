@@ -23,7 +23,7 @@ class Component extends EventHandler {
     this.dom = isStr(dom) ? newElement(dom) : dom;
 
     if (player && autoUpdateRect) {
-      player.on(Events.PLAYER_RESIZE, this._resizeHandler);
+      this.autoUpdateRect();
     }
   }
 
@@ -53,9 +53,13 @@ class Component extends EventHandler {
     this.updateRect();
   };
 
-  updateRect(): void {
-    this._rect = this.dom.getBoundingClientRect();
+  autoUpdateRect(player = this.player): void {
+    player.on(Events.PLAYER_RESIZE, this._resizeHandler);
   }
+
+  updateRect = (): void => {
+    this._rect = this.dom.getBoundingClientRect();
+  };
 
   addStyle(style: Partial<CSSStyleDeclaration> | string): void {
     if (isStr(style)) {

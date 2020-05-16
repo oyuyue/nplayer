@@ -11,8 +11,8 @@ class PlayAction extends Tray {
     this.changeTipText(player.t(PLAY));
     this.setLeft();
 
-    this.appendChild(icons.play('rplayer_icon_play'));
-    this.appendChild(icons.pause('rplayer_icon_pause'));
+    this.appendChild(icons.play('rplayer_i_play'));
+    this.appendChild(icons.pause('rplayer_i_pause'));
   }
 
   onClick(): void {

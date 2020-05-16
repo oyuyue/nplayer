@@ -16,7 +16,7 @@ class SettingMenu extends Component {
   constructor(player: RPlayer) {
     super(player, { events: [Events.MOUNTED] });
 
-    this.addClass('rplayer_settings_menu');
+    this.addClass('rplayer_sets_menu');
 
     let radioIndex = -1;
     this.items = this.player.options.settings.map((s) => {
@@ -65,8 +65,8 @@ class SettingMenu extends Component {
 
   private getBack(html: string): HTMLElement {
     const div = newElement();
-    div.classList.add('rplayer_settings_menu_page_back');
-    div.classList.add('rplayer_settings_menu_item');
+    div.classList.add('rplayer_sets_menu_page_back');
+    div.classList.add('rplayer_sets_menu_item');
     div.innerHTML = html;
     div.addEventListener('click', this.backClickHandler, true);
     return div;
@@ -78,7 +78,7 @@ class SettingMenu extends Component {
     this.items.forEach((item: any) => {
       home.appendChild(item.entry);
     });
-    home.classList.add('rplayer_settings_menu_page');
+    home.classList.add('rplayer_sets_menu_page');
     return home;
   }
 
@@ -86,7 +86,7 @@ class SettingMenu extends Component {
     if (!(radio instanceof Radio)) return null;
 
     const div = newElement();
-    div.classList.add('rplayer_settings_menu_page');
+    div.classList.add('rplayer_sets_menu_page');
 
     const back = this.getBack(radio.opts.label);
     div.appendChild(back);

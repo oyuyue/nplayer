@@ -8,7 +8,7 @@ import Tray from '../tray';
 class SettingAction extends Tray {
   private readonly menu: SettingMenu;
   private resetPageTimer: NodeJS.Timeout;
-  private readonly activeClass = 'rplayer_action_setting-active';
+  private readonly activeClass = 'rplayer_action_set-active';
 
   constructor(player: RPlayer) {
     super(
@@ -18,7 +18,7 @@ class SettingAction extends Tray {
       Events.PLAYER_CONTEXT_MENU
     );
 
-    this.addClass('rplayer_action_setting');
+    this.addClass('rplayer_action_set');
     this.changeTipText(player.t(SETTINGS));
 
     this.menu = new SettingMenu(player);

@@ -35,8 +35,8 @@ class Radio extends Component {
       const div = newElement();
       div.innerHTML = o.html || o.label;
       div.addEventListener('click', this.optionClickHandler(i), true);
-      div.classList.add('rplayer_settings_menu_item');
-      div.classList.add('rplayer_settings_radio_option');
+      div.classList.add('rplayer_sets_menu_item');
+      div.classList.add('rplayer_sets_radio_opt');
       return div;
     });
 
@@ -45,8 +45,8 @@ class Radio extends Component {
     this.value = opts.defaultValue || 0;
 
     this.entry = newElement();
-    this.entry.classList.add('rplayer_settings_menu_radio');
-    this.entry.classList.add('rplayer_settings_menu_item');
+    this.entry.classList.add('rplayer_sets_menu_radio');
+    this.entry.classList.add('rplayer_sets_menu_item');
     this.entryLabel = htmlDom(opts.label);
     this.entryValue = newElement('span');
 
@@ -81,12 +81,12 @@ class Radio extends Component {
     const opt = this.options[index];
     if (!opt) return;
     if (this.prevSelect) {
-      this.prevSelect.classList.remove('rplayer_settings_radio_option-active');
+      this.prevSelect.classList.remove('rplayer_sets_radio_opt-active');
     }
 
     const select = this.opts.options[index];
     this.entryValue.innerHTML = select.selected || select.label;
-    opt.classList.add('rplayer_settings_radio_option-active');
+    opt.classList.add('rplayer_sets_radio_opt-active');
     this.value = index;
     this.prevSelect = opt;
   }

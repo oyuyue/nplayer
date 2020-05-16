@@ -23,7 +23,7 @@ class Switch {
     this.entryValue.classList.add('rplayer_switch');
 
     this.entry = newElement();
-    this.entry.classList.add('rplayer_settings_menu_item');
+    this.entry.classList.add('rplayer_sets_menu_item');
     this.entry.appendChild(this.entryLabel);
     this.entry.appendChild(this.entryValue);
 

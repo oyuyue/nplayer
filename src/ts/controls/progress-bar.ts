@@ -112,14 +112,12 @@ class ProgressBar extends Component {
     const curTime = this.player.currentTime;
     let percentage = 0;
 
-    for (let i = bufLen - 1; i >= 0; i--) {
-      const endBuf = this.player.buffered.end(i);
-
-      if (this.player.buffered.start(i) <= curTime && endBuf >= curTime) {
-        percentage = endBuf / this.player.duration;
-        break;
+    this.player.eachBuffer((start, end) => {
+      if (start <= curTime && end >= curTime) {
+        percentage = end / this.player.duration;
+        return true;
       }
-    }
+    });
 
     this.bufBar.setX(percentage);
   }

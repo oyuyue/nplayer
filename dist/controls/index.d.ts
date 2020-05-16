@@ -1,18 +1,18 @@
 import Component from '../component';
 import RPlayer from '../rplayer';
 import Bottom from './bottom';
+import ContextMenu from './contextmenu';
+import Mask from './mask';
 declare class Controls extends Component {
     private controlsTimer;
     readonly bottom: Bottom;
-    private readonly mask;
+    readonly mask: Mask;
+    readonly contextMenu: ContextMenu;
     private readonly hideClass;
     private readonly pausedClass;
     private showLatch;
     constructor(player: RPlayer);
     get isHide(): boolean;
-    private initEvents;
-    private playerClickHandler;
-    private delayHide;
     private tryHideControls;
     requireShow(): void;
     releaseShow(): void;
@@ -21,5 +21,8 @@ declare class Controls extends Component {
     hide(): void;
     onPlay(): void;
     onPause(): void;
+    onPlayerClick(ev: Event): void;
+    onPlayerMouseMove(): void;
+    onPlayerMouseLeave(): void;
 }
 export default Controls;
