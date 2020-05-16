@@ -4,13 +4,23 @@ import { SwitchOpts } from './controls/setting-menu/switch';
 import { ThumbnailImgBg } from './controls/thumbnail';
 import { t } from './i18n';
 import RPlayer from './rplayer';
+import Storage from './storage';
 import { findIndex, isNum, isObj } from './utils';
 
 export interface OptionPreset {
   playbackRate?:
     | boolean
-    | { position?: number; steps?: { label?: string; value?: number }[] };
+    | {
+        position?: number;
+        defaultIndex?: number;
+        steps?: { label?: string; value?: number }[];
+      };
   version?: boolean;
+}
+
+export interface StorageOpts {
+  enable?: boolean;
+  key?: string;
 }
 
 export interface Shortcut {
@@ -54,6 +64,7 @@ export interface RPlayerOptions {
   lang?: string;
   thumbnail?: ThumbnailOpts;
   contextMenu?: ContextMenuOpts;
+  storage?: StorageOpts;
 }
 
 function processPlaybackRate(
@@ -64,14 +75,15 @@ function processPlaybackRate(
 
   const DEFAULT_PLAY_RATE = {
     steps: [
-      { label: '0.5x', value: 0.5 },
+      { label: '0.5x', value: 0.5, i: 0 },
       { label: '0.75x', value: 0.75 },
-      { label: t(NORMAL, opts.lang), value: 1 },
-      { label: '1.25x', value: 1.25 },
-      { label: '1.5x', value: 1.5 },
-      { label: '1.75x', value: 1.75 },
-      { label: '2x', value: 2 },
+      { label: t(NORMAL, opts.lang), value: 1, i: 1 },
+      { label: '1.25x', value: 1.25, i: 2 },
+      { label: '1.5x', value: 1.5, i: 3 },
+      { label: '1.75x', value: 1.75, i: 4 },
+      { label: '2x', value: 2, i: 5 },
     ],
+    defaultIndex: 2,
   };
 
   const playbackRate: any =
@@ -79,12 +91,18 @@ function processPlaybackRate(
       ? opts.preset.playbackRate
       : DEFAULT_PLAY_RATE;
 
+  const defaultIndex = player.storage.get(
+    'playbackRate',
+    playbackRate.defaultIndex
+  );
+
   const setting: RadioOpts = {
     label: t(SPEED, opts.lang),
-    defaultValue: 2,
+    defaultValue: defaultIndex,
     options: playbackRate.steps,
     onChange(opt: RadioOption, next: Function) {
       player.playbackRate = opt.value;
+      player.storage.set({ playbackRate: opt.i });
       next();
     },
   };
@@ -154,6 +172,18 @@ function processContextMenu(opts: RPlayerOptions): RPlayerOptions {
   return opts;
 }
 
+function processStorage(opts: RPlayerOptions): RPlayerOptions {
+  opts.storage = {
+    ...{
+      enable: true,
+      key: 'rplayer',
+    },
+    ...opts.storage,
+  };
+
+  return opts;
+}
+
 function processOptions(
   player: RPlayer,
   opts?: RPlayerOptions
@@ -162,6 +192,9 @@ function processOptions(
 
   opts.settings = opts.settings || [];
   opts.preset = opts.preset || {};
+
+  opts = processStorage(opts);
+  player.storage = new Storage(opts);
 
   opts = processLang(opts);
   opts = processPlaybackRate(opts, player);

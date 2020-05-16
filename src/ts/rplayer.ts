@@ -8,6 +8,7 @@ import I18n from './i18n';
 import Loading from './loading';
 import processOptions, { RPlayerOptions } from './options';
 import Shortcut from './shortcut';
+import Storage from './storage';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
 class RPlayer extends Component {
@@ -21,6 +22,7 @@ class RPlayer extends Component {
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
   readonly loading: Loading;
+  storage: Storage;
 
   private prevVolume = 1;
 
@@ -36,9 +38,11 @@ class RPlayer extends Component {
     this.media = getDomOr(this.options.media, () => newElement('video'));
     this.el = getDomOr(this.options.el, document.body);
 
-    this.prevVolume = this.media.volume;
+    this.restore();
     if (this.options.video) this.setMediaAttrs(this.options.video);
     setupEvents(this, this.media);
+    this.prevVolume = this.media.volume;
+    this.volume = this.prevVolume;
 
     this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
@@ -62,6 +66,7 @@ class RPlayer extends Component {
 
   set volume(v: number) {
     this.media.volume = clamp(v);
+    this.storage.set({ volume: this.media.volume });
     if (this.muted && v > 0) this.muted = false;
   }
 
@@ -95,6 +100,10 @@ class RPlayer extends Component {
 
   get isPhone(): boolean {
     return this.curBreakPoint === BP.BREAKPOINT_PHONE;
+  }
+
+  private restore(): void {
+    this.media.volume = this.storage.get('volume', 1);
   }
 
   setMediaAttrs(map: RPlayerOptions['video']): void {
