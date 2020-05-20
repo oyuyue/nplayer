@@ -2,8 +2,8 @@ import Component from '../../component';
 import Events from '../../events';
 import RPlayer from '../../rplayer';
 import { measureElementSize, newElement } from '../../utils';
-import Radio from './radio';
-import Switch from './switch';
+import Radio, { RadioOpts } from './radio';
+import Switch, { SwitchOpts } from './switch';
 
 class SettingMenu extends Component {
   private readonly items: (Radio | Switch)[];
@@ -18,23 +18,24 @@ class SettingMenu extends Component {
 
     this.addClass('rplayer_sets_menu');
 
-    let radioIndex = -1;
-    this.items = this.player.options.settings.map((s) => {
-      if ((s as any).options) {
-        radioIndex++;
-        return new Radio(s as any, this.radioEntryClickHandler(radioIndex));
+    this.items = this.player.options.settings.map((s, i) => {
+      if ((s as any).items) {
+        return new Radio(s as any, this.radioEntryClickHandler(i));
       } else {
         return new Switch(s as any);
       }
     });
 
-    this.homePage = this.getHomePage();
-    this.optionPages = this.items
-      .map((item) => this.getOptionPage(item))
-      .filter((x) => x);
+    this.homePage = newElement();
+    this.items.forEach((item) => {
+      this.homePage.appendChild(item.entry);
+    });
+    this.homePage.classList.add('rplayer_sets_menu_page');
+
+    this.optionPages = this.items.map((item) => this.getOptionPage(item));
 
     this.appendChild(this.homePage);
-    this.optionPages.forEach((page) => this.appendChild(page));
+    this.optionPages.forEach((page) => page && this.appendChild(page));
   }
 
   private radioEntryClickHandler = (i: number) => (): void => {
@@ -72,16 +73,6 @@ class SettingMenu extends Component {
     return div;
   }
 
-  private getHomePage(): HTMLElement {
-    if (this.homePage) return this.homePage;
-    const home = newElement();
-    this.items.forEach((item: any) => {
-      home.appendChild(item.entry);
-    });
-    home.classList.add('rplayer_sets_menu_page');
-    return home;
-  }
-
   private getOptionPage(radio: Radio | Switch): HTMLElement {
     if (!(radio instanceof Radio)) return null;
 
@@ -96,9 +87,27 @@ class SettingMenu extends Component {
     return div;
   }
 
+  addItem(opts: RadioOpts | SwitchOpts, i = this.items.length): Radio | Switch {
+    let item: Radio | Switch;
+    if (Array.isArray((opts as any).items) || (opts as any).items.length) {
+      item = new Radio(opts as RadioOpts, this.radioEntryClickHandler(i));
+    } else {
+      item = new Switch(opts as SwitchOpts);
+    }
+    this.items.splice(i, 0, item);
+
+    const optionPage = this.getOptionPage(item);
+    this.optionPages.splice(i, 0, optionPage);
+
+    this.homePage.insertBefore(item.entry, this.homePage.children[i]);
+    this.appendChild(optionPage);
+
+    return item;
+  }
+
   resetPage(): void {
-    this.optionPages.forEach((opt) => {
-      opt.hidden = true;
+    this.optionPages.forEach((page) => {
+      if (page) page.hidden = true;
     });
     this.homePage.hidden = false;
 

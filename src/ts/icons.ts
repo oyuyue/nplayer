@@ -1,3 +1,4 @@
+import cc from '../icons/cc.svg';
 import enterFullscreen from '../icons/enter-fullscreen.svg';
 import exitFullscreen from '../icons/exit-fullscreen.svg';
 import muted from '../icons/muted.svg';
@@ -28,5 +29,8 @@ export default {
   },
   settings(cls?: string): Element {
     return svgToDom(settings, cls);
+  },
+  cc(cls?: string): Element {
+    return svgToDom(cc, cls);
   },
 };

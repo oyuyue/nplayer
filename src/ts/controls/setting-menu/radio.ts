@@ -1,69 +1,53 @@
-import Component from '../../component';
-import { htmlDom, isFn, newElement } from '../../utils';
+import { isFn, newElement } from '../../utils';
+import SettingItem from './item';
 
 export interface RadioOption {
   label: string;
-  selected?: string;
+  selectedLabel?: string;
   [key: string]: any;
+}
+
+export interface RadioChangeFn {
+  (o: RadioOption, update: () => void): any;
 }
 
 export interface RadioOpts {
   label: string;
-  options: RadioOption[];
-  defaultValue?: number;
-  onChange?: (o: RadioOption, next: () => void) => any;
+  items: RadioOption[];
+  checked?: number;
+  onChange?: RadioChangeFn;
 }
 
-class Radio extends Component {
+class Radio extends SettingItem {
   private prevSelect: HTMLElement;
   private value: number;
+  readonly dom = newElement();
 
   readonly opts: RadioOpts;
   private readonly options: HTMLElement[];
-  private readonly entry: HTMLElement;
-  private readonly entryLabel: HTMLElement;
-  private readonly entryValue: HTMLElement;
+  private readonly activeClass = 'rplayer_sets_radio_opt-active';
 
-  private readonly onEntryClick: (radio: Radio) => any;
+  private readonly entryClickCb: (radio: Radio) => any;
 
-  constructor(opts: RadioOpts, onEntryClick?: (radio: Radio) => any) {
-    super();
+  constructor(opts: RadioOpts, entryClickCb?: (radio: Radio) => any) {
+    super(opts.label);
     this.opts = opts;
-    this.onEntryClick = onEntryClick;
+    this.entryClickCb = entryClickCb;
 
-    this.options = opts.options.map((o, i) => {
+    this.entry.classList.add('rplayer_sets_menu_radio');
+
+    this.options = opts.items.map((o, i) => {
       const div = newElement();
-      div.innerHTML = o.html || o.label;
+      div.innerHTML = o.label;
       div.addEventListener('click', this.optionClickHandler(i), true);
       div.classList.add('rplayer_sets_menu_item');
       div.classList.add('rplayer_sets_radio_opt');
       return div;
     });
+    this.options.forEach((o) => this.dom.appendChild(o));
 
-    this.options.forEach((o) => this.appendChild(o));
-
-    this.value = opts.defaultValue || 0;
-
-    this.entry = newElement();
-    this.entry.classList.add('rplayer_sets_menu_radio');
-    this.entry.classList.add('rplayer_sets_menu_item');
-    this.entryLabel = htmlDom(opts.label);
-    this.entryValue = newElement('span');
-
+    this.value = opts.checked || 0;
     this.select(this.value);
-
-    this.entry.appendChild(this.entryLabel);
-    this.entry.appendChild(this.entryValue);
-
-    this.entry.addEventListener(
-      'click',
-      (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        if (isFn(this.onEntryClick)) this.onEntryClick(this);
-      },
-      true
-    );
   }
 
   private optionClickHandler = (i: number) => (ev: MouseEvent): void => {
@@ -71,24 +55,28 @@ class Radio extends Component {
     ev.stopPropagation();
     if (this.value === i) return;
     if (isFn(this.opts.onChange)) {
-      this.opts.onChange(this.opts.options[i], this.select.bind(this, i));
+      this.opts.onChange(this.opts.items[i], this.select.bind(this, i));
     } else {
       this.select(i);
     }
   };
 
-  private select(index: number): void {
+  select(index: number): void {
     const opt = this.options[index];
     if (!opt) return;
     if (this.prevSelect) {
-      this.prevSelect.classList.remove('rplayer_sets_radio_opt-active');
+      this.prevSelect.classList.remove(this.activeClass);
     }
 
-    const select = this.opts.options[index];
-    this.entryValue.innerHTML = select.selected || select.label;
-    opt.classList.add('rplayer_sets_radio_opt-active');
+    const select = this.opts.items[index];
+    this.entryValue.innerHTML = select.selectedLabel || select.label;
+    opt.classList.add(this.activeClass);
     this.value = index;
     this.prevSelect = opt;
+  }
+
+  onEntryClick(): void {
+    if (isFn(this.entryClickCb)) this.entryClickCb(this);
   }
 }
 

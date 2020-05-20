@@ -1,6 +1,9 @@
 import Component from './component';
 import { BP } from './config';
 import Controls from './controls';
+import Captions from './controls/captions';
+import Radio, { RadioOpts } from './controls/setting-menu/radio';
+import Switch, { SwitchOpts } from './controls/setting-menu/switch';
 import Events from './events';
 import Fullscreen from './fullscreen';
 import setupEvents from './handle-events';
@@ -23,6 +26,7 @@ class RPlayer extends Component {
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
   readonly loading: Loading;
+  readonly captions: Captions;
   storage: Storage;
 
   private prevVolume = 1;
@@ -50,10 +54,7 @@ class RPlayer extends Component {
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
     this.loading = new Loading(this);
-
-    this.dom.addEventListener('resize', function () {
-      console.log('player resize');
-    });
+    this.captions = new Captions(this);
   }
 
   get currentTime(): number {
@@ -175,7 +176,7 @@ class RPlayer extends Component {
 
   toggleVolume(): void {
     if (this.muted) {
-      this.volume = this.prevVolume;
+      this.volume = this.prevVolume || 1;
       this.muted = false;
     } else {
       this.prevVolume = this.volume;
@@ -193,6 +194,10 @@ class RPlayer extends Component {
         break;
       }
     }
+  }
+
+  addSettingItem(opts: RadioOpts | SwitchOpts, i?: number): Radio | Switch {
+    return this.controls.bottom.actions.setting.menu.addItem(opts, i);
   }
 }
 

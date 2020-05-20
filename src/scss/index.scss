@@ -457,6 +457,38 @@
         }
       }
     }
+
+    &_cap {
+
+      svg {
+        opacity: .5;
+      }
+
+      &-active svg {
+        opacity: 1;
+      }
+    }
+  }
+
+  &_caption {
+    position: absolute;
+    left: 50%;
+    bottom: 60px;
+    max-width: 90%;
+    padding: 2px 5px;
+    font-size: 22px;
+    color: #fff;
+    background: rgba(8, 8, 8, .75);
+    opacity: 0;
+    transform: translateX(-50%);
+    user-select: none;
+    touch-action: none;
+    cursor: default;
+    word-break: break-all;
+
+    &-active {
+      opacity: 1;
+    }
   }
 
   & &_tray {

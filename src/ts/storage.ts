@@ -28,10 +28,10 @@ class Storage {
   get<T = string>(key?: string, orRet?: T): T {
     if (!this.enable) return orRet;
     const data = localStorage.getItem(this.key);
-    if (!data) return orRet;
+    if (data == null) return orRet;
     const obj = safeJsonParse(data, null);
     if (!key) return obj || orRet;
-    return isObj(obj) ? obj[key] || orRet : orRet;
+    return isObj(obj) && obj[key] != null ? obj[key] : orRet;
   }
 
   set(obj: Record<string, any>): void {

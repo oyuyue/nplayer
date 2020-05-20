@@ -5,8 +5,8 @@ import Actions from './actions';
 import ProgressBar from './progress-bar';
 
 class Bottom extends Component {
-  private readonly progressBar: ProgressBar;
-  private readonly actions: Component;
+  readonly progressBar: ProgressBar;
+  readonly actions: Actions;
   readonly mask: HTMLElement;
 
   constructor(player: RPlayer) {

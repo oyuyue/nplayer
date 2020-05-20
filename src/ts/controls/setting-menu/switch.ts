@@ -1,57 +1,41 @@
-import { htmlDom, isFn, newElement } from '../../utils';
+import { isFn } from '../../utils';
+import SettingItem from './item';
 
 export interface SwitchOpts {
   label: string;
-  defaultValue?: boolean;
-  onChange?: (v: boolean, next: () => void) => any;
+  checked?: boolean;
+  onChange?: (v: boolean, update: () => void, ev: MouseEvent) => any;
 }
 
-class Switch {
+class Switch extends SettingItem {
   private value: boolean;
   private readonly opts: SwitchOpts;
-  private readonly entry: HTMLElement;
-  private readonly entryLabel: HTMLElement;
-  private readonly entryValue: HTMLElement;
-
   private readonly activeClass = 'rplayer_switch-active';
 
   constructor(opts: SwitchOpts) {
+    super(opts.label);
     this.opts = opts;
-
-    this.entryLabel = htmlDom(opts.label);
-    this.entryValue = newElement();
     this.entryValue.classList.add('rplayer_switch');
-
-    this.entry = newElement();
-    this.entry.classList.add('rplayer_sets_menu_item');
-    this.entry.appendChild(this.entryLabel);
-    this.entry.appendChild(this.entryValue);
-
-    this.entry.addEventListener('click', this.entryClickHandler, true);
-
-    this.value = !opts.defaultValue;
-    this.doSwitch();
+    this.value = !opts.checked;
+    this.switch();
   }
 
-  private entryClickHandler = (ev: MouseEvent): void => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    if (isFn(this.opts.onChange)) {
-      this.opts.onChange(!this.value, this.doSwitch);
-    } else {
-      this.doSwitch();
-    }
-  };
-
-  private doSwitch = (): void => {
+  private switch = (): void => {
     this.value = !this.value;
-
     if (this.value) {
       this.entryValue.classList.add(this.activeClass);
     } else {
       this.entryValue.classList.remove(this.activeClass);
     }
   };
+
+  onEntryClick(ev: MouseEvent): void {
+    if (isFn(this.opts.onChange)) {
+      this.opts.onChange(!this.value, this.switch, ev);
+    } else {
+      this.switch();
+    }
+  }
 }
 
 export default Switch;

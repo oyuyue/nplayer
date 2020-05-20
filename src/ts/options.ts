@@ -1,4 +1,5 @@
 import { NORMAL, SPEED } from './config/lang';
+import { CaptionsOpts } from './controls/captions';
 import { RadioOption, RadioOpts } from './controls/setting-menu/radio';
 import { SwitchOpts } from './controls/setting-menu/switch';
 import { ThumbnailImgBg } from './controls/thumbnail';
@@ -65,6 +66,7 @@ export interface RPlayerOptions {
   thumbnail?: ThumbnailOpts;
   contextMenu?: ContextMenuOpts;
   storage?: StorageOpts;
+  captions?: CaptionsOpts;
 }
 
 function processPlaybackRate(
@@ -98,8 +100,8 @@ function processPlaybackRate(
 
   const setting: RadioOpts = {
     label: t(SPEED, opts.lang),
-    defaultValue: defaultIndex,
-    options: playbackRate.steps,
+    checked: defaultIndex,
+    items: playbackRate.steps,
     onChange(opt: RadioOption, next: Function) {
       player.playbackRate = opt.value;
       player.storage.set({ playbackRate: opt.i });
@@ -109,7 +111,7 @@ function processPlaybackRate(
 
   let pos = isNum(playbackRate.position)
     ? playbackRate.position
-    : findIndex(opts.settings, (x) => (x as any).options);
+    : findIndex(opts.settings, (x) => (x as any).items);
   if (pos < 0) pos = 0;
 
   opts.settings.splice(pos, 0, setting);
@@ -184,6 +186,11 @@ function processStorage(opts: RPlayerOptions): RPlayerOptions {
   return opts;
 }
 
+function processCations(opts: RPlayerOptions): RPlayerOptions {
+  opts.captions = { ...{ checked: -1 }, ...opts.captions };
+  return opts;
+}
+
 function processOptions(
   player: RPlayer,
   opts?: RPlayerOptions
@@ -201,6 +208,7 @@ function processOptions(
   opts = processShortcut(opts);
   opts = processThumbnail(opts);
   opts = processContextMenu(opts);
+  opts = processCations(opts);
 
   return opts;
 }

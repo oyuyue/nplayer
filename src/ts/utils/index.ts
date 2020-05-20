@@ -132,6 +132,7 @@ export function formatTime(seconds: number): string {
 
 export const ua = {
   isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
+  isIE: /MSIE|Trident/.test(navigator.userAgent),
 };
 
 export const makeDictionary = <T>(obj: T): T => {
@@ -184,4 +185,23 @@ export const extend = (
   });
 
   return target;
+};
+
+export const ajax = (
+  url: string,
+  cb: (err: any, data?: string) => any
+): void => {
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function (): void {
+    if (xhr.readyState == 4) {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        cb(null, xhr.responseText);
+      } else {
+        cb({});
+      }
+    }
+  };
+  xhr.onerror = (err): void => cb(err);
+  xhr.open('GET', url, true);
+  xhr.send();
 };

@@ -7,15 +7,19 @@ import TimeAction from './time';
 import VolumeAction from './volume';
 
 class Actions extends Component {
+  readonly setting: SettingAction;
+
   constructor(player: RPlayer) {
     super(player);
 
     this.addClass('rplayer_ctrl_bottom_actions');
 
+    this.setting = new SettingAction(player);
+
     this.appendChild(new PlayAction(player));
     this.appendChild(new VolumeAction(player));
     this.appendChild(new TimeAction(player));
-    this.appendChild(new SettingAction(player));
+    this.appendChild(this.setting);
     if (this.player.fullscreen.support) {
       this.appendChild(new FullscreenAction(player));
     }

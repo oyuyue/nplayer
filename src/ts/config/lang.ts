@@ -13,6 +13,8 @@ export const MUTE = 'Mute';
 export const UNMUTE = 'Unmute';
 export const NORMAL = 'Normal';
 export const SPEED = 'Speed';
+export const CAPTIONS = 'Captions';
+export const CLOSE = 'Close';
 
 const language: Language = makeDictionary({
   'zh-CN': {
@@ -25,6 +27,8 @@ const language: Language = makeDictionary({
     [UNMUTE]: '取消静音',
     [NORMAL]: '正常',
     [SPEED]: '速度',
+    [CAPTIONS]: '字幕',
+    [CLOSE]: '关闭',
   },
 });
 

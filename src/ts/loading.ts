@@ -41,6 +41,7 @@ class Loading extends EventHandler {
   }
 
   onWaiting(): void {
+    if (!this.player.currentTime) return;
     this.tryShow();
   }
 

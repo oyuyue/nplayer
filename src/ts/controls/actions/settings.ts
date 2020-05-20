@@ -6,7 +6,7 @@ import SettingMenu from '../setting-menu';
 import Tray from '../tray';
 
 class SettingAction extends Tray {
-  private readonly menu: SettingMenu;
+  readonly menu: SettingMenu;
   private resetPageTimer: NodeJS.Timeout;
   private readonly activeClass = 'rplayer_action_set-active';
 
