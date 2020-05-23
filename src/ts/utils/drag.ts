@@ -1,6 +1,6 @@
 type Fn = (ev: PointerEvent) => any;
 
-class Drag {
+export default class Drag {
   private readonly dom: HTMLElement;
   private readonly start: Fn;
   private readonly move: Fn;
@@ -54,5 +54,3 @@ class Drag {
     this.dom.removeEventListener('pointermove', this.moveHandler, true);
   }
 }
-
-export default Drag;

@@ -1,11 +1,13 @@
 import Component from '../../component';
+import { TRAY_TIME } from '../../config/classname';
 import Events from '../../events';
 import RPlayer from '../../rplayer';
 import { formatTime, newElement } from '../../utils';
 
-class TimeAction extends Component {
-  private readonly curTime = newElement('span');
-  private readonly totalTime = newElement('span');
+export default class Time extends Component {
+  private readonly curTime = newElement('', 'span');
+  private readonly totalTime = newElement('', 'span');
+  pos = 2;
 
   constructor(player: RPlayer) {
     super(player, {
@@ -14,13 +16,11 @@ class TimeAction extends Component {
         Events.TIME_UPDATE,
         Events.CONTROLS_SHOW,
       ],
+      className: TRAY_TIME,
     });
-
-    this.addClass('rplayer_action_time');
 
     this.updateCurTime();
     this.updateTotalTime();
-
     this.appendChild(this.curTime);
     this.appendChild(this.totalTime);
   }
@@ -46,5 +46,3 @@ class TimeAction extends Component {
     this.updateCurTime();
   }
 }
-
-export default TimeAction;

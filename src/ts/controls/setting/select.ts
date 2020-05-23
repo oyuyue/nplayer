@@ -1,47 +1,50 @@
+import {
+  SETTINGS_MENU_ITEM,
+  SETTINGS_MENU_SELECT,
+  SETTINGS_SELECT_OPT,
+  SETTINGS_SELECT_OPT_ACTIVE,
+} from '../../config/classname';
 import { isFn, newElement } from '../../utils';
 import SettingItem from './item';
 
-export interface RadioOption {
+export interface SelectOption {
   label: string;
   selectedLabel?: string;
   [key: string]: any;
 }
 
-export interface RadioChangeFn {
-  (o: RadioOption, update: () => void): any;
+export interface SelectChangeFn {
+  (o: SelectOption, update: () => void): any;
 }
 
-export interface RadioOpts {
+export interface SelectOpts {
   label: string;
-  items: RadioOption[];
+  options: SelectOption[];
   checked?: number;
-  onChange?: RadioChangeFn;
+  onChange?: SelectChangeFn;
 }
 
-class Radio extends SettingItem {
+export default class Select extends SettingItem {
   private prevSelect: HTMLElement;
   private value: number;
   readonly dom = newElement();
-
-  readonly opts: RadioOpts;
+  readonly opts: SelectOpts;
   private readonly options: HTMLElement[];
-  private readonly activeClass = 'rplayer_sets_radio_opt-active';
 
-  private readonly entryClickCb: (radio: Radio) => any;
+  private readonly entryClickCb: (select: Select) => any;
 
-  constructor(opts: RadioOpts, entryClickCb?: (radio: Radio) => any) {
+  constructor(opts: SelectOpts, entryClickCb?: (select: Select) => any) {
     super(opts.label);
     this.opts = opts;
     this.entryClickCb = entryClickCb;
 
-    this.entry.classList.add('rplayer_sets_menu_radio');
+    this.entry.classList.add(SETTINGS_MENU_SELECT);
 
-    this.options = opts.items.map((o, i) => {
-      const div = newElement();
+    this.options = opts.options.map((o, i) => {
+      const div = newElement(SETTINGS_MENU_ITEM);
+      div.classList.add(SETTINGS_SELECT_OPT);
       div.innerHTML = o.label;
       div.addEventListener('click', this.optionClickHandler(i), true);
-      div.classList.add('rplayer_sets_menu_item');
-      div.classList.add('rplayer_sets_radio_opt');
       return div;
     });
     this.options.forEach((o) => this.dom.appendChild(o));
@@ -55,7 +58,7 @@ class Radio extends SettingItem {
     ev.stopPropagation();
     if (this.value === i) return;
     if (isFn(this.opts.onChange)) {
-      this.opts.onChange(this.opts.items[i], this.select.bind(this, i));
+      this.opts.onChange(this.opts.options[i], this.select.bind(this, i));
     } else {
       this.select(i);
     }
@@ -65,12 +68,12 @@ class Radio extends SettingItem {
     const opt = this.options[index];
     if (!opt) return;
     if (this.prevSelect) {
-      this.prevSelect.classList.remove(this.activeClass);
+      this.prevSelect.classList.remove(SETTINGS_SELECT_OPT_ACTIVE);
     }
 
-    const select = this.opts.items[index];
+    const select = this.opts.options[index];
     this.entryValue.innerHTML = select.selectedLabel || select.label;
-    opt.classList.add(this.activeClass);
+    opt.classList.add(SETTINGS_SELECT_OPT_ACTIVE);
     this.value = index;
     this.prevSelect = opt;
   }
@@ -79,5 +82,3 @@ class Radio extends SettingItem {
     if (isFn(this.entryClickCb)) this.entryClickCb(this);
   }
 }
-
-export default Radio;

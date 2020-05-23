@@ -1,21 +1,19 @@
 import Component from './component';
 import { BP } from './config';
+import { PLAYER } from './config/classname';
 import Controls from './controls';
-import Captions from './controls/captions';
-import Radio, { RadioOpts } from './controls/setting-menu/radio';
-import Switch, { SwitchOpts } from './controls/setting-menu/switch';
 import Events from './events';
-import Fullscreen from './fullscreen';
 import setupEvents from './handle-events';
 import I18n from './i18n';
 import Loading from './loading';
 import processOptions, { RPlayerOptions } from './options';
+import Subtitle from './plugins/subtitle';
+import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
 import Storage from './storage';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 
-class RPlayer extends Component {
-  static readonly Events = Events;
+export default class RPlayer extends Component {
   el: HTMLElement;
   curBreakPoint: string;
   readonly media: HTMLVideoElement;
@@ -26,7 +24,7 @@ class RPlayer extends Component {
   readonly shortcut: Shortcut;
   readonly i18n: I18n;
   readonly loading: Loading;
-  readonly captions: Captions;
+  readonly subtitle: Subtitle;
   storage: Storage;
 
   private prevVolume = 1;
@@ -36,11 +34,11 @@ class RPlayer extends Component {
 
     this.options = processOptions(this, opts);
 
-    this.addClass('rplayer');
+    this.addClass(PLAYER);
     this.canFocus();
 
     this.i18n = new I18n(this.options);
-    this.media = getDomOr(this.options.media, () => newElement('video'));
+    this.media = getDomOr(this.options.media, () => newElement('', 'video'));
     this.el = getDomOr(this.options.el, document.body);
 
     this.restore();
@@ -50,11 +48,11 @@ class RPlayer extends Component {
     this.volume = this.prevVolume;
     this.autoUpdateRect(this);
 
-    this.fullscreen = new Fullscreen(this);
     this.controls = new Controls(this);
     this.shortcut = new Shortcut(this);
     this.loading = new Loading(this);
-    this.captions = new Captions(this);
+    this.fullscreen = new Fullscreen(this);
+    this.subtitle = new Subtitle(this);
   }
 
   get currentTime(): number {
@@ -195,10 +193,4 @@ class RPlayer extends Component {
       }
     }
   }
-
-  addSettingItem(opts: RadioOpts | SwitchOpts, i?: number): Radio | Switch {
-    return this.controls.bottom.actions.setting.menu.addItem(opts, i);
-  }
 }
-
-export default RPlayer;

@@ -1,15 +1,15 @@
+import { SETTINGS_MENU_ITEM } from '../../config/classname';
 import { htmlDom, newElement } from '../../utils';
 
-abstract class SettingItem {
+export default abstract class SettingItem {
   entry: HTMLElement;
   protected entryLabel: HTMLElement;
   protected entryValue: HTMLElement;
 
   constructor(label: string) {
-    this.entry = newElement();
-    this.entry.classList.add('rplayer_sets_menu_item');
+    this.entry = newElement(SETTINGS_MENU_ITEM);
     this.entryLabel = htmlDom(label);
-    this.entryValue = newElement('span');
+    this.entryValue = newElement('', 'span');
     this.entry.appendChild(this.entryLabel);
     this.entry.appendChild(this.entryValue);
     this.entry.addEventListener('click', this.entryClickHandler, true);
@@ -23,5 +23,3 @@ abstract class SettingItem {
 
   abstract onEntryClick(ev: MouseEvent): void;
 }
-
-export default SettingItem;

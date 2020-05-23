@@ -3,10 +3,16 @@ import { isNum, makeDictionary } from './utils';
 
 export type ShortcutHandler = (player: RPlayer) => any;
 
-class Shortcut {
+export interface ShortcutOpts {
+  enable?: boolean;
+  time?: number;
+  volume?: number;
+  global?: boolean;
+}
+
+export default class Shortcut {
   private readonly player: RPlayer;
   private readonly handler: { [key: number]: ShortcutHandler };
-
   readonly editable = ['input', 'textarea', 'select'];
 
   constructor(player: RPlayer) {
@@ -73,5 +79,3 @@ class Shortcut {
     dom.removeEventListener('keydown', this.keydownHandler);
   }
 }
-
-export default Shortcut;

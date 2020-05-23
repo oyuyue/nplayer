@@ -15,7 +15,7 @@ export function t(key: string, lang: string): string {
 
 fallback();
 
-class I18n {
+export default class I18n {
   lang: string;
   fallback = fallback;
 
@@ -32,5 +32,3 @@ class I18n {
     this.fallback();
   }
 }
-
-export default I18n;

@@ -1,17 +1,16 @@
+import { CTRL_MASK } from '../config/classname';
 import Events from '../events';
 import RPlayer from '../rplayer';
 import { newElement } from '../utils';
 
-class Mask {
+export default class Mask {
   private readonly player: RPlayer;
   readonly dom: HTMLElement;
 
   constructor(player: RPlayer) {
     this.player = player;
-    this.dom = newElement('div', 'rplayer_ctrl_mask');
-
+    this.dom = newElement(CTRL_MASK);
     this.dom.addEventListener('click', this.clickHandler);
-
     this.hide();
   }
 
@@ -22,7 +21,6 @@ class Mask {
   private clickHandler = (ev: MouseEvent): void => {
     ev.preventDefault();
     ev.stopPropagation();
-
     this.player.emit(Events.CLICK_CONTROL_MASK);
   };
 
@@ -34,5 +32,3 @@ class Mask {
     this.dom.hidden = true;
   }
 }
-
-export default Mask;

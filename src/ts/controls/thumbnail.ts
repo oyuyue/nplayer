@@ -1,5 +1,5 @@
 import Component from '../component';
-import { ThumbnailOpts } from '../options';
+import { THUMB, THUMB_IMG, THUMB_TIME } from '../config/classname';
 import RPlayer from '../rplayer';
 import { clamp, formatTime, newElement } from '../utils';
 import ProgressBar from './progress-bar';
@@ -10,7 +10,18 @@ export interface ThumbnailImgBg {
   url: string;
 }
 
-class Thumbnail extends Component {
+export interface ThumbnailOpts {
+  startTime?: number;
+  gapSec?: number;
+  col?: number;
+  row?: number;
+  width?: number;
+  height?: number;
+  images?: string[];
+  handler?: (seconds: number) => ThumbnailImgBg;
+}
+
+export default class Thumbnail extends Component {
   private readonly progressBar: ProgressBar;
   private readonly time: HTMLElement;
   private readonly img: HTMLElement;
@@ -22,9 +33,8 @@ class Thumbnail extends Component {
   private ssGapRatio: number;
 
   constructor(player: RPlayer, progressBar: ProgressBar) {
-    super(player);
+    super(player, { className: THUMB });
 
-    this.addClass('rplayer_thumb');
     this.opts = player.options.thumbnail;
     this.enableImg = !!this.opts.images.length || !!this.opts.handler;
 
@@ -35,8 +45,8 @@ class Thumbnail extends Component {
     }
 
     this.progressBar = progressBar;
-    this.time = newElement('div', 'rplayer_thumb_time');
-    this.img = newElement('div', 'rplayer_thumb_img');
+    this.time = newElement(THUMB_TIME);
+    this.img = newElement(THUMB_IMG);
 
     if (this.enableImg) {
       this.img.style.width = this.opts.width + 'px';
@@ -80,5 +90,3 @@ class Thumbnail extends Component {
     });
   }
 }
-
-export default Thumbnail;

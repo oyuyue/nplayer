@@ -1,44 +1,46 @@
 import Component from '../../component';
+import {
+  SETTINGS_MENU,
+  SETTINGS_MENU_BACK,
+  SETTINGS_MENU_ITEM,
+  SETTINGS_MENU_PAGE,
+} from '../../config/classname';
 import Events from '../../events';
 import RPlayer from '../../rplayer';
-import { measureElementSize, newElement } from '../../utils';
-import Radio, { RadioOpts } from './radio';
+import { clampNeg, measureElementSize, newElement } from '../../utils';
+import Select, { SelectOpts } from './select';
 import Switch, { SwitchOpts } from './switch';
 
-class SettingMenu extends Component {
-  private readonly items: (Radio | Switch)[];
+export default class SettingMenu extends Component {
   private readonly homePage: HTMLElement;
   private readonly optionPages: HTMLElement[];
-
   private homeRect: DOMRect;
   private readonly optionRects: { width: number; height: number }[] = [];
 
   constructor(player: RPlayer) {
-    super(player, { events: [Events.MOUNTED] });
+    super(player, {
+      events: [Events.MOUNTED],
+      className: SETTINGS_MENU,
+    });
 
-    this.addClass('rplayer_sets_menu');
-
-    this.items = this.player.options.settings.map((s, i) => {
-      if ((s as any).items) {
-        return new Radio(s as any, this.radioEntryClickHandler(i));
+    const items = player.options.settings.map((s, i) => {
+      if ((s as SelectOpts).options && (s as SelectOpts).options.length) {
+        return new Select(s as SelectOpts, this.selectEntryClickHandler(i));
       } else {
-        return new Switch(s as any);
+        return new Switch(s as SwitchOpts);
       }
     });
 
-    this.homePage = newElement();
-    this.items.forEach((item) => {
+    this.homePage = newElement(SETTINGS_MENU_PAGE);
+    items.forEach((item) => {
       this.homePage.appendChild(item.entry);
     });
-    this.homePage.classList.add('rplayer_sets_menu_page');
-
-    this.optionPages = this.items.map((item) => this.getOptionPage(item));
-
+    this.optionPages = items.map((item) => this.getOptionPage(item));
     this.appendChild(this.homePage);
     this.optionPages.forEach((page) => page && this.appendChild(page));
   }
 
-  private radioEntryClickHandler = (i: number) => (): void => {
+  private selectEntryClickHandler = (i: number) => (): void => {
     if (!this.homeRect) this.homeRect = this.dom.getBoundingClientRect();
 
     this.homePage.hidden = true;
@@ -65,43 +67,42 @@ class SettingMenu extends Component {
   }
 
   private getBack(html: string): HTMLElement {
-    const div = newElement();
-    div.classList.add('rplayer_sets_menu_page_back');
-    div.classList.add('rplayer_sets_menu_item');
+    const div = newElement(SETTINGS_MENU_ITEM);
+    div.classList.add(SETTINGS_MENU_BACK);
     div.innerHTML = html;
     div.addEventListener('click', this.backClickHandler, true);
     return div;
   }
 
-  private getOptionPage(radio: Radio | Switch): HTMLElement {
-    if (!(radio instanceof Radio)) return null;
+  private getOptionPage(select: Select | Switch): HTMLElement {
+    if (!(select instanceof Select)) return null;
 
-    const div = newElement();
-    div.classList.add('rplayer_sets_menu_page');
-
-    const back = this.getBack(radio.opts.label);
+    const div = newElement(SETTINGS_MENU_PAGE);
+    const back = this.getBack(select.opts.label);
     div.appendChild(back);
-    div.appendChild(radio.dom);
+    div.appendChild(select.dom);
 
     div.hidden = true;
     return div;
   }
 
-  addItem(opts: RadioOpts | SwitchOpts, i = this.items.length): Radio | Switch {
-    let item: Radio | Switch;
-    if (Array.isArray((opts as any).items) || (opts as any).items.length) {
-      item = new Radio(opts as RadioOpts, this.radioEntryClickHandler(i));
+  addItem(opts: SelectOpts | SwitchOpts, pos?: number): Select | Switch {
+    pos = clampNeg(pos, this.homePage.children.length);
+
+    let item: Select | Switch;
+    if (
+      Array.isArray((opts as SelectOpts).options) &&
+      (opts as SelectOpts).options.length
+    ) {
+      item = new Select(opts as SelectOpts, this.selectEntryClickHandler(pos));
     } else {
       item = new Switch(opts as SwitchOpts);
     }
-    this.items.splice(i, 0, item);
 
     const optionPage = this.getOptionPage(item);
-    this.optionPages.splice(i, 0, optionPage);
-
-    this.homePage.insertBefore(item.entry, this.homePage.children[i]);
+    this.optionPages.splice(pos, 0, optionPage);
+    this.homePage.insertBefore(item.entry, this.homePage.children[pos + 1]);
     this.appendChild(optionPage);
-
     return item;
   }
 
@@ -121,5 +122,3 @@ class SettingMenu extends Component {
     this.setWH(this.homeRect.width, this.homeRect.height);
   }
 }
-
-export default SettingMenu;

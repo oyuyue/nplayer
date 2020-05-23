@@ -8,19 +8,27 @@ export interface ComponentOptions {
   dom?: keyof HTMLElementTagNameMap | HTMLElement;
   events?: string[];
   autoUpdateRect?: boolean;
+  className?: string;
 }
 
-class Component extends EventHandler {
+export default class Component extends EventHandler {
   protected _rect: DOMRect;
   readonly dom: HTMLElement;
 
   constructor(
     player?: RPlayer,
-    { dom = 'div', events, autoUpdateRect = false }: ComponentOptions = {}
+    {
+      dom = 'div',
+      events,
+      autoUpdateRect = false,
+      className,
+    }: ComponentOptions = {}
   ) {
     super(player, events);
 
-    this.dom = isStr(dom) ? newElement(dom) : dom;
+    this.dom = isStr(dom) ? newElement('', dom) : dom;
+
+    if (className) this.addClass(className);
 
     if (player && autoUpdateRect) {
       this.autoUpdateRect();
@@ -132,5 +140,3 @@ class Component extends EventHandler {
     return obj instanceof Component;
   }
 }
-
-export default Component;

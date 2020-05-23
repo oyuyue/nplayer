@@ -29,7 +29,10 @@ function transThrottle(
   });
 }
 
-function handler(player: RPlayer, video: HTMLVideoElement): void {
+export default function handler(
+  player: RPlayer,
+  video: HTMLVideoElement
+): void {
   // media
   trans(player, video, 'durationchange', Events.DURATION_CHANGE);
   trans(player, video, 'play', Events.PLAY);
@@ -90,5 +93,3 @@ function handler(player: RPlayer, video: HTMLVideoElement): void {
     mq.addListener(mqHandler);
   });
 }
-
-export default handler;

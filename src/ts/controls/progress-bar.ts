@@ -1,4 +1,13 @@
 import Component from '../component';
+import {
+  PROGRESS,
+  PROGRESS_BUF,
+  PROGRESS_DOT,
+  PROGRESS_HOVER,
+  PROGRESS_PAD,
+  PROGRESS_PLAYED,
+  PROGRESS_WRAPPER,
+} from '../config/classname';
 import Events from '../events';
 import RPlayer from '../rplayer';
 import { clamp, Drag, newElement } from '../utils';
@@ -6,12 +15,11 @@ import Bar from './bar';
 import Dot from './dot';
 import Thumbnail from './thumbnail';
 
-class ProgressBar extends Component {
+export default class ProgressBar extends Component {
   private readonly barWrapper: HTMLElement;
   private readonly bufBar: Bar;
   private readonly hoverBar: Bar;
   private readonly playedBar: Bar;
-  private readonly padBar: Bar;
   private readonly dot: Dot;
   private readonly thumbnail: Thumbnail;
   private readonly drag: Drag;
@@ -24,35 +32,33 @@ class ProgressBar extends Component {
     super(player, {
       events: [Events.TIME_UPDATE, Events.PROGRESS, Events.CONTROLS_SHOW],
       autoUpdateRect: true,
+      className: PROGRESS,
     });
 
-    this.addClass('rplayer_progress');
+    this.barWrapper = newElement(PROGRESS_WRAPPER);
 
-    this.barWrapper = newElement();
-    this.barWrapper.classList.add('rplayer_progress_bar_wrapper');
-
-    this.bufBar = new Bar('rplayer_progress_buf');
-    this.hoverBar = new Bar('rplayer_progress_hover');
-    this.playedBar = new Bar('rplayer_progress_played');
-    this.padBar = new Bar('rplayer_progress_pad');
-    this.dot = new Dot('rplayer_progress_dot');
+    const padBar = new Bar(PROGRESS_PAD);
+    this.bufBar = new Bar(PROGRESS_BUF);
+    this.hoverBar = new Bar(PROGRESS_HOVER);
+    this.playedBar = new Bar(PROGRESS_PLAYED);
+    this.dot = new Dot(PROGRESS_DOT);
     this.thumbnail = new Thumbnail(player, this);
 
     this.drag = new Drag(
-      this.padBar.dom,
+      padBar.dom,
       this.dragStartHandler,
       this.dragHandler,
       this.dragEndHandler
     );
 
-    this.padBar.dom.addEventListener('mousemove', this.mouseMoveHandler, true);
+    padBar.dom.addEventListener('mousemove', this.mouseMoveHandler, true);
 
     this.barWrapper.appendChild(this.bufBar.dom);
     this.barWrapper.appendChild(this.hoverBar.dom);
     this.barWrapper.appendChild(this.playedBar.dom);
-    this.barWrapper.appendChild(this.padBar.dom);
+    this.barWrapper.appendChild(padBar.dom);
     this.appendChild(this.barWrapper);
-    this.appendChild(this.dot);
+    this.appendChild(this.dot.dom);
     this.appendChild(this.thumbnail);
   }
 
@@ -155,5 +161,3 @@ class ProgressBar extends Component {
     this.drag.destroy();
   }
 }
-
-export default ProgressBar;

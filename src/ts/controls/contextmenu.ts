@@ -1,19 +1,43 @@
 import Component from '../component';
+import {
+  CTRL_MENU,
+  CTRL_MENU_ITEM,
+  CTRL_MENU_ITEM_CHECKED,
+  CTRL_MENU_ITEM_I,
+} from '../config/classname';
 import Events from '../events';
-import { ContextMenuItem, ContextMenuOpts } from '../options';
 import RPlayer from '../rplayer';
-import { getClientWH, htmlDom, isElement, isFn, newElement } from '../utils';
+import {
+  getClientWH,
+  htmlDom,
+  isElement,
+  isFn,
+  newElement,
+  clampNeg,
+} from '../utils';
 
-class MenuItem {
+export interface ContextMenuItem {
+  icon?: string | Element;
+  label?: string | Element;
+  checked?: boolean;
+  onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
+}
+
+export interface ContextMenuOpts {
+  toggle?: boolean;
+  enable?: boolean;
+  items?: ContextMenuItem[];
+}
+
+export class MenuItem {
   readonly dom: HTMLElement;
   private checked = false;
   private readonly cb: ContextMenuItem['onClick'];
-  private readonly checkedClass = 'rplayer_ctrl_menu_item-checked';
 
-  constructor(item: ContextMenuItem, menu: ContextMenu) {
-    this.dom = newElement('div', 'rplayer_ctrl_menu_item');
+  constructor(item: ContextMenuItem) {
+    this.dom = newElement(CTRL_MENU_ITEM);
     const i = isElement(item.icon) ? item.icon : htmlDom(item.icon);
-    i.classList.add('rplayer_ctrl_menu_item_i');
+    i.classList.add(CTRL_MENU_ITEM_I);
     this.dom.appendChild(i);
     this.dom.appendChild(
       isElement(item.label) ? item.label : htmlDom(item.label)
@@ -26,8 +50,6 @@ class MenuItem {
       this.cb = item.onClick;
       this.dom.addEventListener('click', this.clickHandler, true);
     }
-
-    menu.appendChild(this.dom);
   }
 
   private next = (): void => {
@@ -37,9 +59,9 @@ class MenuItem {
 
   update(): void {
     if (this.checked) {
-      this.dom.classList.add(this.checkedClass);
+      this.dom.classList.add(CTRL_MENU_ITEM_CHECKED);
     } else {
-      this.dom.classList.remove(this.checkedClass);
+      this.dom.classList.remove(CTRL_MENU_ITEM_CHECKED);
     }
   }
 
@@ -49,9 +71,10 @@ class MenuItem {
   };
 }
 
-class ContextMenu extends Component {
+export default class ContextMenu extends Component {
   private showed = false;
-  private opts: ContextMenuOpts;
+  private enable: boolean;
+  private toggle: boolean;
 
   constructor(player: RPlayer) {
     super(player, {
@@ -60,16 +83,17 @@ class ContextMenu extends Component {
         Events.CLICK_OUTSIDE,
         Events.CLICK_CONTROL_MASK,
       ],
+      className: CTRL_MENU,
     });
 
-    this.opts = this.player.options.contextMenu;
-    this.addClass('rplayer_ctrl_menu');
+    const opts = this.player.options.contextMenu;
+    this.enable = opts.enable;
+    this.toggle = opts.toggle;
+
     this.hidden();
-
-    this.showed = !this.opts.enable;
-
-    this.opts.items.forEach((item) => {
-      new MenuItem(item, this);
+    this.showed = !this.enable;
+    opts.items.forEach((item) => {
+      this.appendChild(new MenuItem(item).dom);
     });
 
     this.dom.addEventListener('click', this.clickHandler);
@@ -92,14 +116,23 @@ class ContextMenu extends Component {
     this.hide();
   };
 
+  addItem(opts: ContextMenuItem, pos?: number): MenuItem {
+    const item = new MenuItem(opts);
+    this.dom.insertBefore(
+      item.dom,
+      this.dom.children[clampNeg(pos, this.dom.children.length) + 1]
+    );
+    return item;
+  }
+
   onPlayerContextMenu(ev: MouseEvent): void {
-    if (!this.showed || !this.opts.toggle) {
+    if (!this.showed || !this.toggle) {
       ev.preventDefault();
       ev.stopPropagation();
     }
-    if (!this.opts.enable) return;
+    if (!this.enable) return;
 
-    if (this.showed && this.opts.toggle) {
+    if (this.showed && this.toggle) {
       this.showed = false;
       this.hide();
     } else {
@@ -130,5 +163,3 @@ class ContextMenu extends Component {
     this.hide();
   }
 }
-
-export default ContextMenu;

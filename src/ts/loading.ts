@@ -1,9 +1,10 @@
+import { LOADING } from './config/classname';
 import EventHandler from './event-handler';
 import Events from './events';
 import RPlayer from './rplayer';
 import { htmlDom } from './utils';
 
-class Loading extends EventHandler {
+export default class Loading extends EventHandler {
   private readonly loadingClass = 'rplayer-loading';
   private showTimer: NodeJS.Timeout;
   private startWaitingTime = 0;
@@ -11,8 +12,11 @@ class Loading extends EventHandler {
   constructor(player: RPlayer) {
     super(player, [Events.CANPLAY, Events.WAITING, Events.STALLED]);
 
-    const dom = htmlDom('<div></div><div></div><div></div><div></div>', 'div');
-    dom.classList.add('rplayer_loading');
+    const dom = htmlDom(
+      '<div></div><div></div><div></div><div></div>',
+      'div',
+      LOADING
+    );
     player.appendChild(dom);
     this.onWaiting();
   }
@@ -68,5 +72,3 @@ class Loading extends EventHandler {
     this.player.removeClass(this.loadingClass);
   }
 }
-
-export default Loading;

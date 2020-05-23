@@ -164,7 +164,7 @@
         transition: opacity .2s ease;
       }
 
-      &_actions {
+      &_trays {
         display: flex;
         align-items: center;
 
@@ -350,7 +350,7 @@
     }
   }
 
-  &_action {
+  &_tray {
 
     &_volume {
       display: flex;
@@ -384,7 +384,7 @@
         cursor: pointer;
 
         &:hover {
-          .rplayer_action_volume_dot::after {
+          .rplayer_tray_volume_dot::after {
             transform: scale(1);
           }
         }
@@ -452,7 +452,7 @@
           pointer-events: initial;
         }
 
-        .rplayer_action_set_mask {
+        .rplayer_tray_set_mask {
           display: block;
         }
       }
@@ -599,7 +599,7 @@
         }
       }
 
-      &_radio {
+      &_select {
         &::after {
           content: '';
           display: block;
@@ -612,7 +612,7 @@
       }
     }
 
-    &_radio {
+    &_select {
       &_opt {
         position: relative;
         justify-content: flex-start;

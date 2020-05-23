@@ -30,6 +30,12 @@ export function isCatchable(o: any): o is { catch: Function } {
   return isObj(o) && isFn(o.catch);
 }
 
+export function clampNeg(n: number, max: number, defaults = max): number {
+  if (n == null) n = defaults;
+  if (n >= 0) return Math.min(n, max);
+  return clampNeg(n + max, max);
+}
+
 export function findIndex<T>(
   arr: T[],
   predicate: (value: T, index: number, obj: T[]) => unknown
@@ -52,9 +58,14 @@ export function getDomOr<T extends HTMLElement>(
   return ret || (isFn(orReturn) ? orReturn() : orReturn);
 }
 
-export function htmlDom(html = '', tag = 'span'): HTMLElement {
+export function htmlDom(
+  html = '',
+  tag = 'span',
+  className?: string
+): HTMLElement {
   const d = document.createElement(tag);
   d.innerHTML = html;
+  if (className) d.classList.add(className);
   return d;
 }
 
@@ -77,15 +88,15 @@ export function measureElementSize(
 }
 
 export function newElement<T extends HTMLElement>(
-  tag: keyof HTMLElementTagNameMap = 'div',
-  className?: string
+  className?: string,
+  tag: keyof HTMLElementTagNameMap = 'div'
 ): T {
-  const dom = document.createElement(tag) as any;
+  const dom = document.createElement(tag) as T;
   if (className) dom.classList.add(className);
   return dom;
 }
 
-const domParser = window.DOMParser ? new DOMParser() : null;
+const domParser = new DOMParser();
 export function strToDom(
   str: string,
   type: SupportedType = 'image/svg+xml'

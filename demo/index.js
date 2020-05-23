@@ -13,8 +13,7 @@ var player = new RPlayer({
   },
   settings: [
     { label: '自动播放' },
-    // { label: '字幕', items: [{ label: '简体中文' }] },
-    { label: '画质', items: [{ label: '720p' }] },
+    { label: '画质', options: [{ label: '720p' }] },
   ],
   thumbnail: {
     images: [
@@ -26,7 +25,7 @@ var player = new RPlayer({
     //   'http://192.168.1.7:8001/M3.jpg',
     // ]
   },
-  captions: {
+  subtitle: {
     captions: [{
       label: 'english',
       src: 'http://127.0.0.1:8001/friday.vtt'

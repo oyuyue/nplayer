@@ -1,12 +1,15 @@
 import { NORMAL, SPEED } from './config/lang';
-import { CaptionsOpts } from './controls/captions';
-import { RadioOption, RadioOpts } from './controls/setting-menu/radio';
-import { SwitchOpts } from './controls/setting-menu/switch';
-import { ThumbnailImgBg } from './controls/thumbnail';
+import { SelectOption, SelectOpts } from './controls/setting/select';
+import { SwitchOpts } from './controls/setting/switch';
 import { t } from './i18n';
+import { SubtitleOpts } from './plugins/subtitle';
 import RPlayer from './rplayer';
-import Storage from './storage';
+import Storage, { StorageOpts } from './storage';
 import { findIndex, isNum, isObj } from './utils';
+import { ContextMenuOpts } from './controls/contextmenu';
+import { ShortcutOpts } from './shortcut';
+import { ThumbnailOpts } from './controls/thumbnail';
+import { TrayOpts } from './controls/trays/tray';
 
 export interface OptionPreset {
   playbackRate?:
@@ -19,54 +22,19 @@ export interface OptionPreset {
   version?: boolean;
 }
 
-export interface StorageOpts {
-  enable?: boolean;
-  key?: string;
-}
-
-export interface Shortcut {
-  enable?: boolean;
-  time?: number;
-  volume?: number;
-  global?: boolean;
-}
-
-export interface ThumbnailOpts {
-  startTime?: number;
-  gapSec?: number;
-  col?: number;
-  row?: number;
-  width?: number;
-  height?: number;
-  images?: string[];
-  handler?: (seconds: number) => ThumbnailImgBg;
-}
-
-export interface ContextMenuItem {
-  icon?: string | Element;
-  label?: string | Element;
-  checked?: boolean;
-  onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
-}
-
-export interface ContextMenuOpts {
-  toggle?: boolean;
-  enable?: boolean;
-  items?: ContextMenuItem[];
-}
-
 export interface RPlayerOptions {
   media?: string | HTMLVideoElement;
   el?: string | HTMLElement;
   video?: HTMLVideoElement & { src?: string | string[] };
-  settings?: (RadioOpts | SwitchOpts)[];
+  settings?: (SelectOpts | SwitchOpts)[];
   preset?: OptionPreset;
-  shortcut?: Shortcut;
+  shortcut?: ShortcutOpts;
   lang?: string;
   thumbnail?: ThumbnailOpts;
   contextMenu?: ContextMenuOpts;
   storage?: StorageOpts;
-  captions?: CaptionsOpts;
+  subtitle?: SubtitleOpts;
+  trays?: TrayOpts[];
 }
 
 function processPlaybackRate(
@@ -98,11 +66,11 @@ function processPlaybackRate(
     playbackRate.defaultIndex
   );
 
-  const setting: RadioOpts = {
+  const setting: SelectOpts = {
     label: t(SPEED, opts.lang),
     checked: defaultIndex,
-    items: playbackRate.steps,
-    onChange(opt: RadioOption, next: Function) {
+    options: playbackRate.steps,
+    onChange(opt: SelectOption, next: Function) {
       player.playbackRate = opt.value;
       player.storage.set({ playbackRate: opt.i });
       next();
@@ -111,7 +79,7 @@ function processPlaybackRate(
 
   let pos = isNum(playbackRate.position)
     ? playbackRate.position
-    : findIndex(opts.settings, (x) => (x as any).items);
+    : findIndex(opts.settings, (x) => (x as SelectOpts).options);
   if (pos < 0) pos = 0;
 
   opts.settings.splice(pos, 0, setting);
@@ -187,11 +155,16 @@ function processStorage(opts: RPlayerOptions): RPlayerOptions {
 }
 
 function processCations(opts: RPlayerOptions): RPlayerOptions {
-  opts.captions = { ...{ checked: -1 }, ...opts.captions };
+  opts.subtitle = { ...{ checked: -1 }, ...opts.subtitle };
   return opts;
 }
 
-function processOptions(
+function processTrays(opts: RPlayerOptions): RPlayerOptions {
+  opts.trays = opts.trays || [];
+  return opts;
+}
+
+export default function processOptions(
   player: RPlayer,
   opts?: RPlayerOptions
 ): RPlayerOptions {
@@ -209,8 +182,7 @@ function processOptions(
   opts = processThumbnail(opts);
   opts = processContextMenu(opts);
   opts = processCations(opts);
+  opts = processTrays(opts);
 
   return opts;
 }
-
-export default processOptions;

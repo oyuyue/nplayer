@@ -1,7 +1,12 @@
 import { RPlayerOptions } from './options';
 import { extend, isObj, safeJsonParse, safeJsonStringify } from './utils';
 
-class Storage {
+export interface StorageOpts {
+  enable?: boolean;
+  key?: string;
+}
+
+export default class Storage {
   private key: string;
   private enable: boolean;
 
@@ -12,13 +17,9 @@ class Storage {
 
   static get supported(): boolean {
     try {
-      if (!('localStorage' in window)) {
-        return false;
-      }
-
       const test = 'rplayer___';
-      window.localStorage.setItem(test, test);
-      window.localStorage.removeItem(test);
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
       return true;
     } catch (e) {
       return false;
@@ -44,5 +45,3 @@ class Storage {
     );
   }
 }
-
-export default Storage;

@@ -1,11 +1,41 @@
-import Events from './events';
-import RPlayer from './rplayer';
-import { isFn, ua } from './utils';
+import { FULL, ICON_ENTER_FS, ICON_EXIT_FS } from '../config/classname';
+import { EXIT_FULL_SCREEN, FULL_SCREEN } from '../config/lang';
+import Tray from '../controls/trays/tray';
+import Events from '../events';
+import icons from '../icons';
+import RPlayer from '../rplayer';
+import { isFn, ua } from '../utils';
 
-class Fullscreen {
+class FullscreenTray extends Tray {
+  constructor(player: RPlayer) {
+    super(
+      player,
+      player.t(FULL_SCREEN),
+      Events.ENTER_FULLSCREEN,
+      Events.EXIT_FULLSCREEN
+    );
+
+    this.setRight();
+    this.appendChild(icons.enterFullscreen(ICON_ENTER_FS));
+    this.appendChild(icons.exitFullscreen(ICON_EXIT_FS));
+  }
+
+  onClick(): void {
+    this.player.fullscreen.toggle();
+  }
+
+  onEnterFullscreen(): void {
+    this.changeTipText(this.player.t(EXIT_FULL_SCREEN));
+  }
+
+  onExitFullscreen(): void {
+    this.changeTipText(this.player.t(FULL_SCREEN));
+  }
+}
+
+export default class Fullscreen {
   private readonly player: RPlayer;
   readonly prefix = this.getPrefix();
-  private readonly fullscreenClass = 'rplayer-full';
 
   constructor(player: RPlayer) {
     this.player = player;
@@ -18,8 +48,9 @@ class Fullscreen {
         this.changeHandler
       );
 
-      if (this.isActive) player.addClass(this.fullscreenClass);
+      if (this.isActive) player.addClass(FULL);
       player.on(Events.PLAYER_DBLCLICK, this.playerDblClickHandler);
+      player.controls.addTray(new FullscreenTray(player).dom, -1);
     }
   }
 
@@ -32,10 +63,10 @@ class Fullscreen {
   private changeHandler = (): void => {
     let evt = '';
     if (this.isActive) {
-      this.player.addClass(this.fullscreenClass);
+      this.player.addClass(FULL);
       evt = Events.ENTER_FULLSCREEN;
     } else {
-      this.player.removeClass(this.fullscreenClass);
+      this.player.removeClass(FULL);
       evt = Events.EXIT_FULLSCREEN;
     }
     this.player.emit(evt);
@@ -121,5 +152,3 @@ class Fullscreen {
     }
   }
 }
-
-export default Fullscreen;

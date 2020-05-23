@@ -1,4 +1,14 @@
 import Component from '../../component';
+import {
+  ICON_MUTED,
+  ICON_VOLUME,
+  TRAY_VOLUME,
+  TRAY_VOLUME_BAR,
+  TRAY_VOLUME_BAR_WRAPPER,
+  TRAY_VOLUME_DOT,
+  TRAY_VOLUME_I_MUTED,
+  TRAY_VOLUME_PROGRESS,
+} from '../../config/classname';
 import { MUTE, UNMUTE } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
@@ -6,26 +16,23 @@ import RPlayer from '../../rplayer';
 import { Drag, newElement } from '../../utils';
 import Bar from '../bar';
 import Dot from '../dot';
-import Tray from '../tray';
+import Tray from './tray';
 
 class Icon extends Tray {
-  private readonly mutedClass = 'rplayer_action_volume_i-muted';
-
   constructor(player: RPlayer) {
     super(player);
 
-    this.appendChild(icons.volume('rplayer_i_volume'));
-    this.appendChild(icons.muted('rplayer_i_muted'));
-
+    this.appendChild(icons.volume(ICON_VOLUME));
+    this.appendChild(icons.muted(ICON_MUTED));
     this.update();
   }
 
   private update(): void {
     if (this.player.muted) {
-      this.addClass(this.mutedClass);
+      this.addClass(TRAY_VOLUME_I_MUTED);
       this.changeTipText(this.player.t(UNMUTE));
     } else {
-      this.removeClass(this.mutedClass);
+      this.removeClass(TRAY_VOLUME_I_MUTED);
       this.changeTipText(this.player.t(MUTE));
     }
   }
@@ -35,7 +42,7 @@ class Icon extends Tray {
   }
 
   onVolumeChange(): void {
-    if (this.player.muted && this.containsClass(this.mutedClass)) return;
+    if (this.player.muted && this.containsClass(TRAY_VOLUME_I_MUTED)) return;
     this.update();
   }
 }
@@ -43,24 +50,20 @@ class Icon extends Tray {
 class Progress extends Component {
   private readonly bar: Bar;
   private readonly dot: Dot;
-  private readonly drag: Drag;
 
   constructor(player: RPlayer) {
-    super(player);
+    super(player, { className: TRAY_VOLUME_PROGRESS });
 
-    this.addClass('rplayer_action_volume_progress');
+    this.bar = new Bar(TRAY_VOLUME_BAR);
+    this.dot = new Dot(TRAY_VOLUME_DOT);
 
-    this.bar = new Bar('rplayer_action_volume_bar');
-    this.dot = new Dot('rplayer_action_volume_dot');
-
-    const barWrapper = newElement();
-    barWrapper.classList.add('rplayer_action_volume_bar_wrapper');
+    const barWrapper = newElement(TRAY_VOLUME_BAR_WRAPPER);
     barWrapper.appendChild(this.bar.dom);
 
     this.appendChild(barWrapper);
-    this.appendChild(this.dot);
+    this.appendChild(this.dot.dom);
 
-    this.drag = new Drag(
+    new Drag(
       this.dom,
       this.dragStartHandler,
       this.dragHandler,
@@ -81,10 +84,6 @@ class Progress extends Component {
     this.player.controls.releaseShow();
   };
 
-  destroy(): void {
-    this.drag.destroy();
-  }
-
   onVolumeChange(): void {
     const vol = this.player.volume;
     this.bar.setX(vol);
@@ -96,16 +95,16 @@ class Progress extends Component {
   }
 }
 
-class VolumeAction extends Component {
+export default class VolumeTray extends Component {
   private readonly icon: Icon;
   private readonly progress: Progress;
+  pos = 1;
 
   constructor(player: RPlayer) {
     super(player, {
       events: [Events.VOLUME_CHANGE, Events.MOUNTED],
+      className: TRAY_VOLUME,
     });
-
-    this.addClass('rplayer_action_volume');
 
     this.icon = new Icon(player);
     this.progress = new Progress(player);
@@ -123,5 +122,3 @@ class VolumeAction extends Component {
     this.progress.onMounted();
   }
 }
-
-export default VolumeAction;

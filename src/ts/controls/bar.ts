@@ -1,21 +1,15 @@
-import Component from '../component';
-import { clamp } from '../utils';
+import { BAR } from '../config/classname';
+import { clamp, newElement } from '../utils';
 
-class Bar extends Component {
-  constructor(
-    className?: string,
-    style?: Partial<CSSStyleDeclaration> | string
-  ) {
-    super();
+export default class Bar {
+  readonly dom: HTMLElement;
 
-    this.addClass('rplayer_bar');
-    if (className) this.addClass(className);
-    if (style) this.addStyle(style);
+  constructor(className?: string) {
+    this.dom = newElement(BAR);
+    if (className) this.dom.classList.add(className);
   }
 
   setX(x: number): void {
-    this.addStyle({ transform: `scaleX(${clamp(x)})` });
+    this.dom.style.transform = `scaleX(${clamp(x)})`;
   }
 }
-
-export default Bar;

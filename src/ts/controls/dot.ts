@@ -1,20 +1,15 @@
-import Component from '../component';
+import { DOT } from '../config/classname';
+import { newElement } from '../utils';
 
-class Dot extends Component {
-  constructor(
-    className?: string,
-    style?: Partial<CSSStyleDeclaration> | string
-  ) {
-    super();
+export default class Dot {
+  readonly dom: HTMLElement;
 
-    this.addClass('rplayer_dot');
-    if (className) this.addClass(className);
-    if (style) this.addStyle(style);
+  constructor(className?: string) {
+    this.dom = newElement(DOT);
+    if (className) this.dom.classList.add(className);
   }
 
   setX(x: number): void {
-    this.addStyle({ transform: `translateX(${x}px)` });
+    this.dom.style.transform = `translateX(${x}px)`;
   }
 }
-
-export default Dot;

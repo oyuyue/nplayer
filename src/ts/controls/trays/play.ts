@@ -1,18 +1,18 @@
+import { ICON_PAUSE, ICON_PLAY } from '../../config/classname';
 import { PAUSE, PLAY } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
-import Tray from '../tray';
+import Tray from './tray';
 
-class PlayAction extends Tray {
+export default class PlayTray extends Tray {
   constructor(player: RPlayer) {
-    super(player, Events.PLAY, Events.PAUSE);
+    super(player, player.t(PLAY), Events.PLAY, Events.PAUSE);
 
-    this.changeTipText(player.t(PLAY));
+    this.pos = 0;
     this.setLeft();
-
-    this.appendChild(icons.play('rplayer_i_play'));
-    this.appendChild(icons.pause('rplayer_i_pause'));
+    this.appendChild(icons.play(ICON_PLAY));
+    this.appendChild(icons.pause(ICON_PAUSE));
   }
 
   onClick(): void {
@@ -27,5 +27,3 @@ class PlayAction extends Tray {
     this.changeTipText(this.player.t(PLAY));
   }
 }
-
-export default PlayAction;

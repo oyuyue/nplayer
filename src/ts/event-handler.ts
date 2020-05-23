@@ -2,7 +2,7 @@ import { EventEmitter } from 'eventemitter3';
 import RPlayer from './rplayer';
 import { isFn, isStr } from './utils';
 
-class EventHandler extends EventEmitter {
+export default class EventHandler extends EventEmitter {
   protected readonly player: RPlayer;
 
   constructor(player?: RPlayer, events?: string[]) {
@@ -22,5 +22,3 @@ class EventHandler extends EventEmitter {
     }
   }
 }
-
-export default EventHandler;

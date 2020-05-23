@@ -1,20 +1,24 @@
+import {
+  CAPTION,
+  CAPTION_ACTIVE,
+  CAPTION_TRAY,
+  CAPTION_TRAY_ACTIVE,
+} from '../config/classname';
 import { CAPTIONS, CLOSE } from '../config/lang';
+import Select, { SelectChangeFn } from '../controls/setting/select';
+import Tray from '../controls/trays/tray';
 import icons from '../icons';
 import RPlayer from '../rplayer';
 import { ajax, newElement, ua } from '../utils';
-import Radio, { RadioChangeFn } from './setting-menu/radio';
-import Tray from './tray';
 
-class CaptionAction extends Tray {
-  private readonly captions: Captions;
-  private readonly activeClass = 'rplayer_action_cap-active';
+class CaptionTray extends Tray {
+  private readonly captions: Subtitle;
 
-  constructor(player: RPlayer, captions: Captions) {
-    super(player);
+  constructor(player: RPlayer, captions: Subtitle) {
+    super(player, player.t(CAPTIONS));
     this.captions = captions;
 
-    this.addClass('rplayer_action_cap');
-    this.changeTipText(player.t(CAPTIONS));
+    this.addClass(CAPTION_TRAY);
     this.appendChild(icons.cc());
   }
 
@@ -23,11 +27,11 @@ class CaptionAction extends Tray {
   }
 
   active(): void {
-    this.addClass(this.activeClass);
+    this.addClass(CAPTION_TRAY_ACTIVE);
   }
 
   deactivate(): void {
-    this.removeClass(this.activeClass);
+    this.removeClass(CAPTION_TRAY_ACTIVE);
   }
 }
 
@@ -38,26 +42,25 @@ interface CaptionItem {
   show?: boolean;
 }
 
-export interface CaptionsOpts {
+export interface SubtitleOpts {
   style?: Partial<CSSStyleDeclaration>;
   checked?: number;
   captions: HTMLTrackElement[];
 }
 
-export default class Captions {
+export default class Subtitle {
   private readonly player: RPlayer;
-  private tray: CaptionAction;
+  private tray: CaptionTray;
   private items: CaptionItem[];
   private prev: CaptionItem = {} as CaptionItem;
-  private radio: Radio;
+  private select: Select;
   private readonly dom: HTMLElement;
-  private readonly activeClass = 'rplayer_caption-active';
 
   constructor(player: RPlayer) {
     this.player = player;
-    const { captions, checked, style } = player.options.captions;
+    const { captions, checked, style } = player.options.subtitle;
     if (captions && captions.length) {
-      this.dom = newElement('div', 'rplayer_caption');
+      this.dom = newElement(CAPTION);
       player.appendChild(this.dom);
 
       this.update(captions, checked);
@@ -65,7 +68,7 @@ export default class Captions {
     }
   }
 
-  private optionChangeHandler: RadioChangeFn = (item, update): void => {
+  private optionChangeHandler: SelectChangeFn = (item, update): void => {
     if (this.prev.track) {
       this.prev.show = false;
       this.removeCueEvent();
@@ -74,7 +77,7 @@ export default class Captions {
     if (item.track) {
       this.addCueEvent(item.track);
       this.tray.active();
-      this.prev = item as any;
+      this.prev = item as CaptionItem;
       this.show();
     } else {
       this.hide();
@@ -117,14 +120,14 @@ export default class Captions {
       this.items.push({ track, index: i + 1, label: track.label, show: false });
     }
 
-    this.radio = this.player.addSettingItem({
+    this.select = this.player.controls.addSettingItem({
       label: this.player.t(CAPTIONS),
-      items: this.items as any,
+      options: this.items as any,
       onChange: this.optionChangeHandler,
-    }) as Radio;
+    }) as Select;
 
-    this.tray = new CaptionAction(this.player, this);
-    this.player.controls.bottom.actions.addAction(this.tray, 3);
+    this.tray = new CaptionTray(this.player, this);
+    this.player.controls.addTray(this.tray.dom, -3);
 
     if (this.prev.index) {
       this.toggle();
@@ -136,12 +139,12 @@ export default class Captions {
   }
 
   show(): void {
-    this.dom.classList.add(this.activeClass);
+    this.dom.classList.add(CAPTION_ACTIVE);
     this.prev.show = true;
   }
 
   hide(): void {
-    this.dom.classList.remove(this.activeClass);
+    this.dom.classList.remove(CAPTION_ACTIVE);
     this.prev.show = false;
   }
 
@@ -183,7 +186,7 @@ export default class Captions {
     if (!ua.isIE) this.run();
   }
 
-  updateUI(style: CaptionsOpts['style']): void {
+  updateUI(style: SubtitleOpts['style']): void {
     Object.keys(style).forEach((k) => {
       this.dom.style[k as any] = style[k as any];
     });
@@ -191,7 +194,7 @@ export default class Captions {
 
   toggle(): void {
     if (this.prev.track && this.prev.show) {
-      this.radio.select(0);
+      this.select.select(0);
       this.tray.deactivate();
       this.hide();
       this.removeCueEvent();
@@ -203,7 +206,7 @@ export default class Captions {
       }
 
       this.addCueEvent();
-      this.radio.select(this.prev.index);
+      this.select.select(this.prev.index);
       this.tray.active();
       this.show();
     }
