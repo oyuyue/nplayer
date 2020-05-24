@@ -121,7 +121,7 @@ export default class Controls extends Component {
 
     this.tray.insertBefore(
       (item as any).dom ? (item as any).dom : item,
-      this.tray.children[clampNeg(pos, this.tray.children.length) + 1]
+      this.tray.children[clampNeg(pos, this.tray.children.length)]
     );
 
     return item;

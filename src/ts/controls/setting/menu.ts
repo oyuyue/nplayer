@@ -14,18 +14,22 @@ import Switch, { SwitchOpts } from './switch';
 export default class SettingMenu extends Component {
   private readonly homePage: HTMLElement;
   private readonly optionPages: HTMLElement[];
-  private homeRect: DOMRect;
+  private homeRect: { width: number; height: number };
   private readonly optionRects: { width: number; height: number }[] = [];
 
   constructor(player: RPlayer) {
     super(player, {
-      events: [Events.MOUNTED],
+      events: [Events.MOUNTED, Events.SETTING_SELECTED],
       className: SETTINGS_MENU,
     });
 
     const items = player.options.settings.map((s, i) => {
       if ((s as SelectOpts).options && (s as SelectOpts).options.length) {
-        return new Select(s as SelectOpts, this.selectEntryClickHandler(i));
+        return new Select(
+          player,
+          s as SelectOpts,
+          this.selectEntryClickHandler(i)
+        );
       } else {
         return new Switch(s as SwitchOpts);
       }
@@ -94,14 +98,18 @@ export default class SettingMenu extends Component {
       Array.isArray((opts as SelectOpts).options) &&
       (opts as SelectOpts).options.length
     ) {
-      item = new Select(opts as SelectOpts, this.selectEntryClickHandler(pos));
+      item = new Select(
+        this.player,
+        opts as SelectOpts,
+        this.selectEntryClickHandler(pos)
+      );
     } else {
       item = new Switch(opts as SwitchOpts);
     }
 
     const optionPage = this.getOptionPage(item);
     this.optionPages.splice(pos, 0, optionPage);
-    this.homePage.insertBefore(item.entry, this.homePage.children[pos + 1]);
+    this.homePage.insertBefore(item.entry, this.homePage.children[pos]);
     this.appendChild(optionPage);
     return item;
   }
@@ -115,6 +123,11 @@ export default class SettingMenu extends Component {
     if (this.homeRect) {
       this.setWH(this.homeRect.width, this.homeRect.height);
     }
+  }
+
+  onSettingSelected(): void {
+    if (!this.homePage || !this.homeRect) return;
+    this.homeRect = measureElementSize(this.homePage);
   }
 
   onMounted(): void {

@@ -31,9 +31,14 @@ export function isCatchable(o: any): o is { catch: Function } {
 }
 
 export function clampNeg(n: number, max: number, defaults = max): number {
-  if (n == null) n = defaults;
+  if (n == null) return defaults;
   if (n >= 0) return Math.min(n, max);
-  return clampNeg(n + max, max);
+
+  while (n < 0) {
+    n += max;
+  }
+
+  return n + 1;
 }
 
 export function findIndex<T>(
@@ -142,6 +147,7 @@ export function formatTime(seconds: number): string {
 }
 
 export const ua = {
+  isEdge: window.navigator.userAgent.indexOf('Edge') > -1,
   isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
   isIE: /MSIE|Trident/.test(navigator.userAgent),
 };
@@ -186,7 +192,7 @@ export const extend = (
 
   Object.keys(source).forEach((key) => {
     if (isObj(source[key])) {
-      if (!Object.keys(target).includes(key)) {
+      if (Object.keys(target).indexOf(key) < 0) {
         target = { ...target, [key]: {} };
       }
       extend(target[key], source[key]);

@@ -27,7 +27,7 @@ var player = new RPlayer({
   },
   subtitle: {
     captions: [{
-      label: 'english',
+      label: 'English',
       src: 'http://127.0.0.1:8001/friday.vtt'
     },{
       label: '中文',
@@ -40,5 +40,7 @@ var player = new RPlayer({
 //   hls.swapAudioCodec();
 //   hls.recoverMediaError();
 // })
+
+player.media.style.maxHeight = '80vh'
 
 player.mount()

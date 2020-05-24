@@ -1,4 +1,4 @@
-import { LOADING } from './config/classname';
+import { PLAYER_LOADING } from './config/classname';
 import EventHandler from './event-handler';
 import Events from './events';
 import RPlayer from './rplayer';
@@ -15,7 +15,7 @@ export default class Loading extends EventHandler {
     const dom = htmlDom(
       '<div></div><div></div><div></div><div></div>',
       'div',
-      LOADING
+      PLAYER_LOADING
     );
     player.appendChild(dom);
     this.onWaiting();

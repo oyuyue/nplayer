@@ -6,6 +6,8 @@ import {
 } from '../../config/classname';
 import { isFn, newElement } from '../../utils';
 import SettingItem from './item';
+import RPlayer from '../..';
+import Events from '../../events';
 
 export interface SelectOption {
   label: string;
@@ -25,6 +27,7 @@ export interface SelectOpts {
 }
 
 export default class Select extends SettingItem {
+  private readonly player: RPlayer;
   private prevSelect: HTMLElement;
   private value: number;
   readonly dom = newElement();
@@ -33,8 +36,13 @@ export default class Select extends SettingItem {
 
   private readonly entryClickCb: (select: Select) => any;
 
-  constructor(opts: SelectOpts, entryClickCb?: (select: Select) => any) {
+  constructor(
+    player: RPlayer,
+    opts: SelectOpts,
+    entryClickCb?: (select: Select) => any
+  ) {
     super(opts.label);
+    this.player = player;
     this.opts = opts;
     this.entryClickCb = entryClickCb;
 
@@ -76,6 +84,8 @@ export default class Select extends SettingItem {
     opt.classList.add(SETTINGS_SELECT_OPT_ACTIVE);
     this.value = index;
     this.prevSelect = opt;
+
+    this.player.emit(Events.SETTING_SELECTED, opt);
   }
 
   onEntryClick(): void {

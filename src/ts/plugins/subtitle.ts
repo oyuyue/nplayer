@@ -120,14 +120,18 @@ export default class Subtitle {
       this.items.push({ track, index: i + 1, label: track.label, show: false });
     }
 
-    this.select = this.player.controls.addSettingItem({
-      label: this.player.t(CAPTIONS),
-      options: this.items as any,
-      onChange: this.optionChangeHandler,
-    }) as Select;
+    if (!this.select) {
+      this.select = this.player.controls.addSettingItem({
+        label: this.player.t(CAPTIONS),
+        options: this.items as any,
+        onChange: this.optionChangeHandler,
+      }) as Select;
+    }
 
-    this.tray = new CaptionTray(this.player, this);
-    this.player.controls.addTray(this.tray.dom, -3);
+    if (!this.tray) {
+      this.tray = new CaptionTray(this.player, this);
+      this.player.controls.addTray(this.tray.dom, -3);
+    }
 
     if (this.prev.index) {
       this.toggle();
@@ -164,7 +168,7 @@ export default class Subtitle {
       trackEls.push(track);
     });
 
-    if (ua.isIE) {
+    if (ua.isIE || ua.isEdge) {
       let latch = 0;
       trackEls.forEach((track) => {
         const src = track.getAttribute('src');
@@ -183,7 +187,7 @@ export default class Subtitle {
 
     this.player.media.appendChild(df);
     this.prev = { index: checked + 1 };
-    if (!ua.isIE) this.run();
+    if (!ua.isIE && !ua.isEdge) this.run();
   }
 
   updateUI(style: SubtitleOpts['style']): void {

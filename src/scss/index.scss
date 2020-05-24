@@ -485,6 +485,7 @@
     touch-action: none;
     cursor: default;
     word-break: break-all;
+    z-index: 1;
 
     &-active {
       opacity: 1;

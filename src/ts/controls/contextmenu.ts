@@ -120,7 +120,7 @@ export default class ContextMenu extends Component {
     const item = new MenuItem(opts);
     this.dom.insertBefore(
       item.dom,
-      this.dom.children[clampNeg(pos, this.dom.children.length) + 1]
+      this.dom.children[clampNeg(pos, this.dom.children.length)]
     );
     return item;
   }

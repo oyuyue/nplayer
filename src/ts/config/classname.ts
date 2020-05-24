@@ -3,7 +3,8 @@ export const PREFIX = PLAYER + '_';
 export const ACTIVE = '-active';
 
 export const PAUSED = PLAYER + '-paused';
-export const LOADING = PLAYER + '-paused';
+export const LOADING = PLAYER + '-loading';
+export const PLAYER_LOADING = PREFIX + 'loading';
 export const FULL = PLAYER + '-full';
 export const CTRL = PREFIX + 'ctrl';
 export const CTRL_MASK = CTRL + '_mask';

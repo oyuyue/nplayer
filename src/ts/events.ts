@@ -27,6 +27,7 @@ enum Events {
   PLAYER_MOUSE_MOVE = 'PlayerMouseMove',
   PLAYER_MOUSE_LEAVE = 'PlayerMouseLeave',
   PLAYER_RESIZE = 'PlayerResize',
+  SETTING_SELECTED = 'SettingSelected',
 }
 
 export default Events;
