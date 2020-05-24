@@ -1,6 +1,5 @@
-import Component from '../component';
-declare class Bar extends Component {
-    constructor(className?: string, style?: Partial<CSSStyleDeclaration> | string);
+export default class Bar {
+    readonly dom: HTMLElement;
+    constructor(className?: string);
     setX(x: number): void;
 }
-export default Bar;

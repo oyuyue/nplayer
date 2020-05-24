@@ -1,5 +1,5 @@
 import RPlayer from '../rplayer';
-declare class Mask {
+export default class Mask {
     private readonly player;
     readonly dom: HTMLElement;
     constructor(player: RPlayer);
@@ -8,4 +8,3 @@ declare class Mask {
     show(): void;
     hide(): void;
 }
-export default Mask;

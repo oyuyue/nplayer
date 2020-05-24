@@ -1,6 +1,12 @@
 import RPlayer from './rplayer';
 export declare type ShortcutHandler = (player: RPlayer) => any;
-declare class Shortcut {
+export interface ShortcutOpts {
+    enable?: boolean;
+    time?: number;
+    volume?: number;
+    global?: boolean;
+}
+export default class Shortcut {
     private readonly player;
     private readonly handler;
     readonly editable: string[];
@@ -11,4 +17,3 @@ declare class Shortcut {
     enable(global?: boolean): void;
     disable(global?: boolean): void;
 }
-export default Shortcut;

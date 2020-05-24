@@ -1,6 +1,6 @@
 import EventHandler from './event-handler';
 import RPlayer from './rplayer';
-declare class Loading extends EventHandler {
+export default class Loading extends EventHandler {
     private readonly loadingClass;
     private showTimer;
     private startWaitingTime;
@@ -14,4 +14,3 @@ declare class Loading extends EventHandler {
     show: () => void;
     hide(): void;
 }
-export default Loading;

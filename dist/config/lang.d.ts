@@ -10,5 +10,7 @@ export declare const MUTE = "Mute";
 export declare const UNMUTE = "Unmute";
 export declare const NORMAL = "Normal";
 export declare const SPEED = "Speed";
+export declare const CAPTIONS = "Captions";
+export declare const CLOSE = "Close";
 declare const language: Language;
 export default language;

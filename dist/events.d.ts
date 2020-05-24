@@ -26,6 +26,7 @@ declare enum Events {
     PLAYER_DBLCLICK = "PlayerDblclick",
     PLAYER_MOUSE_MOVE = "PlayerMouseMove",
     PLAYER_MOUSE_LEAVE = "PlayerMouseLeave",
-    PLAYER_RESIZE = "PlayerResize"
+    PLAYER_RESIZE = "PlayerResize",
+    SETTING_SELECTED = "SettingSelected"
 }
 export default Events;

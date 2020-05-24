@@ -1,8 +1,9 @@
 import Component from '../../component';
 import RPlayer from '../../rplayer';
-declare class TimeAction extends Component {
+export default class Time extends Component {
     private readonly curTime;
     private readonly totalTime;
+    pos: number;
     constructor(player: RPlayer);
     private updateCurTime;
     private updateTotalTime;
@@ -10,4 +11,3 @@ declare class TimeAction extends Component {
     onDurationChange(): void;
     onControlsShow(): void;
 }
-export default TimeAction;

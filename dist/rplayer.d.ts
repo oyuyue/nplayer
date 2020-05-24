@@ -1,14 +1,13 @@
 import Component from './component';
 import Controls from './controls';
-import Events from './events';
-import Fullscreen from './fullscreen';
 import I18n from './i18n';
 import Loading from './loading';
 import { RPlayerOptions } from './options';
+import Subtitle from './plugins/subtitle';
+import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
 import Storage from './storage';
-declare class RPlayer extends Component {
-    static readonly Events: typeof Events;
+export default class RPlayer extends Component {
     el: HTMLElement;
     curBreakPoint: string;
     readonly media: HTMLVideoElement;
@@ -18,6 +17,7 @@ declare class RPlayer extends Component {
     readonly shortcut: Shortcut;
     readonly i18n: I18n;
     readonly loading: Loading;
+    readonly subtitle: Subtitle;
     storage: Storage;
     private prevVolume;
     constructor(opts: RPlayerOptions);
@@ -48,4 +48,3 @@ declare class RPlayer extends Component {
     t(key: string): string;
     eachBuffer(fn: (start: number, end: number) => boolean | void): void;
 }
-export default RPlayer;

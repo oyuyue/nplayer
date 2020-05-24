@@ -1,6 +1,5 @@
-import Component from '../component';
-declare class Dot extends Component {
-    constructor(className?: string, style?: Partial<CSSStyleDeclaration> | string);
+export default class Dot {
+    readonly dom: HTMLElement;
+    constructor(className?: string);
     setX(x: number): void;
 }
-export default Dot;

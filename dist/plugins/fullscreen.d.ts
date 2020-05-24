@@ -1,8 +1,7 @@
-import RPlayer from './rplayer';
-declare class Fullscreen {
+import RPlayer from '../rplayer';
+export default class Fullscreen {
     private readonly player;
     readonly prefix: string;
-    private readonly fullscreenClass;
     constructor(player: RPlayer);
     private playerDblClickHandler;
     private changeHandler;
@@ -17,4 +16,3 @@ declare class Fullscreen {
     exit(): void;
     toggle(): void;
 }
-export default Fullscreen;

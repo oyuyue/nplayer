@@ -1,9 +1,9 @@
 import RPlayer from '../../rplayer';
-import Tray from '../tray';
-declare class SettingAction extends Tray {
-    private readonly menu;
+import Tray from '../trays/tray';
+import SettingMenu from './menu';
+export default class Setting extends Tray {
+    readonly menu: SettingMenu;
     private resetPageTimer;
-    private readonly activeClass;
     constructor(player: RPlayer);
     private hide;
     onClick(): void;
@@ -11,4 +11,3 @@ declare class SettingAction extends Tray {
     onClickControlMask(): void;
     onClickOutside(): void;
 }
-export default SettingAction;

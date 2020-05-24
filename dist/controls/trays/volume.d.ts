@@ -1,10 +1,10 @@
 import Component from '../../component';
 import RPlayer from '../../rplayer';
-declare class VolumeAction extends Component {
+export default class VolumeTray extends Component {
     private readonly icon;
     private readonly progress;
+    pos: number;
     constructor(player: RPlayer);
     onVolumeChange(): void;
     onMounted(): void;
 }
-export default VolumeAction;

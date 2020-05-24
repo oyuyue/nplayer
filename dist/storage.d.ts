@@ -1,5 +1,9 @@
 import { RPlayerOptions } from './options';
-declare class Storage {
+export interface StorageOpts {
+    enable?: boolean;
+    key?: string;
+}
+export default class Storage {
     private key;
     private enable;
     constructor(opts: RPlayerOptions);
@@ -7,4 +11,3 @@ declare class Storage {
     get<T = string>(key?: string, orRet?: T): T;
     set(obj: Record<string, any>): void;
 }
-export default Storage;

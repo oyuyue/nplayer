@@ -1,5 +1,5 @@
 declare type Fn = (ev: PointerEvent) => any;
-declare class Drag {
+export default class Drag {
     private readonly dom;
     private readonly start;
     private readonly move;
@@ -13,4 +13,4 @@ declare class Drag {
     private upHandler;
     destroy(): void;
 }
-export default Drag;
+export {};

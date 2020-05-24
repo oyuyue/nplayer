@@ -6,5 +6,6 @@ declare const _default: {
     volume(cls?: string): Element;
     muted(cls?: string): Element;
     settings(cls?: string): Element;
+    cc(cls?: string): Element;
 };
 export default _default;

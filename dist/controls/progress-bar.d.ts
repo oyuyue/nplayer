@@ -1,11 +1,10 @@
 import Component from '../component';
 import RPlayer from '../rplayer';
-declare class ProgressBar extends Component {
+export default class ProgressBar extends Component {
     private readonly barWrapper;
     private readonly bufBar;
     private readonly hoverBar;
     private readonly playedBar;
-    private readonly padBar;
     private readonly dot;
     private readonly thumbnail;
     private readonly drag;
@@ -32,4 +31,3 @@ declare class ProgressBar extends Component {
     onProgress(): void;
     destroy(): void;
 }
-export default ProgressBar;

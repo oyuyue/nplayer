@@ -6,7 +6,17 @@ export interface ThumbnailImgBg {
     y: number;
     url: string;
 }
-declare class Thumbnail extends Component {
+export interface ThumbnailOpts {
+    startTime?: number;
+    gapSec?: number;
+    col?: number;
+    row?: number;
+    width?: number;
+    height?: number;
+    images?: string[];
+    handler?: (seconds: number) => ThumbnailImgBg;
+}
+export default class Thumbnail extends Component {
     private readonly progressBar;
     private readonly time;
     private readonly img;
@@ -19,4 +29,3 @@ declare class Thumbnail extends Component {
     private getCurBg;
     update(left: number, seconds: number): void;
 }
-export default Thumbnail;
