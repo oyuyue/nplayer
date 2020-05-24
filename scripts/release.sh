@@ -26,5 +26,5 @@ then
   git push
   nrm use npm
   npm publish
-  npm use taobao
+  nrm use taobao
 fi

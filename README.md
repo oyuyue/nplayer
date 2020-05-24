@@ -1,10 +1,10 @@
-# RPlayer
+# (WIP) RPlayer
 
 [![npm version](https://img.shields.io/npm/v/rplayer.svg)](https://github.com/woopen/RPlayer)
 
 美观、可定制的响应式播放器 `开发中...`
 
-![](https://i.loli.net/2020/05/05/ZCG8zrSlHXoe1fF.png)
+![](https://i.loli.net/2020/05/24/wOqB52Pr8XfioKu.png)
 
 ## 兼容
 
@@ -29,13 +29,22 @@ import RPlayer from 'rplayer'
 
 const player = new RPlayer({
   video: {
-    src: 'http://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm'
+    src: 'http://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm',
+    crossOrigin: 'anonymous'
   },
   settings: [
     { label: '自动播放' },
-    { label: '字幕', options: [{ label: '简体中文' }] },
     { label: '画质', options: [{ label: '720p' }] },
-  ]
+  ],
+  subtitle: {
+    captions: [{
+      label: 'English',
+      src: 'http://127.0.0.1:8001/friday.vtt'
+    },{
+      label: '中文',
+      src: 'http://127.0.0.1:8001/friday-zh.vtt'
+    }]
+  }
 })
 
 player.mount()
@@ -46,16 +55,18 @@ player.mount()
 
 ```typescript
 interface RPlayerOptions {
-  media?: string | HTMLVideoElement;
-  el?: string | HTMLElement;
-  video?: HTMLVideoElement & { src?: string | string[] };
-  settings?: (RadioOpts | SwitchOpts)[];
-  preset?: OptionPreset;
-  shortcut?: Shortcut;
+  media?: string | HTMLVideoElement; // 视频元素或 .video #video 等选择器字符串
+  el?: string | HTMLElement; // 要挂载到的元素
+  video?: HTMLVideoElement & { src?: string | string[] }; // 视频元素的属性
+  settings?: (SelectOpts | SwitchOpts)[]; // 自定义设置项
+  preset?: OptionPreset; // 预设
+  shortcut?: ShortcutOpts; // 快捷键
   lang?: string; // 语言，默认用户当前浏览器使用的语言。
-  thumbnail?: ThumbnailOpts;
-  contextMenu?: ContextMenuOpts;
-  storage?: StorageOpts;
+  thumbnail?: ThumbnailOpts; // 预览缩略图
+  contextMenu?: ContextMenuOpts; // 右键菜单
+  storage?: StorageOpts; // 持久化
+  subtitle?: SubtitleOpts; // 字幕
+  trays?: TrayOpts[]; // 底部控制器按钮
 }
 
 interface OptionPreset {
@@ -66,18 +77,35 @@ interface OptionPreset {
   version?: boolean; // 是否在右键菜单显示版本信息
 }
 
-interface RadioOpts {
+interface SelectOpts {
   label: string;
-  options: RadioOption[];
-  defaultValue?: number;
-  onChange?: (o: RadioOption, next: () => void) => any;
-  // 调用 next 将更新 UI
+  options: SelectOption[];
+  checked?: number;
+  onChange?: (o: SelectOption, update: () => void) => any;
+  // 调用 update 将更新 UI
+}
+
+interface SelectOption {
+  label: string;
+  selectedLabel?: string;
+  [key: string]: any;
 }
 
 interface SwitchOpts {
   label: string;
-  defaultValue?: false;
+  checked?: false;
   onChange?: (v: boolean, next: () => void) => any;
+}
+
+interface OptionPreset {
+  playbackRate?:
+    | boolean
+    | {
+        position?: number;
+        defaultIndex?: number;
+        steps?: { label?: string; value?: number }[];
+      };
+  version?: boolean;
 }
 
 interface Shortcut {
@@ -98,11 +126,6 @@ interface ThumbnailOpts {
   handler?: (seconds: number) => { x: number; y: number; url: string; }; // 手动控制缩略图显示，x, y 表示 background position 为正数
 }
 
-interface StorageOpts {
-  enable?: boolean; // 是否开启持久化
-  key?: string; // localStorage 的 key，默认 rplayer
-}
-
 interface ContextMenuOpts {
   toggle?: boolean; // 是否和浏览器菜单交替显示
   enable?: boolean; // 是否启用右键菜单
@@ -115,6 +138,25 @@ interface ContextMenuItem {
   checked?: boolean; // 是否选中
   onClick?: (checked: boolean, update: () => void, ev: MouseEvent) => any;
   // update 用来更新 UI
+}
+
+interface StorageOpts {
+  enable?: boolean; // 是否开启持久化
+  key?: string; // localStorage 的 key，默认 rplayer
+}
+
+interface SubtitleOpts {
+  style?: Partial<CSSStyleDeclaration>;
+  checked?: number;
+  captions: HTMLTrackElement[];
+}
+
+export interface TrayOpts {
+  text?: string;
+  icon?: string | Element;
+  pos?: number;
+  init?: (tray: Tray, player: RPlayer) => any;
+  onClick?: (ev: MouseEvent) => any;
 }
 ```
 
@@ -131,7 +173,6 @@ interface ContextMenuItem {
 
 ## 待完成
 
-- [ ] 字幕
 - [ ] 移动版控件
 - [ ] 视频信息面板
 - [ ] 交互日志
