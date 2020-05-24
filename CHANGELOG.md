@@ -1,3 +1,13 @@
+# [0.4.0](https://github.com/woopen/RPlayer/compare/v0.3.0...v0.4.0) (2020-05-24)
+
+
+### Features
+
+* 字幕 ([a9c5af5](https://github.com/woopen/RPlayer/commit/a9c5af5522f988d903ab0b4b74ccd9a3f479e462))
+* 可配置 ([3adcd32](https://github.com/woopen/RPlayer/commit/96c998f4ddc0e84454a10624977259e272dd11be))
+
+
+
 # [0.3.0](https://github.com/woopen/RPlayer/compare/v0.2.0...v0.3.0) (2020-05-16)
 
 
