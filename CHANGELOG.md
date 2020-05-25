@@ -1,3 +1,13 @@
+# [](https://github.com/woopen/RPlayer/compare/v0.4.1...v) (2020-05-25)
+
+
+
+## [0.4.1](https://github.com/woopen/RPlayer/compare/v0.4.0...v0.4.1) (2020-05-25)
+
+* monorepo ([e6b0f87](https://github.com/woopen/RPlayer/commit/e6b0f879e32a27b94e8609fcc26d17d4176326c3))
+
+
+
 # [0.4.0](https://github.com/woopen/RPlayer/compare/v0.3.0...v0.4.0) (2020-05-24)
 
 
