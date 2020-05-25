@@ -23,4 +23,5 @@ then
 
   # publish
   npm run publish
+  git push
 fi

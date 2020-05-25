@@ -19,7 +19,7 @@ npm i -S rplayer
 或者使用 CDN
 
 ```html
-<script src="https://unpkg.com/rplayer@latest/dist/RPlayer.js"></script>
+<script src="https://unpkg.com/rplayer@latest/dist/index.js"></script>
 ```
 
 ## 使用
@@ -162,7 +162,7 @@ export interface TrayOpts {
 
 ## 主题
 
-主题色使用 css 变量，可以通过覆盖来自定义主题色。IE 11 可以使用这个 [polyfill ](https://github.com/nuxodin/ie11CustomProperties)。
+主题色使用 css 变量，可以通过覆盖来自定义主题色。IE11 可以使用这个 [polyfill](https://github.com/nuxodin/ie11CustomProperties)。
 
 ```css
 :root {
