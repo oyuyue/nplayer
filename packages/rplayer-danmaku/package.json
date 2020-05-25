@@ -1,6 +1,6 @@
 {
   "name": "@rplayer/danmaku",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "rplayer player danmaku plugin",
   "main": "dist/index.js",
   "license": "MIT",
