@@ -102,7 +102,7 @@ interface OptionPreset {
     | boolean
     | {
         position?: number;
-        defaultIndex?: number;
+        checked?: number;
         steps?: { label?: string; value?: number }[];
       };
   version?: boolean;

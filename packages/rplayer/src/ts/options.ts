@@ -16,7 +16,7 @@ export interface OptionPreset {
     | boolean
     | {
         position?: number;
-        defaultIndex?: number;
+        checked?: number;
         steps?: { label?: string; value?: number }[];
       };
   version?: boolean;
@@ -53,7 +53,7 @@ function processPlaybackRate(
       { label: '1.75x', value: 1.75, i: 5 },
       { label: '2x', value: 2, i: 6 },
     ],
-    defaultIndex: 2,
+    checked: 2,
   };
 
   const playbackRate: any =
@@ -61,14 +61,11 @@ function processPlaybackRate(
       ? opts.preset.playbackRate
       : DEFAULT_PLAY_RATE;
 
-  const defaultIndex = player.storage.get(
-    'playbackRate',
-    playbackRate.defaultIndex
-  );
+  const checked = player.storage.get('playbackRate', playbackRate.checked);
 
   const setting: SelectOpts = {
     label: t(SPEED, opts.lang),
-    checked: defaultIndex,
+    checked,
     options: playbackRate.steps,
     onChange(opt: SelectOption, next: Function) {
       player.playbackRate = opt.value;
