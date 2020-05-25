@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.js --watch --colors",
     "build": "npm run lint && cross-env NODE_ENV=production webpack --config build/webpack.prod.js --progress --display-error-details --colors && tsc -b",
     "changelog": "conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
-    "publish": "lerna publish from-package --force-publish=* --exact --skip-temp-tag --yes",
+    "publish": "lerna publish from-package --force-publish=* --exact --yes",
     "release": "bash scripts/release.sh",
     "lint": "eslint packages/*/src/**/*.ts"
   },
