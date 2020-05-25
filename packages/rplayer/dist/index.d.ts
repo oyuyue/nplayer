@@ -596,7 +596,7 @@ declare module "options" {
     export interface OptionPreset {
         playbackRate?: boolean | {
             position?: number;
-            defaultIndex?: number;
+            checked?: number;
             steps?: {
                 label?: string;
                 value?: number;
