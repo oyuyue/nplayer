@@ -1,16 +1,8 @@
 {
-  "include": [
-    "src/**/*"
-  ],
-  "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./dist",
-    "module": "es6",
-    "noImplicitAny": true,
-    "outDir": "./dist",
-    "target": "es5",
-    "moduleResolution": "Node",
-    "experimentalDecorators": true
-  },
-  "exclude": ["node_modules"]
+  "files": [],
+  "references": [
+      { "path": "packages/rplayer" },
+      { "path": "packages/rplayer-ad" },
+      { "path": "packages/rplayer-danmaku" },
+  ]
 }

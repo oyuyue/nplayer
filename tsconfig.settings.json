@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "module": "es6",
+    "noImplicitAny": true,
+    "target": "es5",
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "lib": ["DOM", "ESnext"],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "emitDeclarationOnly": true
+  },
+  "exclude": ["node_modules", "packages/*/node_modules", "packages/*/dist"]
+}

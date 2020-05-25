@@ -6,7 +6,15 @@ const pkg = require('../package.json');
 
 module.exports = {
   entry: {
-    RPlayer: './src/ts/index.ts',
+    RPlayer: path.resolve(__dirname, '../packages/rplayer/src/ts/index.ts'),
+    RPlayerAd: path.resolve(
+      __dirname,
+      '../packages/rplayer-ad/src/ts/index.ts'
+    ),
+    RPlayerDanmaku: path.resolve(
+      __dirname,
+      '../packages/rplayer-danmaku/src/ts/index.ts'
+    ),
   },
 
   resolve: {
@@ -14,13 +22,18 @@ module.exports = {
   },
 
   output: {
-    path: path.resolve(__dirname, '..', 'dist'),
-    filename: '[name].js',
+    path: path.resolve(__dirname, '..', 'packages'),
+    filename: (a) => {
+      const name = a.chunk.name
+        .match(/([A-Z]+[a-z]+)/g)
+        .map((x) => x.toLowerCase())
+        .join('-');
+      return name + '/dist/index.js';
+    },
     library: '[name]',
     libraryTarget: 'umd',
     libraryExport: 'default',
     umdNamedDefine: true,
-    publicPath: '/',
   },
 
   module: {
@@ -32,6 +45,9 @@ module.exports = {
         use: [
           {
             loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
           },
         ],
       },

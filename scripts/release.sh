@@ -10,9 +10,9 @@ then
 
   # commit
   VERSION=$VERSION npm run build
-  git add dist
+  git add .
   git commit -m "build: bundle $VERSION"
-  npm version $VERSION --message "chore(release): %s"
+  npx lerna version $VERSION --yes --no-push
 
   # changelog
   npm run changelog
@@ -22,9 +22,5 @@ then
   git commit -m "chore(changelog): $VERSION"
 
   # publish
-  git push origin refs/tags/v$VERSION
-  git push
-  nrm use npm
-  npm publish
-  nrm use taobao
+  npm run publish
 fi

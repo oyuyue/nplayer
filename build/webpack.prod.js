@@ -6,5 +6,9 @@ module.exports = merge(base, {
   mode: 'production',
   bail: true,
   devtool: 'source-map',
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['**/dist/**/*'],
+    }),
+  ],
 });
