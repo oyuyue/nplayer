@@ -23,5 +23,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "peerDependencies": {
+    "rplayer": "^0.4.1"
   }
 }

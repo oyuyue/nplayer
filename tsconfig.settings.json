@@ -2,12 +2,14 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
-    "module": "es6",
+    "module": "esnext",
     "noImplicitAny": true,
     "target": "es5",
+    "importHelpers": true,
     "moduleResolution": "Node",
     "sourceMap": true,
-    "lib": ["DOM", "ESnext"],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "emitDeclarationOnly": true

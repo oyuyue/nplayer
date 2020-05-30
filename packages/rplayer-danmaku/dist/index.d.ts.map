@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../src/ts/danmaku.ts","../src/ts/index.ts"],"names":[],"mappings":";IAAA,MAAM,CAAC,OAAO,OAAO,OAAO;;KAE3B;;;ICFD,OAAO,OAAO,gBAAkB;IAEhC,eAAe,OAAO,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../src/ts/index.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,WAAW,CAAC;AAEhC,eAAe,OAAO,CAAC"}

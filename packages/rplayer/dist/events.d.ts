@@ -1,0 +1,33 @@
+declare enum Events {
+    BEFORE_MOUNT = "BeforeMount",
+    MOUNTED = "Mounted",
+    CONTROLS_SHOW = "ControlsShow",
+    CONTROLS_HIDE = "ControlsHide",
+    ENTER_FULLSCREEN = "EnterFullscreen",
+    EXIT_FULLSCREEN = "ExitFullscreen",
+    DURATION_CHANGE = "DurationChange",
+    TIME_UPDATE = "TimeUpdate",
+    VOLUME_CHANGE = "VolumeChange",
+    LOADED_METADATA = "LoadedMetadata",
+    PLAY = "Play",
+    PAUSE = "Pause",
+    ENDED = "Ended",
+    PROGRESS = "Progress",
+    CANPLAY = "Canplay",
+    WAITING = "Waiting",
+    PLAYING = "Playing",
+    STALLED = "Stalled",
+    ERROR = "Error",
+    BREAK_POINT_CHANGE = "BreakPointChange",
+    CLICK_CONTROL_MASK = "ClickControlMask",
+    CLICK_OUTSIDE = "ClickOutside",
+    PLAYER_CLICK = "PlayerClick",
+    PLAYER_CONTEXT_MENU = "PlayerContextMenu",
+    PLAYER_DBLCLICK = "PlayerDblclick",
+    PLAYER_MOUSE_MOVE = "PlayerMouseMove",
+    PLAYER_MOUSE_LEAVE = "PlayerMouseLeave",
+    PLAYER_RESIZE = "PlayerResize",
+    SETTING_SELECTED = "SettingSelected"
+}
+export default Events;
+//# sourceMappingURL=events.d.ts.map
