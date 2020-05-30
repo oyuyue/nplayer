@@ -7,9 +7,9 @@ const pkg = require('../package.json');
 module.exports = {
   entry: {
     RPlayer: path.resolve(__dirname, '../packages/rplayer/src/ts/index.ts'),
-    RPlayerAd: path.resolve(
+    RPlayerAds: path.resolve(
       __dirname,
-      '../packages/rplayer-ad/src/ts/index.ts'
+      '../packages/rplayer-ads/src/ts/index.ts'
     ),
     RPlayerDanmaku: path.resolve(
       __dirname,

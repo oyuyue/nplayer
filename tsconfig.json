@@ -2,7 +2,7 @@
   "files": [],
   "references": [
       { "path": "packages/rplayer" },
-      { "path": "packages/rplayer-ad" },
+      { "path": "packages/rplayer-ads" },
       { "path": "packages/rplayer-danmaku" },
   ]
 }

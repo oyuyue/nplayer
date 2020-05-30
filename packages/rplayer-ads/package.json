@@ -1,5 +1,5 @@
 {
-  "name": "@rplayer/ad",
+  "name": "@rplayer/ads",
   "version": "0.4.1",
   "description": "rplayer player ad plugin",
   "main": "dist/index.js",
