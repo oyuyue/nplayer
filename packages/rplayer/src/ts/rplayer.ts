@@ -12,8 +12,12 @@ import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
 import Storage from './storage';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
+import * as utils from './utils';
 
 export default class RPlayer extends Component {
+  static readonly Events = Events;
+  static readonly utils = utils;
+
   el: HTMLElement;
   curBreakPoint: string;
   readonly media: HTMLVideoElement;
@@ -192,5 +196,9 @@ export default class RPlayer extends Component {
         break;
       }
     }
+  }
+
+  static addLang(lang: string, data: Record<string, string>): void {
+    I18n.addLang(lang, data);
   }
 }

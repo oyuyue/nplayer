@@ -27,8 +27,8 @@ export default class I18n {
     return t(key, lang);
   }
 
-  addLang(lang: string, data: Record<string, string>): void {
+  static addLang(lang: string, data: Record<string, string>): void {
     language[lang] = data;
-    this.fallback();
+    fallback();
   }
 }
