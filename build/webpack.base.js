@@ -2,7 +2,7 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const webpack = require('webpack');
-const pkg = require('../package.json');
+const version = require('../lerna.json').version;
 
 module.exports = {
   entry: {
@@ -84,7 +84,7 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-      __VERSION: `"${pkg.version}"`,
+      __VERSION: `"${version}"`,
     }),
   ],
 };

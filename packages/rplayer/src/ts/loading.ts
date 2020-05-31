@@ -66,9 +66,11 @@ export default class Loading extends EventHandler {
 
   show = (): void => {
     this.player.addClass(this.loadingClass);
+    this.player.emit(Events.LOADING_SHOW);
   };
 
   hide(): void {
     this.player.removeClass(this.loadingClass);
+    this.player.emit(Events.LOADING_HIDE);
   }
 }

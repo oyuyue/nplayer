@@ -7,6 +7,6 @@ export default class I18n {
     fallback: typeof fallback;
     constructor(opts: RPlayerOptions);
     t(key: string, lang?: string): string;
-    addLang(lang: string, data: Record<string, string>): void;
+    static addLang(lang: string, data: Record<string, string>): void;
 }
 //# sourceMappingURL=i18n.d.ts.map

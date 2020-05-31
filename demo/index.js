@@ -41,6 +41,16 @@ var player = new RPlayer({
 //   hls.recoverMediaError();
 // })
 
+const ads = new RPlayerAds({
+  liner: [
+    {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/flower.webm', duration: 5},
+    {src: 'https://media.w3.org/2010/05/sintel/trailer.mp4', duration: 5 },
+    {src: 'http://www.w3school.com.cn/example/html5/mov_bbb.mp4', duration: 5 },
+  ]
+})
+
+player.use(ads)
+
 player.media.style.maxHeight = '80vh'
 
 player.mount()

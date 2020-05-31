@@ -22,6 +22,11 @@ export interface OptionPreset {
   version?: boolean;
 }
 
+export interface Plugin {
+  install: (p: RPlayer) => any;
+  [key: string]: any;
+}
+
 export interface RPlayerOptions {
   media?: string | HTMLVideoElement;
   el?: string | HTMLElement;
@@ -35,6 +40,7 @@ export interface RPlayerOptions {
   storage?: StorageOpts;
   subtitle?: SubtitleOpts;
   trays?: TrayOpts[];
+  plugins?: Plugin[];
 }
 
 function processPlaybackRate(
@@ -169,6 +175,7 @@ export default function processOptions(
 
   opts.settings = opts.settings || [];
   opts.preset = opts.preset || {};
+  opts.plugins = opts.plugins || [];
 
   opts = processStorage(opts);
   player.storage = new Storage(opts);

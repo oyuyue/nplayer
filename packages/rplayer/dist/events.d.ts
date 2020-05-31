@@ -27,7 +27,9 @@ declare enum Events {
     PLAYER_MOUSE_MOVE = "PlayerMouseMove",
     PLAYER_MOUSE_LEAVE = "PlayerMouseLeave",
     PLAYER_RESIZE = "PlayerResize",
-    SETTING_SELECTED = "SettingSelected"
+    SETTING_SELECTED = "SettingSelected",
+    LOADING_SHOW = "LoadingShow",
+    LOADING_HIDE = "LoadingHide"
 }
 export default Events;
 //# sourceMappingURL=events.d.ts.map

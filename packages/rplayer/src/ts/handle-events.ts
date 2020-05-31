@@ -9,7 +9,7 @@ function trans(
   from: keyof HTMLVideoElementEventMap,
   to: string
 ): void {
-  dom.addEventListener(from, (ev) => player.emit(to, ev));
+  dom.addEventListener(from, (ev: MouseEvent) => player.emit(to, ev));
 }
 
 function transThrottle(
@@ -19,7 +19,7 @@ function transThrottle(
   to: string
 ): void {
   let pending = false;
-  dom.addEventListener(from, (ev) => {
+  dom.addEventListener(from, (ev: MouseEvent) => {
     if (pending) return;
     pending = true;
     requestAnimationFrame(() => {

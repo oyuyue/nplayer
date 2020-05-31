@@ -1,5 +1,6 @@
 import Component from './component';
 import Controls from './controls';
+import Events from './events';
 import I18n from './i18n';
 import Loading from './loading';
 import { RPlayerOptions } from './options';
@@ -7,7 +8,10 @@ import Subtitle from './plugins/subtitle';
 import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
 import Storage from './storage';
+import * as utils from './utils';
 export default class RPlayer extends Component {
+    static readonly Events: typeof Events;
+    static readonly utils: typeof utils;
     el: HTMLElement;
     curBreakPoint: string;
     readonly media: HTMLVideoElement;
@@ -20,6 +24,7 @@ export default class RPlayer extends Component {
     readonly subtitle: Subtitle;
     storage: Storage;
     private prevVolume;
+    private ready;
     constructor(opts: RPlayerOptions);
     get currentTime(): number;
     set currentTime(v: number);
@@ -32,6 +37,8 @@ export default class RPlayer extends Component {
     get duration(): number;
     get buffered(): TimeRanges;
     get paused(): boolean;
+    get ended(): boolean;
+    get playing(): boolean;
     get isPhone(): boolean;
     private restore;
     setMediaAttrs(map: RPlayerOptions['video']): void;
@@ -47,5 +54,6 @@ export default class RPlayer extends Component {
     toggleVolume(): void;
     t(key: string): string;
     eachBuffer(fn: (start: number, end: number) => boolean | void): void;
+    static addLang(lang: string, data: Record<string, string>): void;
 }
 //# sourceMappingURL=rplayer.d.ts.map

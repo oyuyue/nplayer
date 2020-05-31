@@ -8,7 +8,7 @@
     "importHelpers": true,
     "moduleResolution": "Node",
     "sourceMap": true,
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ScriptHost"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,

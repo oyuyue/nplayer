@@ -6,7 +6,7 @@ import Events from './events';
 import setupEvents from './handle-events';
 import I18n from './i18n';
 import Loading from './loading';
-import processOptions, { RPlayerOptions } from './options';
+import processOptions, { RPlayerOptions, Plugin } from './options';
 import Subtitle from './plugins/subtitle';
 import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
@@ -32,6 +32,7 @@ export default class RPlayer extends Component {
   storage: Storage;
 
   private prevVolume = 1;
+  private ready = false;
 
   constructor(opts: RPlayerOptions) {
     super();
@@ -57,6 +58,8 @@ export default class RPlayer extends Component {
     this.loading = new Loading(this);
     this.fullscreen = new Fullscreen(this);
     this.subtitle = new Subtitle(this);
+
+    this.options.plugins.forEach((p) => p.install(this));
   }
 
   get currentTime(): number {
@@ -107,6 +110,14 @@ export default class RPlayer extends Component {
     return this.media.paused;
   }
 
+  get ended(): boolean {
+    return this.media.ended;
+  }
+
+  get playing(): boolean {
+    return this.ready && !this.paused && !this.ended;
+  }
+
   get isPhone(): boolean {
     return this.curBreakPoint === BP.BREAKPOINT_PHONE;
   }
@@ -136,7 +147,10 @@ export default class RPlayer extends Component {
     this.appendChild(this.controls);
     this.emit(Events.BEFORE_MOUNT);
     this.el.appendChild(this.dom);
-    requestAnimationFrame(() => this.emit(Events.MOUNTED));
+    requestAnimationFrame(() => {
+      this.emit(Events.MOUNTED);
+      this.ready = true;
+    });
   }
 
   seek(seconds: number): void {
@@ -196,6 +210,10 @@ export default class RPlayer extends Component {
         break;
       }
     }
+  }
+
+  use(plugin: Plugin): void {
+    plugin.install(this);
   }
 
   static addLang(lang: string, data: Record<string, string>): void {
