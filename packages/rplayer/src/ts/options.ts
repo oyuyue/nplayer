@@ -59,7 +59,6 @@ function processPlaybackRate(
       { label: '1.75x', value: 1.75, i: 5 },
       { label: '2x', value: 2, i: 6 },
     ],
-    checked: 2,
   };
 
   const playbackRate: any =
@@ -67,11 +66,9 @@ function processPlaybackRate(
       ? opts.preset.playbackRate
       : DEFAULT_PLAY_RATE;
 
-  const checked = player.storage.get('playbackRate', playbackRate.checked);
-
   const setting: SelectOpts = {
     label: t(SPEED, opts.lang),
-    checked,
+    checked: player.storage.get('playbackRate', 2),
     options: playbackRate.steps,
     onChange(opt: SelectOption, next: Function) {
       player.playbackRate = opt.value;

@@ -13,10 +13,12 @@ import Shortcut from './shortcut';
 import Storage from './storage';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 import * as utils from './utils';
+import icons from './icons';
 
 export default class RPlayer extends Component {
   static readonly Events = Events;
   static readonly utils = utils;
+  static readonly icons = icons;
 
   el: HTMLElement;
   curBreakPoint: string;

@@ -36,22 +36,22 @@ class FullscreenTray extends Tray {
 export default class Fullscreen {
   private readonly player: RPlayer;
   readonly prefix = this.getPrefix();
+  private target: HTMLElement;
 
   constructor(player: RPlayer) {
     this.player = player;
+    this.setTarget();
 
-    if (this.support) {
-      (document as any).addEventListener(
-        this.prefix === 'ms'
-          ? 'MSFullscreenChange'
-          : `${this.prefix}fullscreenchange`,
-        this.changeHandler
-      );
+    (document as any).addEventListener(
+      this.prefix === 'ms'
+        ? 'MSFullscreenChange'
+        : `${this.prefix}fullscreenchange`,
+      this.changeHandler
+    );
 
-      if (this.isActive) player.addClass(FULL);
-      player.on(Events.PLAYER_DBLCLICK, this.playerDblClickHandler);
-      player.controls.addTray(new FullscreenTray(player).dom, -1);
-    }
+    if (this.isActive) player.addClass(FULL);
+    player.on(Events.PLAYER_DBLCLICK, this.playerDblClickHandler);
+    player.controls.addTray(new FullscreenTray(player).dom, -1);
   }
 
   private playerDblClickHandler = (ev: Event): void => {
@@ -116,16 +116,14 @@ export default class Fullscreen {
     );
   }
 
-  get target(): HTMLElement {
-    return ua.isIos ? this.player.media : this.player.dom;
-  }
-
   get isActive(): boolean {
     return this.fullscreenElement === this.target;
   }
 
-  get support(): boolean {
-    return !!this.requestFullscreen && !!this.exitFullscreen;
+  setTarget(dom?: HTMLElement): void {
+    const isActive = this.isActive;
+    this.target = dom || ua.isIos ? this.player.media : this.player.dom;
+    if (isActive) this.enter();
   }
 
   enter(): void {
