@@ -1,10 +1,10 @@
+import EventEmitter from 'eventemitter3';
 import Component from './component';
 import { BP } from './config';
 import { PLAYER } from './config/classname';
 import Controls from './controls';
 import Events from './events';
 import setupEvents from './handle-events';
-import I18n from './i18n';
 import Loading from './loading';
 import processOptions, { RPlayerOptions, Plugin } from './options';
 import Subtitle from './plugins/subtitle';
@@ -14,11 +14,13 @@ import Storage from './storage';
 import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 import * as utils from './utils';
 import icons from './icons';
+import language from './config/lang';
 
 export default class RPlayer extends Component {
   static readonly Events = Events;
   static readonly utils = utils;
   static readonly icons = icons;
+  static readonly EventEmitter = EventEmitter;
 
   el: HTMLElement;
   curBreakPoint: string;
@@ -28,7 +30,6 @@ export default class RPlayer extends Component {
   readonly fullscreen: Fullscreen;
   readonly controls: Controls;
   readonly shortcut: Shortcut;
-  readonly i18n: I18n;
   readonly loading: Loading;
   readonly subtitle: Subtitle;
   storage: Storage;
@@ -44,7 +45,6 @@ export default class RPlayer extends Component {
     this.addClass(PLAYER);
     this.canFocus();
 
-    this.i18n = new I18n(this.options);
     this.media = getDomOr(this.options.media, () => newElement('', 'video'));
     this.el = getDomOr(this.options.el, document.body);
 
@@ -203,7 +203,7 @@ export default class RPlayer extends Component {
   }
 
   t(key: string): string {
-    return this.i18n.t(key);
+    return language.t(key, this.options.lang);
   }
 
   eachBuffer(fn: (start: number, end: number) => boolean | void): void {
@@ -218,7 +218,7 @@ export default class RPlayer extends Component {
     plugin.install(this);
   }
 
-  static addLang(lang: string, data: Record<string, string>): void {
-    I18n.addLang(lang, data);
+  addLang(lang: string, data: Record<string, string>): void {
+    language.addLang(lang, data);
   }
 }

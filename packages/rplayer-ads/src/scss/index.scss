@@ -1,4 +1,16 @@
 .rplayer_ad {
+  user-select: none;
+
+  &_badge {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, .5);
+  }
+
   &_liner {
     position: absolute;
     left: 0;
@@ -7,8 +19,33 @@
     bottom: 0;
     background: #000;
     z-index: 10;
+    font-size: 0;
+    cursor: pointer;
 
-    & > div {
+    &_i_pause, &_i_muted, &_i_efs {
+      display: none;
+    }
+
+    &-playing &_i_play, &-muted &_i_volume, &-fs &_i_fs {
+      display: none;
+    }
+
+    &-playing &_i_pause, &-muted &_i_muted, &-fs &_i_efs {
+      display: block;
+    }
+
+    &_cd {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 13px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      color: #fff;
+      background: rgba(0, 0, 0, .5);
+    }
+
+    &_videos {
       height: 100%;
       width: 100%;
       display: flex;
@@ -16,9 +53,91 @@
       justify-content: center;
     }
 
+    &_ctrl {
+      position: absolute;
+      background: rgba(0, 0, 0, .5);
+      cursor: pointer;
+
+      padding: 7px;
+      border-radius: 3px;
+      transition: background .3s ease;
+
+      &:hover {
+        background: rgba(0, 0, 0, .7);
+        background: var(--rplayer-primary);
+      }
+    }
+
+    &_play, &_volume, &_full {
+      bottom: 3%;
+    }
+
+    &_play {
+      left: 10px;
+    }
+
+    &_volume {
+      left: 60px;
+    }
+
+    &_full {
+      right: 10px;
+    }
+
     video {
       width: 100%;
       max-height: 100%;
     }
   }
+
+  &_nonliner {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 70%;
+    max-height: 70%;
+    z-index: 10;
+    cursor: pointer;
+
+    &-active {
+      display: block;
+    }
+
+    &_close {
+      position: absolute;
+      right: 8px;
+      top: 10px;
+      width: 15px;
+      height: 15px;
+      opacity: .5;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &::before, &::after {
+        content: '';
+        position: absolute;
+        height: 17px;
+        width: 3px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+      }
+
+      &::before {
+        transform: rotate(45deg);
+      }
+
+      &::after {
+        transform: rotate(-45deg);
+      }
+    }
+
+    &_content {
+      object-fit: cover;
+    }
+  }
+
 }

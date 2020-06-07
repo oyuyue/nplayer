@@ -120,10 +120,11 @@ export default class Fullscreen {
     return this.fullscreenElement === this.target;
   }
 
-  setTarget(dom?: HTMLElement): void {
-    const isActive = this.isActive;
-    this.target = dom || ua.isIos ? this.player.media : this.player.dom;
-    if (isActive) this.enter();
+  setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void {
+    this.target =
+      (dom && ua.isIos ? video : dom) ||
+      (ua.isIos ? this.player.media : this.player.dom);
+    if (this.isActive) this.enter();
   }
 
   enter(): void {

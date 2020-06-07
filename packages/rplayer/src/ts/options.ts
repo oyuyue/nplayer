@@ -1,7 +1,7 @@
 import { NORMAL, SPEED } from './config/lang';
 import { SelectOption, SelectOpts } from './controls/setting/select';
 import { SwitchOpts } from './controls/setting/switch';
-import { t } from './i18n';
+import language from './config/lang';
 import { SubtitleOpts } from './plugins/subtitle';
 import RPlayer from './rplayer';
 import Storage, { StorageOpts } from './storage';
@@ -53,7 +53,7 @@ function processPlaybackRate(
     steps: [
       { label: '0.5x', value: 0.5, i: 0 },
       { label: '0.75x', value: 0.75, i: 1 },
-      { label: t(NORMAL, opts.lang), value: 1, i: 2 },
+      { label: language.t(NORMAL, opts.lang), value: 1, i: 2 },
       { label: '1.25x', value: 1.25, i: 3 },
       { label: '1.5x', value: 1.5, i: 4 },
       { label: '1.75x', value: 1.75, i: 5 },
@@ -67,7 +67,7 @@ function processPlaybackRate(
       : DEFAULT_PLAY_RATE;
 
   const setting: SelectOpts = {
-    label: t(SPEED, opts.lang),
+    label: language.t(SPEED, opts.lang),
     checked: player.storage.get('playbackRate', 2),
     options: playbackRate.steps,
     onChange(opt: SelectOption, next: Function) {

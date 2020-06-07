@@ -1,1 +1,0 @@
-{"version":3,"file":"play.d.ts","sourceRoot":"","sources":["../../../src/ts/controls/trays/play.ts"],"names":[],"mappings":"AAIA,OAAO,OAAO,MAAM,eAAe,CAAC;AACpC,OAAO,IAAI,MAAM,QAAQ,CAAC;AAE1B,MAAM,CAAC,OAAO,OAAO,QAAS,SAAQ,IAAI;gBAC5B,MAAM,EAAE,OAAO;IAS3B,OAAO,IAAI,IAAI;IAIf,MAAM,IAAI,IAAI;IAId,OAAO,IAAI,IAAI;CAGhB"}

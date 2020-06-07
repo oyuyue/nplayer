@@ -335,6 +335,7 @@
     transition: $transition-tip;
     text-align: center;
     pointer-events: none;
+    z-index: 1;
 
     &_time {
       margin-top: 10px;

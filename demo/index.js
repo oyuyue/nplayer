@@ -43,9 +43,15 @@ var player = new RPlayer({
 
 const ads = new RPlayerAds({
   liner: [
-    {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/flower.webm', duration: 5},
-    {src: 'https://media.w3.org/2010/05/sintel/trailer.mp4', duration: 5 },
-    {src: 'http://www.w3school.com.cn/example/html5/mov_bbb.mp4', duration: 5 },
+    {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/friday.mp4', duration: 5, jumpTo: 'http://www.baidu.com'},
+    {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/friday.mp4', playWait: 10, duration: 5, jumpTo: 'http://www.baidu.com'},
+  ],
+  nonLiner: [
+    {
+      imgSrc: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg',
+      total: 3,
+      jumpTo: 'http://www.baidu.com'
+    }
   ]
 })
 
