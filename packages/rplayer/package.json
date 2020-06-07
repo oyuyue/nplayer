@@ -1,6 +1,6 @@
 {
   "name": "rplayer",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "responsive video player",
   "main": "dist/index.js",
   "license": "MIT",
