@@ -1,8 +1,20 @@
-# [](https://github.com/woopen/RPlayer/compare/v0.4.1...v) (2020-05-25)
+# [](https://github.com/woopen/RPlayer/compare/v0.5.0...v) (2020-06-07)
+
+
+
+# [0.5.0](https://github.com/woopen/RPlayer/compare/v0.4.1...v0.5.0) (2020-06-07)
+
+
+### Features
+
+* 广告插件 ([3c64b39](https://github.com/woopen/RPlayer/commit/3c64b397d81a7a5f14fa35945364fa193277ba22))
 
 
 
 ## [0.4.1](https://github.com/woopen/RPlayer/compare/v0.4.0...v0.4.1) (2020-05-25)
+
+
+### Feature
 
 * monorepo ([e6b0f87](https://github.com/woopen/RPlayer/commit/e6b0f879e32a27b94e8609fcc26d17d4176326c3))
 
