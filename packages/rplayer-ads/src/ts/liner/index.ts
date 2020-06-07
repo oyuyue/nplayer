@@ -108,11 +108,10 @@ export default class Liner {
     this.untickRemain();
     this.tickRemainTimer = setInterval(() => {
       if (this.remainTime <= 0) {
-        if (
-          this.opts.linerTimeout &&
-          this.opts.linerTimeout(this.playlist.map((x) => x.ad))
-        ) {
-          return this.untickRemain();
+        const list = this.playlist.map((x) => x.ad);
+        list.unshift(this.currentItem.ad);
+        if (this.opts.linerTimeout && this.opts.linerTimeout(list)) {
+          return this.skip();
         }
 
         return this.calcRemainTime();

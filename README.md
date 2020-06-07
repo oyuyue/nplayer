@@ -67,6 +67,12 @@ interface RPlayerOptions {
   storage?: StorageOpts; // 持久化
   subtitle?: SubtitleOpts; // 字幕
   trays?: TrayOpts[]; // 底部控制器按钮
+  plugins?: Plugin[]; // 插件
+}
+
+interface Plugin {
+  install: (p: RPlayer) => any; // 会自动调用该方法
+  [key: string]: any;
 }
 
 interface OptionPreset {
@@ -151,7 +157,7 @@ interface SubtitleOpts {
   captions: HTMLTrackElement[];
 }
 
-export interface TrayOpts {
+interface TrayOpts {
   text?: string;
   icon?: string | Element;
   pos?: number;
@@ -176,5 +182,4 @@ export interface TrayOpts {
 - [ ] 移动版控件
 - [ ] 视频信息面板
 - [ ] 交互日志
-- [ ] 广告插件
 - [ ] 弹幕插件
