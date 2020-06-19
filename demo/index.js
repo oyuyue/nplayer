@@ -41,21 +41,21 @@ var player = new RPlayer({
 //   hls.recoverMediaError();
 // })
 
-const ads = new RPlayerAds({
-  liner: [
-    {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/friday.mp4', duration: 5, jumpTo: 'http://www.baidu.com'},
-    {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/friday.mp4', playWait: 10, duration: 5, jumpTo: 'http://www.baidu.com'},
-  ],
-  nonLiner: [
-    {
-      imgSrc: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg',
-      total: 3,
-      jumpTo: 'http://www.baidu.com'
-    }
-  ]
-})
+// const ads = new RPlayerAds({
+//   liner: [
+//     {src: 'https://redirector.gvt1.com/videoplayback/id/a33fc5b2685eb16e/itag/15/source/gfp_video_ads/requiressl/yes/acao/yes/mime/video%2Fmp4/ctier/L/ip/0.0.0.0/ipbits/0/expire/1591551676/sparams/ip,ipbits,expire,id,itag,source,requiressl,acao,mime,ctier/signature/5354301315CA861A3DE35068F32D7F543F46E7FD.5127CF7FE2014EA5CFDAA8BAD33353F31F081A43/key/ck2/file/file.mp4', duration: 10, jumpTo: 'http://www.baidu.com'},
+//     {src: 'https://interactive-examples.mdn.mozilla.net/media/examples/friday.mp4', playWait: 10, duration: 5, jumpTo: 'http://www.baidu.com'},
+//   ],
+//   nonLiner: [
+//     {
+//       imgSrc: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg',
+//       total: 3,
+//       jumpTo: 'http://www.baidu.com'
+//     }
+//   ]
+// })
 
-player.use(ads)
+// player.use(ads)
 
 player.media.style.maxHeight = '80vh'
 

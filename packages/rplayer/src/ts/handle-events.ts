@@ -35,6 +35,7 @@ export default function handler(
 ): void {
   // media
   trans(player, video, 'durationchange', Events.DURATION_CHANGE);
+  trans(player, video, 'ratechange', Events.RATE_CHANGE);
   trans(player, video, 'play', Events.PLAY);
   trans(player, video, 'pause', Events.PAUSE);
   trans(player, video, 'ended', Events.ENDED);

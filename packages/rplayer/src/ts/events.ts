@@ -9,6 +9,7 @@ enum Events {
   TIME_UPDATE = 'TimeUpdate',
   VOLUME_CHANGE = 'VolumeChange',
   LOADED_METADATA = 'LoadedMetadata',
+  RATE_CHANGE = 'RateChange',
   PLAY = 'Play',
   PAUSE = 'Pause',
   ENDED = 'Ended',

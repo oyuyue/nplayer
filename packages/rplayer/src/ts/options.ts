@@ -10,6 +10,7 @@ import { ContextMenuOpts } from './controls/contextmenu';
 import { ShortcutOpts } from './shortcut';
 import { ThumbnailOpts } from './controls/thumbnail';
 import { TrayOpts } from './controls/trays/tray';
+import Events from './events';
 
 export interface OptionPreset {
   playbackRate?:
@@ -68,18 +69,36 @@ function processPlaybackRate(
 
   const setting: SelectOpts = {
     label: language.t(SPEED, opts.lang),
-    checked: player.storage.get('playbackRate', 2),
     options: playbackRate.steps,
+    init(select) {
+      const rate = player.storage.get('playbackRate', 1);
+      const i = findIndex(playbackRate.steps, (v: any) => v.value == rate);
+
+      player.playbackRate = rate;
+      select.select(i, rate + 'x');
+      player.on(Events.RATE_CHANGE, () => {
+        const i = findIndex(
+          select.opts.options,
+          (s) => s.value === player.playbackRate
+        );
+
+        if (i > -1 && select.value === i) return;
+
+        const rate = parseFloat(player.playbackRate.toFixed(2));
+        player.storage.set({ playbackRate: rate });
+        select.select(i, rate + 'x');
+      });
+    },
     onChange(opt: SelectOption, next: Function) {
+      player.storage.set({ playbackRate: opt.value });
       player.playbackRate = opt.value;
-      player.storage.set({ playbackRate: opt.i });
       next();
     },
   };
 
   let pos = isNum(playbackRate.position)
     ? playbackRate.position
-    : findIndex(opts.settings, (x) => (x as SelectOpts).options);
+    : findIndex(opts.settings, (x) => !!(x as SelectOpts).options);
   if (pos < 0) pos = 0;
 
   opts.settings.splice(pos, 0, setting);

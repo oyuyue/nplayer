@@ -43,7 +43,7 @@ export function clampNeg(n: number, max: number, defaults = max): number {
 
 export function findIndex<T>(
   arr: T[],
-  predicate: (value: T, index: number, obj: T[]) => unknown
+  predicate: (value: T, index: number, obj: T[]) => boolean
 ): number {
   if (arr.findIndex) return arr.findIndex(predicate);
 
