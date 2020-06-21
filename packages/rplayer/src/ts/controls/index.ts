@@ -76,7 +76,7 @@ export default class Controls extends Component {
   }
 
   get isHide(): boolean {
-    return this.containsClass(CTRL_HIDE);
+    return this.player.containsClass(CTRL_HIDE);
   }
 
   private tryHideControls = (ev?: MouseEvent): void => {
@@ -105,13 +105,13 @@ export default class Controls extends Component {
 
   show(): void {
     if (!this.isHide) return;
-    this.removeClass(CTRL_HIDE);
+    this.player.removeClass(CTRL_HIDE);
     this.player.emit(Events.CONTROLS_SHOW);
   }
 
   hide(): void {
     if (this.isHide) return;
-    this.addClass(CTRL_HIDE);
+    this.player.addClass(CTRL_HIDE);
     this.player.emit(Events.CONTROLS_HIDE);
   }
 

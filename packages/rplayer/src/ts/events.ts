@@ -19,6 +19,7 @@ enum Events {
   PLAYING = 'Playing',
   STALLED = 'Stalled',
   ERROR = 'Error',
+  SEEKED = 'Seeked',
   BREAK_POINT_CHANGE = 'BreakPointChange',
   CLICK_CONTROL_MASK = 'ClickControlMask',
   CLICK_OUTSIDE = 'ClickOutside',

@@ -6,7 +6,7 @@ import { isFn } from './utils';
 function trans(
   player: RPlayer,
   dom: HTMLElement | Window,
-  from: keyof HTMLVideoElementEventMap,
+  from: string,
   to: string
 ): void {
   dom.addEventListener(from, (ev: MouseEvent) => player.emit(to, ev));
@@ -15,7 +15,7 @@ function trans(
 function transThrottle(
   player: RPlayer,
   dom: HTMLElement | Window,
-  from: keyof HTMLVideoElementEventMap,
+  from: string,
   to: string
 ): void {
   let pending = false;
@@ -44,6 +44,7 @@ export default function handler(
   trans(player, video, 'canplay', Events.CANPLAY);
   trans(player, video, 'loadedmetadata', Events.LOADED_METADATA);
   trans(player, video, 'error', Events.ERROR);
+  trans(player, video, 'seeked', Events.SEEKED);
 
   transThrottle(player, video, 'timeupdate', Events.TIME_UPDATE);
   transThrottle(player, video, 'volumechange', Events.VOLUME_CHANGE);

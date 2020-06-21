@@ -67,9 +67,9 @@ export default class ProgressBar extends Component {
   }
 
   private dragStartHandler = (ev: PointerEvent): void => {
-    this.player.pause();
     this.dragging = true;
     this.dragHandler(ev);
+    this.player.controls.requireShow();
   };
 
   private dragHandler = (ev: PointerEvent): void => {
@@ -83,7 +83,7 @@ export default class ProgressBar extends Component {
   private dragEndHandler = (ev: PointerEvent): void => {
     this.dragging = false;
     this.player.seek(this.calcCurrentTime(ev.pageX));
-    this.player.play();
+    this.player.controls.releaseShow();
   };
 
   private mouseMoveHandler = (ev: MouseEvent): void => {
