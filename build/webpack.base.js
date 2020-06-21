@@ -8,6 +8,11 @@ const version = require('../lerna.json').version;
 const buildName = process.env.npm_config_name;
 const packagePath = path.resolve(__dirname, '../packages')
 
+const toCamelcase = (name) => {
+  if (name === 'rplayer') return 'RPlayer'
+  return name.charAt(0).toUpperCase() + name.slice(1)
+}
+
 let packages = [];
 const entry = {}
 
@@ -22,7 +27,7 @@ if (buildName) {
 }
 
 packages.forEach(name => {
-  entry[name.split('-').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('')] = path.resolve(packagePath, name, 'src/ts/index.ts')
+  entry[name.split('-').map(x => toCamelcase(x)).join('')] = path.resolve(packagePath, name, 'src/ts/index.ts')
 })
 
 module.exports = {
@@ -34,8 +39,8 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, '..', 'packages'),
-    filename: ({ chunk: { id } }) => {
-      return packages[id] + '/dist/index.js';
+    filename: ({ chunk: { name } }) => {
+      return packages[Object.keys(entry).findIndex(x => x === name)] + '/dist/index.js';
     },
     library: '[name]',
     libraryTarget: 'umd',

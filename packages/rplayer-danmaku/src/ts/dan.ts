@@ -114,9 +114,14 @@ export default class Dan {
 
   recycle(): void {
     this.canRecycle = true;
+    this.showFrame = 0;
+    this._width = 0;
+    this.speed = 0;
     this.dom.style.color = '';
     this.dom.style.fontFamily = '';
     this.dom.style.right = '';
+    this.dom.style.top = '';
+    this.dom.style.bottom = '';
     this.dom.style.transform = '';
     this.dom.classList.remove('rplayer-dan-me');
     this.dom.classList.remove('rplayer_dan_d-center');
@@ -124,6 +129,7 @@ export default class Dan {
   }
 
   destroy(): void {
+    this.hide();
     if (this.dom.parentNode) {
       this.dom.parentNode.removeChild(this.dom);
     }

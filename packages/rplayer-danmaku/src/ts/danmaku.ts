@@ -43,6 +43,7 @@ export default class Danmaku {
     player.on(RPlayer.Events.PLAY, this.update);
     player.on(RPlayer.Events.ENDED, this.pause);
     player.on(RPlayer.Events.PLAYER_RESIZE, this.updateTunnel);
+    player.on(RPlayer.Events.SEEKED, this.onPlayerSeeked);
 
     if (document.contains(this.player.dom)) {
       this.run();
@@ -50,6 +51,11 @@ export default class Danmaku {
       player.once(RPlayer.Events.MOUNTED, this.run);
     }
   }
+
+  private onPlayerSeeked = (): void => {
+    this.clear();
+    this.remain = this.opts.items;
+  };
 
   updateTunnelHeight(h: number): void {
     if (h && this.tunnelHeight < h) {

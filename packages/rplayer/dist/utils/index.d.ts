@@ -10,7 +10,7 @@ export declare function isCatchable(o: any): o is {
     catch: Function;
 };
 export declare function clampNeg(n: number, max: number, defaults?: number): number;
-export declare function findIndex<T>(arr: T[], predicate: (value: T, index: number, obj: T[]) => unknown): number;
+export declare function findIndex<T>(arr: T[], predicate: (value: T, index: number, obj: T[]) => boolean): number;
 export declare function getDomOr<T extends HTMLElement>(dom: HTMLElement | string, orReturn?: (() => T) | T): T;
 export declare function htmlDom(html?: string, tag?: string, className?: string): HTMLElement;
 export declare function measureElementSize(dom: HTMLElement): {
