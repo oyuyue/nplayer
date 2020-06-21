@@ -1,0 +1,30 @@
+.rplayer_dan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  font-family: SimHei, "Microsoft JhengHei", Arial, Helvetica, sans-serif;
+
+  &_d {
+    position: absolute;
+    user-select: none;
+    white-space: nowrap;
+    will-change: transform;
+    font-weight: bold;
+    line-height: 1.125;
+    color: #fff;
+    text-shadow: rgb(0, 0, 0) 1px 1px 2px, rgb(0, 0, 0) 0px 0px 1px;
+
+    &-me {
+      outline: 1px solid currentColor;
+    }
+
+    &-center {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
