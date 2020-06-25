@@ -26,6 +26,10 @@ export function isElement(o: any): o is Element {
   return o instanceof Element;
 }
 
+export function isBool(o: any): o is boolean {
+  return typeof o === 'boolean';
+}
+
 export function isCatchable(o: any): o is { catch: Function } {
   return isObj(o) && isFn(o.catch);
 }

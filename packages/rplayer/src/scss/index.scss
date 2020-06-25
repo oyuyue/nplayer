@@ -68,35 +68,6 @@
     display: block;
   }
 
-  &_switch {
-    width: 36px;
-    padding: 2px;
-    border-radius: 12px;
-    background: $color-white-low;
-    transition: background-color .3s cubic-bezier(.4, 0, .2, 1);
-    cursor: pointer;
-
-    &::after {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: $color-white;
-      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,.14), 0px 1px 3px 0px rgba(0,0,0,.12);
-      transition: transform .15s cubic-bezier(.4, 0, .2, 1);
-    }
-
-    &-active {
-      background: $color-green;
-      background: var(--rplayer-switch);
-
-      &::after {
-        transform: translateX(16px);
-      }
-    }
-  }
-
   &_loading {
     display: none;
     z-index: 2;
@@ -641,6 +612,175 @@
       }
     }
   }
+
+  &_checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    transition: color .2s ease;
+    
+
+    &::before {
+      content: '';
+      display: block;
+      width: 1em;
+      height: 1em;
+      border: 1px solid currentColor;
+      border-radius: 2px;
+      margin-right: 5px;
+      transition: background .2s ease;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      opacity: 0;
+      left: 0.5em;
+      top: 50%;
+      width: 4px;
+      height: 7px;
+      border: 1px solid #fff;
+      border-top: 0;
+      border-left: 0;
+      transform: translate(-30%, -70%) rotate(45deg);
+    }
+
+    &:hover {
+      color: $color-green;
+      color: var(--rplayer-primary);
+    }
+
+    &-active {
+      &::before {
+        background: $color-green;
+        background: var(--rplayer-primary);
+        border-color: $color-green;
+        border-color: var(--rplayer-primary);
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &_switch {
+    width: 36px;
+    padding: 2px;
+    border-radius: 12px;
+    background: $color-white-low;
+    transition: background-color .3s cubic-bezier(.4, 0, .2, 1);
+    cursor: pointer;
+    user-select: none;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: $color-white;
+      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,.14), 0px 1px 3px 0px rgba(0,0,0,.12);
+      transition: transform .15s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    &-small {
+      width: 30px !important;
+      border-radius: 10px !important;
+
+      &::after {
+        width: 15px !important;
+        height: 15px !important;
+      }
+    }
+
+    &-active {
+      background: $color-green;
+      background: var(--rplayer-switch);
+
+      &::after {
+        transform: translateX(16px);
+      }
+    }
+  }
+
+  &_slider {
+    margin: 30px;
+    position: relative;
+    padding: 5px 0;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+
+    &_wrap {
+      height: 4px;
+      background: $color-white-high;
+    }
+
+    &_bar {
+      height: 100%;
+      transform-origin: 0 0;
+    }
+
+    &_bar, &_dot {
+      background: $color-white;
+      background: var(--rplayer-primary);
+    }
+
+    &_tip, &_dot, &_stop {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &_tip {
+      top: -150%;
+      padding: 1px 3px;
+      border-radius: 3px;
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: scale(.8) translateY(8px) translateX(-50%);
+      transform-origin: 0;
+      transition: $transition-tip;
+    }
+
+    &_stop {
+      top: -150%;
+      color: $color-white;
+      text-shadow: #000 1px 1px 2px, #000 0 0 1px;
+      transform: translateX(-50%);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 130%;
+        left: 50%;
+        width: 1px;
+        height: 80%;
+        background: currentColor;
+        box-shadow: 0 0 3px rgba(0,0,0,0.2);
+      }
+    }
+
+    &_dot {
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &:hover &_tip {
+      transform: scale(1) translateY(0) translateX(-50%);
+      opacity: 1;
+    }
+
+  }
+
 }
 
 @keyframes rplayer-loading {
@@ -650,4 +790,8 @@
   100% {
     transform: translate(-50%,-50%) rotate(360deg);
   }
+}
+
+html {
+  background: #000;
 }

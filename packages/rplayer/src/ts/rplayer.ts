@@ -15,12 +15,18 @@ import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 import * as utils from './utils';
 import icons from './icons';
 import language from './config/lang';
+import Switch from './widgets/Switch';
+import Slider from './widgets/Slider';
+import Checkbox from './widgets/checkbox';
 
 export default class RPlayer extends Component {
   static readonly Events = Events;
   static readonly utils = utils;
   static readonly icons = icons;
   static readonly EventEmitter = EventEmitter;
+  static readonly Switch = Switch;
+  static readonly Slider = Slider;
+  static readonly Checkbox = Checkbox;
 
   el: HTMLElement;
   curBreakPoint: string;
