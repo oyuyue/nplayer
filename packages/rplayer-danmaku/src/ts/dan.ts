@@ -5,7 +5,7 @@ import Danmaku from '.';
 export default class Dan {
   private readonly danmaku: Danmaku;
   readonly dom: HTMLElement;
-  private type: string;
+  type: string;
   private tunnel: number;
   private length: number;
   private showFrame = 0;
@@ -55,12 +55,17 @@ export default class Dan {
     if (!this.type || this.type === 'scroll') {
       this.length = Math.max(length, 0) + this.danmaku.fontSize;
 
-      if (speed && -length <= this.danmaku.player.rect.width / 2) {
+      if (length >= 0 && speed) {
         this.speed = speed;
       } else {
-        this.speed =
-          (this.width + this.danmaku.player.rect.width) /
-          this.danmaku.opts.scrollFrame;
+        const playerWidth = this.danmaku.player.rect.width;
+        const d = playerWidth + this.length;
+        this.speed = (this.width + d) / this.danmaku.opts.scrollFrame;
+
+        if (speed && length < 0) {
+          const s = (d * speed) / (playerWidth + length);
+          if (s < this.speed) this.speed = s;
+        }
       }
 
       this.updateX();

@@ -16,6 +16,7 @@ export interface DanmakuOpts {
   fontSize?: number;
   staticFrame?: number;
   scrollFrame?: number;
+  blockTypes?: Item['type'][];
 }
 
 export default function processOpts(opts: DanmakuOpts): DanmakuOpts {
@@ -23,6 +24,7 @@ export default function processOpts(opts: DanmakuOpts): DanmakuOpts {
   opts.opacity = opts.opacity || 1;
   opts.items = opts.items || [];
   opts.staticFrame = opts.staticFrame || 300;
-  opts.scrollFrame = opts.scrollFrame || 600;
+  opts.scrollFrame = opts.scrollFrame || 500;
+  opts.blockTypes = opts.blockTypes || [];
   return opts;
 }

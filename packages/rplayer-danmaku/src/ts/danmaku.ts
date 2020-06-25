@@ -26,7 +26,10 @@ export default class Danmaku {
   constructor(opts: DanmakuOpts) {
     this.dom = RPlayer.utils.newElement('rplayer_dan');
     this.opts = processOpts(opts);
-    this.remain = this.opts.items;
+
+    const items = this.opts.items;
+    this.opts.items = [];
+    this.push(items);
 
     this.updateOpacity(this.opts.opacity);
     this.updateArea(this.opts.area);
@@ -157,6 +160,50 @@ export default class Danmaku {
     this.bottom = [];
   }
 
+  toggleBlockType(type: string): void {
+    if (!type) return;
+    if (this.opts.blockTypes.includes(type as any)) {
+      this.opts.blockTypes = this.opts.blockTypes.filter((x) => x !== type);
+      this.remain = this.opts.items;
+    } else {
+      this.opts.blockTypes.push(type as any);
+      this.remain = this.remain.filter((x) => x.type !== type);
+      this.current = this.current.filter((x) => {
+        if (x.type === type) {
+          this.recycleDan(x);
+          return false;
+        }
+
+        return true;
+      });
+    }
+  }
+
+  send(item: Item): void {
+    item.isMe = true;
+    this.opts.items.push(item);
+    this.insert(item, 0, true);
+  }
+
+  push(item: Item[] | Item): void {
+    if (!item) return;
+
+    if (Array.isArray(item)) {
+      this.opts.items.push(...item);
+
+      if (this.opts.blockTypes.length) {
+        item = item.filter((x) => !this.opts.blockTypes.includes(x.type));
+      }
+
+      this.remain.push(...item);
+    } else {
+      this.opts.items.push(item);
+      if (!this.opts.blockTypes.includes(item.type)) {
+        this.remain.push(item);
+      }
+    }
+  }
+
   private getDan(
     item: Item,
     tunnel: number,
@@ -184,19 +231,48 @@ export default class Danmaku {
   };
 
   private getShortestTunnel(): [number, number, number] {
-    let shortest = Infinity;
-    let shortestIndex = -1;
+    let length = Infinity;
+    let tunnel = -1;
     let speed = 0;
     for (let i = 0; i < this.tunnel; i++) {
-      if (!this.last[i]) return [i, 0, 0];
+      if (!this.last[i] || this.last[i].canRecycle) return [i, 0, 0];
       const l = this.last[i].invisibleLength;
-      if (l < shortest && l < 200) {
-        shortest = l;
-        shortestIndex = i;
+      if (l < length) {
+        length = l;
+        tunnel = i;
         speed = this.last[i].speed;
       }
     }
-    return [shortestIndex, shortest, speed];
+    return [tunnel, length, speed];
+  }
+
+  private insert(item: Item, i = 0, force = false): void {
+    if (!item) return;
+    if (item.type === 'top' || item.type === 'bottom') {
+      let tunnel = -1;
+      for (let i = 0; i < this.tunnel; i++) {
+        if (!this[item.type][i] || this[item.type][i].canRecycle) {
+          tunnel = i;
+          break;
+        }
+      }
+      if (tunnel > -1) {
+        this[item.type][tunnel] = this.getDan(item, tunnel);
+        this.current.push(this[item.type][tunnel]);
+        item = undefined;
+      }
+    } else {
+      const [tunnel, length, speed] = this.getShortestTunnel();
+      if (length < 200) {
+        this.last[tunnel] = this.getDan(item, tunnel, length, speed);
+        this.current.push(this.last[tunnel]);
+        item = undefined;
+      }
+    }
+
+    if ((item && this.unlimited) || force) {
+      this.current.push(this.getDan(item, i % this.tunnel, i));
+    }
   }
 
   private load(): void {
@@ -228,34 +304,9 @@ export default class Danmaku {
     if (!toShow.length) return;
 
     for (let i = 0, l = toShow.length; i < l; i++) {
-      let item = toShow[i];
+      const item = toShow[i];
       if (!item || !item.text) break;
-
-      if (item.type === 'top' || item.type === 'bottom') {
-        let tunnel = -1;
-        for (let i = 0; i < this.tunnel; i++) {
-          if (!this[item.type][i]) {
-            tunnel = i;
-            break;
-          }
-        }
-        if (tunnel > -1) {
-          this[item.type][tunnel] = this.getDan(item, tunnel);
-          this.current.push(this[item.type][tunnel]);
-          item = undefined;
-        }
-      } else {
-        const [tunnel, length, speed] = this.getShortestTunnel();
-        if (tunnel > -1) {
-          this.last[tunnel] = this.getDan(item, tunnel, length, speed);
-          this.current.push(this.last[tunnel]);
-          item = undefined;
-        }
-      }
-
-      if (item && this.unlimited) {
-        this.current.push(this.getDan(item, i % this.tunnel, i));
-      }
+      this.insert(item, i);
     }
   }
 
