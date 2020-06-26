@@ -209,6 +209,29 @@
     }
   }
 
+  &_toast {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    transform: translate(-50%, -50%) scale(.8);
+    color: #fff;
+    background: $color-bg-popup;
+    box-shadow: 0 1px 20px 1px rgba(0,0,0,.3);
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity .2s ease, transform .2s ease;
+
+    &-active {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+
   &_progress {
     position: absolute;
     left: $size-bottom-padding;

@@ -23,6 +23,7 @@ import Popover from './widgets/popover';
 import BaseItem from './controls/setting/base-item';
 import SwitchItem from './controls/setting/switch-item';
 import Select from './controls/setting/select';
+import Toast from './toast';
 
 export default class RPlayer extends Component {
   static readonly Events = Events;
@@ -48,6 +49,7 @@ export default class RPlayer extends Component {
   readonly shortcut: Shortcut;
   readonly loading: Loading;
   readonly subtitle: Subtitle;
+  readonly $toast: Toast;
   storage: Storage;
 
   private prevVolume = 1;
@@ -76,6 +78,7 @@ export default class RPlayer extends Component {
     this.loading = new Loading(this);
     this.fullscreen = new Fullscreen(this);
     this.subtitle = new Subtitle(this);
+    this.$toast = new Toast(this);
 
     this.options.plugins.forEach((p) => p.install(this));
   }
@@ -216,6 +219,14 @@ export default class RPlayer extends Component {
       this.prevVolume = this.volume;
       this.volume = 0;
     }
+  }
+
+  toast(v: Parameters<Toast['show']>[0]): void {
+    this.$toast.show(v);
+  }
+
+  hideToast(): void {
+    this.$toast.hide();
   }
 
   t(key: string): string {
