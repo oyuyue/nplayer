@@ -48,6 +48,15 @@ module.exports = {
     umdNamedDefine: true,
   },
 
+  externals: {
+    rplayer: {
+      amd: 'rplayer',
+      commonjs: 'rplayer',
+      commonjs2: 'rplayer',
+      root: 'RPlayer'
+    },
+  },
+
   module: {
     strictExportPresence: true,
     rules: [

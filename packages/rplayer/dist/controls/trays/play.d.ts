@@ -1,8 +1,11 @@
 import RPlayer from '../../rplayer';
-import Tray from './tray';
-export default class PlayTray extends Tray {
+import EventHandler from '../../event-handler';
+export default class PlayTray extends EventHandler {
+    private readonly tray;
+    readonly pos = 0;
     constructor(player: RPlayer);
-    onClick(): void;
+    get dom(): HTMLElement;
+    onClick: () => void;
     onPlay(): void;
     onPause(): void;
 }

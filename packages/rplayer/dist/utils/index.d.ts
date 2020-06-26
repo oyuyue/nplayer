@@ -6,6 +6,7 @@ export declare function isNum(o: any): o is number;
 export declare function isFn(o: any): o is Function;
 export declare function isObj(o: any): o is Record<string, any>;
 export declare function isElement(o: any): o is Element;
+export declare function isBool(o: any): o is boolean;
 export declare function isCatchable(o: any): o is {
     catch: Function;
 };

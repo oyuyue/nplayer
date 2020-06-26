@@ -21,7 +21,7 @@
   outline: none;
 
   [hidden] {
-    display: none;
+    display: none !important;
   }
 
   video {
@@ -35,32 +35,10 @@
     fill: $color-white;
   }
 
-  &_i {
-    &_play, &_exit_fs {
-      display: none;
-    }
-  }
-
-  &-paused {
-    .rplayer_i_pause {
-      display: none;
-    }
-    .rplayer_i_play {
-      display: block;
-    }
-  }
-
   &-full {
     width: 100%;
     video {
       width: 100%;
-    }
-
-    .rplayer_i_exit_fs {
-      display: block;
-    }
-    .rplayer_i_enter_fs {
-      display: none;
     }
   }
 
@@ -332,21 +310,6 @@
         display: none;
       }
 
-      .rplayer_i_muted {
-        display: none;
-      }
-
-      &_i {
-        &-muted {
-          .rplayer_i_muted {
-            display: block;
-          }
-          .rplayer_i_volume {
-            display: none;
-          }
-        }
-      }
-
       &_progress {
         position: relative;
         width: 60px;
@@ -400,46 +363,6 @@
         transform: translateY(-0.5px);
       }
     }
-
-    &_set {
-      svg {
-        transition: transform .2s ease;
-      }
-
-      &-active {
-        background: $color-primary !important;
-        background: var(--rplayer-primary) !important;
-
-        svg {
-          transform: rotate(90deg);
-        }
-
-        .rplayer_tooltip_text {
-          opacity: 0 !important;
-        }
-
-        .rplayer_sets_menu {
-          opacity: 1;
-          transform: translateY(0);
-          pointer-events: initial;
-        }
-
-        .rplayer_tray_set_mask {
-          display: block;
-        }
-      }
-    }
-
-    &_cap {
-
-      svg {
-        opacity: .5;
-      }
-
-      &-active svg {
-        opacity: 1;
-      }
-    }
   }
 
   &_caption {
@@ -464,79 +387,21 @@
     }
   }
 
-  & &_tray {
-    padding: 7px;
-    border-radius: 3px;
-    transition: background .3s ease;
-    font-size: 0;
-    cursor: pointer;
+  &_setting {
+    &-active {
+      background: $color-primary !important;
+      background: var(--rplayer-primary) !important;
 
-    &:hover {
-      background: $color-primary;
-      background: var(--rplayer-primary);
-    }
-  }
-
-  &_tooltip {
-    position: relative;
-    display: inline-block;
-
-    &:hover &_text{
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    &:hover &_text-left, &:hover &_text-right{
-      transform: translate(0, 0);
-    }
-
-    &_text {
-      position: absolute;
-      left: 50%;
-      bottom: 100%;
-      font-size: 12px;
-      margin-bottom: $size-tip-mb;
-      padding: $padding-popup;
-      border-radius: $size-popup-radius;
-      white-space: nowrap;
-      background: $color-bg-popup;
-      transform: translate(-50%, 10px) scale(.8);
-      transform-origin: 50% 100%;
-      pointer-events: none;
-      opacity: 0;
-      transition: $transition-tip;
-
-      &-left {
-        left: 0;
-        transform: translate(0,10px) scale(.8);
-        transform-origin: 0 100%;
+      .rplayer_tray_icon {
+        transform: rotate(90deg);
       }
 
-      &-right {
-        left: auto;
-        right: 0;
-        transform: translate(0,10px) scale(.8);
-        transform-origin: 100% 100%;
+      .rplayer_tray_tip {
+        opacity: 0 !important;
       }
     }
-  }
 
-  &_sets {
     &_menu {
-      position: absolute;
-      bottom: 100%;
-      right: 0;
-      border-radius: $size-popup-radius;
-      margin-bottom: $size-tip-mb;
-      font-size: 14px;
-      background: $color-bg-popup;
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateY(10px);
-      z-index: 2;
-      pointer-events: none;
-      transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
-      overflow: hidden;
       will-change: width, height;
 
       &_page {
@@ -615,14 +480,13 @@
 
   &_checkbox {
     position: relative;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     font-size: 12px;
     color: #fff;
     cursor: pointer;
     user-select: none;
     transition: color .2s ease;
-    
 
     &::before {
       content: '';
@@ -668,7 +532,95 @@
     }
   }
 
+  &_pop {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    border-radius: $size-popup-radius;
+    margin-bottom: $size-tip-mb;
+    font-size: 14px;
+    background: $color-bg-popup;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(10px);
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
+    overflow: hidden;
+
+    &-active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  & &_tray {
+    position: relative;
+    display: inline-block;
+    padding: 7px;
+    border-radius: 3px;
+    transition: background .3s ease;
+    font-size: 0;
+    cursor: pointer;
+    user-select: none;
+
+    &-bg:hover {
+      background: $color-primary;
+      background: var(--rplayer-primary);
+    }
+
+    &-disable .rplayer_tray_icon {
+      opacity: .5;
+    }
+
+    &:hover .rplayer_tray_tip {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    &:hover .rplayer_tray_tip-l, &:hover .rplayer_tray_tip-r{
+      transform: translate(0, 0);
+    }
+
+    &_icon {
+      display: inline-block;
+      transition: transform .2s ease;
+    }
+
+    &_tip {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      font-size: 12px;
+      margin-bottom: $size-tip-mb;
+      padding: $padding-popup;
+      border-radius: $size-popup-radius;
+      white-space: nowrap;
+      background: $color-bg-popup;
+      transform: translate(-50%, 10px) scale(.8);
+      transform-origin: 50% 100%;
+      pointer-events: none;
+      opacity: 0;
+      transition: $transition-tip;
+
+      &-l {
+        left: 0;
+        transform: translate(0,10px) scale(.8);
+        transform-origin: 0 100%;
+      }
+
+      &-r {
+        left: auto;
+        right: 0;
+        transform: translate(0,10px) scale(.8);
+        transform-origin: 100% 100%;
+      }
+    }
+  }
+
   &_switch {
+    display: inline-block;
     width: 36px;
     padding: 2px;
     border-radius: 12px;
@@ -709,6 +661,7 @@
   }
 
   &_slider {
+    display: inline-block;
     margin: 30px;
     position: relative;
     padding: 5px 0;
@@ -790,8 +743,4 @@
   100% {
     transform: translate(-50%,-50%) rotate(360deg);
   }
-}
-
-html {
-  background: #000;
 }

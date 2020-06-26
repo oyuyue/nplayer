@@ -1,29 +1,39 @@
-import { ICON_PAUSE, ICON_PLAY } from '../../config/classname';
 import { PAUSE, PLAY } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
-import Tray from './tray';
+import Tray from '../../widgets/tray';
+import EventHandler from '../../event-handler';
 
-export default class PlayTray extends Tray {
+export default class PlayTray extends EventHandler {
+  private readonly tray: Tray;
+  readonly pos = 0;
+
   constructor(player: RPlayer) {
-    super(player, player.t(PLAY), Events.PLAY, Events.PAUSE);
-
-    this.pos = 0;
-    this.setLeft();
-    this.appendChild(icons.play(ICON_PLAY));
-    this.appendChild(icons.pause(ICON_PAUSE));
+    super(player, [Events.PLAY, Events.PAUSE]);
+    this.tray = new Tray({
+      label: player.t(PLAY),
+      labelPos: 'left',
+      icons: [icons.play(), icons.pause()],
+      onClick: this.onClick,
+    });
   }
 
-  onClick(): void {
+  get dom(): HTMLElement {
+    return this.tray.dom;
+  }
+
+  onClick = (): void => {
     this.player.toggle();
-  }
+  };
 
   onPlay(): void {
-    this.changeTipText(this.player.t(PAUSE));
+    this.tray.changeTip(this.player.t(PAUSE));
+    this.tray.showIcon(1);
   }
 
   onPause(): void {
-    this.changeTipText(this.player.t(PLAY));
+    this.tray.changeTip(this.player.t(PLAY));
+    this.tray.showIcon(0);
   }
 }

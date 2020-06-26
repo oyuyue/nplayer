@@ -1,12 +1,9 @@
 import Component from '../../component';
 import {
-  ICON_MUTED,
-  ICON_VOLUME,
   TRAY_VOLUME,
   TRAY_VOLUME_BAR,
   TRAY_VOLUME_BAR_WRAPPER,
   TRAY_VOLUME_DOT,
-  TRAY_VOLUME_I_MUTED,
   TRAY_VOLUME_PROGRESS,
 } from '../../config/classname';
 import { MUTE, UNMUTE } from '../../config/lang';
@@ -16,36 +13,7 @@ import RPlayer from '../../rplayer';
 import { Drag, newElement } from '../../utils';
 import Bar from '../bar';
 import Dot from '../dot';
-import Tray from './tray';
-
-class Icon extends Tray {
-  constructor(player: RPlayer) {
-    super(player);
-
-    this.appendChild(icons.volume(ICON_VOLUME));
-    this.appendChild(icons.muted(ICON_MUTED));
-    this.update();
-  }
-
-  private update(): void {
-    if (this.player.muted) {
-      this.addClass(TRAY_VOLUME_I_MUTED);
-      this.changeTipText(this.player.t(UNMUTE));
-    } else {
-      this.removeClass(TRAY_VOLUME_I_MUTED);
-      this.changeTipText(this.player.t(MUTE));
-    }
-  }
-
-  onClick(): void {
-    this.player.toggleVolume();
-  }
-
-  onVolumeChange(): void {
-    if (this.player.muted && this.containsClass(TRAY_VOLUME_I_MUTED)) return;
-    this.update();
-  }
-}
+import Tray from '../../widgets/tray';
 
 class Progress extends Component {
   private readonly bar: Bar;
@@ -96,9 +64,9 @@ class Progress extends Component {
 }
 
 export default class VolumeTray extends Component {
-  private readonly icon: Icon;
+  private readonly tray: Tray;
   private readonly progress: Progress;
-  pos = 1;
+  readonly pos = 1;
 
   constructor(player: RPlayer) {
     super(player, {
@@ -106,15 +74,30 @@ export default class VolumeTray extends Component {
       className: TRAY_VOLUME,
     });
 
-    this.icon = new Icon(player);
+    this.tray = new Tray({
+      label: player.t(MUTE),
+      icons: [icons.volume(), icons.muted()],
+      onClick: this.onClick,
+    });
     this.progress = new Progress(player);
 
-    this.appendChild(this.icon);
+    this.appendChild(this.tray.dom);
     this.appendChild(this.progress);
   }
 
+  onClick = (): void => {
+    this.player.toggleVolume();
+  };
+
   onVolumeChange(): void {
-    this.icon.onVolumeChange();
+    if (this.player.muted) {
+      this.tray.changeTip(this.player.t(UNMUTE));
+      this.tray.showIcon(1);
+    } else {
+      this.tray.changeTip(this.player.t(MUTE));
+      this.tray.showIcon(0);
+    }
+
     this.progress.onVolumeChange();
   }
 

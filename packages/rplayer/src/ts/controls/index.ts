@@ -20,7 +20,6 @@ import PlayTray from './trays/play';
 import Time from './trays/time';
 import VolumeTray from './trays/volume';
 import SettingMenu from './setting/menu';
-import Tray, { ConfigTray, TrayOpts } from './trays/tray';
 
 export default class Controls extends Component {
   private controlsTimer: NodeJS.Timeout;
@@ -55,7 +54,6 @@ export default class Controls extends Component {
       new VolumeTray(player),
       new Time(player),
       this.setting,
-      ...player.options.trays.map((t) => new ConfigTray(t, player)),
     ];
 
     trays
@@ -115,16 +113,11 @@ export default class Controls extends Component {
     this.player.emit(Events.CONTROLS_HIDE);
   }
 
-  addTray(tray: TrayOpts | Element, pos?: number): Tray | Element {
-    const item =
-      tray instanceof Element ? tray : new ConfigTray(tray, this.player);
-
+  addTray(tray: Element, pos?: number): void {
     this.tray.insertBefore(
-      (item as any).dom ? (item as any).dom : item,
+      tray,
       this.tray.children[clampNeg(pos, this.tray.children.length)]
     );
-
-    return item;
   }
 
   addSettingItem(

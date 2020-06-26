@@ -1,4 +1,3 @@
-import Component from '../../component';
 import {
   SETTINGS_MENU,
   SETTINGS_MENU_BACK,
@@ -10,18 +9,21 @@ import RPlayer from '../../rplayer';
 import { clampNeg, measureElementSize, newElement } from '../../utils';
 import Select, { SelectOpts } from './select';
 import Switch, { SwitchOpts } from './switch';
+import Popover from '../../widgets/popover';
+import EventHandler from '../../event-handler';
 
-export default class SettingMenu extends Component {
+export default class SettingMenu extends EventHandler {
+  private readonly popover: Popover;
   private readonly homePage: HTMLElement;
   private readonly optionPages: HTMLElement[];
   private homeRect: { width: number; height: number };
   private readonly optionRects: { width: number; height: number }[] = [];
 
   constructor(player: RPlayer) {
-    super(player, {
-      events: [Events.MOUNTED, Events.SETTING_SELECTED],
-      className: SETTINGS_MENU,
-    });
+    super(player, [Events.MOUNTED, Events.SETTING_SELECTED]);
+
+    this.popover = new Popover();
+    this.dom.classList.add(SETTINGS_MENU);
 
     const items = player.options.settings.map((s, i) => {
       if ((s as SelectOpts).options && (s as SelectOpts).options.length) {
@@ -40,8 +42,12 @@ export default class SettingMenu extends Component {
       this.homePage.appendChild(item.entry);
     });
     this.optionPages = items.map((item) => this.getOptionPage(item));
-    this.appendChild(this.homePage);
-    this.optionPages.forEach((page) => page && this.appendChild(page));
+    this.dom.appendChild(this.homePage);
+    this.optionPages.forEach((page) => page && this.dom.appendChild(page));
+  }
+
+  get dom(): HTMLElement {
+    return this.popover.dom;
   }
 
   private selectEntryClickHandler = (i: number) => (): void => {
@@ -64,10 +70,8 @@ export default class SettingMenu extends Component {
   };
 
   private setWH(w?: number, h?: number): void {
-    this.addStyle({
-      width: w ? w + 'px' : '',
-      height: h ? h + 'px' : '',
-    });
+    this.dom.style.width = w ? w + 'px' : '';
+    this.dom.style.height = h ? h + 'px' : '';
   }
 
   private getBack(html: string): HTMLElement {
@@ -90,6 +94,14 @@ export default class SettingMenu extends Component {
     return div;
   }
 
+  show(): void {
+    this.popover.show();
+  }
+
+  hide(): void {
+    this.popover.hide();
+  }
+
   addItem(opts: SelectOpts | SwitchOpts, pos?: number): Select | Switch {
     pos = clampNeg(pos, this.homePage.children.length);
 
@@ -110,7 +122,7 @@ export default class SettingMenu extends Component {
     const optionPage = this.getOptionPage(item);
     this.optionPages.splice(pos, 0, optionPage);
     this.homePage.insertBefore(item.entry, this.homePage.children[pos]);
-    this.appendChild(optionPage);
+    this.dom.appendChild(optionPage);
     return item;
   }
 

@@ -17,6 +17,9 @@ export default class Subtitle {
     private addCueEvent;
     private removeCueEvent;
     private run;
+    private onClick;
+    private active;
+    private deactivate;
     renderText(text: string): void;
     show(): void;
     hide(): void;

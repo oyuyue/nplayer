@@ -1,12 +1,15 @@
 import RPlayer from '../../rplayer';
-import Tray from '../trays/tray';
 import SettingMenu from './menu';
-export default class Setting extends Tray {
+import EventHandler from '../../event-handler';
+export default class Setting extends EventHandler {
     readonly menu: SettingMenu;
+    private readonly tray;
     private resetPageTimer;
+    readonly pos = 3;
     constructor(player: RPlayer);
+    get dom(): HTMLElement;
     private hide;
-    onClick(): void;
+    private onClick;
     onPlayerContextMenu(): void;
     onClickControlMask(): void;
     onClickOutside(): void;

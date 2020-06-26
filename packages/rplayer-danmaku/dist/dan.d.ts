@@ -3,7 +3,7 @@ import Danmaku from '.';
 export default class Dan {
     private readonly danmaku;
     readonly dom: HTMLElement;
-    private type;
+    type: string;
     private tunnel;
     private length;
     private showFrame;

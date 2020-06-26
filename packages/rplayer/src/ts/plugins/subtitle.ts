@@ -1,39 +1,10 @@
-import {
-  CAPTION,
-  CAPTION_ACTIVE,
-  CAPTION_TRAY,
-  CAPTION_TRAY_ACTIVE,
-} from '../config/classname';
+import { CAPTION, CAPTION_ACTIVE } from '../config/classname';
 import { CAPTIONS, CLOSE } from '../config/lang';
 import Select, { SelectChangeFn } from '../controls/setting/select';
-import Tray from '../controls/trays/tray';
 import icons from '../icons';
 import RPlayer from '../rplayer';
 import { ajax, newElement, ua } from '../utils';
-
-class CaptionTray extends Tray {
-  private readonly captions: Subtitle;
-
-  constructor(player: RPlayer, captions: Subtitle) {
-    super(player, player.t(CAPTIONS));
-    this.captions = captions;
-
-    this.addClass(CAPTION_TRAY);
-    this.appendChild(icons.cc());
-  }
-
-  onClick(): void {
-    this.captions.toggle();
-  }
-
-  active(): void {
-    this.addClass(CAPTION_TRAY_ACTIVE);
-  }
-
-  deactivate(): void {
-    this.removeClass(CAPTION_TRAY_ACTIVE);
-  }
-}
+import Tray from '../widgets/tray';
 
 interface CaptionItem {
   label?: string;
@@ -50,7 +21,7 @@ export interface SubtitleOpts {
 
 export default class Subtitle {
   private readonly player: RPlayer;
-  private tray: CaptionTray;
+  private tray: Tray;
   private items: CaptionItem[];
   private prev: CaptionItem = {} as CaptionItem;
   private select: Select;
@@ -76,12 +47,12 @@ export default class Subtitle {
 
     if (item.track) {
       this.addCueEvent(item.track);
-      this.tray.active();
+      this.active();
       this.prev = item as CaptionItem;
       this.show();
     } else {
       this.hide();
-      this.tray.deactivate();
+      this.deactivate();
     }
 
     update();
@@ -129,7 +100,12 @@ export default class Subtitle {
     }
 
     if (!this.tray) {
-      this.tray = new CaptionTray(this.player, this);
+      this.tray = new Tray({
+        label: this.player.t(CAPTIONS),
+        icons: [icons.cc()],
+        onClick: this.onClick,
+      });
+      this.deactivate();
       this.player.controls.addTray(this.tray.dom, -3);
     }
 
@@ -137,6 +113,18 @@ export default class Subtitle {
       this.toggle();
     }
   }
+
+  private onClick = (): void => {
+    this.toggle();
+  };
+
+  private active = (): void => {
+    this.tray.enable();
+  };
+
+  private deactivate = (): void => {
+    this.tray.disable();
+  };
 
   renderText(text: string): void {
     this.dom.innerHTML = text;
@@ -199,7 +187,7 @@ export default class Subtitle {
   toggle(): void {
     if (this.prev.track && this.prev.show) {
       this.select.select(0);
-      this.tray.deactivate();
+      this.deactivate();
       this.hide();
       this.removeCueEvent();
     } else {
@@ -211,7 +199,7 @@ export default class Subtitle {
 
       this.addCueEvent();
       this.select.select(this.prev.index);
-      this.tray.active();
+      this.active();
       this.show();
     }
   }

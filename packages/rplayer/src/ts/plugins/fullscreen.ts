@@ -1,39 +1,13 @@
-import { FULL, ICON_ENTER_FS, ICON_EXIT_FS } from '../config/classname';
+import { FULL } from '../config/classname';
 import { EXIT_FULL_SCREEN, FULL_SCREEN } from '../config/lang';
-import Tray from '../controls/trays/tray';
 import Events from '../events';
 import icons from '../icons';
 import RPlayer from '../rplayer';
 import { isFn, ua } from '../utils';
-
-class FullscreenTray extends Tray {
-  constructor(player: RPlayer) {
-    super(
-      player,
-      player.t(FULL_SCREEN),
-      Events.ENTER_FULLSCREEN,
-      Events.EXIT_FULLSCREEN
-    );
-
-    this.setRight();
-    this.appendChild(icons.enterFullscreen(ICON_ENTER_FS));
-    this.appendChild(icons.exitFullscreen(ICON_EXIT_FS));
-  }
-
-  onClick(): void {
-    this.player.fullscreen.toggle();
-  }
-
-  onEnterFullscreen(): void {
-    this.changeTipText(this.player.t(EXIT_FULL_SCREEN));
-  }
-
-  onExitFullscreen(): void {
-    this.changeTipText(this.player.t(FULL_SCREEN));
-  }
-}
+import Tray from '../widgets/tray';
 
 export default class Fullscreen {
+  private readonly tray: Tray;
   private readonly player: RPlayer;
   readonly prefix = this.getPrefix();
   private target: HTMLElement;
@@ -51,7 +25,17 @@ export default class Fullscreen {
 
     if (this.isActive) player.addClass(FULL);
     player.on(Events.PLAYER_DBLCLICK, this.playerDblClickHandler);
-    player.controls.addTray(new FullscreenTray(player).dom, -1);
+    player.on(Events.ENTER_FULLSCREEN, this.onEnterFullscreen);
+    player.on(Events.EXIT_FULLSCREEN, this.onExitFullscreen);
+
+    this.tray = new Tray({
+      label: player.t(FULL_SCREEN),
+      icons: [icons.enterFullscreen(), icons.exitFullscreen()],
+      labelPos: 'right',
+      onClick: this.onClick,
+    });
+
+    player.controls.addTray(this.tray.dom, -1);
   }
 
   private playerDblClickHandler = (ev: Event): void => {
@@ -119,6 +103,20 @@ export default class Fullscreen {
   get isActive(): boolean {
     return this.fullscreenElement === this.target;
   }
+
+  private onClick = (): void => {
+    this.player.fullscreen.toggle();
+  };
+
+  private onEnterFullscreen = (): void => {
+    this.tray.changeTip(this.player.t(EXIT_FULL_SCREEN));
+    this.tray.showIcon(1);
+  };
+
+  private onExitFullscreen = (): void => {
+    this.tray.changeTip(this.player.t(FULL_SCREEN));
+    this.tray.showIcon(0);
+  };
 
   setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void {
     this.target =

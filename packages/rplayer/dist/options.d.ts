@@ -6,7 +6,6 @@ import { StorageOpts } from './storage';
 import { ContextMenuOpts } from './controls/contextmenu';
 import { ShortcutOpts } from './shortcut';
 import { ThumbnailOpts } from './controls/thumbnail';
-import { TrayOpts } from './controls/trays/tray';
 export interface OptionPreset {
     playbackRate?: boolean | {
         position?: number;
@@ -36,7 +35,6 @@ export interface RPlayerOptions {
     contextMenu?: ContextMenuOpts;
     storage?: StorageOpts;
     subtitle?: SubtitleOpts;
-    trays?: TrayOpts[];
     plugins?: Plugin[];
 }
 export default function processOptions(player: RPlayer, opts?: RPlayerOptions): RPlayerOptions;

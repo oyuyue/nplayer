@@ -7,7 +7,7 @@ import { formatTime, newElement } from '../../utils';
 export default class Time extends Component {
   private readonly curTime = newElement('', 'span');
   private readonly totalTime = newElement('', 'span');
-  pos = 2;
+  readonly pos = 2;
 
   constructor(player: RPlayer) {
     super(player, {

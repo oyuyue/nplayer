@@ -9,6 +9,9 @@ import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
 import Storage from './storage';
 import * as utils from './utils';
+import Switch from './widgets/Switch';
+import Slider from './widgets/Slider';
+import Checkbox from './widgets/checkbox';
 export default class RPlayer extends Component {
     static readonly Events: typeof Events;
     static readonly utils: typeof utils;
@@ -23,6 +26,9 @@ export default class RPlayer extends Component {
         cc(cls?: string): Element;
     };
     static readonly EventEmitter: typeof EventEmitter;
+    static readonly Switch: typeof Switch;
+    static readonly Slider: typeof Slider;
+    static readonly Checkbox: typeof Checkbox;
     el: HTMLElement;
     curBreakPoint: string;
     readonly media: HTMLVideoElement;

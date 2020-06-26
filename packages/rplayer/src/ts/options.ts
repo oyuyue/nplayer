@@ -9,7 +9,6 @@ import { findIndex, isNum, isObj } from './utils';
 import { ContextMenuOpts } from './controls/contextmenu';
 import { ShortcutOpts } from './shortcut';
 import { ThumbnailOpts } from './controls/thumbnail';
-import { TrayOpts } from './controls/trays/tray';
 import Events from './events';
 
 export interface OptionPreset {
@@ -40,7 +39,6 @@ export interface RPlayerOptions {
   contextMenu?: ContextMenuOpts;
   storage?: StorageOpts;
   subtitle?: SubtitleOpts;
-  trays?: TrayOpts[];
   plugins?: Plugin[];
 }
 
@@ -178,11 +176,6 @@ function processCations(opts: RPlayerOptions): RPlayerOptions {
   return opts;
 }
 
-function processTrays(opts: RPlayerOptions): RPlayerOptions {
-  opts.trays = opts.trays || [];
-  return opts;
-}
-
 export default function processOptions(
   player: RPlayer,
   opts?: RPlayerOptions
@@ -202,7 +195,6 @@ export default function processOptions(
   opts = processThumbnail(opts);
   opts = processContextMenu(opts);
   opts = processCations(opts);
-  opts = processTrays(opts);
 
   return opts;
 }

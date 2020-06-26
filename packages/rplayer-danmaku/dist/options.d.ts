@@ -13,6 +13,7 @@ export interface DanmakuOpts {
     fontSize?: number;
     staticFrame?: number;
     scrollFrame?: number;
+    blockTypes?: Item['type'][];
 }
 export default function processOpts(opts: DanmakuOpts): DanmakuOpts;
 //# sourceMappingURL=options.d.ts.map

@@ -3,7 +3,7 @@ import RPlayer from '../../rplayer';
 export default class Time extends Component {
     private readonly curTime;
     private readonly totalTime;
-    pos: number;
+    readonly pos = 2;
     constructor(player: RPlayer);
     private updateCurTime;
     private updateTotalTime;

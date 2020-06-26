@@ -30,10 +30,6 @@ export const PROGRESS_PLAYED = PROGRESS + '_played';
 export const PROGRESS_PAD = PROGRESS + '_pad';
 export const PROGRESS_DOT = PROGRESS + '_dot';
 
-export const TOOLTIP = PREFIX + 'tooltip';
-export const TOOLTIP_TEXT = TOOLTIP + '_text';
-export const TOOLTIP_TEXT_LEFT = TOOLTIP_TEXT + '_left';
-export const TOOLTIP_TEXT_RIGHT = TOOLTIP_TEXT + '_right';
 export const TRAY = PREFIX + 'tray';
 export const TRAY_TIME = TRAY + '_time';
 export const TRAY_VOLUME = TRAY + '_volume';
@@ -43,10 +39,8 @@ export const TRAY_VOLUME_DOT = TRAY_VOLUME + '_dot';
 export const TRAY_VOLUME_I_MUTED = TRAY_VOLUME + '_i-muted';
 export const TRAY_VOLUME_BAR_WRAPPER = TRAY_VOLUME + '_bar_wrapper';
 
-export const TRAY_SETTING = TRAY + '_set';
-export const TRAY_SETTING_ACTIVE = TRAY_SETTING + ACTIVE;
-
-export const SETTINGS = PREFIX + 'sets';
+export const SETTINGS = PREFIX + 'setting';
+export const SETTINGS_ACTIVE = SETTINGS + ACTIVE;
 export const SETTINGS_SELECT_OPT = SETTINGS + '_select_opt';
 export const SETTINGS_SELECT_OPT_ACTIVE = SETTINGS_SELECT_OPT + ACTIVE;
 export const SETTINGS_MENU = SETTINGS + '_menu';
@@ -60,14 +54,5 @@ export const SWITCH_ACTIVE = SWITCH + ACTIVE;
 
 export const CAPTION = PREFIX + 'caption';
 export const CAPTION_ACTIVE = CAPTION + ACTIVE;
-export const CAPTION_TRAY = TRAY + '_cap';
-export const CAPTION_TRAY_ACTIVE = CAPTION_TRAY + ACTIVE;
-export const ICON = PREFIX + 'i';
-export const ICON_ENTER_FS = ICON + '_enter_fs';
-export const ICON_EXIT_FS = ICON + '_exit_fs';
-export const ICON_PLAY = ICON + '_play';
-export const ICON_PAUSE = ICON + '_pause';
-export const ICON_VOLUME = ICON + '_volume';
-export const ICON_MUTED = ICON + '_muted';
 export const BAR = PLAYER + '_bar';
 export const DOT = PLAYER + '_dot';

@@ -1,5 +1,5 @@
 import RPlayer from 'rplayer';
-import { DanmakuOpts } from './options';
+import { Item, DanmakuOpts } from './options';
 export default class Danmaku {
     readonly dom: HTMLElement;
     readonly opts: DanmakuOpts;
@@ -22,6 +22,7 @@ export default class Danmaku {
     private prevCurrentTime;
     constructor(opts: DanmakuOpts);
     install(player: RPlayer): void;
+    private onPlayerSeeked;
     updateTunnelHeight(h: number): void;
     private updateTunnel;
     updateArea(area: number): void;
@@ -33,10 +34,14 @@ export default class Danmaku {
     hide(): void;
     show(): void;
     clear(): void;
+    toggleBlockType(type: string): void;
+    send(item: Item): void;
+    push(item: Item[] | Item): void;
     private getDan;
     private recycleDan;
     private pause;
     private getShortestTunnel;
+    private insert;
     private load;
     private fire;
     private clean;

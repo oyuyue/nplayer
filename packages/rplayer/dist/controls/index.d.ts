@@ -6,7 +6,6 @@ import Setting from './setting';
 import { SelectOpts } from './setting/select';
 import { SwitchOpts } from './setting/switch';
 import SettingMenu from './setting/menu';
-import Tray, { TrayOpts } from './trays/tray';
 export default class Controls extends Component {
     private controlsTimer;
     private readonly bottom;
@@ -23,7 +22,7 @@ export default class Controls extends Component {
     showTemporary(): void;
     show(): void;
     hide(): void;
-    addTray(tray: TrayOpts | Element, pos?: number): Tray | Element;
+    addTray(tray: Element, pos?: number): void;
     addSettingItem(opts: SelectOpts | SwitchOpts, pos?: number): ReturnType<SettingMenu['addItem']>;
     addContextMenuItem(opts: ContextMenuItem, pos?: number): ReturnType<ContextMenu['addItem']>;
     onPlay(): void;

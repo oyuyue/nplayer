@@ -1,5 +1,6 @@
 import RPlayer from '../rplayer';
 export default class Fullscreen {
+    private readonly tray;
     private readonly player;
     readonly prefix: string;
     private target;
@@ -11,6 +12,9 @@ export default class Fullscreen {
     get exitFullscreen(): Function;
     get fullscreenElement(): HTMLElement;
     get isActive(): boolean;
+    private onClick;
+    private onEnterFullscreen;
+    private onExitFullscreen;
     setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void;
     enter(): void;
     exit(): void;
