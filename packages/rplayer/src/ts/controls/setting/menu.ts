@@ -1,14 +1,14 @@
 import {
-  SETTINGS_MENU,
-  SETTINGS_MENU_BACK,
-  SETTINGS_MENU_ITEM,
-  SETTINGS_MENU_PAGE,
+  SETTING_MENU,
+  SETTING_MENU_BACK,
+  SETTING_ITEM,
+  SETTING_MENU_PAGE,
 } from '../../config/classname';
 import Events from '../../events';
 import RPlayer from '../../rplayer';
 import { clampNeg, measureElementSize, newElement } from '../../utils';
-import Select, { SelectOpts } from './select';
-import Switch, { SwitchOpts } from './switch';
+import Select, { SelectOptions } from './select';
+import Switch, { SwitchItemOptions } from './switch-item';
 import Popover from '../../widgets/popover';
 import EventHandler from '../../event-handler';
 
@@ -23,23 +23,23 @@ export default class SettingMenu extends EventHandler {
     super(player, [Events.MOUNTED, Events.SETTING_SELECTED]);
 
     this.popover = new Popover();
-    this.dom.classList.add(SETTINGS_MENU);
+    this.dom.classList.add(SETTING_MENU);
 
     const items = player.options.settings.map((s, i) => {
-      if ((s as SelectOpts).options && (s as SelectOpts).options.length) {
+      if ((s as SelectOptions).options && (s as SelectOptions).options.length) {
         return new Select(
           player,
-          s as SelectOpts,
+          s as SelectOptions,
           this.selectEntryClickHandler(i)
         );
       } else {
-        return new Switch(s as SwitchOpts);
+        return new Switch(s as SwitchItemOptions);
       }
     });
 
-    this.homePage = newElement(SETTINGS_MENU_PAGE);
+    this.homePage = newElement(SETTING_MENU_PAGE);
     items.forEach((item) => {
-      this.homePage.appendChild(item.entry);
+      this.homePage.appendChild((item as any).entry || item.dom);
     });
     this.optionPages = items.map((item) => this.getOptionPage(item));
     this.dom.appendChild(this.homePage);
@@ -75,8 +75,8 @@ export default class SettingMenu extends EventHandler {
   }
 
   private getBack(html: string): HTMLElement {
-    const div = newElement(SETTINGS_MENU_ITEM);
-    div.classList.add(SETTINGS_MENU_BACK);
+    const div = newElement(SETTING_ITEM);
+    div.classList.add(SETTING_MENU_BACK);
     div.innerHTML = html;
     div.addEventListener('click', this.backClickHandler, true);
     return div;
@@ -85,7 +85,7 @@ export default class SettingMenu extends EventHandler {
   private getOptionPage(select: Select | Switch): HTMLElement {
     if (!(select instanceof Select)) return null;
 
-    const div = newElement(SETTINGS_MENU_PAGE);
+    const div = newElement(SETTING_MENU_PAGE);
     const back = this.getBack(select.opts.label);
     div.appendChild(back);
     div.appendChild(select.dom);
@@ -102,26 +102,32 @@ export default class SettingMenu extends EventHandler {
     this.popover.hide();
   }
 
-  addItem(opts: SelectOpts | SwitchOpts, pos?: number): Select | Switch {
+  addItem(
+    opts: SelectOptions | SwitchItemOptions,
+    pos?: number
+  ): Select | Switch {
     pos = clampNeg(pos, this.homePage.children.length);
 
     let item: Select | Switch;
     if (
-      Array.isArray((opts as SelectOpts).options) &&
-      (opts as SelectOpts).options.length
+      Array.isArray((opts as SelectOptions).options) &&
+      (opts as SelectOptions).options.length
     ) {
       item = new Select(
         this.player,
-        opts as SelectOpts,
+        opts as SelectOptions,
         this.selectEntryClickHandler(pos)
       );
     } else {
-      item = new Switch(opts as SwitchOpts);
+      item = new Switch(opts as SwitchItemOptions);
     }
 
     const optionPage = this.getOptionPage(item);
     this.optionPages.splice(pos, 0, optionPage);
-    this.homePage.insertBefore(item.entry, this.homePage.children[pos]);
+    this.homePage.insertBefore(
+      (item as any).entry || item.dom,
+      this.homePage.children[pos]
+    );
     this.dom.appendChild(optionPage);
     return item;
   }

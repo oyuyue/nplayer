@@ -9,9 +9,14 @@ import Fullscreen from './plugins/fullscreen';
 import Shortcut from './shortcut';
 import Storage from './storage';
 import * as utils from './utils';
-import Switch from './widgets/Switch';
-import Slider from './widgets/Slider';
+import Switch from './widgets/switch';
+import Slider from './widgets/slider';
 import Checkbox from './widgets/checkbox';
+import Tray from './widgets/tray';
+import Popover from './widgets/popover';
+import BaseItem from './controls/setting/base-item';
+import SwitchItem from './controls/setting/switch-item';
+import Select from './controls/setting/select';
 export default class RPlayer extends Component {
     static readonly Events: typeof Events;
     static readonly utils: typeof utils;
@@ -29,6 +34,11 @@ export default class RPlayer extends Component {
     static readonly Switch: typeof Switch;
     static readonly Slider: typeof Slider;
     static readonly Checkbox: typeof Checkbox;
+    static readonly Tray: typeof Tray;
+    static readonly Popover: typeof Popover;
+    static readonly SettingBase: typeof BaseItem;
+    static readonly SettingSwitch: typeof SwitchItem;
+    static readonly SettingSelect: typeof Select;
     el: HTMLElement;
     curBreakPoint: string;
     readonly media: HTMLVideoElement;

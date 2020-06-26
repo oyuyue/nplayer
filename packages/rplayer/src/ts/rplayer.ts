@@ -15,9 +15,14 @@ import { clamp, getDomOr, isCatchable, isStr, newElement, noop } from './utils';
 import * as utils from './utils';
 import icons from './icons';
 import language from './config/lang';
-import Switch from './widgets/Switch';
-import Slider from './widgets/Slider';
+import Switch from './widgets/switch';
+import Slider from './widgets/slider';
 import Checkbox from './widgets/checkbox';
+import Tray from './widgets/tray';
+import Popover from './widgets/popover';
+import BaseItem from './controls/setting/base-item';
+import SwitchItem from './controls/setting/switch-item';
+import Select from './controls/setting/select';
 
 export default class RPlayer extends Component {
   static readonly Events = Events;
@@ -27,6 +32,11 @@ export default class RPlayer extends Component {
   static readonly Switch = Switch;
   static readonly Slider = Slider;
   static readonly Checkbox = Checkbox;
+  static readonly Tray = Tray;
+  static readonly Popover = Popover;
+  static readonly SettingBase = BaseItem;
+  static readonly SettingSwitch = SwitchItem;
+  static readonly SettingSelect = Select;
 
   el: HTMLElement;
   curBreakPoint: string;

@@ -39,15 +39,15 @@ export const TRAY_VOLUME_DOT = TRAY_VOLUME + '_dot';
 export const TRAY_VOLUME_I_MUTED = TRAY_VOLUME + '_i-muted';
 export const TRAY_VOLUME_BAR_WRAPPER = TRAY_VOLUME + '_bar_wrapper';
 
-export const SETTINGS = PREFIX + 'setting';
-export const SETTINGS_ACTIVE = SETTINGS + ACTIVE;
-export const SETTINGS_SELECT_OPT = SETTINGS + '_select_opt';
-export const SETTINGS_SELECT_OPT_ACTIVE = SETTINGS_SELECT_OPT + ACTIVE;
-export const SETTINGS_MENU = SETTINGS + '_menu';
-export const SETTINGS_MENU_ITEM = SETTINGS_MENU + '_item';
-export const SETTINGS_MENU_PAGE = SETTINGS_MENU + '_page';
-export const SETTINGS_MENU_BACK = SETTINGS_MENU_PAGE + '_back';
-export const SETTINGS_MENU_SELECT = SETTINGS_MENU + '_select';
+export const SETTING = PREFIX + 'setting';
+export const SETTING_ACTIVE = SETTING + ACTIVE;
+export const SETTING_SELECT_OPT = SETTING + '_select_opt';
+export const SETTING_SELECT_OPT_ACTIVE = SETTING_SELECT_OPT + ACTIVE;
+export const SETTING_MENU = SETTING + '_menu';
+export const SETTING_ITEM = SETTING + '_item';
+export const SETTING_MENU_PAGE = SETTING_MENU + '_page';
+export const SETTING_MENU_BACK = SETTING_MENU_PAGE + '_back';
+export const SETTING_MENU_SELECT = SETTING_MENU + '_select';
 
 export const SWITCH = PREFIX + 'switch';
 export const SWITCH_ACTIVE = SWITCH + ACTIVE;

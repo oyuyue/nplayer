@@ -1,6 +1,6 @@
 import RPlayer from '../../rplayer';
-import Select, { SelectOpts } from './select';
-import Switch, { SwitchOpts } from './switch';
+import Select, { SelectOptions } from './select';
+import Switch, { SwitchItemOptions } from './switch-item';
 import EventHandler from '../../event-handler';
 export default class SettingMenu extends EventHandler {
     private readonly popover;
@@ -17,7 +17,7 @@ export default class SettingMenu extends EventHandler {
     private getOptionPage;
     show(): void;
     hide(): void;
-    addItem(opts: SelectOpts | SwitchOpts, pos?: number): Select | Switch;
+    addItem(opts: SelectOptions | SwitchItemOptions, pos?: number): Select | Switch;
     resetPage(): void;
     onSettingSelected(): void;
     onMounted(): void;

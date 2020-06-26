@@ -3,7 +3,7 @@ export interface TrayOptions {
     label?: string;
     labelPos?: 'left' | 'right';
     icons?: (Element | string)[];
-    hoverBg?: boolean;
+    noHoverBg?: boolean;
     onClick?: (i: number, ev: MouseEvent) => any;
 }
 export default class Tray {

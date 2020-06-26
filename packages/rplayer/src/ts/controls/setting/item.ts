@@ -1,4 +1,4 @@
-import { SETTINGS_MENU_ITEM } from '../../config/classname';
+import { SETTING_ITEM } from '../../config/classname';
 import { htmlDom, newElement } from '../../utils';
 
 export default abstract class SettingItem {
@@ -7,7 +7,7 @@ export default abstract class SettingItem {
   protected entryValue: HTMLElement;
 
   constructor(label: string) {
-    this.entry = newElement(SETTINGS_MENU_ITEM);
+    this.entry = newElement(SETTING_ITEM);
     this.entryLabel = htmlDom(label);
     this.entryValue = newElement('', 'span');
     this.entry.appendChild(this.entryLabel);

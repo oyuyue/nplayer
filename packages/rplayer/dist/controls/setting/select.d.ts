@@ -8,7 +8,7 @@ export interface SelectOption {
 export interface SelectChangeFn {
     (o: SelectOption, update: () => void): any;
 }
-export interface SelectOpts {
+export interface SelectOptions {
     label: string;
     options: SelectOption[];
     checked?: number;
@@ -20,10 +20,10 @@ export default class Select extends SettingItem {
     private prevSelect;
     value: number;
     readonly dom: HTMLElement;
-    readonly opts: SelectOpts;
+    readonly opts: SelectOptions;
     private readonly options;
     private readonly entryClickCb;
-    constructor(player: RPlayer, opts: SelectOpts, entryClickCb?: (select: Select) => any);
+    constructor(player: RPlayer, opts: SelectOptions, entryClickCb?: (select: Select) => any);
     private optionClickHandler;
     select(index: number, orLabel?: string): void;
     onEntryClick(): void;

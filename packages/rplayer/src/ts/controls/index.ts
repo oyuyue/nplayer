@@ -14,12 +14,12 @@ import ContextMenu, { ContextMenuItem } from './contextmenu';
 import Mask from './mask';
 import ProgressBar from './progress-bar';
 import Setting from './setting';
-import { SelectOpts } from './setting/select';
-import { SwitchOpts } from './setting/switch';
+import { SelectOptions } from './setting/select';
 import PlayTray from './trays/play';
 import Time from './trays/time';
 import VolumeTray from './trays/volume';
 import SettingMenu from './setting/menu';
+import { SwitchItemOptions } from './setting/switch-item';
 
 export default class Controls extends Component {
   private controlsTimer: NodeJS.Timeout;
@@ -121,7 +121,7 @@ export default class Controls extends Component {
   }
 
   addSettingItem(
-    opts: SelectOpts | SwitchOpts,
+    opts: SelectOptions | SwitchItemOptions,
     pos?: number
   ): ReturnType<SettingMenu['addItem']> {
     return this.setting.menu.addItem(opts, pos);

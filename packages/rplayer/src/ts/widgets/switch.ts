@@ -40,8 +40,9 @@ export default class Switch {
 
   private clickHandler = (ev: MouseEvent): void => {
     ev.preventDefault();
+    if (!this.onChange) return;
     this.update(!this._value);
-    if (this.onChange) this.onChange(this._value, this.done);
+    this.onChange(this._value, this.done);
   };
 
   private done = (success?: boolean): void => {

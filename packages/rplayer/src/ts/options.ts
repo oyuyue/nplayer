@@ -1,6 +1,5 @@
 import { NORMAL, SPEED } from './config/lang';
-import { SelectOption, SelectOpts } from './controls/setting/select';
-import { SwitchOpts } from './controls/setting/switch';
+import { SelectOption, SelectOptions } from './controls/setting/select';
 import language from './config/lang';
 import { SubtitleOpts } from './plugins/subtitle';
 import RPlayer from './rplayer';
@@ -10,6 +9,7 @@ import { ContextMenuOpts } from './controls/contextmenu';
 import { ShortcutOpts } from './shortcut';
 import { ThumbnailOpts } from './controls/thumbnail';
 import Events from './events';
+import { SwitchItemOptions } from './controls/setting/switch-item';
 
 export interface OptionPreset {
   playbackRate?:
@@ -31,7 +31,7 @@ export interface RPlayerOptions {
   media?: string | HTMLVideoElement;
   el?: string | HTMLElement;
   video?: HTMLVideoElement & { src?: string | string[] };
-  settings?: (SelectOpts | SwitchOpts)[];
+  settings?: (SelectOptions | SwitchItemOptions)[];
   preset?: OptionPreset;
   shortcut?: ShortcutOpts;
   lang?: string;
@@ -65,7 +65,7 @@ function processPlaybackRate(
       ? opts.preset.playbackRate
       : DEFAULT_PLAY_RATE;
 
-  const setting: SelectOpts = {
+  const setting: SelectOptions = {
     label: language.t(SPEED, opts.lang),
     options: playbackRate.steps,
     init(select) {
@@ -96,7 +96,7 @@ function processPlaybackRate(
 
   let pos = isNum(playbackRate.position)
     ? playbackRate.position
-    : findIndex(opts.settings, (x) => !!(x as SelectOpts).options);
+    : findIndex(opts.settings, (x) => !!(x as SelectOptions).options);
   if (pos < 0) pos = 0;
 
   opts.settings.splice(pos, 0, setting);

@@ -1,11 +1,11 @@
-import { newElement, isStr, clamp, getDomOr, isBool } from '../utils';
+import { newElement, isStr, clamp, getDomOr } from '../utils';
 
 export interface TrayOptions {
   el?: string | HTMLElement;
   label?: string;
   labelPos?: 'left' | 'right';
   icons?: (Element | string)[];
-  hoverBg?: boolean;
+  noHoverBg?: boolean;
   onClick?: (i: number, ev: MouseEvent) => any;
 }
 
@@ -34,9 +34,8 @@ export default class Tray {
       this.tip.classList.add('rplayer_tray_tip-r');
     }
 
-    opts.hoverBg = isBool(opts.hoverBg) ? opts.hoverBg : true;
-    if (opts.hoverBg) {
-      this.dom.classList.add('rplayer_tray-bg');
+    if (opts.noHoverBg) {
+      this.dom.classList.add('rplayer_tray-nobg');
     }
 
     this.dom.appendChild(this.tip);

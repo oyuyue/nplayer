@@ -1,8 +1,8 @@
 import {
-  SETTINGS_MENU_ITEM,
-  SETTINGS_MENU_SELECT,
-  SETTINGS_SELECT_OPT,
-  SETTINGS_SELECT_OPT_ACTIVE,
+  SETTING_ITEM,
+  SETTING_MENU_SELECT,
+  SETTING_SELECT_OPT,
+  SETTING_SELECT_OPT_ACTIVE,
 } from '../../config/classname';
 import { isFn, newElement } from '../../utils';
 import SettingItem from './item';
@@ -19,7 +19,7 @@ export interface SelectChangeFn {
   (o: SelectOption, update: () => void): any;
 }
 
-export interface SelectOpts {
+export interface SelectOptions {
   label: string;
   options: SelectOption[];
   checked?: number;
@@ -32,14 +32,14 @@ export default class Select extends SettingItem {
   private prevSelect: HTMLElement;
   value = -1;
   readonly dom = newElement();
-  readonly opts: SelectOpts;
+  readonly opts: SelectOptions;
   private readonly options: HTMLElement[];
 
   private readonly entryClickCb: (select: Select) => any;
 
   constructor(
     player: RPlayer,
-    opts: SelectOpts,
+    opts: SelectOptions,
     entryClickCb?: (select: Select) => any
   ) {
     super(opts.label);
@@ -47,11 +47,11 @@ export default class Select extends SettingItem {
     this.opts = opts;
     this.entryClickCb = entryClickCb;
 
-    this.entry.classList.add(SETTINGS_MENU_SELECT);
+    this.entry.classList.add(SETTING_MENU_SELECT);
 
     this.options = opts.options.map((o, i) => {
-      const div = newElement(SETTINGS_MENU_ITEM);
-      div.classList.add(SETTINGS_SELECT_OPT);
+      const div = newElement(SETTING_ITEM);
+      div.classList.add(SETTING_SELECT_OPT);
       div.innerHTML = o.label;
       div.addEventListener('click', this.optionClickHandler(i), true);
       return div;
@@ -78,7 +78,7 @@ export default class Select extends SettingItem {
   select(index: number, orLabel?: string): void {
     const opt = this.options[index];
     if (this.prevSelect) {
-      this.prevSelect.classList.remove(SETTINGS_SELECT_OPT_ACTIVE);
+      this.prevSelect.classList.remove(SETTING_SELECT_OPT_ACTIVE);
       this.prevSelect = null;
     }
     this.value = index;
@@ -90,7 +90,7 @@ export default class Select extends SettingItem {
 
     const select = this.opts.options[index];
     this.entryValue.innerHTML = select.selectedLabel || select.label;
-    opt.classList.add(SETTINGS_SELECT_OPT_ACTIVE);
+    opt.classList.add(SETTING_SELECT_OPT_ACTIVE);
     this.prevSelect = opt;
 
     this.player.emit(Events.SETTING_SELECTED, opt);

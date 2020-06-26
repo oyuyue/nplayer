@@ -401,6 +401,26 @@
       }
     }
 
+    &_item {
+      display: flex;
+      align-items: center;
+      padding: 8px 20px;
+      justify-content: space-between;
+
+      &-nobg:hover {
+        background: transparent !important;
+      }
+
+      &:hover {
+        background: $color-bg-popup-item-hover;
+      }
+
+      :first-child {
+        padding-right: 50px;
+        margin-right: auto;
+      }
+    }
+
     &_menu {
       will-change: width, height;
 
@@ -418,22 +438,6 @@
             border: 4px solid transparent;
             border-right-color: $color-white;
           }
-        }
-      }
-
-      &_item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 20px;
-
-        &:hover {
-          background: $color-bg-popup-item-hover;
-        }
-
-        :first-child {
-          padding-right: 50px;
-          margin-right: auto;
         }
       }
 
@@ -565,9 +569,13 @@
     cursor: pointer;
     user-select: none;
 
-    &-bg:hover {
+    &:hover {
       background: $color-primary;
       background: var(--rplayer-primary);
+    }
+
+    &-nobg:hover {
+      background: transparent !important;
     }
 
     &-disable .rplayer_tray_icon {

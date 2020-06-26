@@ -20,4 +20,4 @@ export default class Switch {
     mount(el?: string | HTMLElement): void;
     destroy(): void;
 }
-//# sourceMappingURL=Switch.d.ts.map
+//# sourceMappingURL=switch.d.ts.map

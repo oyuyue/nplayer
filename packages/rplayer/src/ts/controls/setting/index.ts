@@ -1,4 +1,4 @@
-import { SETTINGS_ACTIVE } from '../../config/classname';
+import { SETTING_ACTIVE } from '../../config/classname';
 import { SETTINGS } from '../../config/lang';
 import Events from '../../events';
 import icons from '../../icons';
@@ -35,7 +35,7 @@ export default class Setting extends EventHandler {
   }
 
   private hide(): void {
-    this.dom.classList.remove(SETTINGS_ACTIVE);
+    this.dom.classList.remove(SETTING_ACTIVE);
     this.menu.hide();
     this.player.controls.mask.hide();
     clearTimeout(this.resetPageTimer);
@@ -43,7 +43,7 @@ export default class Setting extends EventHandler {
   }
 
   private onClick = (): void => {
-    this.dom.classList.add(SETTINGS_ACTIVE);
+    this.dom.classList.add(SETTING_ACTIVE);
     this.menu.show();
     this.player.controls.mask.show();
   };

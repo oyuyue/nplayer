@@ -43,4 +43,4 @@ export default class Slider {
     mount(el?: string | HTMLElement): void;
     destroy(): void;
 }
-//# sourceMappingURL=Slider.d.ts.map
+//# sourceMappingURL=slider.d.ts.map

@@ -1,11 +1,11 @@
-import { SelectOpts } from './controls/setting/select';
-import { SwitchOpts } from './controls/setting/switch';
+import { SelectOptions } from './controls/setting/select';
 import { SubtitleOpts } from './plugins/subtitle';
 import RPlayer from './rplayer';
 import { StorageOpts } from './storage';
 import { ContextMenuOpts } from './controls/contextmenu';
 import { ShortcutOpts } from './shortcut';
 import { ThumbnailOpts } from './controls/thumbnail';
+import { SwitchItemOptions } from './controls/setting/switch-item';
 export interface OptionPreset {
     playbackRate?: boolean | {
         position?: number;
@@ -27,7 +27,7 @@ export interface RPlayerOptions {
     video?: HTMLVideoElement & {
         src?: string | string[];
     };
-    settings?: (SelectOpts | SwitchOpts)[];
+    settings?: (SelectOptions | SwitchItemOptions)[];
     preset?: OptionPreset;
     shortcut?: ShortcutOpts;
     lang?: string;
