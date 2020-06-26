@@ -17,6 +17,7 @@ import Popover from './widgets/popover';
 import BaseItem from './controls/setting/base-item';
 import SwitchItem from './controls/setting/switch-item';
 import Select from './controls/setting/select';
+import Toast from './toast';
 export default class RPlayer extends Component {
     static readonly Events: typeof Events;
     static readonly utils: typeof utils;
@@ -48,6 +49,7 @@ export default class RPlayer extends Component {
     readonly shortcut: Shortcut;
     readonly loading: Loading;
     readonly subtitle: Subtitle;
+    readonly $toast: Toast;
     storage: Storage;
     private prevVolume;
     private ready;
@@ -78,6 +80,8 @@ export default class RPlayer extends Component {
     forward(v?: number): void;
     rewind(v?: number): void;
     toggleVolume(): void;
+    toast(v: Parameters<Toast['show']>[0]): void;
+    hideToast(): void;
     t(key: string): string;
     eachBuffer(fn: (start: number, end: number) => boolean | void): void;
     use(plugin: Plugin): void;
