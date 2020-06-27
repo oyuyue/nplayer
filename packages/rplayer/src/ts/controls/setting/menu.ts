@@ -13,16 +13,19 @@ import Popover from '../../widgets/popover';
 import EventHandler from '../../event-handler';
 
 export default class SettingMenu extends EventHandler {
-  private readonly popover: Popover;
+  readonly popover: Popover;
   private readonly homePage: HTMLElement;
   private readonly optionPages: HTMLElement[];
   private homeRect: { width: number; height: number };
   private readonly optionRects: { width: number; height: number }[] = [];
 
-  constructor(player: RPlayer) {
+  constructor(player: RPlayer, onHide?: () => any) {
     super(player, [Events.MOUNTED, Events.SETTING_SELECTED]);
 
-    this.popover = new Popover();
+    this.popover = new Popover({
+      player,
+      onHide,
+    });
     this.dom.classList.add(SETTING_MENU);
 
     const items = player.options.settings.map((s, i) => {

@@ -1,6 +1,8 @@
 import RPlayer from 'rplayer';
 import { Item, DanmakuOpts } from './options';
+import UI from './ui';
 export default class Danmaku {
+    ui: UI;
     readonly dom: HTMLElement;
     readonly opts: DanmakuOpts;
     player: RPlayer;

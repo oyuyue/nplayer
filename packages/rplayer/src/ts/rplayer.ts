@@ -169,6 +169,7 @@ export default class RPlayer extends Component {
     this.emit(Events.BEFORE_MOUNT);
     this.el.appendChild(this.dom);
     requestAnimationFrame(() => {
+      this.updateRect();
       this.emit(Events.MOUNTED);
       this.ready = true;
     });

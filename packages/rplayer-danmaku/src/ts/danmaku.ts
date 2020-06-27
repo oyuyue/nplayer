@@ -1,17 +1,16 @@
 import RPlayer from 'rplayer';
-import processOpts, { Item, DanmakuOpts } from './options';
+import processOpts, { Item, DanmakuOptions } from './options';
 import Dan from './dan';
+import UI from './ui';
 
 export default class Danmaku {
+  private DEFAULT_SETTING: DanmakuOptions;
+  ui: UI;
   readonly dom: HTMLElement;
-  readonly opts: DanmakuOpts;
+  opts: DanmakuOptions;
   player: RPlayer;
-  private tunnel = 0;
-  fontSize: number;
-  private opacity = 1;
+  tunnel = 0;
   tunnelHeight = 0;
-  private area: number;
-  private unlimited = false;
   private showing = false;
   private running = false;
   private timer: number;
@@ -23,21 +22,17 @@ export default class Danmaku {
   private bottom: Dan[] = [];
   private prevCurrentTime = 0;
 
-  constructor(opts: DanmakuOpts) {
+  constructor(opts: DanmakuOptions) {
     this.dom = RPlayer.utils.newElement('rplayer_dan');
     this.opts = processOpts(opts);
-
-    const items = this.opts.items;
-    this.opts.items = [];
-    this.push(items);
-
-    this.updateOpacity(this.opts.opacity);
-    this.updateArea(this.opts.area);
-    this.updateFontSize(this.opts.fontSize);
+    this.setDefaultOptions(this.opts);
+    this.remain = this.opts.items;
   }
 
   install(player: RPlayer): void {
     this.player = player;
+    this.restoreSetting();
+
     this.player.appendChild(this.dom);
 
     player.on(RPlayer.Events.PAUSE, this.pause);
@@ -48,11 +43,55 @@ export default class Danmaku {
     player.on(RPlayer.Events.PLAYER_RESIZE, this.updateTunnel);
     player.on(RPlayer.Events.SEEKED, this.onPlayerSeeked);
 
+    this.updateSetting();
+
+    this.ui = new UI(this);
+
     if (document.contains(this.player.dom)) {
       this.run();
     } else {
       player.once(RPlayer.Events.MOUNTED, this.run);
     }
+  }
+
+  get defaultSetting(): DanmakuOptions {
+    const setting = { ...this.DEFAULT_SETTING };
+    setting.blockTypes = [...setting.blockTypes];
+    return setting;
+  }
+
+  get fontSize(): number {
+    return this.opts.baseFontSize * this.opts.fontSize;
+  }
+
+  private setDefaultOptions(opts: DanmakuOptions): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { items, on, staticFrame, scrollFrame, baseFontSize, ...rest } = opts;
+    rest.blockTypes = [...rest.blockTypes];
+    this.DEFAULT_SETTING = rest;
+  }
+
+  private getFontSize(): number {
+    const [w] = RPlayer.utils.getClientWH();
+    if (w < 769) return 15;
+    return 23;
+  }
+
+  private restoreSetting(): void {
+    if (this.player) {
+      const setting = this.player.storage.get('danmaku', {});
+      this.opts = RPlayer.utils.extend(this.opts, setting);
+    }
+
+    this.opts.baseFontSize = this.opts.baseFontSize || this.getFontSize();
+    this.tunnelHeight = this.tunnelHeight || this.fontSize + 1;
+  }
+
+  private persistSetting(): void {
+    if (!this.player) return;
+    // eslint-disable-next-line prettier/prettier, @typescript-eslint/no-unused-vars
+    const { items, on, staticFrame, scrollFrame, baseFontSize, ...r } = this.opts;
+    this.player.storage.set({ danmaku: r });
   }
 
   private onPlayerSeeked = (): void => {
@@ -73,70 +112,116 @@ export default class Danmaku {
     const h = this.player.rect.height;
     if (!h) return;
 
-    this.tunnel = ((this.area * h) / this.tunnelHeight) | 0;
-
-    const maxLen = Math.max(
-      this.last.length,
-      this.top.length,
-      this.bottom.length
-    );
-
-    if (maxLen > this.tunnel) {
-      for (let i = this.tunnel; i < maxLen; i++) {
-        this.recycleDan(this.last[i]);
-        this.recycleDan(this.top[i]);
-        this.recycleDan(this.bottom[i]);
-        this.last[i] = undefined;
-        this.top[i] = undefined;
-        this.bottom[i] = undefined;
-      }
-    }
-
-    this.current.forEach((item) => item.updateVertical());
+    this.tunnel = ((this.opts.area * h) / this.tunnelHeight) | 0;
 
     if (this.tunnel < 1) {
       this.hide();
     } else {
+      this.current.forEach((item) => item.updateVertical());
       this.show();
     }
   };
 
-  updateArea(area: number): void {
-    if (!RPlayer.utils.isNum(area)) return;
-    this.unlimited = area > 1;
-    this.area = RPlayer.utils.clamp(area);
-    this.updateTunnel();
+  on(): void {
+    this.opts.on = true;
+    this.run();
   }
 
-  updateOpacity(opacity: number): void {
-    if (!RPlayer.utils.isNum(opacity)) return;
-    this.opacity = RPlayer.utils.clamp(opacity);
-    this.dom.style.opacity = this.opacity.toString();
+  off(): void {
+    this.opts.on = false;
+    this.hide();
   }
 
-  updateFontSize(fontSize: number): void {
-    if (!RPlayer.utils.isNum(fontSize)) {
-      this.fontSize = this.getFontSize();
+  toggle(): void {
+    if (this.opts.on) {
+      this.off();
     } else {
-      this.fontSize = fontSize;
+      this.on();
     }
-    if (!this.tunnelHeight) this.tunnelHeight = this.fontSize;
+  }
+
+  updateSetting(): void {
+    this.updateBlockTypes();
+    this.updateOpacity();
+    this.updateArea();
+    this.updateSpeed();
+    this.updateFontSize();
+    this.updateUnlimited();
+    this.updateBottomUp();
+    this.updateMerge();
+  }
+
+  private isAllowedType(
+    item: { type: any; color: string },
+    types = this.opts.blockTypes
+  ): boolean {
+    if (types.includes(item.type)) return false;
+    if (types.includes('scroll') && !item.type) return false;
+    if (types.includes('color') && item.color) return false;
+    return true;
+  }
+
+  updateBlockTypes(types = this.opts.blockTypes): void {
+    this.opts.blockTypes = types;
+    if (!types.length) {
+      this.current.forEach((x) => x.visible());
+    } else {
+      this.current.forEach((d) => {
+        if (this.isAllowedType(d, types)) {
+          d.visible();
+        } else {
+          d.invisible();
+        }
+      });
+    }
+
+    this.persistSetting();
+  }
+
+  updateOpacity(opacity = this.opts.opacity): void {
+    this.dom.style.opacity = opacity.toString();
+    this.persistSetting();
+  }
+
+  updateArea(area = this.opts.area): void {
+    this.opts.area = area;
     this.updateTunnel();
+    this.persistSetting();
+  }
+
+  updateSpeed(speed = this.opts.speed): void {
+    this.opts.speed = speed;
+    this.current.forEach((x) => x.updateSpeed());
+    this.persistSetting();
+  }
+
+  updateFontSize(fontSize = this.opts.fontSize): void {
+    this.opts.fontSize = fontSize;
     this.dom.style.fontSize = this.fontSize + 'px';
+    this.tunnelHeight = this.fontSize + 1;
+    this.updateTunnel();
+    this.persistSetting();
   }
 
-  updateScrollFrame(scrollFrame?: number): void {
-    if (scrollFrame) this.opts.scrollFrame = scrollFrame;
+  updateUnlimited(unlimited = this.opts.unlimited): void {
+    this.opts.unlimited = unlimited;
+    this.persistSetting();
   }
 
-  updateStaticFrame(staticFrame?: number): void {
-    if (staticFrame) this.opts.staticFrame = staticFrame;
+  updateBottomUp(bottomUp = this.opts.bottomUp): void {
+    this.opts.bottomUp = bottomUp;
+    this.current.forEach((x) => x.updateVertical());
+    this.persistSetting();
   }
 
-  private getFontSize(): number {
-    const [w] = RPlayer.utils.getClientWH();
-    if (w < 769) return 15;
-    return 23;
+  updateMerge(merge = this.opts.merge): void {
+    this.opts.merge = merge;
+    this.persistSetting();
+  }
+
+  resetSetting(): void {
+    this.opts = { ...this.opts, ...this.defaultSetting };
+    this.updateSetting();
   }
 
   hide(): void {
@@ -160,27 +245,8 @@ export default class Danmaku {
     this.bottom = [];
   }
 
-  toggleBlockType(type: string): void {
-    if (!type) return;
-    if (this.opts.blockTypes.includes(type as any)) {
-      this.opts.blockTypes = this.opts.blockTypes.filter((x) => x !== type);
-      this.remain = this.opts.items;
-    } else {
-      this.opts.blockTypes.push(type as any);
-      this.remain = this.remain.filter((x) => x.type !== type);
-      this.current = this.current.filter((x) => {
-        if (x.type === type) {
-          this.recycleDan(x);
-          return false;
-        }
-
-        return true;
-      });
-    }
-  }
-
   send(item: Item): void {
-    item.isMe = true;
+    this.show();
     this.opts.items.push(item);
     this.insert(item, 0, true);
   }
@@ -190,17 +256,10 @@ export default class Danmaku {
 
     if (Array.isArray(item)) {
       this.opts.items.push(...item);
-
-      if (this.opts.blockTypes.length) {
-        item = item.filter((x) => !this.opts.blockTypes.includes(x.type));
-      }
-
       this.remain.push(...item);
     } else {
       this.opts.items.push(item);
-      if (!this.opts.blockTypes.includes(item.type)) {
-        this.remain.push(item);
-      }
+      this.remain.push(item);
     }
   }
 
@@ -270,7 +329,7 @@ export default class Danmaku {
       }
     }
 
-    if ((item && this.unlimited) || force) {
+    if ((item && this.opts.unlimited) || force) {
       this.current.push(this.getDan(item, i % this.tunnel, i));
     }
   }
@@ -290,18 +349,38 @@ export default class Danmaku {
     this.prevCurrentTime = time;
 
     const remain: Item[] = [];
-    const toShow: Item[] = [];
+    let toShow: Item[] = [];
 
     this.remain.forEach((x) => {
       if (x.time === time) {
+        const types = this.opts.blockTypes;
+        if (
+          types.length &&
+          (types.includes(x.type) ||
+            (!x.type && types.includes('scroll')) ||
+            (types.includes('color') && x.color))
+        ) {
+          return;
+        }
         toShow.push(x);
-      } else {
+      } else if (x.time > time) {
         remain.push(x);
       }
     });
 
     this.remain = remain;
     if (!toShow.length) return;
+
+    if (this.opts.merge) {
+      const group: Record<string, Item> = {};
+      toShow.forEach((x) => {
+        group[x.text] = x;
+      });
+      toShow = Object.keys(group).reduce((a, c) => {
+        a.push(group[c]);
+        return a;
+      }, []);
+    }
 
     for (let i = 0, l = toShow.length; i < l; i++) {
       const item = toShow[i];
@@ -335,7 +414,7 @@ export default class Danmaku {
   }
 
   private update = (): void => {
-    if (this.running) return;
+    if (this.running || !this.opts.on) return;
     this.running = true;
     this.render();
   };
@@ -350,6 +429,7 @@ export default class Danmaku {
   };
 
   private run = (): void => {
+    if (!this.opts.on) return;
     this.updateTunnel();
     this.show();
     if (!this.player.playing) this.pause();

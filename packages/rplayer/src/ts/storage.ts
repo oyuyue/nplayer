@@ -1,5 +1,11 @@
 import { RPlayerOptions } from './options';
-import { extend, isObj, safeJsonParse, safeJsonStringify } from './utils';
+import {
+  extend,
+  isObj,
+  safeJsonParse,
+  safeJsonStringify,
+  getDeep,
+} from './utils';
 
 export interface StorageOpts {
   enable?: boolean;
@@ -31,8 +37,9 @@ export default class Storage {
     const data = localStorage.getItem(this.key);
     if (data == null) return orRet;
     const obj = safeJsonParse(data, null);
-    if (!key) return obj || orRet;
-    return isObj(obj) && obj[key] != null ? obj[key] : orRet;
+    if (!isObj(obj)) return orRet;
+    if (!key) return (obj as T) || orRet;
+    return getDeep(obj, key) || orRet;
   }
 
   set(obj: Record<string, any>): void {

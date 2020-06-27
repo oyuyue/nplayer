@@ -1,14 +1,15 @@
 import RPlayer from '../../rplayer';
 import Select, { SelectOptions } from './select';
 import Switch, { SwitchItemOptions } from './switch-item';
+import Popover from '../../widgets/popover';
 import EventHandler from '../../event-handler';
 export default class SettingMenu extends EventHandler {
-    private readonly popover;
+    readonly popover: Popover;
     private readonly homePage;
     private readonly optionPages;
     private homeRect;
     private readonly optionRects;
-    constructor(player: RPlayer);
+    constructor(player: RPlayer, onHide?: () => any);
     get dom(): HTMLElement;
     private selectEntryClickHandler;
     private backClickHandler;

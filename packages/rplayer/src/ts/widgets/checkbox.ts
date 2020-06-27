@@ -1,4 +1,4 @@
-import { newElement, isBool, getDomOr } from '../utils';
+import { newElement, getDomOr } from '../utils';
 
 export interface CheckboxOptions {
   defaultValue?: boolean;
@@ -46,9 +46,9 @@ export default class Checkbox {
     }
   }
 
-  update(v?: boolean): void {
-    if (isBool(v)) this._value = v;
-    if (this._value) {
+  update(v = this._value): void {
+    this._value = v;
+    if (v) {
       this.dom.classList.add(Checkbox.activeCls);
       if (this.color) {
         this.dom.style.color = this.color;

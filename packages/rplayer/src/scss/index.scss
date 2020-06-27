@@ -571,6 +571,7 @@
     opacity: 0;
     transform: translateY(10px);
     z-index: 2;
+    box-shadow: 0 1px 20px 1px rgba(0,0,0,.2);
     pointer-events: none;
     transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
     overflow: hidden;
@@ -693,7 +694,7 @@
 
   &_slider {
     display: inline-block;
-    margin: 30px;
+    flex: 1;
     position: relative;
     padding: 5px 0;
     font-size: 12px;
@@ -733,18 +734,18 @@
     }
 
     &_stop {
-      top: -150%;
-      color: $color-white;
+      top: -100%;
+      color: $color-white-high;
       text-shadow: #000 1px 1px 2px, #000 0 0 1px;
       transform: translateX(-50%);
 
       &::after {
         content: '';
         position: absolute;
-        top: 130%;
+        top: 100%;
         left: 50%;
-        width: 1px;
-        height: 80%;
+        width: 3px;
+        height: 60%;
         background: currentColor;
         box-shadow: 0 0 3px rgba(0,0,0,0.2);
       }

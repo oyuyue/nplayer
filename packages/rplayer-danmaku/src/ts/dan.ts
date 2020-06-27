@@ -10,8 +10,10 @@ export default class Dan {
   private length: number;
   private showFrame = 0;
   private _width = 0;
+  private baseSpeed = 0;
   speed = 0;
   canRecycle = false;
+  color = '';
 
   constructor(
     danmaku: Danmaku,
@@ -44,7 +46,10 @@ export default class Dan {
 
   reset(item: Item, tunnel: number, length?: number, speed?: number): this {
     this.dom.innerText = item.text;
-    if (item.color) this.dom.style.color = item.color;
+    if (item.color) {
+      this.color = item.color;
+      this.dom.style.color = item.color;
+    }
     if (item.fontFamily) this.dom.style.fontFamily = item.color;
     if (item.isMe) this.dom.classList.add('rplayer_dan_d-me');
     this.type = item.type;
@@ -56,17 +61,19 @@ export default class Dan {
       this.length = Math.max(length, 0) + this.danmaku.fontSize;
 
       if (length >= 0 && speed) {
-        this.speed = speed;
+        this.baseSpeed = speed;
       } else {
         const playerWidth = this.danmaku.player.rect.width;
         const d = playerWidth + this.length;
-        this.speed = (this.width + d) / this.danmaku.opts.scrollFrame;
+        this.baseSpeed = (this.width + d) / this.danmaku.opts.scrollFrame;
 
         if (speed && length < 0) {
           const s = (d * speed) / (playerWidth + length);
-          if (s < this.speed) this.speed = s;
+          if (s < this.baseSpeed) this.baseSpeed = s;
         }
       }
+
+      this.updateSpeed();
 
       this.updateX();
       this.dom.style.right = `-${this.width}px`;
@@ -81,8 +88,22 @@ export default class Dan {
   }
 
   updateVertical(): void {
-    this.dom.style[this.type === 'bottom' ? 'bottom' : 'top'] =
-      this.tunnel * this.danmaku.tunnelHeight + 'px';
+    if (this.tunnel > this.danmaku.tunnel) {
+      return this.invisible();
+    } else {
+      this.visible();
+    }
+
+    let pos = this.type;
+    if (pos !== 'bottom' && pos !== 'top') {
+      pos = this.danmaku.opts.bottomUp ? 'bottom' : 'top';
+    }
+    this.dom.style[pos === 'top' ? 'bottom' : 'top'] = '';
+    this.dom.style[pos as any] = this.tunnel * this.danmaku.tunnelHeight + 'px';
+  }
+
+  updateSpeed(): void {
+    this.speed = this.baseSpeed * this.danmaku.opts.speed;
   }
 
   private updateX(): void {
@@ -95,6 +116,14 @@ export default class Dan {
 
   private hide(): void {
     this.dom.hidden = true;
+  }
+
+  visible(): void {
+    this.dom.style.visibility = '';
+  }
+
+  invisible(): void {
+    this.dom.style.visibility = 'hidden';
   }
 
   update(): void {

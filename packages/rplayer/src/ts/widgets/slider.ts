@@ -1,4 +1,4 @@
-import { newElement, Drag, clamp, getDomOr } from '../utils';
+import { newElement, Drag, clamp, getDomOr, isBool } from '../utils';
 
 export interface SliderOptions {
   defaultValue?: number;
@@ -30,11 +30,15 @@ export default class Slider {
   private hdw = 0;
 
   constructor(opts: SliderOptions = {}) {
-    this.showTip = !!opts.tip;
+    this.showTip = opts.tip;
     this.onChange = opts.onChange;
     this.map = opts.map;
     this._value = opts.defaultValue || 0;
     this.prevValue = this._value;
+
+    if (!isBool(opts.tip) && !opts.stop) {
+      this.showTip = true;
+    }
 
     this.dom = newElement('rplayer_slider');
     const barWrapper = newElement('rplayer_slider_wrap');
@@ -77,7 +81,7 @@ export default class Slider {
       barWrapper.style.background = opts.bgColor;
     }
 
-    if (!opts.tip) {
+    if (!this.showTip) {
       this.tip.hidden = true;
     }
 
@@ -169,7 +173,7 @@ export default class Slider {
     }
   }
 
-  update(v = 0): void {
+  update(v = this._value): void {
     v = clamp(v);
     this._value = v;
     this.prevValue = v;

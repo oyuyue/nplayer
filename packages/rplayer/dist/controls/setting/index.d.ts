@@ -8,10 +8,7 @@ export default class Setting extends EventHandler {
     readonly pos = 3;
     constructor(player: RPlayer);
     get dom(): HTMLElement;
-    private hide;
+    private onHide;
     private onClick;
-    onPlayerContextMenu(): void;
-    onClickControlMask(): void;
-    onClickOutside(): void;
 }
 //# sourceMappingURL=index.d.ts.map

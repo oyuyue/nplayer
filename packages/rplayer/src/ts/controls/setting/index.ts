@@ -1,6 +1,5 @@
 import { SETTING_ACTIVE } from '../../config/classname';
 import { SETTINGS } from '../../config/lang';
-import Events from '../../events';
 import icons from '../../icons';
 import RPlayer from '../../rplayer';
 import Tray from '../../widgets/tray';
@@ -14,11 +13,7 @@ export default class Setting extends EventHandler {
   readonly pos = 3;
 
   constructor(player: RPlayer) {
-    super(player, [
-      Events.CLICK_CONTROL_MASK,
-      Events.CLICK_OUTSIDE,
-      Events.PLAYER_CONTEXT_MENU,
-    ]);
+    super(player);
 
     this.tray = new Tray({
       label: player.t(SETTINGS),
@@ -26,7 +21,7 @@ export default class Setting extends EventHandler {
       onClick: this.onClick,
     });
 
-    this.menu = new SettingMenu(player);
+    this.menu = new SettingMenu(player, this.onHide);
     this.tray.dom.appendChild(this.menu.dom);
   }
 
@@ -34,29 +29,14 @@ export default class Setting extends EventHandler {
     return this.tray.dom;
   }
 
-  private hide(): void {
+  private onHide = (): void => {
     this.dom.classList.remove(SETTING_ACTIVE);
-    this.menu.hide();
-    this.player.controls.mask.hide();
     clearTimeout(this.resetPageTimer);
     this.resetPageTimer = setTimeout(() => this.menu.resetPage(), 500);
-  }
+  };
 
   private onClick = (): void => {
     this.dom.classList.add(SETTING_ACTIVE);
     this.menu.show();
-    this.player.controls.mask.show();
   };
-
-  onPlayerContextMenu(): void {
-    this.hide();
-  }
-
-  onClickControlMask(): void {
-    this.hide();
-  }
-
-  onClickOutside(): void {
-    this.hide();
-  }
 }

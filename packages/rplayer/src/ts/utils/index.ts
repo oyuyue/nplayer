@@ -188,6 +188,10 @@ export const safeJsonStringify = (
   }
 };
 
+export const getDeep = <T>(object: Record<string, any>, path: string): T => {
+  return path.split('.').reduce((obj, key) => obj && obj[key], object);
+};
+
 export const extend = (
   target: Record<string, any> = {},
   source: Record<string, any>
@@ -195,11 +199,11 @@ export const extend = (
   if (!source) return target;
 
   Object.keys(source).forEach((key) => {
-    if (isObj(source[key])) {
+    if (isObj(source[key]) && !Array.isArray(source[key])) {
       if (Object.keys(target).indexOf(key) < 0) {
         target = { ...target, [key]: {} };
       }
-      extend(target[key], source[key]);
+      target[key] = extend(target[key], source[key]);
     } else {
       target = { ...target, [key]: source[key] };
     }

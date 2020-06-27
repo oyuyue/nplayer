@@ -1,4 +1,4 @@
-import { newElement, getDomOr, isBool } from '../utils';
+import { newElement, getDomOr } from '../utils';
 
 export interface SwitchOptions {
   defaultValue?: boolean;
@@ -52,9 +52,9 @@ export default class Switch {
     }
   };
 
-  update(v?: boolean): void {
-    if (isBool(v)) this._value = v;
-    if (this._value) {
+  update(v = this._value): void {
+    this._value = v;
+    if (v) {
       this.dom.classList.add(Switch.activeCls);
       if (this.color) this.dom.style.background = this.color;
     } else {
