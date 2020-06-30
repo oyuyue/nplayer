@@ -42,14 +42,28 @@ export default class Popover {
     if (opts.el) this.mount(opts.el);
   }
 
+  get isActive(): boolean {
+    return this.dom.classList.contains(Popover.activeCls);
+  }
+
   show(): void {
+    if (this.isActive) return;
     this.dom.classList.add(Popover.activeCls);
-    if (this.player) this.player.controls.mask.show();
+    if (this.player) {
+      this.player.controls.mask.show();
+      this.player.controls.requireShow();
+    }
   }
 
   hide = (): void => {
     this.dom.classList.remove(Popover.activeCls);
-    if (this.player) this.player.controls.mask.hide();
+    if (this.player) {
+      this.player.controls.mask.hide();
+      this.player.controls.releaseShow();
+      if (this.player.playing) {
+        this.player.controls.hide();
+      }
+    }
     if (this.onHide) this.onHide();
   };
 

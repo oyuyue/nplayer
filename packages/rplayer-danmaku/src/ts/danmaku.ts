@@ -11,7 +11,6 @@ export default class Danmaku {
   player: RPlayer;
   tunnel = 0;
   tunnelHeight = 0;
-  private showing = false;
   private running = false;
   private timer: number;
   private remain: Item[] = [];
@@ -21,6 +20,7 @@ export default class Danmaku {
   private top: Dan[] = [];
   private bottom: Dan[] = [];
   private prevCurrentTime = 0;
+  static readonly typeMap: Item['type'][] = ['scroll', 'top', 'bottom'];
 
   constructor(opts: DanmakuOptions) {
     this.dom = RPlayer.utils.newElement('rplayer_dan');
@@ -35,11 +35,11 @@ export default class Danmaku {
 
     this.player.appendChild(this.dom);
 
-    player.on(RPlayer.Events.PAUSE, this.pause);
-    player.on(RPlayer.Events.LOADING_SHOW, this.pause);
+    player.on(RPlayer.Events.PAUSE, this.stop);
+    player.on(RPlayer.Events.LOADING_SHOW, this.stop);
     player.on(RPlayer.Events.LOADING_HIDE, this.update);
     player.on(RPlayer.Events.PLAY, this.update);
-    player.on(RPlayer.Events.ENDED, this.pause);
+    player.on(RPlayer.Events.ENDED, this.stop);
     player.on(RPlayer.Events.PLAYER_RESIZE, this.updateTunnel);
     player.on(RPlayer.Events.SEEKED, this.onPlayerSeeked);
 
@@ -64,11 +64,34 @@ export default class Danmaku {
     return this.opts.baseFontSize * this.opts.fontSize;
   }
 
-  private setDefaultOptions(opts: DanmakuOptions): void {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { items, on, staticFrame, scrollFrame, baseFontSize, ...rest } = opts;
+  private getPersistOpts(opts = this.opts): DanmakuOptions {
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      items,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      on,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      staticFrame,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      scrollFrame,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      baseFontSize,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      colors,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      sendPlaceholder,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      sendHide,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      maxLen,
+      ...rest
+    } = opts;
     rest.blockTypes = [...rest.blockTypes];
-    this.DEFAULT_SETTING = rest;
+    return rest;
+  }
+
+  private setDefaultOptions(opts: DanmakuOptions): void {
+    this.DEFAULT_SETTING = this.getPersistOpts(opts);
   }
 
   private getFontSize(): number {
@@ -87,11 +110,9 @@ export default class Danmaku {
     this.tunnelHeight = this.tunnelHeight || this.fontSize + 1;
   }
 
-  private persistSetting(): void {
+  persistSetting(): void {
     if (!this.player) return;
-    // eslint-disable-next-line prettier/prettier, @typescript-eslint/no-unused-vars
-    const { items, on, staticFrame, scrollFrame, baseFontSize, ...r } = this.opts;
-    this.player.storage.set({ danmaku: r });
+    this.player.storage.set({ danmaku: this.getPersistOpts() });
   }
 
   private onPlayerSeeked = (): void => {
@@ -115,10 +136,10 @@ export default class Danmaku {
     this.tunnel = ((this.opts.area * h) / this.tunnelHeight) | 0;
 
     if (this.tunnel < 1) {
-      this.hide();
+      this.stop();
     } else {
       this.current.forEach((item) => item.updateVertical());
-      this.show();
+      this.update();
     }
   };
 
@@ -129,7 +150,8 @@ export default class Danmaku {
 
   off(): void {
     this.opts.on = false;
-    this.hide();
+    this.stop();
+    this.clear();
   }
 
   toggle(): void {
@@ -224,19 +246,6 @@ export default class Danmaku {
     this.updateSetting();
   }
 
-  hide(): void {
-    this.showing = false;
-    this.pause();
-    this.clear();
-  }
-
-  show(): void {
-    if (this.showing) return;
-    this.showing = true;
-    this.pause();
-    this.update();
-  }
-
   clear(): void {
     this.current.forEach((dan) => this.recycleDan(dan));
     this.current = [];
@@ -246,9 +255,15 @@ export default class Danmaku {
   }
 
   send(item: Item): void {
-    this.show();
     this.opts.items.push(item);
+    this.update();
     this.insert(item, 0, true);
+  }
+
+  resetItems(item: Item[] = []): void {
+    this.opts.items = item;
+    this.remain = item;
+    this.update();
   }
 
   push(item: Item[] | Item): void {
@@ -261,6 +276,8 @@ export default class Danmaku {
       this.opts.items.push(item);
       this.remain.push(item);
     }
+
+    this.update();
   }
 
   private getDan(
@@ -283,11 +300,6 @@ export default class Danmaku {
       this.pool.push(dan);
     }
   }
-
-  private pause = (): void => {
-    cancelAnimationFrame(this.timer);
-    this.running = false;
-  };
 
   private getShortestTunnel(): [number, number, number] {
     let length = Infinity;
@@ -329,20 +341,13 @@ export default class Danmaku {
       }
     }
 
-    if ((item && this.opts.unlimited) || force) {
+    if (item && (this.opts.unlimited || force)) {
       this.current.push(this.getDan(item, i % this.tunnel, i));
     }
   }
 
   private load(): void {
-    if (
-      !this.showing ||
-      !this.player ||
-      !this.remain.length ||
-      this.tunnel < 1
-    ) {
-      return;
-    }
+    if (!this.remain.length) return;
 
     const time = this.player.currentTime | 0;
     if (this.prevCurrentTime === time) return;
@@ -413,8 +418,14 @@ export default class Danmaku {
     }
   }
 
+  private stop = (): void => {
+    cancelAnimationFrame(this.timer);
+    this.running = false;
+  };
+
   private update = (): void => {
-    if (this.running || !this.opts.on) return;
+    if (this.running || !this.opts.on || !this.player.playing) return;
+    this.stop();
     this.running = true;
     this.render();
   };
@@ -424,14 +435,18 @@ export default class Danmaku {
     this.fire();
     this.clean();
 
-    if (!this.current.length && !this.remain.length) return this.hide();
+    if (!this.remain.length && !this.current.length) {
+      this.stop();
+      this.clear();
+      return;
+    }
     this.timer = requestAnimationFrame(this.render);
   };
 
   private run = (): void => {
     if (!this.opts.on) return;
     this.updateTunnel();
-    this.show();
-    if (!this.player.playing) this.pause();
+    this.update();
+    if (!this.player.playing) this.stop();
   };
 }

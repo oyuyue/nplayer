@@ -74,14 +74,15 @@ export default class Dan {
       }
 
       this.updateSpeed();
-
       this.updateX();
       this.dom.style.right = `-${this.width}px`;
+      requestAnimationFrame(() => {
+        this.dom.style.right = `-${this.width}px`;
+      });
     } else {
       this.dom.classList.add('rplayer_dan_d-center');
     }
     this.canRecycle = false;
-
     this.show();
 
     return this;
@@ -107,7 +108,7 @@ export default class Dan {
   }
 
   private updateX(): void {
-    this.dom.style.transform = `translateX(${this.length}px)`;
+    this.dom.style.transform = `translate3d(${this.length}px,0,0)`;
   }
 
   private show(): void {
@@ -157,7 +158,7 @@ export default class Dan {
     this.dom.style.top = '';
     this.dom.style.bottom = '';
     this.dom.style.transform = '';
-    this.dom.classList.remove('rplayer-dan-me');
+    this.dom.classList.remove('rplayer_dan_d-me');
     this.dom.classList.remove('rplayer_dan_d-center');
     this.hide();
   }

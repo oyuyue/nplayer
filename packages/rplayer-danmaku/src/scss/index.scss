@@ -26,6 +26,86 @@
     }
   }
 
+  &_send {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    background: rgba(255, 255, 255, .15);
+
+    .rplayer_tray {
+      padding: 5px;
+    }
+
+    .rplayer_pop  {
+      color: #fff;
+    }
+
+    svg {
+      fill: currentColor;
+    }
+
+    &_type {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+      margin-bottom: 15px;
+
+      > div {
+        margin-right: 8px;
+        padding: 2px 8px;
+        border: 1px solid rgba(255, 255, 255, .5);
+        transition: opacity .2s ease;
+      }
+
+      > div:hover {
+        opacity: .7;
+      }
+
+      &-active {
+        background: rgba(255, 255, 255, .3);
+      }
+    }
+
+    input {
+      flex: 1;
+      width: 100px;
+      padding: 0;
+      color: currentColor;
+      background: transparent;
+      border: 0;
+      outline: 0;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, .5);
+      }
+    }
+
+    &_color {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 5px;
+
+      > div {
+        width: 1.7em;
+        height: 1.7em;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 0 1px 1px currentColor;
+        transition: opacity .2s ease;
+      }
+
+      > div:hover {
+        opacity: .7;
+      }
+
+      &-active {
+        outline: 2px dotted currentColor;
+      }
+    }
+  }
+
   &_setting {
     &_slider {
       display: flex;
@@ -83,6 +163,7 @@
     position: absolute;
     user-select: none;
     white-space: nowrap;
+    -webkit-will-change: transform;
     will-change: transform;
     font-weight: bold;
     line-height: 1.125;
@@ -90,13 +171,14 @@
     text-shadow: rgb(0, 0, 0) 1px 1px 2px, rgb(0, 0, 0) 0px 0px 1px;
 
     &-me {
-      outline: 1px solid currentColor;
+      outline: 1px solid;
       z-index: 1;
     }
 
     &-center {
       left: 50%;
       transform: translateX(-50%);
+      will-change: auto;
     }
   }
 

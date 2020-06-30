@@ -13,7 +13,7 @@ export default class Tray {
   private static readonly disableCls = 'rplayer_tray-disable';
   readonly dom: HTMLElement;
   readonly tip: HTMLElement;
-  private readonly icons: HTMLElement[] = [];
+  readonly icons: HTMLElement[] = [];
   private index = 0;
   private readonly onClick: TrayOptions['onClick'];
 
