@@ -1,32 +1,37 @@
 import RPlayer from 'rplayer';
 import processOpts, { Item, DanmakuOptions } from './options';
-import Dan from './dan';
 import UI from './ui';
+import Bullet from './bullet';
 
 export default class Danmaku {
   private DEFAULT_SETTING: DanmakuOptions;
-  ui: UI;
-  readonly dom: HTMLElement;
-  opts: DanmakuOptions;
+  static readonly typeMap: Item['type'][] = ['scroll', 'top', 'bottom'];
+
   player: RPlayer;
+  ui: UI;
+  opts: DanmakuOptions;
   tunnel = 0;
   tunnelHeight = 0;
   private running = false;
   private timer: number;
   private remain: Item[] = [];
-  private current: Dan[] = [];
-  private last: Dan[] = [];
-  private pool: Dan[] = [];
-  private top: Dan[] = [];
-  private bottom: Dan[] = [];
-  private prevCurrentTime = 0;
-  static readonly typeMap: Item['type'][] = ['scroll', 'top', 'bottom'];
+  private prevCurrentTime = -1;
+
+  readonly ctx: CanvasRenderingContext2D;
+  readonly dom: HTMLCanvasElement;
+  private bullets: Bullet[] = [];
+  private scroll: Bullet[] = [];
+  private top: Bullet[] = [];
+  private bottom: Bullet[] = [];
+  private pool: Bullet[] = [];
+  displayFrames = 500;
 
   constructor(opts: DanmakuOptions) {
-    this.dom = RPlayer.utils.newElement('rplayer_dan');
+    this.dom = RPlayer.utils.newElement('rplayer_dan', 'canvas');
+    this.ctx = this.dom.getContext('2d');
     this.opts = processOpts(opts);
     this.setDefaultOptions(this.opts);
-    this.remain = this.opts.items;
+    this.remain = [...this.opts.items];
   }
 
   install(player: RPlayer): void {
@@ -34,16 +39,17 @@ export default class Danmaku {
     this.restoreSetting();
 
     this.player.appendChild(this.dom);
+    this.updateSetting();
 
+    player.on(RPlayer.Events.LOADED_METADATA, this.onLoadedMetadata);
     player.on(RPlayer.Events.PAUSE, this.stop);
     player.on(RPlayer.Events.LOADING_SHOW, this.stop);
-    player.on(RPlayer.Events.LOADING_HIDE, this.update);
-    player.on(RPlayer.Events.PLAY, this.update);
+    player.on(RPlayer.Events.LOADING_HIDE, this.start);
+    player.on(RPlayer.Events.PLAY, this.start);
     player.on(RPlayer.Events.ENDED, this.stop);
-    player.on(RPlayer.Events.PLAYER_RESIZE, this.updateTunnel);
+    player.on(RPlayer.Events.TIME_UPDATE, this.onTimeUpdate);
+    player.on(RPlayer.Events.PLAYER_RESIZE, this.onResize);
     player.on(RPlayer.Events.SEEKED, this.onPlayerSeeked);
-
-    this.updateSetting();
 
     this.ui = new UI(this);
 
@@ -64,40 +70,121 @@ export default class Danmaku {
     return this.opts.baseFontSize * this.opts.fontSize;
   }
 
+  get font(): string {
+    return `bold ${this.fontSize}px/1.1 SimHei, "Microsoft JhengHei", Arial, Helvetica, sans-serif`;
+  }
+
+  get width(): number {
+    return this.player.rect.width;
+  }
+
+  get height(): number {
+    return this.player.rect.height;
+  }
+
+  private run = (): void => {
+    this.resizeCanvas();
+    this.resizeTunnelHeight();
+    this.resizeTunnel();
+    this.start();
+  };
+
+  private onLoadedMetadata = (): void => {
+    this.resizeCanvas();
+    this.resizeTunnel();
+  };
+
+  private onResize = (): void => {
+    this.resizeCanvas();
+    this.resizeTunnel();
+  };
+
+  private onTimeUpdate = (): void => {
+    const items = this.loadDanmaku();
+    if (items) {
+      for (let i = 0, l = items.length; i < l; i++) {
+        if (!this.fill(items[i], i)) break;
+      }
+    }
+  };
+
+  private stop = (): void => {
+    this.running = false;
+    cancelAnimationFrame(this.timer);
+  };
+
+  private start = (): void => {
+    if (this.running || !this.opts.on) return;
+    this.running = true;
+    this.initCanvas();
+    this.update();
+  };
+
+  private initCanvas(): void {
+    this.ctx.font = this.font;
+    this.ctx.textAlign = 'left';
+    this.ctx.textBaseline = 'top';
+    this.ctx.shadowBlur = 2;
+    this.ctx.shadowColor = '#000';
+    this.ctx.shadowOffsetX = 1;
+    this.ctx.shadowOffsetY = 1;
+    this.ctx.globalAlpha = this.opts.opacity;
+  }
+
+  private resizeCanvas(): void {
+    const ratio = window.devicePixelRatio || 2;
+    this.dom.width = this.width * ratio;
+    this.dom.height = this.height * ratio;
+    this.ctx.scale(ratio, ratio);
+  }
+
+  private resizeTunnel(): void {
+    this.tunnel = ((this.height * this.opts.area) / this.tunnelHeight) | 0;
+  }
+
+  private resizeTunnelHeight(): void {
+    const text = RPlayer.utils.htmlDom('昊', 'span');
+    text.style.font = this.font;
+    text.style.position = 'absolute';
+    text.style.opacity = '0';
+    document.body.appendChild(text);
+    const height = text.scrollHeight;
+    document.body.removeChild(text);
+    this.tunnelHeight = height + 1;
+  }
+
   private getPersistOpts(opts = this.opts): DanmakuOptions {
     const {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      items,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       on,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      staticFrame,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      scrollFrame,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      baseFontSize,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      colors,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      sendPlaceholder,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      sendHide,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      maxLen,
-      ...rest
+      blockTypes,
+      opacity,
+      area,
+      speed,
+      fontSize,
+      unlimited,
+      bottomUp,
+      merge,
+      color,
+      type,
     } = opts;
-    rest.blockTypes = [...rest.blockTypes];
-    return rest;
+
+    return {
+      on,
+      blockTypes: [...blockTypes],
+      opacity,
+      area,
+      speed,
+      fontSize,
+      unlimited,
+      bottomUp,
+      merge,
+      color,
+      type,
+    };
   }
 
   private setDefaultOptions(opts: DanmakuOptions): void {
     this.DEFAULT_SETTING = this.getPersistOpts(opts);
-  }
-
-  private getFontSize(): number {
-    const [w] = RPlayer.utils.getClientWH();
-    if (w < 769) return 15;
-    return 23;
   }
 
   private restoreSetting(): void {
@@ -105,9 +192,6 @@ export default class Danmaku {
       const setting = this.player.storage.get('danmaku', {});
       this.opts = RPlayer.utils.extend(this.opts, setting);
     }
-
-    this.opts.baseFontSize = this.opts.baseFontSize || this.getFontSize();
-    this.tunnelHeight = this.tunnelHeight || this.fontSize + 1;
   }
 
   persistSetting(): void {
@@ -117,41 +201,113 @@ export default class Danmaku {
 
   private onPlayerSeeked = (): void => {
     this.clear();
-    this.remain = this.opts.items;
+    this.remain = [...this.opts.items];
   };
 
-  updateTunnelHeight(h: number): void {
-    if (h && this.tunnelHeight < h) {
-      this.tunnelHeight = h;
-      this.updateTunnel();
+  private update = (): void => {
+    this.draw();
+    this.timer = requestAnimationFrame(this.update);
+  };
+
+  private draw(): void {
+    this.ctx.clearRect(0, 0, this.dom.width, this.dom.height);
+    this.bullets.forEach((bullet) => bullet.display());
+    this.clearBullets();
+  }
+
+  private recycleBullet(b: Bullet): void {
+    if (this.pool.length < 20) {
+      this.pool.push(b.recycle());
     }
   }
 
-  private updateTunnel = (): void => {
-    if (!this.player) return;
+  private clearBullets(): void {
+    const bullets: Bullet[] = [];
+    this.bullets.forEach((b) => {
+      if (b.canRecycle) {
+        this.recycleBullet(b);
+      } else {
+        bullets.push(b);
+      }
+    });
+    this.bullets = bullets;
 
-    const h = this.player.rect.height;
-    if (!h) return;
-
-    this.tunnel = ((this.opts.area * h) / this.tunnelHeight) | 0;
-
-    if (this.tunnel < 1) {
-      this.stop();
-    } else {
-      this.current.forEach((item) => item.updateVertical());
-      this.update();
+    for (let i = 0; i < this.tunnel; i++) {
+      if (this.scroll[i] && this.scroll[i].canRecycle) {
+        this.scroll[i] = undefined;
+      }
+      if (this.top[i] && this.top[i].canRecycle) this.top[i] = undefined;
+      if (this.bottom[i] && this.bottom[i].canRecycle) {
+        this.bottom[i] = undefined;
+      }
     }
-  };
+  }
+
+  private getBullet(item: Item, tunnel: number, prevBullet?: Bullet): Bullet {
+    const bullet = this.pool.pop();
+    if (bullet) return bullet.reset(item, tunnel, prevBullet);
+    return new Bullet(this, item, tunnel, prevBullet);
+  }
+
+  private getShortestTunnel(): [number, Bullet] {
+    let length = Infinity;
+    let tunnel = -1;
+    let bullet: Bullet = null;
+    for (let i = 0; i < this.tunnel; i++) {
+      if (!this.scroll[i] || this.scroll[i].canRecycle) return [i, null];
+      const l = this.scroll[i].length;
+      if (l < length) {
+        length = l;
+        tunnel = i;
+        bullet = this.scroll[i];
+      }
+    }
+    return [tunnel, bullet];
+  }
+
+  private fill(item: Item, i = 0, force = false): boolean {
+    if (item.type === 'top' || item.type === 'bottom') {
+      let tunnel = -1;
+      for (let i = 0; i < this.tunnel; i++) {
+        if (!this[item.type][i] || this[item.type][i].canRecycle) {
+          tunnel = i;
+          break;
+        }
+      }
+      if (tunnel > -1) {
+        this[item.type][tunnel] = this.getBullet(item, tunnel);
+        this.bullets.push(this[item.type][tunnel]);
+        item = undefined;
+      }
+    } else {
+      const [tunnel, prevBullet] = this.getShortestTunnel();
+      if (!prevBullet || prevBullet.length < this.width + 200) {
+        this.scroll[tunnel] = this.getBullet(item, tunnel, prevBullet);
+        this.bullets.push(this.scroll[tunnel]);
+        item = undefined;
+      }
+    }
+
+    if (!item) return true;
+
+    if (this.opts.unlimited || force) {
+      this.scroll.push(this.getBullet(item, i % this.tunnel));
+      return true;
+    }
+    return false;
+  }
 
   on(): void {
     this.opts.on = true;
-    this.run();
+    this.remain = [...this.opts.items];
+    this.start();
   }
 
   off(): void {
     this.opts.on = false;
     this.stop();
     this.clear();
+    this.ctx.clearRect(0, 0, this.dom.width, this.dom.height);
   }
 
   toggle(): void {
@@ -173,10 +329,7 @@ export default class Danmaku {
     this.updateMerge();
   }
 
-  private isAllowedType(
-    item: { type: any; color: string },
-    types = this.opts.blockTypes
-  ): boolean {
+  private isAllowedType(item: Item, types = this.opts.blockTypes): boolean {
     if (types.includes(item.type)) return false;
     if (types.includes('scroll') && !item.type) return false;
     if (types.includes('color') && item.color) return false;
@@ -186,13 +339,13 @@ export default class Danmaku {
   updateBlockTypes(types = this.opts.blockTypes): void {
     this.opts.blockTypes = types;
     if (!types.length) {
-      this.current.forEach((x) => x.visible());
+      this.bullets.forEach((x) => x.show());
     } else {
-      this.current.forEach((d) => {
-        if (this.isAllowedType(d, types)) {
-          d.visible();
+      this.bullets.forEach((d) => {
+        if (this.isAllowedType(d.item, types)) {
+          d.show();
         } else {
-          d.invisible();
+          d.hide();
         }
       });
     }
@@ -201,27 +354,28 @@ export default class Danmaku {
   }
 
   updateOpacity(opacity = this.opts.opacity): void {
-    this.dom.style.opacity = opacity.toString();
+    this.ctx.globalAlpha = opacity;
     this.persistSetting();
   }
 
   updateArea(area = this.opts.area): void {
     this.opts.area = area;
-    this.updateTunnel();
+    this.resizeTunnel();
     this.persistSetting();
   }
 
   updateSpeed(speed = this.opts.speed): void {
     this.opts.speed = speed;
-    this.current.forEach((x) => x.updateSpeed());
+    this.bullets.forEach((x) => x.updateActualSpeed());
     this.persistSetting();
   }
 
   updateFontSize(fontSize = this.opts.fontSize): void {
     this.opts.fontSize = fontSize;
-    this.dom.style.fontSize = this.fontSize + 'px';
-    this.tunnelHeight = this.fontSize + 1;
-    this.updateTunnel();
+    this.resizeTunnelHeight();
+    this.resizeTunnel();
+    this.ctx.font = this.font;
+    this.bullets.forEach((x) => x.updateY());
     this.persistSetting();
   }
 
@@ -232,7 +386,7 @@ export default class Danmaku {
 
   updateBottomUp(bottomUp = this.opts.bottomUp): void {
     this.opts.bottomUp = bottomUp;
-    this.current.forEach((x) => x.updateVertical());
+    this.bullets.forEach((x) => x.updateY());
     this.persistSetting();
   }
 
@@ -247,22 +401,21 @@ export default class Danmaku {
   }
 
   clear(): void {
-    this.current.forEach((dan) => this.recycleDan(dan));
-    this.current = [];
-    this.last = [];
+    this.bullets.forEach((b) => this.recycleBullet(b));
+    this.bullets = [];
+    this.scroll = [];
     this.top = [];
     this.bottom = [];
   }
 
   send(item: Item): void {
     this.opts.items.push(item);
-    this.update();
-    this.insert(item, 0, true);
+    this.fill(item, 0, true);
   }
 
   resetItems(item: Item[] = []): void {
     this.opts.items = item;
-    this.remain = item;
+    this.remain = [...item];
     this.update();
   }
 
@@ -280,73 +433,7 @@ export default class Danmaku {
     this.update();
   }
 
-  private getDan(
-    item: Item,
-    tunnel: number,
-    length?: number,
-    speed?: number
-  ): Dan {
-    const dan = this.pool.pop();
-    if (dan) return dan.reset(item, tunnel, length, speed);
-    return new Dan(this, item, tunnel, length, speed);
-  }
-
-  private recycleDan(dan: Dan): void {
-    if (!dan) return;
-    if (this.pool.length > 20) {
-      dan.destroy();
-    } else {
-      dan.recycle();
-      this.pool.push(dan);
-    }
-  }
-
-  private getShortestTunnel(): [number, number, number] {
-    let length = Infinity;
-    let tunnel = -1;
-    let speed = 0;
-    for (let i = 0; i < this.tunnel; i++) {
-      if (!this.last[i] || this.last[i].canRecycle) return [i, 0, 0];
-      const l = this.last[i].invisibleLength;
-      if (l < length) {
-        length = l;
-        tunnel = i;
-        speed = this.last[i].speed;
-      }
-    }
-    return [tunnel, length, speed];
-  }
-
-  private insert(item: Item, i = 0, force = false): void {
-    if (!item) return;
-    if (item.type === 'top' || item.type === 'bottom') {
-      let tunnel = -1;
-      for (let i = 0; i < this.tunnel; i++) {
-        if (!this[item.type][i] || this[item.type][i].canRecycle) {
-          tunnel = i;
-          break;
-        }
-      }
-      if (tunnel > -1) {
-        this[item.type][tunnel] = this.getDan(item, tunnel);
-        this.current.push(this[item.type][tunnel]);
-        item = undefined;
-      }
-    } else {
-      const [tunnel, length, speed] = this.getShortestTunnel();
-      if (length < 200) {
-        this.last[tunnel] = this.getDan(item, tunnel, length, speed);
-        this.current.push(this.last[tunnel]);
-        item = undefined;
-      }
-    }
-
-    if (item && (this.opts.unlimited || force)) {
-      this.current.push(this.getDan(item, i % this.tunnel, i));
-    }
-  }
-
-  private load(): void {
+  private loadDanmaku(): void | Item[] {
     if (!this.remain.length) return;
 
     const time = this.player.currentTime | 0;
@@ -355,23 +442,25 @@ export default class Danmaku {
 
     const remain: Item[] = [];
     let toShow: Item[] = [];
+    const blockTypes = this.opts.blockTypes;
 
-    this.remain.forEach((x) => {
-      if (x.time === time) {
-        const types = this.opts.blockTypes;
+    for (let i = 0, l = this.remain.length; i < l; i++) {
+      const item = this.remain[i];
+      if (!item || !item.text) continue;
+      if (item.time === time) {
         if (
-          types.length &&
-          (types.includes(x.type) ||
-            (!x.type && types.includes('scroll')) ||
-            (types.includes('color') && x.color))
+          blockTypes.length &&
+          (blockTypes.includes(item.type) ||
+            (!item.type && blockTypes.includes('scroll')) ||
+            (blockTypes.includes('color') && !item.color))
         ) {
-          return;
+          continue;
         }
-        toShow.push(x);
-      } else if (x.time > time) {
-        remain.push(x);
+        toShow.push(item);
+      } else if (item.time > time) {
+        remain.push(item);
       }
-    });
+    }
 
     this.remain = remain;
     if (!toShow.length) return;
@@ -387,66 +476,6 @@ export default class Danmaku {
       }, []);
     }
 
-    for (let i = 0, l = toShow.length; i < l; i++) {
-      const item = toShow[i];
-      if (!item || !item.text) break;
-      this.insert(item, i);
-    }
+    return toShow;
   }
-
-  private fire(): void {
-    this.current.forEach((dan) => dan.update());
-  }
-
-  private clean(): void {
-    const current: Dan[] = [];
-    this.current.forEach((dan) => {
-      if (dan.canRecycle) {
-        this.recycleDan(dan);
-      } else {
-        current.push(dan);
-      }
-    });
-    this.current = current;
-
-    for (let i = 0; i < this.tunnel; i++) {
-      if (this.last[i] && this.last[i].canRecycle) this.last[i] = undefined;
-      if (this.top[i] && this.top[i].canRecycle) this.top[i] = undefined;
-      if (this.bottom[i] && this.bottom[i].canRecycle) {
-        this.bottom[i] = undefined;
-      }
-    }
-  }
-
-  private stop = (): void => {
-    cancelAnimationFrame(this.timer);
-    this.running = false;
-  };
-
-  private update = (): void => {
-    if (this.running || !this.opts.on || !this.player.playing) return;
-    this.stop();
-    this.running = true;
-    this.render();
-  };
-
-  private render = (): void => {
-    this.load();
-    this.fire();
-    this.clean();
-
-    if (!this.remain.length && !this.current.length) {
-      this.stop();
-      this.clear();
-      return;
-    }
-    this.timer = requestAnimationFrame(this.render);
-  };
-
-  private run = (): void => {
-    if (!this.opts.on) return;
-    this.updateTunnel();
-    this.update();
-    if (!this.player.playing) this.stop();
-  };
 }

@@ -21,8 +21,7 @@ export interface DanmakuOptions {
   bottomUp?: boolean;
   merge?: boolean;
   baseFontSize?: number;
-  staticFrame?: number;
-  scrollFrame?: number;
+  staticFrames?: number;
   colors?: string[];
   type?: number;
   color?: number;
@@ -44,8 +43,7 @@ export default function processOpts(opts: DanmakuOptions): DanmakuOptions {
   opts.unlimited = U.isBool(opts.unlimited) ? opts.unlimited : false;
   opts.bottomUp = U.isBool(opts.bottomUp) ? opts.bottomUp : false;
   opts.merge = U.isBool(opts.merge) ? opts.merge : false;
-  opts.staticFrame = opts.staticFrame || 300;
-  opts.scrollFrame = opts.scrollFrame || 500;
+  opts.staticFrames = opts.staticFrames || 300;
   if (!Array.isArray(opts.colors) || !opts.colors.length) {
     opts.colors = [
       '',
@@ -72,5 +70,6 @@ export default function processOpts(opts: DanmakuOptions): DanmakuOptions {
   opts.type = U.clamp(opts.type || 0, 0, 2);
   opts.sendHide = opts.sendHide || false;
   opts.maxLen = opts.maxLen || 50;
+  opts.baseFontSize = opts.baseFontSize || 24;
   return opts;
 }

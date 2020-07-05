@@ -56,7 +56,7 @@ export default function handler(
     } else {
       player.emit(Events.PLAY);
     }
-    requestAnimationFrame(player.updateRect);
+    player.updateRect();
   });
 
   // player
