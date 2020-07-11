@@ -1,118 +1,173 @@
 import { Item } from './options';
-import Danmaku from '.';
+import Danmaku from './danmaku';
+import RPlayer from 'rplayer';
 
 export default class Bullet {
-  private readonly ctx: CanvasRenderingContext2D;
+  private static readonly CENTER_CLS = 'rplayer_dan_d-center';
+  private static readonly ME_CLS = 'rplayer_dan_d-me';
   private readonly danmaku: Danmaku;
+  readonly dom: HTMLElement;
   item: Item;
-  prevBullet: Bullet;
-  width = 0;
-  x = 0;
-  y = 0;
-  speed = 0;
-  actualSpeed = 0;
+  private width = 0;
+  private length = 0;
+  private destination = 0;
+  private lastX = 0;
+  startTime = 0;
+  showTime = 0;
+  endTime = 0;
   tunnel = 0;
-  displayedFrames = 0;
-  visible = true;
+  running = false;
+  canRecycle = false;
 
   constructor(
     danmaku: Danmaku,
     item: Item,
     tunnel: number,
+    currentTime: number,
     prevBullet?: Bullet
   ) {
     this.danmaku = danmaku;
-    this.ctx = danmaku.ctx;
-    this.reset(item, tunnel, prevBullet);
-  }
-
-  get length(): number {
-    return this.x + this.width;
-  }
-
-  get canRecycle(): boolean {
-    if (this.isScroll) return -this.x > this.width;
-    return this.displayedFrames > this.danmaku.opts.staticFrames;
+    this.dom = RPlayer.utils.newElement('rplayer_dan_d');
+    this.danmaku.dom.appendChild(this.dom);
+    this.reset(item, tunnel, currentTime, prevBullet);
   }
 
   get isScroll(): boolean {
     return this.item.type === 'scroll' || !this.item.type;
   }
 
-  reset(item: Item, tunnel: number, prevBullet?: Bullet): this {
+  reset(
+    item: Item,
+    tunnel: number,
+    currentTime: number,
+    prevBullet?: Bullet
+  ): this {
     this.item = item;
     this.tunnel = tunnel;
-    this.width = this.ctx.measureText(item.text).width;
+    this.startTime = currentTime;
+    this.canRecycle = false;
+
+    this.dom.innerText = item.text;
 
     if (this.isScroll) {
-      this.prevBullet = prevBullet;
-      this.x = Math.max(prevBullet?.length ?? 0, this.danmaku.width);
-      this.updateSpeed();
+      this.dom.addEventListener('transitionend', this.onTransitionEnd);
+      this.width = this.dom.scrollWidth;
+      this.dom.style.left = this.danmaku.width + 'px';
+      this.length = this.danmaku.width + this.width;
+      this.destination = this.length;
+      let time = this.danmaku.displaySeconds;
+      time /= this.danmaku.opts.speed;
+      if (prevBullet) {
+        if (prevBullet.showTime > currentTime) {
+          this.startTime = prevBullet.showTime;
+        }
+        const t =
+          (this.danmaku.width + this.width) /
+          (this.danmaku.width / (prevBullet.endTime - this.startTime));
+        if (time < t) time = t;
+      }
+      this.endTime = this.startTime + time;
+      this.showTime = this.startTime + (this.width * time) / this.length + 0.2;
     } else {
-      this.x = (this.danmaku.width - this.width) / 2;
+      this.dom.style.opacity = '';
+      this.endTime = this.startTime + this.danmaku.staticDisplaySeconds;
+      this.dom.classList.add(Bullet.CENTER_CLS);
     }
 
-    this.updateY();
+    if (item.isMe) {
+      this.dom.classList.add(Bullet.ME_CLS);
+    }
+
+    this.updateTop();
+    this.show();
 
     return this;
+  }
+
+  private onTransitionEnd = (): void => {
+    this.canRecycle = true;
+  };
+
+  private setTransform(x: number): void {
+    this.dom.style.transform = `translateX(-${x}px) translateY(0) translateZ(0)`;
+  }
+
+  private setTransition(t: number): void {
+    this.dom.style.transition = `transform ${t}s linear`;
   }
 
   recycle(): this {
-    this.prevBullet = null;
+    this.canRecycle = true;
+    this.running = false;
+    this.lastX = 0;
+    this.dom.removeEventListener('transitionend', this.onTransitionEnd);
+    this.dom.removeAttribute('style');
+    this.hide();
+    this.dom.classList.remove(Bullet.CENTER_CLS);
+    this.dom.classList.remove(Bullet.ME_CLS);
     return this;
   }
 
-  updateSpeed(): void {
-    if (this.prevBullet && this.prevBullet.length > this.danmaku.width) {
-      this.speed = this.prevBullet.speed;
+  updateTop(): void {
+    if (this.tunnel >= this.danmaku.tunnel) {
+      return this.hide();
     } else {
-      this.speed = this.length / this.danmaku.displayFrames;
-
-      if (this.prevBullet) {
-        const maxSpeed =
-          (this.x * this.prevBullet.speed) / this.prevBullet.length;
-        if (this.speed > maxSpeed) this.speed = maxSpeed;
-      }
+      this.show();
     }
-    this.updateActualSpeed();
-  }
 
-  updateActualSpeed(): void {
-    if (this.isScroll) {
-      this.actualSpeed = this.speed * this.danmaku.opts.speed;
-    }
-  }
-
-  updateY(): void {
+    const h = this.tunnel * this.danmaku.tunnelHeight + 'px';
     if (
       this.item.type === 'bottom' ||
       (this.isScroll && this.danmaku.opts.bottomUp)
     ) {
-      this.y = this.danmaku.height - this.tunnel * this.danmaku.tunnelHeight;
+      this.dom.style.bottom = h;
+      this.dom.style.top = '';
     } else {
-      this.y = this.tunnel * this.danmaku.tunnelHeight;
+      this.dom.style.top = h;
+      this.dom.style.bottom = '';
     }
   }
 
   show(): void {
-    this.visible = true;
+    this.dom.style.opacity = '1';
   }
 
   hide(): void {
-    this.visible = false;
+    this.dom.style.opacity = '0';
   }
 
-  display(): void {
+  pause(time: number): void {
+    if (!this.isScroll || time <= this.startTime || this.endTime <= time) {
+      return;
+    }
+    const x =
+      (this.length / (this.endTime - this.startTime)) *
+        (time - this.startTime) +
+      this.lastX;
+    this.setTransform(x);
+    this.setTransition(0);
+    this.length = this.danmaku.width - x + this.width;
+    this.lastX = x;
+    this.running = false;
+  }
+
+  destroy(): void {
+    this.recycle();
+    this.dom.parentNode.removeChild(this.dom);
+  }
+
+  update(time: number): boolean {
+    if (this.canRecycle || (!this.isScroll && time > this.endTime)) return true;
+    if (this.running || this.startTime > time) return false;
     if (this.isScroll) {
-      this.x -= this.actualSpeed;
-      if (this.x > this.danmaku.width) return;
-    } else {
-      this.displayedFrames += 1;
+      this.startTime = time;
+      this.setTransition(
+        (this.endTime - time) / this.danmaku.player.playbackRate
+      );
+      this.dom.offsetTop;
+      this.setTransform(this.destination);
     }
 
-    if (!this.visible || this.tunnel > this.danmaku.tunnel) return;
-
-    this.ctx.fillStyle = this.item.color || '#fff';
-    this.ctx.fillText(this.item.text, this.x, this.y);
+    this.running = true;
   }
 }

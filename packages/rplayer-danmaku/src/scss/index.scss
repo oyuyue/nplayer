@@ -6,7 +6,7 @@
   height: 100%;
   pointer-events: none;
   overflow: hidden;
-  // font-family: SimHei, "Microsoft JhengHei", Arial, Helvetica, sans-serif;
+  font-family: SimHei, "Microsoft JhengHei", Arial, Helvetica, sans-serif;
 
   &_pop {
     padding: 5px 8px;
@@ -159,28 +159,29 @@
     justify-content: space-between;
   }
 
-  // &_d {
-  //   position: absolute;
-  //   user-select: none;
-  //   white-space: nowrap;
-  //   -webkit-will-change: transform;
-  //   will-change: transform;
-  //   font-weight: bold;
-  //   line-height: 1.125;
-  //   color: #fff;
-  //   text-shadow: rgb(0, 0, 0) 1px 1px 2px, rgb(0, 0, 0) 0px 0px 1px;
+  &_d {
+    position: absolute;
+    user-select: none;
+    white-space: nowrap;
+    will-change: transform;
+    font-weight: bold;
+    line-height: 1.125;
+    color: #fff;
+    text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
+    perspective: 1000px;
+    backface-visibility: hidden;
 
-  //   &-me {
-  //     outline: 1px solid;
-  //     z-index: 1;
-  //   }
+    &-me {
+      border: 1px solid;
+      padding: 0 1px;
+    }
 
-  //   &-center {
-  //     left: 50%;
-  //     transform: translateX(-50%);
-  //     will-change: auto;
-  //   }
-  // }
+    &-center {
+      left: 50%;
+      transform: translateX(-50%);
+      will-change: auto;
+    }
+  }
 
   &_tray {
     &-active {
