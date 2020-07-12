@@ -1,3 +1,24 @@
+# [](https://github.com/woopen/RPlayer/compare/v0.6.0...v) (2020-07-12)
+
+
+
+# [0.6.0](https://github.com/woopen/RPlayer/compare/v0.5.0...v0.6.0) (2020-07-12)
+
+
+### Bug Fixes
+
+* 视频速率选择 ([17941b3](https://github.com/woopen/RPlayer/commit/17941b3202a088345dbb0a8e828398daf5a9b4e9))
+
+
+### Features
+
+* toast 提示 ([3ff8ee2](https://github.com/woopen/RPlayer/commit/3ff8ee225b40f8fb3dfa5a23ca01f2ec2adc70e2))
+* 弹幕插件 ([b0125d4](https://github.com/woopen/RPlayer/commit/b0125d44be42e5d32eca4ee250d18d5d6db0e058))
+* 修改进度条调整进度逻辑 ([ff5372e](https://github.com/woopen/RPlayer/commit/ff5372e2ff82e63c1f78f72b2ea4cbf7a6953c17))
+* 功能小组件 ([c067c1c](https://github.com/woopen/RPlayer/commit/c067c1c319c5918fd84cb6bd70d580c4ebc4deac))
+
+
+
 # [](https://github.com/woopen/RPlayer/compare/v0.5.0...v) (2020-06-07)
 
 
