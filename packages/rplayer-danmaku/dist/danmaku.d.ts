@@ -4,12 +4,14 @@ export default class Danmaku {
     static readonly typeMap: Item['type'][];
     readonly dom: HTMLElement;
     private DEFAULT_SETTING;
+    private ui;
     player: RPlayer;
     opts: DanmakuOptions;
     private prevTime;
     tunnel: number;
     tunnelHeight: number;
     private items;
+    private sended;
     private bullets;
     private pool;
     private scroll;
