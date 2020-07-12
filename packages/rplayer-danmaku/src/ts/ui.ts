@@ -50,13 +50,11 @@ export default class UI {
     this.updatePopoverUI();
     this.danmaku.player.controls.addTray(this.tray.dom, 3);
 
-    this.initSend();
+    if (!danmaku.opts.hideSend) this.initSend();
     this.danmaku.player.controls.addTray(this.dom, 3);
 
-    this.danmaku.player.on(RPlayer.Events.PLAYER_RESIZE, this.onResize);
-
     requestAnimationFrame(this.checkSendUI);
-    this.danmaku.player.on(RPlayer.Events.PLAYER_RESIZE, this.checkSendUI);
+    this.danmaku.player.on(RPlayer.Events.PLAYER_RESIZE, this.onResize);
   }
 
   hideSend(): void {
@@ -67,7 +65,27 @@ export default class UI {
     this.dom.hidden = false;
   }
 
+  destroy(): void {
+    if (this.danmaku.player) {
+      this.danmaku.player.off(RPlayer.Events.PLAYER_RESIZE, this.onResize);
+    }
+
+    if (this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
+    }
+
+    this.onOffSwitch.destroy();
+    this.blockCheckboxes.forEach((x) => x.destroy());
+    this.otherCheckboxes.forEach((x) => x.destroy());
+    this.opacitySlider.destroy();
+    this.areaSlider.destroy();
+    this.speedSlider.destroy();
+    this.fontSlider.destroy();
+    this.tray.destroy();
+  }
+
   private onResize = (): void => {
+    this.checkSendUI();
     if (!this.opacitySlider) return;
     this.opacitySlider.updateRect();
     this.areaSlider.updateRect();

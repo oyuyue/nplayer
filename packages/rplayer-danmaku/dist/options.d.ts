@@ -18,7 +18,7 @@ export interface DanmakuOptions {
     bottomUp?: boolean;
     merge?: boolean;
     baseFontSize?: number;
-    staticFrames?: number;
+    staticSeconds?: number;
     colors?: string[];
     type?: number;
     color?: number;

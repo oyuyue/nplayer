@@ -18,7 +18,6 @@ export default class Danmaku {
     private top;
     private bottom;
     displaySeconds: number;
-    staticDisplaySeconds: number;
     constructor(opts: DanmakuOptions);
     install(player: RPlayer): void;
     get width(): number;

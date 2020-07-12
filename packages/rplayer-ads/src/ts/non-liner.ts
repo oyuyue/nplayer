@@ -7,6 +7,7 @@ export default class NonLiner {
   private readonly ads: Ads;
   readonly dom: HTMLElement;
   private readonly closeDom: HTMLElement;
+  private player: RPlayer;
 
   private adsItems: NonLinerAdsItem[];
   private currentAd: { ad: NonLinerAdsItem; dom: HTMLElement };
@@ -81,6 +82,8 @@ export default class NonLiner {
   };
 
   install(player: RPlayer): void {
+    this.player = player;
+
     if (this.ads.opts.adBadge) {
       this.dom.appendChild(getAdBadge(player));
     }
@@ -89,5 +92,20 @@ export default class NonLiner {
     player.on(RPlayer.Events.PAUSE, this.onPlayerPause);
 
     this.hide();
+  }
+
+  destroy(): void {
+    if (this.player) {
+      this.player.off(RPlayer.Events.PLAY, this.hide);
+      this.player.off(RPlayer.Events.PAUSE, this.onPlayerPause);
+    }
+
+    if (this.closeDom.parentNode) {
+      this.closeDom.parentNode.removeChild(this.closeDom);
+    }
+
+    if (this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
+    }
   }
 }

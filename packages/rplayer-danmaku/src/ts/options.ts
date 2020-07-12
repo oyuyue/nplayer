@@ -21,12 +21,12 @@ export interface DanmakuOptions {
   bottomUp?: boolean;
   merge?: boolean;
   baseFontSize?: number;
-  staticFrames?: number;
+  staticSeconds?: number;
   colors?: string[];
   type?: number;
   color?: number;
   sendPlaceholder?: string;
-  sendHide?: boolean;
+  hideSend?: boolean;
   maxLen?: number;
 }
 
@@ -43,7 +43,7 @@ export default function processOpts(opts: DanmakuOptions): DanmakuOptions {
   opts.unlimited = U.isBool(opts.unlimited) ? opts.unlimited : false;
   opts.bottomUp = U.isBool(opts.bottomUp) ? opts.bottomUp : false;
   opts.merge = U.isBool(opts.merge) ? opts.merge : false;
-  opts.staticFrames = opts.staticFrames || 300;
+  opts.staticSeconds = opts.staticSeconds || 5;
   if (!Array.isArray(opts.colors) || !opts.colors.length) {
     opts.colors = [
       '',
@@ -68,7 +68,7 @@ export default function processOpts(opts: DanmakuOptions): DanmakuOptions {
     : '发个弹幕';
   opts.color = U.clamp(opts.color || 0, 0, opts.colors.length - 1);
   opts.type = U.clamp(opts.type || 0, 0, 2);
-  opts.sendHide = opts.sendHide || false;
+  opts.hideSend = opts.hideSend || false;
   opts.maxLen = opts.maxLen || 50;
   opts.baseFontSize = opts.baseFontSize || 24;
   return opts;

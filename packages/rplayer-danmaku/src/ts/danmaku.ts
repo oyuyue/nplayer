@@ -1,9 +1,9 @@
-import RPlayer from 'rplayer';
+import RPlayer, { Plugin } from 'rplayer';
 import processOpts, { Item, DanmakuOptions } from './options';
 import Bullet from './bullet';
 import UI from './ui';
 
-export default class Danmaku {
+export default class Danmaku implements Plugin {
   static readonly typeMap: Item['type'][] = ['scroll', 'top', 'bottom'];
   readonly dom: HTMLElement;
   private DEFAULT_SETTING: DanmakuOptions;
@@ -23,7 +23,6 @@ export default class Danmaku {
   private bottom: Bullet[] = [];
 
   displaySeconds = 0;
-  staticDisplaySeconds = 5;
 
   constructor(opts: DanmakuOptions) {
     this.dom = RPlayer.utils.newElement('rplayer_dan');
@@ -48,6 +47,24 @@ export default class Danmaku {
 
     if (document.body.contains(player.dom)) {
       this.init();
+    }
+  }
+
+  destroy(): void {
+    if (this.ui) this.ui.destroy();
+
+    if (this.player) {
+      this.player.off(RPlayer.Events.PAUSE, this.pause);
+      this.player.off(RPlayer.Events.ENDED, this.pause);
+      this.player.off(RPlayer.Events.PLAYER_RESIZE, this.onResize);
+      this.player.off(RPlayer.Events.SEEKED, this.onSeeked);
+      this.player.off(RPlayer.Events.LOADED_METADATA, this.init);
+      this.off();
+      this.pool.forEach((b) => b.destroy());
+    }
+
+    if (this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
     }
   }
 

@@ -330,6 +330,28 @@ export default class Liner {
     this.checkCanPlay();
   }
 
+  destroy(): void {
+    this.end();
+    this.untick();
+
+    if (this.player) {
+      this.player.off(RPlayer.Events.PLAY, this.pausePlayer);
+      this.player.off(RPlayer.Events.TIME_UPDATE, this.pausePlayer);
+      this.player.off(RPlayer.Events.PLAY, this.tick);
+      this.player.off(RPlayer.Events.PAUSE, this.untick);
+      this.player.off(RPlayer.Events.ENDED, this.untick);
+      this.player.off(RPlayer.Events.LOADING_SHOW, this.untick);
+      this.player.off(RPlayer.Events.LOADING_HIDE, this.tick);
+      this.player.off(RPlayer.Events.ENTER_FULLSCREEN, this.onEnterFullscreen);
+      this.player.off(RPlayer.Events.EXIT_FULLSCREEN, this.onExitFullscreen);
+      this.player.off(RPlayer.Events.ENDED, this.onPlayerEnded);
+    }
+
+    if (this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
+    }
+  }
+
   private getCtrlDom(onClick: () => void, cls?: string): HTMLElement {
     const dom = RPlayer.utils.newElement('rplayer_ad_liner_ctrl');
     if (cls) dom.classList.add(cls);

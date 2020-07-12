@@ -1,10 +1,10 @@
-import RPlayer from 'rplayer';
+import RPlayer, { Plugin } from 'rplayer';
 import Events from './events';
 import { AdsOpts, processOpts } from './options';
 import Liner from './liner';
 import NonLiner from './non-liner';
 
-export default class Ads extends RPlayer.EventEmitter {
+export default class Ads extends RPlayer.EventEmitter implements Plugin {
   static readonly Events = Events;
 
   private readonly dom: HTMLElement;
@@ -29,5 +29,13 @@ export default class Ads extends RPlayer.EventEmitter {
     this.dom.appendChild(this.liner.dom);
     this.dom.appendChild(this.nonLiner.dom);
     player.appendChild(this.dom);
+  }
+
+  destroy(): void {
+    this.liner.destroy();
+    this.nonLiner.destroy();
+    if (this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
+    }
   }
 }

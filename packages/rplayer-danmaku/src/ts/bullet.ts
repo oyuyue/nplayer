@@ -71,7 +71,7 @@ export default class Bullet {
       this.showTime = this.startTime + (this.width * time) / this.length + 0.2;
     } else {
       this.dom.style.opacity = '';
-      this.endTime = this.startTime + this.danmaku.staticDisplaySeconds;
+      this.endTime = this.startTime + this.danmaku.opts.staticSeconds;
       this.dom.classList.add(Bullet.CENTER_CLS);
     }
 

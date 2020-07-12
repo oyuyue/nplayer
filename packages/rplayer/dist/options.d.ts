@@ -19,6 +19,7 @@ export interface OptionPreset {
 }
 export interface Plugin {
     install: (p: RPlayer) => any;
+    destroy: () => any;
     [key: string]: any;
 }
 export interface RPlayerOptions {
