@@ -4,10 +4,18 @@
 
 [RPlayer](https://github.com/woopen/RPlayer) 广告插件
 
+![](https://i.loli.net/2020/07/12/WaoLXDKP1I85Mgn.png)
+
 ## 安装
 
 ```
 npm i -S @rplayer/ads
+```
+
+或者使用 CDN
+
+```html
+<script src="https://unpkg.com/@rplayer/ads@latest"></script>
 ```
 
 ## 使用

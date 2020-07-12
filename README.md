@@ -2,13 +2,13 @@
 
 [![npm version](https://img.shields.io/npm/v/rplayer.svg)](https://github.com/woopen/RPlayer)
 
-美观、可定制的响应式播放器 `开发中...`
+美观、功能强大的视频播放器
 
-![](https://i.loli.net/2020/05/24/wOqB52Pr8XfioKu.png)
+![](https://i.loli.net/2020/07/12/QW1pa3O2JUAGyT6.png)
 
 ## 兼容
 
-目前兼容 IE11, Edge, Chrome, FireFox, Safari 等现代浏览器
+兼容 IE11, Edge, Chrome, FireFox, Safari 等现代浏览器
 
 ## 安装
 
@@ -21,6 +21,11 @@ npm i -S rplayer
 ```html
 <script src="https://unpkg.com/rplayer@latest/dist/index.js"></script>
 ```
+
+## 插件
+
+- [@rplayer/ads](https://github.com/woopen/RPlayer/tree/master/packages/rplayer-ads)  广告插件
+- [@rplayer/danmaku](https://github.com/woopen/RPlayer/tree/master/packages/rplayer-danmaku)  弹幕插件
 
 ## 使用
 
@@ -66,7 +71,6 @@ interface RPlayerOptions {
   contextMenu?: ContextMenuOpts; // 右键菜单
   storage?: StorageOpts; // 持久化
   subtitle?: SubtitleOpts; // 字幕
-  trays?: TrayOpts[]; // 底部控制器按钮
   plugins?: Plugin[]; // 插件
 }
 
@@ -156,14 +160,6 @@ interface SubtitleOpts {
   checked?: number;
   captions: HTMLTrackElement[];
 }
-
-interface TrayOpts {
-  text?: string;
-  icon?: string | Element;
-  pos?: number;
-  init?: (tray: Tray, player: RPlayer) => any;
-  onClick?: (ev: MouseEvent) => any;
-}
 ```
 
 ## 主题
@@ -176,10 +172,3 @@ interface TrayOpts {
   --rplayer-switch: #67cd67;
 }
 ```
-
-## 待完成
-
-- [ ] 移动版控件
-- [ ] 视频信息面板
-- [ ] 交互日志
-- [ ] 弹幕插件
