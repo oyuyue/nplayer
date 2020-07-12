@@ -32,6 +32,7 @@ export declare const makeDictionary: <T>(obj: T) => T;
 export declare const getClientWH: () => [number, number];
 export declare const safeJsonParse: <T extends Record<string, any>>(str: string, orRet?: T) => string | T;
 export declare const safeJsonStringify: (obj: Record<string, any>, orRet?: string) => string;
+export declare const getDeep: <T>(object: Record<string, any>, path: string) => T;
 export declare const extend: (target: Record<string, any>, source: Record<string, any>) => Record<string, any>;
 export declare const ajax: (url: string, cb: (err: any, data?: string) => any) => void;
 //# sourceMappingURL=index.d.ts.map

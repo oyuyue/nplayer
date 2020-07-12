@@ -53,6 +53,8 @@ export default class UI {
     this.initSend();
     this.danmaku.player.controls.addTray(this.dom, 3);
 
+    this.danmaku.player.on(RPlayer.Events.PLAYER_RESIZE, this.onResize);
+
     requestAnimationFrame(this.checkSendUI);
     this.danmaku.player.on(RPlayer.Events.PLAYER_RESIZE, this.checkSendUI);
   }
@@ -64,6 +66,14 @@ export default class UI {
   showSend(): void {
     this.dom.hidden = false;
   }
+
+  private onResize = (): void => {
+    if (!this.opacitySlider) return;
+    this.opacitySlider.updateRect();
+    this.areaSlider.updateRect();
+    this.speedSlider.updateRect();
+    this.fontSlider.updateRect();
+  };
 
   private checkSendUI = (): void => {
     const { width } = this.dom.getBoundingClientRect();
@@ -152,7 +162,7 @@ export default class UI {
 
   private onBlockTypeChange = (type: string) => (v: boolean): void => {
     let types = this.danmaku.opts.blockTypes;
-    if (v && !types.includes(type as any)) {
+    if (v && types.indexOf(type as any) === -1) {
       types.push(type as any);
     }
 
@@ -294,10 +304,10 @@ export default class UI {
     const opts = this.danmaku.opts;
 
     this.onOffSwitch.update(opts.on);
-    this.blockCheckboxes[0].update(opts.blockTypes.includes('scroll'));
-    this.blockCheckboxes[1].update(opts.blockTypes.includes('top'));
-    this.blockCheckboxes[2].update(opts.blockTypes.includes('bottom'));
-    this.blockCheckboxes[3].update(opts.blockTypes.includes('color'));
+    this.blockCheckboxes[0].update(opts.blockTypes.indexOf('scroll') > -1);
+    this.blockCheckboxes[1].update(opts.blockTypes.indexOf('top') > -1);
+    this.blockCheckboxes[2].update(opts.blockTypes.indexOf('bottom') > -1);
+    this.blockCheckboxes[3].update(opts.blockTypes.indexOf('color') > -1);
     this.opacitySlider.update((opts.opacity * 10) / 9 - 0.1);
     this.areaSlider.update(
       opts.area <= 0.25

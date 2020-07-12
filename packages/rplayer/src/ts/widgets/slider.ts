@@ -173,6 +173,11 @@ export default class Slider {
     }
   }
 
+  updateRect(): void {
+    this._rect = null;
+    this.hdw = 0;
+  }
+
   update(v = this._value): void {
     v = clamp(v);
     this._value = v;

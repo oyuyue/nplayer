@@ -6,14 +6,25 @@ export interface Item {
     type?: 'top' | 'bottom' | 'scroll';
     isMe?: boolean;
 }
-export interface DanmakuOpts {
+export interface DanmakuOptions {
     items?: Item[];
-    area?: number;
+    on?: boolean;
+    blockTypes?: ('scroll' | 'top' | 'bottom' | 'color')[];
     opacity?: number;
+    area?: number;
+    speed?: number;
     fontSize?: number;
-    staticFrame?: number;
-    scrollFrame?: number;
-    blockTypes?: Item['type'][];
+    unlimited?: boolean;
+    bottomUp?: boolean;
+    merge?: boolean;
+    baseFontSize?: number;
+    staticFrames?: number;
+    colors?: string[];
+    type?: number;
+    color?: number;
+    sendPlaceholder?: string;
+    sendHide?: boolean;
+    maxLen?: number;
 }
-export default function processOpts(opts: DanmakuOpts): DanmakuOpts;
+export default function processOpts(opts: DanmakuOptions): DanmakuOptions;
 //# sourceMappingURL=options.d.ts.map

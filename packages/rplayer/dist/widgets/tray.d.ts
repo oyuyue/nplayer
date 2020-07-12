@@ -10,7 +10,7 @@ export default class Tray {
     private static readonly disableCls;
     readonly dom: HTMLElement;
     readonly tip: HTMLElement;
-    private readonly icons;
+    readonly icons: HTMLElement[];
     private index;
     private readonly onClick;
     constructor(opts?: TrayOptions);

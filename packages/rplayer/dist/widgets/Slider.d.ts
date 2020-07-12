@@ -39,6 +39,7 @@ export default class Slider {
     private dragEndHandler;
     private done;
     private updateDom;
+    updateRect(): void;
     update(v?: number): void;
     mount(el?: string | HTMLElement): void;
     destroy(): void;

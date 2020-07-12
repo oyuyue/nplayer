@@ -7,6 +7,7 @@ export default class Danmaku {
   static readonly typeMap: Item['type'][] = ['scroll', 'top', 'bottom'];
   readonly dom: HTMLElement;
   private DEFAULT_SETTING: DanmakuOptions;
+  private ui: UI;
   player: RPlayer;
   opts: DanmakuOptions;
 
@@ -14,6 +15,7 @@ export default class Danmaku {
   tunnel = 0;
   tunnelHeight = 0;
   private items: { [key: number]: Item[] } = {};
+  private sended: Item[] = [];
   private bullets: Bullet[] = [];
   private pool: Bullet[] = [];
   private scroll: Bullet[] = [];
@@ -42,9 +44,9 @@ export default class Danmaku {
     player.on(RPlayer.Events.SEEKED, this.onSeeked);
     player.on(RPlayer.Events.LOADED_METADATA, this.init);
 
-    new UI(this);
+    this.ui = new UI(this);
 
-    if (document.contains(player.dom)) {
+    if (document.body.contains(player.dom)) {
       this.init();
     }
   }
@@ -71,6 +73,7 @@ export default class Danmaku {
     this.updateDisplaySeconds();
     this.updateTunnelHeight();
     this.updateTunnel();
+    this.ui.updatePopoverUI();
 
     this.on();
   };
@@ -213,6 +216,8 @@ export default class Danmaku {
     this.scroll = [];
     this.top = [];
     this.bottom = [];
+    this.addItems(this.sended);
+    this.sended = [];
   }
 
   private restoreSetting(): void {
@@ -322,9 +327,10 @@ export default class Danmaku {
   }
 
   send(v: Item): void {
-    if (!v) return;
-    this.addItem(v);
+    if (!v || !v.text) return;
+    v.time = v.time || Math.round(this.player.currentTime | 0);
     this.insert(v, v.time, 0, true);
+    this.sended.push(v);
   }
 
   updateTunnelHeight(): void {
@@ -332,7 +338,7 @@ export default class Danmaku {
     div.innerText = '字';
     this.dom.appendChild(div);
     const h = div.scrollHeight;
-    if (h) this.tunnelHeight = div.offsetHeight + 1;
+    if (h) this.tunnelHeight = div.offsetHeight + 2;
     this.dom.removeChild(div);
   }
 
@@ -398,9 +404,9 @@ export default class Danmaku {
   }
 
   private isAllowedType(item: Item, types = this.opts.blockTypes): boolean {
-    if (types.includes(item.type)) return false;
-    if (types.includes('scroll') && !item.type) return false;
-    if (types.includes('color') && item.color) return false;
+    if (types.indexOf(item.type) > -1) return false;
+    if (types.indexOf('scroll') > -1 && !item.type) return false;
+    if (types.indexOf('color') > -1 && item.color) return false;
     return true;
   }
 

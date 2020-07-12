@@ -53,6 +53,7 @@ export default class Bullet {
       this.dom.addEventListener('transitionend', this.onTransitionEnd);
       this.width = this.dom.scrollWidth;
       this.dom.style.left = this.danmaku.width + 'px';
+      if (item.color) this.dom.style.color = item.color;
       this.length = this.danmaku.width + this.width;
       this.destination = this.length;
       let time = this.danmaku.displaySeconds;

@@ -12,6 +12,7 @@ export default class Popover {
     private readonly onHide;
     readonly dom: HTMLElement;
     constructor(opts?: PopoverOptions);
+    get isActive(): boolean;
     show(): void;
     hide: () => void;
     append(d: string | HTMLElement): void;
