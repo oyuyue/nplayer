@@ -335,13 +335,18 @@
         display: none;
       }
 
+      &:hover &_progress, &:focus &_progress {
+        width: 60px;
+      }
+
       &_progress {
         position: relative;
-        width: 60px;
+        width: 0;
         margin-left: 3px;
         margin-right: 6px;
         padding: 4px 0;
         cursor: pointer;
+        transition: width ease .2s;
 
         &:hover {
           .rplayer_tray_volume_dot::after {

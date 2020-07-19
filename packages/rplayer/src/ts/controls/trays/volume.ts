@@ -45,7 +45,7 @@ class Progress extends Component {
   };
 
   private dragHandler = (ev: PointerEvent): void => {
-    this.player.volume = (ev.pageX - this.rect.left) / this.rect.width;
+    this.player.volume = (ev.pageX - this.rect.left) / 60; // width
   };
 
   private dragEndHandler = (): void => {
@@ -55,7 +55,7 @@ class Progress extends Component {
   onVolumeChange(): void {
     const vol = this.player.volume;
     this.bar.setX(vol);
-    this.dot.setX(this.rect.width * vol);
+    this.dot.setX(60 * vol);
   }
 
   onMounted(): void {
@@ -81,6 +81,7 @@ export default class VolumeTray extends Component {
     });
     this.progress = new Progress(player);
 
+    this.canFocus();
     this.appendChild(this.tray.dom);
     this.appendChild(this.progress);
   }

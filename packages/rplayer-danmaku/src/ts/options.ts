@@ -65,7 +65,7 @@ export default function processOpts(opts: DanmakuOptions): DanmakuOptions {
   }
   opts.sendPlaceholder = U.isStr(opts.sendPlaceholder)
     ? opts.sendPlaceholder
-    : '发个弹幕';
+    : '发个弹幕吧';
   opts.color = U.clamp(opts.color || 0, 0, opts.colors.length - 1);
   opts.type = U.clamp(opts.type || 0, 0, 2);
   opts.hideSend = opts.hideSend || false;
