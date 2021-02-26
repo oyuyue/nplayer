@@ -1,5 +1,5 @@
 import { newElement, isStr } from './utils';
-import RPlayer from '.';
+import RPlayer from '..';
 
 export default class Toast {
   private static readonly activeCls = 'rplayer_toast-active';

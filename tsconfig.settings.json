@@ -1,18 +1,21 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "strict": true,
+    "target": "esnext",
+    "module": "esnext",
     "declaration": true,
     "declarationMap": true,
-    "module": "esnext",
     "noImplicitAny": true,
-    "target": "es5",
     "importHelpers": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "sourceMap": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext", "ScriptHost"],
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "emitDeclarationOnly": true
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules", "packages/*/node_modules", "packages/*/dist"]
+  "exclude": ["node_modules", "dist", "packages/*/node_modules", "packages/*/dist"]
 }

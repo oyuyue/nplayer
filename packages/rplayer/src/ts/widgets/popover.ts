@@ -1,5 +1,5 @@
 import { newElement, getDomOr, isStr } from '../utils';
-import RPlayer from '..';
+import RPlayer from '../..';
 import Events from '../events';
 
 export interface PopoverOptions {

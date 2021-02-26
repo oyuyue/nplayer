@@ -1,22 +1,44 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "env": {
-      "es6": true,
-      "browser": true,
-      "node": true
+      "es2020": true,
+      "browser": true
+  },
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["packages/player"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   },
   "rules": {
+    "max-len": ["error", { "code": 120, "ignoreStrings": true, "ignoreUrls": true }],
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-empty-function": 0
+    "@typescript-eslint/no-empty-function": 0,
+    "import/extensions": 0,
+    "import/prefer-default-export": 0,
+    "max-classes-per-file": 0,
+    "class-methods-use-this": 0,
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0,
+    "prefer-destructuring": 0,
+    "no-new": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "func-names": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "no-nested-ternary": 0,
+    "no-plusplus": 0,
+    "consistent-return": 0
   }
 }

@@ -6,7 +6,7 @@ import {
 } from '../../config/classname';
 import { isFn, newElement } from '../../utils';
 import SettingItem from './item';
-import RPlayer from '../..';
+import RPlayer from '../../..';
 import Events from '../../events';
 
 export interface SelectOption {
