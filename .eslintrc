@@ -39,6 +39,12 @@
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "no-nested-ternary": 0,
     "no-plusplus": 0,
-    "consistent-return": 0
+    "consistent-return": 0,
+    "no-sequences": 0,
+    "default-case": 0,
+    "prefer-rest-params": 0,
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
+    "no-bitwise": 0
   }
 }

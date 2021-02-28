@@ -1,4 +1,4 @@
-import { Component } from 'src/ts/component';
+import { Component } from 'src/ts/utils';
 
 export class Loading extends Component {
   constructor(container: HTMLElement) {

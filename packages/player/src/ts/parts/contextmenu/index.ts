@@ -1,7 +1,6 @@
-import { Component } from 'src/ts/component';
 import { Player } from 'src/ts/player';
 import {
-  $, addClass, show, hide, addDisposableListener, Rect,
+  $, addClass, show, hide, addDisposableListener, Rect, Component,
 } from 'src/ts/utils';
 
 export interface ContextMenuItem {
@@ -36,14 +35,14 @@ export class ContextMenu extends Component {
 
         const { width, height } = this.rect;
         const { x, y } = this.player.rect;
-        const { clientWidth, clientHeight } = document.body;
+        const { innerWidth, innerHeight } = window;
         const { pageX, pageY } = ev;
 
         let left = pageX - x;
         let top = pageY - y;
 
-        if (pageX + width > clientWidth) left = clientWidth - width;
-        if (pageY + height > clientHeight) top = clientHeight - height;
+        if (pageX + width > innerWidth) left = innerWidth - width;
+        if (pageY + height > innerHeight) top = innerHeight - height;
 
         this.applyStyle({ left: `${left}px`, top: `${top}px` });
       }

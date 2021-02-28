@@ -90,6 +90,12 @@
       z-index: 9;
     }
 
+    &_bar {
+      display: flex;
+      align-items: center;
+      font-size: 0;
+    }
+
     $p: &;
     &_tip_wrapper {
       position: relative;
@@ -135,6 +141,32 @@
       transform: translate(0,10px) scale(.8);
       transform-origin: 100% 100%;
     }
+
+    &_volume {
+      position: relative;
+
+      &_bars, &_bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+
+      &_bars {
+        left: 100%;
+        font-size: 0;
+        background: rgba(255, 255, 255, .3);
+        overflow: hidden;
+      }
+
+      &_bar {
+        left: 0;
+        right: 0;
+        background: #448AFF;
+        transform-origin: 0 0;
+        transform: scaleX(0);
+        will-change: transform;
+      }
+    }
   }
 
   &_contextmenu {
@@ -161,17 +193,31 @@
   }
 
   &_progress {
-    height: 50px;
-    background: rgba(0,0,0,0.5);
+    position: relative;
     cursor: pointer;
 
     &_bars {
-      height: 10px;
-      background: rgba(0,0,0,0.5);
+      position: relative;
+      height: 4px;
+      background: rgba(255, 255, 255, .3);
       touch-action: none;
+      transition: height .12s ease;
+
+      &:hover {
+        height: 16px;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 16px;
+      }
     }
 
-    &_played, &_buf, &_hover {
+    &_played, &_buf {
       position: absolute;
       left: 0;
       right: 0;
@@ -186,17 +232,30 @@
       will-change: transform;
     }
 
-    &_buf {
-      background: rgba(255, 255, 255, .5);
-    }
-
     &_hover {
       opacity: 0;
       background: rgba(255, 255, 255, .5);
     }
+  }
 
-    &:hover &_bars {
-      transform: scaleY(2);
+  &_thumb {
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+    font-size: 12px;
+    text-align: center; 
+    pointer-events: none;
+    text-shadow: 0 0 2px rgba(0,0,0,.3);
+
+    &_img {
+      border: 1px solid #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: rgba(255, 255, 255, .5);
+      background-repeat: no-repeat;
+    }
+
+    &_time {
+      margin-top: 5px;
     }
   }
 }

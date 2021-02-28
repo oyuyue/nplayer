@@ -1,5 +1,5 @@
-import { Component } from 'src/ts/component';
 import { Spacer } from 'src/ts/components/spacer';
+import { Component } from 'src/ts/utils';
 import { FullscreenControlItem } from './fullscreen';
 import { PlayControlItem } from './play';
 import { SettingControlItem } from './setting';

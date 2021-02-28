@@ -1,6 +1,5 @@
-import { Component } from 'src/ts/component';
 import { icons } from 'src/ts/icons';
-import { hide } from 'src/ts/utils';
+import { Component, hide } from 'src/ts/utils';
 import { ControlTip } from './helper';
 
 export class WebFullscreenControlItem extends Component {

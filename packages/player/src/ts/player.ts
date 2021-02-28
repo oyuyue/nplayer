@@ -2,13 +2,14 @@ import EventEmitter from 'eventemitter3';
 import { PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
-  $, addClass, getEl,
+  $, addClass, getEl, Rect,
 } from './utils';
 import { Control } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu } from './parts/contextmenu';
 import { Toast } from './parts/toast';
 import { Dialog } from './parts/dialog';
+import { Fullscreen } from './features/fullscreen';
 
 export class Player extends EventEmitter {
   private el: HTMLElement | null;
@@ -18,6 +19,10 @@ export class Player extends EventEmitter {
   readonly video: HTMLVideoElement;
 
   private opts: PlayerOptions;
+
+  readonly rect: Rect;
+
+  readonly fullscreen: Fullscreen;
 
   readonly control: Control;
 
@@ -40,11 +45,15 @@ export class Player extends EventEmitter {
     }
 
     this.element.appendChild(this.video);
+
+    this.rect = new Rect(this.element);
+    this.fullscreen = new Fullscreen(this);
+
     this.control = new Control(this.element);
     new Loading(this.element);
     this.contextmenu = new ContextMenu(this.element, this, [{ html: 'asdasd' }]);
-    this.toast = new Toast(this.element);
     this.dialog = new Dialog();
+    this.toast = new Toast(this.element);
   }
 
   mount(el?: PlayerOptions['el']): void {

@@ -6,6 +6,8 @@ export * from './rect';
 export * from './dom';
 export * from './is';
 export * from './env';
+export * from './emitter';
+export * from './component';
 
 export function clamp(n: number, lower = 0, upper = 1): number {
   return Math.max(Math.min(n, upper), lower);
@@ -41,4 +43,63 @@ export function addDisposableListener(
   const domListener = new DomListener(el, type, listener, options);
   if (key) addDisposable(key, domListener);
   return domListener;
+}
+
+export function applyMixins(derivedCtor: any, constructors: any[]) {
+  constructors.forEach((baseCtor) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
+      Object.defineProperty(
+        derivedCtor.prototype,
+        name,
+        Object.getOwnPropertyDescriptor(baseCtor.prototype, name)
+          || Object.create(null),
+      );
+    });
+  });
+}
+
+export function throttle(fn: Function, ctx?: any): any {
+  let pending = false;
+  let first = true;
+  let args: typeof arguments | null = null;
+  return function () {
+    args = arguments;
+    if (first) {
+      first = false;
+      return fn.apply(ctx, args);
+    }
+
+    if (pending) return;
+    pending = true;
+
+    requestAnimationFrame(() => {
+      pending = false;
+      fn.apply(ctx, args);
+    });
+  };
+}
+
+export function padStart(v: string | number, len = 2, str = '0'): string {
+  v = String(v);
+  if (v.length >= 2) return v;
+
+  for (let i = 0, l = len - v.length; i < l; i++) {
+    v = str + v;
+  }
+
+  return v;
+}
+
+export function formatTime(seconds: number): string {
+  if (!seconds || seconds < 0) return '0:00';
+
+  seconds = Math.round(seconds);
+  if (seconds < 60) return `0:${padStart(seconds)}`;
+  if (seconds < 3600) {
+    return `${Math.floor(seconds / 60)}:${padStart(seconds % 60)}`;
+  }
+
+  return `${Math.floor(seconds / 3600)}:${padStart(
+    Math.floor((seconds % 3600) / 60),
+  )}:${padStart(seconds % 60)}`;
 }

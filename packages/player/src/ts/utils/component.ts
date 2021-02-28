@@ -1,5 +1,7 @@
-import { Disposable } from './types';
-import { $, dispose, removeNode } from './utils';
+import { Disposable } from '../types';
+import {
+  $, applyMixins, dispose, removeNode, EventEmitter,
+} from '.';
 
 export class Component implements Disposable {
   element: HTMLElement;
@@ -25,3 +27,16 @@ export class Component implements Disposable {
     dispose(this);
   }
 }
+
+type IEventComponent = new (...args: ConstructorParameters<typeof Component>) => Component & EventEmitter;
+
+export const EventComponent = function () {} as unknown as IEventComponent;
+
+applyMixins(EventComponent, [Component, EventEmitter]);
+
+const protoDispose = EventComponent.prototype.dispose;
+
+EventComponent.prototype.dispose = function () {
+  protoDispose.call(this);
+  (this as any).removeAllListeners();
+};

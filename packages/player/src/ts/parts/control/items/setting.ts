@@ -1,5 +1,5 @@
-import { Component } from 'src/ts/component';
 import { icons } from 'src/ts/icons';
+import { Component } from 'src/ts/utils';
 import { ControlTip } from './helper';
 
 export class SettingControlItem extends Component {

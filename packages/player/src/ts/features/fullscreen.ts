@@ -1,53 +1,47 @@
-import EventEmitter from 'eventemitter3';
-import { isIOS } from '../utils';
+import { EVENT } from '../constants';
+import { Player } from '../player';
+import { Disposable } from '../types';
+import {
+  addClass, addDisposableListener, dispose, isFunction, isIOS, removeClass,
+} from '../utils';
 
-export class Fullscreen {
-  private target: HTMLElement;
+const CLASS_FULL = 'full';
+
+export class Fullscreen implements Disposable {
+  private target!: HTMLElement;
 
   private readonly prefix = this.getPrefix();
 
-  constructor(private emitter: EventEmitter) {
+  constructor(private player: Player) {
+    addDisposableListener(this, document, this.prefix === 'ms' ? 'MSFullscreenChange' : `${this.prefix}fullscreenchange` as any, () => {
+      let evt = '';
+      if (this.isActive) {
+        this.addClass();
+        evt = EVENT.ENTER_FULLSCREEN;
+      } else {
+        this.removeClass();
+        evt = EVENT.EXIT_FULLSCREEN;
+      }
+      this.player.emit(evt);
+    });
+
+    addDisposableListener(this, player.element, 'dblclick', (ev: MouseEvent) => {
+      ev.preventDefault();
+      this.toggle();
+    });
+
     this.setTarget();
-
-    (document as any).addEventListener(
-      this.prefix === 'ms'
-        ? 'MSFullscreenChange'
-        : `${this.prefix}fullscreenchange`,
-      this.changeHandler,
-    );
-
-    if (this.isActive) player.addClass(FULL);
-    player.on(Events.PLAYER_DBLCLICK, this.playerDblClickHandler);
-    player.on(Events.ENTER_FULLSCREEN, this.onEnterFullscreen);
-    player.on(Events.EXIT_FULLSCREEN, this.onExitFullscreen);
+    if (this.isActive) this.addClass();
   }
 
-  private playerDblClickHandler = (ev: Event): void => {
-    ev.preventDefault();
-    if (this.player.controls.dom.contains(ev.target as any)) return;
-    this.toggle();
-  };
-
-  private changeHandler = (): void => {
-    let evt = '';
-    if (this.isActive) {
-      this.player.addClass(FULL);
-      evt = Events.ENTER_FULLSCREEN;
-    } else {
-      this.player.removeClass(FULL);
-      evt = Events.EXIT_FULLSCREEN;
-    }
-    this.player.emit(evt);
-  };
-
   private getPrefix(): string {
-    if (isFn(document.exitFullscreen)) return '';
+    if (isFunction(document.exitFullscreen)) return '';
 
     let prefix = '';
     ['webkit', 'moz', 'ms'].forEach((p) => {
       if (
-        isFn((document as any)[`${p}ExitFullscreen`])
-        || isFn((document as any)[`${p}CancelFullScreen`])
+        isFunction((document as any)[`${p}ExitFullscreen`])
+        || isFunction((document as any)[`${p}CancelFullScreen`])
       ) {
         prefix = p;
       }
@@ -88,24 +82,21 @@ export class Fullscreen {
     return this.fullscreenElement === this.target;
   }
 
-  private onEnterFullscreen = (): void => {
-    this.tray.changeTip(this.player.t(EXIT_FULL_SCREEN));
-    this.tray.showIcon(1);
-  };
+  private addClass(): void {
+    addClass(this.player.element, CLASS_FULL);
+  }
 
-  private onExitFullscreen = (): void => {
-    this.tray.changeTip(this.player.t(FULL_SCREEN));
-    this.tray.showIcon(0);
-  };
+  private removeClass(): void {
+    removeClass(this.player.element, CLASS_FULL);
+  }
 
   setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void {
-    this.target = (dom && ua.isIos ? video : dom)
-      || (isIOS ? this.player.media : this.player.dom);
+    this.target = (dom && isIOS ? video : dom) || (isIOS ? this.player.video : this.player.element);
     if (this.isActive) this.enter();
   }
 
   enter(): void {
-    if (ua.isIos) {
+    if (isIOS) {
       (this.target as any).webkitEnterFullscreen();
     } else {
       this.requestFullscreen.call(this.target, { navigationUI: 'hide' });
@@ -113,7 +104,7 @@ export class Fullscreen {
   }
 
   exit(): void {
-    if (ua.isIos) {
+    if (isIOS) {
       (this.target as any).webkitExitFullscreen();
     } else {
       this.exitFullscreen.call(document);
@@ -126,5 +117,11 @@ export class Fullscreen {
     } else {
       this.enter();
     }
+  }
+
+  dispose(): void {
+    if (!this.player) return;
+    this.player = null!;
+    dispose(this);
   }
 }

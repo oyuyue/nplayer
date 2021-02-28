@@ -1,5 +1,4 @@
-import { Component } from 'src/ts/component';
-import { addClass } from 'src/ts/utils';
+import { addClass, Component } from 'src/ts/utils';
 
 export class ControlTip extends Component {
   constructor(container: HTMLElement, html?: string) {

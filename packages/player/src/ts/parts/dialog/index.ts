@@ -1,5 +1,5 @@
-import { Component } from 'src/ts/component';
 import { Disposable } from 'src/ts/types';
+import { Component } from 'src/ts/utils';
 
 export class DialogItem extends Component {}
 

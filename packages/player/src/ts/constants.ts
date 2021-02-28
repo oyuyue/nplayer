@@ -1,14 +1,15 @@
 export const CLASS_PREFIX = 'rplayer_';
 
-export const EVENT_PLAY = 'E_PLAY';
-export const EVENT_PAUSE = 'E_PAUSE';
+export const EVENT = {
+  ENTER_FULLSCREEN: 'ENTER_FULLSCREEN',
+  EXIT_FULLSCREEN: 'EXIT_FULLSCREEN',
+} as const;
 
 // BEFORE_MOUNT = 'BeforeMount',
 // MOUNTED = 'Mounted',
 // CONTROLS_SHOW = 'ControlsShow',
 // CONTROLS_HIDE = 'ControlsHide',
-// ENTER_FULLSCREEN = 'EnterFullscreen',
-// EXIT_FULLSCREEN = 'ExitFullscreen',
+
 // DURATION_CHANGE = 'DurationChange',
 // TIME_UPDATE = 'TimeUpdate',
 // VOLUME_CHANGE = 'VolumeChange',
