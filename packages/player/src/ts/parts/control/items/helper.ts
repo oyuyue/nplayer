@@ -1,4 +1,6 @@
-import { addClass, Component } from 'src/ts/utils';
+import {
+  addClass, Component, hide, show,
+} from 'src/ts/utils';
 
 export class ControlTip extends Component {
   constructor(container: HTMLElement, html?: string) {
@@ -13,5 +15,13 @@ export class ControlTip extends Component {
 
   set html(v: string) {
     this.element.innerHTML = v;
+  }
+
+  hide(): void {
+    hide(this.element);
+  }
+
+  show(): void {
+    show(this.element);
   }
 }

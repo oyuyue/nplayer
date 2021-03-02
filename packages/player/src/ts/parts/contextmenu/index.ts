@@ -3,22 +3,22 @@ import {
   $, addClass, show, hide, addDisposableListener, Rect, Component,
 } from 'src/ts/utils';
 
-export interface ContextMenuItem {
+export interface ContextmenuItem {
   html?: string;
   type?: 'normal' | 'separator';
   disabled?: boolean;
   invisible?: boolean;
   checked?: boolean;
-  click?: (item: ContextMenuItem, player: Player) => void;
+  click?: (item: ContextmenuItem, player: Player) => void;
 }
 
-export class ContextMenu extends Component {
+export class Contextmenu extends Component {
   private rect: Rect;
 
   constructor(
     container: HTMLElement,
     private player: Player,
-    private readonly items: ContextMenuItem[],
+    private readonly items: ContextmenuItem[],
   ) {
     super(container, '.contextmenu');
     hide(this.element);
@@ -54,8 +54,7 @@ export class ContextMenu extends Component {
   }
 
   private getDomNodes(): HTMLElement[] {
-    return this.items.map((item) => {
-      if (item.invisible) return null;
+    return this.items.filter((x) => x && !x.invisible).map((item) => {
       const el = $('.contextmenu_item');
       if (item.type === 'separator') {
         addClass(el, '.contextmenu_item-separator');
@@ -68,7 +67,7 @@ export class ContextMenu extends Component {
         el.addEventListener('click', () => (item as any).click(item, this.player), false);
       }
       return el;
-    }).filter(Boolean) as HTMLElement[];
+    });
   }
 
   private renderItems(): boolean {

@@ -6,7 +6,7 @@ import {
 } from './utils';
 import { Control } from './parts/control';
 import { Loading } from './parts/loading';
-import { ContextMenu } from './parts/contextmenu';
+import { Contextmenu } from './parts/contextmenu';
 import { Toast } from './parts/toast';
 import { Dialog } from './parts/dialog';
 import { Fullscreen } from './features/fullscreen';
@@ -26,7 +26,7 @@ export class Player extends EventEmitter {
 
   readonly control: Control;
 
-  readonly contextmenu: ContextMenu;
+  readonly contextmenu: Contextmenu;
 
   readonly toast: Toast;
 
@@ -51,7 +51,7 @@ export class Player extends EventEmitter {
 
     this.control = new Control(this.element);
     new Loading(this.element);
-    this.contextmenu = new ContextMenu(this.element, this, [{ html: 'asdasd' }]);
+    this.contextmenu = new Contextmenu(this.element, this, [{ html: 'asdasd' }]);
     this.dialog = new Dialog();
     this.toast = new Toast(this.element);
   }

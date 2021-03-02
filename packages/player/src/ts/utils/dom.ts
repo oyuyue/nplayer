@@ -91,6 +91,18 @@ export function removeClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX
   dom.classList.remove(prefix + cls);
 }
 
+export function containClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX): boolean {
+  return dom.classList.contains(prefix + cls);
+}
+
+export function toggleClass(dom: HTMLElement, cls: string, force?: boolean, prefix = CLASS_PREFIX): boolean {
+  return dom.classList.toggle(prefix + cls, force);
+}
+
+export function getEventPath(ev: Event): EventTarget[] {
+  return (ev as any).path || ev.composedPath();
+}
+
 let thirdOptsSupported = false;
 
 try {
