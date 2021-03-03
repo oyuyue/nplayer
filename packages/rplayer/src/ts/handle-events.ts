@@ -7,7 +7,7 @@ function trans(
   player: RPlayer,
   dom: HTMLElement | Window,
   from: string,
-  to: string
+  to: string,
 ): void {
   dom.addEventListener(from, (ev: MouseEvent) => player.emit(to, ev));
 }
@@ -16,7 +16,7 @@ function transThrottle(
   player: RPlayer,
   dom: HTMLElement | Window,
   from: string,
-  to: string
+  to: string,
 ): void {
   let pending = false;
   dom.addEventListener(from, (ev: MouseEvent) => {
@@ -31,7 +31,7 @@ function transThrottle(
 
 export default function handler(
   player: RPlayer,
-  video: HTMLVideoElement
+  video: HTMLVideoElement,
 ): void {
   // media
   trans(player, video, 'durationchange', Events.DURATION_CHANGE);
@@ -72,10 +72,10 @@ export default function handler(
 
   document.addEventListener('click', (ev: MouseEvent) => {
     if (
-      ev.target === player.dom ||
-      (ev.target &&
-        isFn((ev.target as any).contains) &&
-        (ev.target as any).contains(player.dom))
+      ev.target === player.dom
+      || (ev.target
+        && isFn((ev.target as any).contains)
+        && (ev.target as any).contains(player.dom))
     ) {
       player.emit(Events.CLICK_OUTSIDE);
     }

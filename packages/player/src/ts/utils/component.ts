@@ -7,13 +7,14 @@ export class Component implements Disposable {
   element: HTMLElement;
 
   constructor(
-    container: HTMLElement,
+    container?: HTMLElement,
     desc?: string,
     attrs?: { [key: string]: any; },
     children?: string | Array<Node>,
     classPrefix?: string,
   ) {
-    this.element = container.appendChild($(desc, attrs, children, classPrefix));
+    this.element = $(desc, attrs, children, classPrefix);
+    if (container) container.appendChild(this.element);
   }
 
   applyStyle(style: Partial<CSSStyleDeclaration>): void {
@@ -30,7 +31,10 @@ export class Component implements Disposable {
 
 type IEventComponent = new (...args: ConstructorParameters<typeof Component>) => Component & EventEmitter;
 
-export const EventComponent = function () {} as unknown as IEventComponent;
+export const EventComponent = function (this: any) {
+  new Component();
+  new EventEmitter();
+} as unknown as IEventComponent;
 
 applyMixins(EventComponent, [Component, EventEmitter]);
 

@@ -66,10 +66,13 @@ export class SettingControlItem extends Component {
     this.items.forEach((item) => {
       const el = (!item._switch && !item._selectedElement && !item._optionElement) ? $('.control_setting_item') : null;
 
-      if (el) el.appendChild($(undefined, undefined, item.html));
+      if (el) {
+        el.appendChild($(undefined, undefined, item.html));
+        if (item.type !== 'switch') el.appendChild($('.spacer'));
+      }
 
       if (item.type === 'switch') {
-        if (!item._switch) item._switch = new Switch(el!);
+        if (!item._switch) item._switch = new Switch(el!, item.checked);
       } else {
         if (!item.options || !item.options.length) return;
         if (!item._selectedElement) {
@@ -127,7 +130,8 @@ export class SettingControlItem extends Component {
 
   private onItemClick = (item: SettingItem) => () => {
     if (item.type === 'switch') {
-      item._switch!.toggle(!item.checked);
+      item.checked = !item.checked;
+      item._switch!.toggle(item.checked);
     } else {
       this.renderOptions();
       this.homeElement.style.display = 'none';
@@ -158,6 +162,7 @@ export class SettingControlItem extends Component {
     this.mask.show();
     this.tip.hide();
     this.renderHome();
+    this.homeElement.style.display = '';
     addClass(this.element, classActive);
   }
 

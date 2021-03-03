@@ -4,6 +4,14 @@
   color: #fff;
   background: orangered;
 
+  &-web-full {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
+
   &_icon {
     width: 24px;
     height: 24px;
@@ -193,7 +201,16 @@
         left: 100%;
         font-size: 0;
         background: rgba(255, 255, 255, .3);
+        opacity: 0;
+        pointer-events: none;
         overflow: hidden;
+        transition: opacity .2s ease;
+      }
+
+      &:hover &_bars {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
       }
 
       &_bar {
@@ -246,11 +263,18 @@
       &_item, &_option {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 5px 8px;
 
         &:hover {
           background: rgba(255, 255, 255, .2);
+        }
+      }
+
+      &_item {
+        justify-content: space-between;
+
+        & > :first-child {
+          margin-right: 20px;
         }
 
         &-select {
@@ -267,6 +291,7 @@
       }
 
       &_option {
+        
         &::before {
           content: '';
           display: block;
@@ -290,6 +315,7 @@
 
       &_back {
         justify-content: flex-start;
+        padding-right: 20px;
         border-bottom: 1px solid rgba(255, 255, 255, .2);
 
         &::before {
