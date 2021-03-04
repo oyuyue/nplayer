@@ -17,7 +17,7 @@ export class VolumeControlItem extends Component {
 
   private readonly rect: Rect;
 
-  constructor(container: HTMLElement, player: Player, barWidth = 100) {
+  constructor(container: HTMLElement, private player: Player, barWidth = 100) {
     super(container, '.control_volume');
     this.tip = new ControlTip(this.element);
     this.volumeIcon = this.element.appendChild(icons.volume());
@@ -30,18 +30,9 @@ export class VolumeControlItem extends Component {
 
     this.rect = new Rect(this.bar);
 
-    const onVolumeChange = () => {
-      if (player.muted) {
-        this.mute();
-      } else {
-        this.unmute();
-      }
-      this.bar.style.transform = `scaleX(${player.volume})`;
-    };
+    this.onVolumeChange();
 
-    onVolumeChange();
-
-    addDisposable(this, player.on(EVENT.VOLUME_CHANGE, onVolumeChange));
+    addDisposable(this, player.on(EVENT.VOLUME_CHANGE, this.onVolumeChange));
     addDisposable(this, new Drag(bars, this.onDragStart, this.onDragging));
     addDisposableListener(this, this.element, 'click', (ev:MouseEvent) => {
       if (getEventPath(ev).includes(bars)) return;
@@ -55,8 +46,18 @@ export class VolumeControlItem extends Component {
 
   private onDragging = (ev: PointerEvent) => {
     const x = ev.pageX - this.rect.x;
-    this.bar.style.transform = `scaleX(${clamp(x / this.rect.width)})`;
+    const v = clamp(x / this.rect.width);
+    this.player.volume = v;
   }
+
+  private onVolumeChange = () => {
+    if (this.player.muted) {
+      this.mute();
+    } else {
+      this.unmute();
+    }
+    this.bar.style.transform = `scaleX(${this.player.volume})`;
+  };
 
   mute(): void {
     show(this.mutedIcon);

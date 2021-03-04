@@ -12,6 +12,10 @@
     top: 0;
   }
 
+  &-loading &_loading {
+    display: block;
+  }
+
   &_icon {
     width: 24px;
     height: 24px;
@@ -66,6 +70,7 @@
   }
 
   &_loading {
+    display: none;
     z-index: 15;
     pointer-events: none;
 
@@ -123,6 +128,12 @@
     bottom: 0;
     z-index: 10;
     user-select: none;
+    transition: opacity .2s ease;
+
+    &-hide {
+      opacity: 0;
+      pointer-events: none;
+    }
 
     &_bg {
       position: absolute;
@@ -134,6 +145,11 @@
       background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.5));
       pointer-events: none;
       z-index: 9;
+      transition: opacity .2s ease;
+
+      &-hide {
+        opacity: 0;
+      }
     }
 
     &_bar {
@@ -188,8 +204,27 @@
       transform-origin: 100% 100%;
     }
 
+    &_time {
+      font-size: 13px;
+      margin-left: 8px;
+      margin-right: auto;
+      margin-top: -1px;
+      text-shadow: 0 0 2px rgba(0,0,0,.3);
+      white-space: nowrap;
+      letter-spacing: 1px;
+
+      :first-child::after {
+        content: '/';
+        display: inline-block;
+        font-size: 12px;
+        margin: 0 5px;
+        transform: translateY(-0.5px);
+      }
+    }
+
     &_volume {
       position: relative;
+      z-index: 1;
 
       &_bars, &_bar {
         position: absolute;
@@ -400,6 +435,10 @@
     }
   }
 
+  &_progress:hover &_thumb {
+    opacity: 1;
+  }
+
   &_thumb {
     position: absolute;
     left: 0;
@@ -408,6 +447,8 @@
     text-align: center; 
     pointer-events: none;
     text-shadow: 0 0 2px rgba(0,0,0,.3);
+    opacity: 0;
+    transition: opacity .2s ease;
 
     &_img {
       border: 1px solid #fff;

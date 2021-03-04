@@ -27,8 +27,6 @@ export class Thumbnail extends Component {
 
   private thumbImgPrePic?: number;
 
-  private halfImgWidth?: number;
-
   private ssGapRatio?: number;
 
   private rect: Rect;
@@ -51,7 +49,6 @@ export class Thumbnail extends Component {
       this.imgElement.style.width = `${this.opts.width}px`;
       this.imgElement.style.height = `${this.opts.height}px`;
       this.thumbImgPrePic = this.opts.col * this.opts.row;
-      this.halfImgWidth = this.opts.width / 2;
       this.ssGapRatio = this.opts.startSecond / this.opts.gapSecond;
     }
 

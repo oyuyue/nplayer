@@ -11,6 +11,7 @@ import { Dialog } from './parts/dialog';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import { transferVideoEvent } from './helper';
+import { EVENT } from './constants';
 
 export class Player extends EventEmitter {
   private el: HTMLElement | null;
@@ -60,10 +61,28 @@ export class Player extends EventEmitter {
     this.webFullscreen = new WebFullscreen(this);
 
     this.control = new Control(this.element, this);
-    new Loading(this.element);
+    new Loading(this.element, this);
     this.contextmenu = new Contextmenu(this.element, this, [{ html: 'asdasd' }]);
     this.dialog = new Dialog();
     this.toast = new Toast(this.element);
+  }
+
+  get currentTime(): number {
+    return this.video.currentTime;
+  }
+
+  set currentTime(v: number) {
+    if (!this.duration) return;
+    this.video.currentTime = clamp(v, 0, this.duration);
+    this.emit(EVENT.TIME_UPDATE);
+  }
+
+  get duration(): number {
+    return this.video.duration || 0;
+  }
+
+  get buffered(): TimeRanges {
+    return this.video.buffered;
   }
 
   get volume(): number {
@@ -109,6 +128,10 @@ export class Player extends EventEmitter {
     this.video.pause();
   }
 
+  seek(seconds: number): void {
+    this.video.currentTime = clamp(seconds, 0, this.duration);
+  }
+
   toggle = () => {
     if (this.paused) {
       this.play();
@@ -124,6 +147,14 @@ export class Player extends EventEmitter {
     } else {
       this.prevVolume = this.volume;
       this.volume = 0;
+    }
+  }
+
+  eachBuffer(fn: (start: number, end: number) => boolean | void): void {
+    for (let l = this.buffered.length, i = l - 1; i >= 0; i--) {
+      if (fn(this.buffered.start(i), this.buffered.end(i))) {
+        break;
+      }
     }
   }
 }
