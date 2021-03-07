@@ -1,13 +1,19 @@
 import { EVENT } from 'src/ts/constants';
 import { Player } from 'src/ts/player';
+import { Disposable } from 'src/ts/types';
 import {
   $, addClass, addDisposable, addDisposableListener, Component, containClass, removeClass,
 } from '../../utils';
 import { ControlBar } from './items';
+import { ControlTip } from './items/helper';
 import { Progress } from './progress';
 
 const classHide = 'control-hide';
 const classBgHide = 'control_bg-hide';
+
+export type ControlItem = (new(container: HTMLElement, player: Player) =>
+  Partial<Disposable> & { tip?: ControlTip }) & { id?:string; }
+
 export class Control extends Component {
   private readonly bgElement: HTMLElement;
 
@@ -18,6 +24,7 @@ export class Control extends Component {
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
+
     new Progress(this.element, player);
     new ControlBar(this.element, player);
 

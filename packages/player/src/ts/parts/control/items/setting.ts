@@ -1,26 +1,29 @@
 import { Mask } from 'src/ts/components/mask';
 import { Switch } from 'src/ts/components/switch';
-import { icons } from 'src/ts/icons';
+import { EVENT } from 'src/ts/constants';
+import { I18n, SETTINGS } from 'src/ts/features/i18n';
+import { Icon } from 'src/ts/features/icons';
 import { Player } from 'src/ts/player';
 import {
-  $, addClass, addDisposableListener, Component, getEventPath, removeClass,
+  $, addClass, addDisposable, addDisposableListener, Component, getEventPath, measureElementSize, removeClass,
 } from 'src/ts/utils';
 import { ControlTip } from './helper';
 
-export interface SettingItemOption {
+export interface SettingItemOption<T = any> {
   html?: string;
   selectedHtml?: string;
-  value?: any;
+  value?: T;
 }
 
-export interface SettingItem {
+export interface SettingItem<T = any> {
+  id?: string;
   html?: string;
   type?: 'switch' | 'select';
   checked?: boolean;
-  options?: SettingItemOption[];
-  value?: any;
+  options?: SettingItemOption<T>[];
+  value?: T;
   init?: (player: Player, item: SettingItem) => void;
-  change?: (option: SettingItemOption, item: SettingItem) => void;
+  change?: (value: T, player: Player, item: SettingItem) => void;
   _switch?: Switch;
   _selectedElement?: HTMLElement;
   _optionElements?: HTMLElement[];
@@ -42,24 +45,38 @@ const classActive = 'control_setting-active';
 const classOptionActive = 'control_setting_option-active';
 
 export class SettingControlItem extends Component {
-  private readonly tip: ControlTip;
+  static readonly id = 'settings';
+
+  readonly tip: ControlTip;
 
   private readonly mask: Mask;
+
+  private readonly items: SettingItem[];
 
   private readonly panelElement: HTMLElement;
 
   private readonly homeElement!: HTMLElement;
 
-  constructor(container: HTMLElement, private readonly items: SettingItem[] = []) {
+  private currentOptionElement!: HTMLElement;
+
+  constructor(container: HTMLElement, private player: Player) {
     super(container, '.control_setting');
-    this.tip = new ControlTip(this.element, '设置');
-    this.element.appendChild(icons.cog());
+    this.items = player.settingItems;
+    this.tip = new ControlTip(this.element, I18n.t(SETTINGS));
+    this.element.appendChild(Icon.cog());
     this.mask = new Mask(this.element, this.hide, { zIndex: '1', position: 'fixed' });
     this.panelElement = this.element.appendChild($('.control_setting_panel'));
     this.panelElement.style.zIndex = '2';
     this.homeElement = this.panelElement.appendChild($());
 
     addDisposableListener(this, this.element, 'click', this.show);
+    addDisposable(this, player.on(EVENT.MOUNTED, () => {
+      const panelRect = this.panelElement.getBoundingClientRect();
+      this.panelElement.style.width = `${panelRect.width}px`;
+      this.panelElement.style.height = `${panelRect.height}px`;
+    }));
+
+    this.renderHome();
   }
 
   private renderHome(): void {
@@ -104,7 +121,7 @@ export class SettingControlItem extends Component {
         item._optionElement = this.panelElement.appendChild($());
         const back = item._optionElement.appendChild($('.control_setting_item.control_setting_back'));
         back.innerHTML = item.html || '';
-        back.addEventListener('click', this.back);
+        back.addEventListener('click', this.back(item));
       }
 
       if (!item._optionElements && item.options) {
@@ -134,27 +151,43 @@ export class SettingControlItem extends Component {
       item._switch!.toggle(item.checked);
     } else {
       this.renderOptions();
-      this.homeElement.style.display = 'none';
-      if (item._optionElement) item._optionElement.style.display = '';
+      this.showOptionPage(item._optionElement as HTMLElement);
     }
   }
 
   private onOptionClick = (item: SettingItem, option: SettingItemOption) => () => {
     if (item.value !== option.value) {
       item.value = option.value;
-      if (item.change) item.change(option.value, item);
+      if (item.change) item.change(option.value, this.player, item);
     }
     this.renderHome();
-    this.back();
+    this.showHomePage(item._optionElement as HTMLElement);
   }
 
-  private back = () => {
+  private back = (item: SettingItem) => () => {
+    this.showHomePage(item._optionElement as HTMLElement);
+  }
+
+  private showOptionPage(opt: HTMLElement): void {
+    this.homeElement.style.display = 'none';
+    opt.style.display = '';
+
+    const { width, height } = measureElementSize(opt);
+
+    this.panelElement.style.width = `${width}px`;
+    this.panelElement.style.height = `${height}px`;
+
+    this.currentOptionElement = opt;
+  }
+
+  private showHomePage(opt: HTMLElement): void {
+    opt.style.display = 'none';
     this.homeElement.style.display = '';
-    this.items.forEach((item) => {
-      if (item._optionElement) {
-        item._optionElement.style.display = 'none';
-      }
-    });
+
+    const { width, height } = measureElementSize(this.homeElement);
+
+    this.panelElement.style.width = `${width}px`;
+    this.panelElement.style.height = `${height}px`;
   }
 
   show = (ev?: MouseEvent) => {
@@ -168,8 +201,13 @@ export class SettingControlItem extends Component {
 
   hide = (ev?: MouseEvent) => {
     if (ev) ev.stopPropagation();
+
     this.mask.hide();
     this.tip.show();
     removeClass(this.element, classActive);
+
+    if (this.currentOptionElement) {
+      setTimeout(() => this.showHomePage(this.currentOptionElement), 200);
+    }
   }
 }

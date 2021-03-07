@@ -1,21 +1,5 @@
-import { CLASS_PREFIX } from './constants';
-import { strToDom, addClass } from './utils';
-
-function svgTemplate(d: string): string {
-  return `<svg viewBox="0 0 24 24" class="${CLASS_PREFIX}icon" xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`;
-}
-
-function svgToDom(str: string, cls?: string): HTMLElement {
-  const dom = strToDom(svgTemplate(str));
-  if (cls) addClass(dom, cls);
-  return dom;
-}
-
-function createIcon(icon: string) {
-  return function (cls?: string) {
-    return svgToDom(icon, cls);
-  };
-}
+import { CLASS_PREFIX } from '../constants';
+import { strToDom, addClass } from '../utils';
 
 const play = 'M8,5.14V19.14L19,12.14L8,5.14Z';
 const pause = 'M14,19H18V5H14M6,19H10V5H6V19Z';
@@ -27,14 +11,42 @@ const webExitFullscreen = 'M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,
 const enterFullscreen = 'M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z';
 const exitFullscreen = 'M14,14H19V16H16V19H14V14M5,14H10V19H8V16H5V14M8,5H10V10H5V8H8V5M19,8V10H14V5H16V8H19Z';
 
-export const icons = {
-  play: createIcon(play),
-  pause: createIcon(pause),
-  volume: createIcon(volume),
-  muted: createIcon(muted),
-  cog: createIcon(cog),
-  webEnterFullscreen: createIcon(webEnterFullscreen),
-  webExitFullscreen: createIcon(webExitFullscreen),
-  enterFullscreen: createIcon(enterFullscreen),
-  exitFullscreen: createIcon(exitFullscreen),
-} as const;
+function svgTemplate(d: string): string {
+  return `<svg viewBox="0 0 24 24" class="${CLASS_PREFIX}icon" xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`;
+}
+
+function createIcon(icon: string) {
+  return strToDom(svgTemplate(icon));
+}
+
+const Icon: {
+  // eslint-disable-next-line no-use-before-define
+  register: typeof registerIcon;
+  // eslint-disable-next-line no-use-before-define
+  unregister: typeof unregisterIcon;
+} & {
+  [key: string]: (cls?: string, prefix?: string) => HTMLElement;
+} = Object.create(null);
+
+function registerIcon(iconName: string, icon: HTMLElement, prefix = ''): void {
+  Icon[iconName] = (cls?: string, clsPrefix = prefix) => addClass(icon, cls, clsPrefix);
+}
+
+function unregisterIcon(iconName: string): boolean {
+  return delete Icon[iconName];
+}
+
+Object.defineProperty(Icon, 'register', { value: registerIcon });
+Object.defineProperty(Icon, 'unregister', { value: unregisterIcon });
+
+registerIcon('play', createIcon(play));
+registerIcon('pause', createIcon(pause));
+registerIcon('volume', createIcon(volume));
+registerIcon('muted', createIcon(muted));
+registerIcon('cog', createIcon(cog));
+registerIcon('webEnterFullscreen', createIcon(webEnterFullscreen));
+registerIcon('webExitFullscreen', createIcon(webExitFullscreen));
+registerIcon('enterFullscreen', createIcon(enterFullscreen));
+registerIcon('exitFullscreen', createIcon(exitFullscreen));
+
+export { Icon };

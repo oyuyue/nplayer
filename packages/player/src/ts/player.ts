@@ -1,28 +1,48 @@
-import { PlayerOptions } from './types';
+import { Disposable, PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
-  $, addClass, getEl, Rect, EventEmitter, clamp,
+  $, addClass, getEl, Rect, EventEmitter, clamp, isString,
 } from './utils';
-import { Control } from './parts/control';
+import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
-import { Contextmenu } from './parts/contextmenu';
+import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
 import { Dialog } from './parts/dialog';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import { transferVideoEvent } from './helper';
 import { EVENT } from './constants';
+import { Shortcut } from './features/shortcut';
+import { SettingControlItem, SettingItem } from './parts/control/items/setting';
+import { speedSettingItem } from './setting-items/speed';
+import { PlayControlItem } from './parts/control/items/play';
+import { VolumeControlItem } from './parts/control/items/volume';
+import { TimeControlItem } from './parts/control/items/time';
+import { SpacerControlItem } from './parts/control/items/spacer';
+import { WebFullscreenControlItem } from './parts/control/items/web-fullscreen';
+import { FullscreenControlItem } from './parts/control/items/fullscreen';
+import { loopContextMenuItem } from './contextmenu-items/loop';
+import { PipContextMenuItem } from './contextmenu-items/pip';
+import { versionContextMenuItem } from './contextmenu-items/version';
 
-export class Player extends EventEmitter {
+export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
 
   private prevVolume = 1;
+
+  readonly settingNamedMap: Record<string, SettingItem> = Object.create(null);
+
+  readonly contextmenuNamedMap: Record<string, ContextMenuItem> = Object.create(null);
+
+  readonly controlNamedMap: Record<string, ControlItem> = Object.create(null);
+
+  readonly settingItems: SettingItem[];
 
   readonly element: HTMLElement;
 
   readonly video: HTMLVideoElement;
 
-  private opts: PlayerOptions;
+  readonly opts: Required<PlayerOptions>;
 
   readonly rect: Rect;
 
@@ -30,9 +50,11 @@ export class Player extends EventEmitter {
 
   readonly webFullscreen: WebFullscreen;
 
+  readonly shortcut: Shortcut;
+
   readonly control: Control;
 
-  readonly contextmenu: Contextmenu;
+  readonly contextmenu: ContextMenu;
 
   readonly toast: Toast;
 
@@ -47,24 +69,41 @@ export class Player extends EventEmitter {
       this.video = this.opts.video;
       addClass(this.video, 'video');
     } else {
-      this.video = $('video.video', { src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' });
+      this.video = $('video.video');
     }
+
+    this.setVideoOptions(this.opts.videoOptions);
+
+    this.registerNamedMap();
+
     this.element.appendChild(this.video);
-
-    this.prevVolume = this.video.volume;
-    this.volume = this.prevVolume;
-
+    this.setVideoVolumeFromLocal();
     transferVideoEvent(this);
 
     this.rect = new Rect(this.element);
     this.fullscreen = new Fullscreen(this);
     this.webFullscreen = new WebFullscreen(this);
+    this.shortcut = new Shortcut(this, this.opts.shortcut);
 
-    this.control = new Control(this.element, this);
     new Loading(this.element, this);
-    this.contextmenu = new Contextmenu(this.element, this, [{ html: 'asdasd' }]);
     this.dialog = new Dialog();
     this.toast = new Toast(this.element);
+
+    if (this.opts.plugins) {
+      this.opts.plugins.forEach((plugin) => plugin.apply(this));
+    }
+
+    this.contextmenu = new ContextMenu(this.element, this, this.opts.contextMenus.map((item) => {
+      if (isString(item)) return this.contextmenuNamedMap[item];
+      return item;
+    }).filter(Boolean));
+
+    this.settingItems = this.opts.settings.map((item) => {
+      if (isString(item)) return this.settingNamedMap[item];
+      return item;
+    }).filter(Boolean);
+
+    this.control = new Control(this.element, this);
   }
 
   get currentTime(): number {
@@ -92,6 +131,7 @@ export class Player extends EventEmitter {
   set volume(v: number) {
     this.video.volume = clamp(v);
     if (this.muted && v > 0) this.muted = false;
+    localStorage.setItem('rplayer:volume', String(this.video.volume));
   }
 
   get muted(): boolean {
@@ -100,6 +140,14 @@ export class Player extends EventEmitter {
 
   set muted(v: boolean) {
     this.video.muted = v;
+  }
+
+  get playbackRate(): number {
+    return this.video.playbackRate;
+  }
+
+  set playbackRate(v: number) {
+    this.video.playbackRate = v;
   }
 
   get ended(): boolean {
@@ -114,10 +162,66 @@ export class Player extends EventEmitter {
     return !this.paused && !this.ended;
   }
 
+  get loop(): boolean {
+    return this.video.loop;
+  }
+
+  set loop(v: boolean) {
+    this.video.loop = v;
+  }
+
+  private setVideoVolumeFromLocal(): void {
+    const volume = parseFloat(localStorage.getItem('rplayer:volume') as string);
+
+    // eslint-disable-next-line no-restricted-globals
+    if (!isNaN(volume)) {
+      this.video.volume = volume;
+    }
+  }
+
+  private setVideoOptions(options?: Record<string, any>): void {
+    if (!options) return;
+    Object.keys(options).forEach((k) => {
+      (this.video as any)[k] = options[k];
+    });
+  }
+
+  private registerNamedMap(): void {
+    this.registerContextMenuItem(loopContextMenuItem);
+    this.registerContextMenuItem(PipContextMenuItem);
+    this.registerContextMenuItem(versionContextMenuItem);
+    this.registerSettingItem(speedSettingItem);
+    this.registerControlItem(PlayControlItem);
+    this.registerControlItem(VolumeControlItem);
+    this.registerControlItem(TimeControlItem);
+    this.registerControlItem(SpacerControlItem);
+    this.registerControlItem(SettingControlItem);
+    this.registerControlItem(WebFullscreenControlItem);
+    this.registerControlItem(FullscreenControlItem);
+  }
+
   mount(el?: PlayerOptions['el']): void {
     if (el) this.el = getEl(el) || this.el;
     if (!this.el) throw new Error('require `el` option');
     this.el.appendChild(this.element);
+
+    this.emit(EVENT.MOUNTED);
+  }
+
+  incVolume(v = this.opts.volumeStep): void {
+    this.volume += v;
+  }
+
+  decVolume(v = this.opts.volumeStep): void {
+    this.volume -= v;
+  }
+
+  forward(v = this.opts.seekStep): void {
+    this.currentTime += v;
+  }
+
+  rewind(v = this.opts.seekStep): void {
+    this.currentTime -= v;
   }
 
   play(): Promise<void> {
@@ -157,4 +261,18 @@ export class Player extends EventEmitter {
       }
     }
   }
+
+  registerSettingItem(item: SettingItem, id?: string): void {
+    this.settingNamedMap[id || item.id!] = item;
+  }
+
+  registerContextMenuItem(item: ContextMenuItem, id?: string): void {
+    this.contextmenuNamedMap[id || item.id!] = item;
+  }
+
+  registerControlItem(item: ControlItem, id?: string): void {
+    this.controlNamedMap[id || item.id!] = item;
+  }
+
+  dispose(): void {}
 }

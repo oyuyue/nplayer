@@ -1,5 +1,6 @@
 import { EVENT } from 'src/ts/constants';
-import { icons } from 'src/ts/icons';
+import { EXIT_FULL_SCREEN, FULL_SCREEN, I18n } from 'src/ts/features/i18n';
+import { Icon } from 'src/ts/features/icons';
 import { Player } from 'src/ts/player';
 import {
   hide, Component, addDisposableListener, addDisposable, show,
@@ -7,17 +8,19 @@ import {
 import { ControlTip } from './helper';
 
 export class FullscreenControlItem extends Component {
+  static readonly id = 'fullscreen';
+
   private readonly exitIcon: HTMLElement;
 
   private readonly enterIcon: HTMLElement;
 
-  private readonly tip: ControlTip;
+  readonly tip: ControlTip;
 
   constructor(container: HTMLElement, player: Player) {
     super(container);
     this.tip = new ControlTip(this.element);
-    this.exitIcon = this.element.appendChild(icons.exitFullscreen());
-    this.enterIcon = this.element.appendChild(icons.enterFullscreen());
+    this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
+    this.enterIcon = this.element.appendChild(Icon.enterFullscreen());
 
     if (player.fullscreen.isActive) {
       this.enter();
@@ -33,12 +36,12 @@ export class FullscreenControlItem extends Component {
   private enter = (): void => {
     show(this.exitIcon);
     hide(this.enterIcon);
-    this.tip.html = '退出全屏';
+    this.tip.html = I18n.t(EXIT_FULL_SCREEN);
   }
 
   private exit = (): void => {
     hide(this.exitIcon);
     show(this.enterIcon);
-    this.tip.html = '全屏';
+    this.tip.html = I18n.t(FULL_SCREEN);
   }
 }

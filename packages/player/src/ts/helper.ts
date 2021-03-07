@@ -37,6 +37,8 @@ export function transferVideoEvent(player: Player): void {
   trans(player, 'loadedmetadata', EVENT.LOADED_METADATA);
   trans(player, 'error', EVENT.ERROR);
   trans(player, 'seeked', EVENT.SEEKED);
+  trans(player, 'enterpictureinpicture', EVENT.ENTER_PIP);
+  trans(player, 'leavepictureinpicture', EVENT.EXIT_PIP);
 
   transThrottle(player, 'timeupdate', EVENT.TIME_UPDATE);
   transThrottle(player, 'volumechange', EVENT.VOLUME_CHANGE);

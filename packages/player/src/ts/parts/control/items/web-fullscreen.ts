@@ -1,5 +1,6 @@
 import { EVENT } from 'src/ts/constants';
-import { icons } from 'src/ts/icons';
+import { I18n, WEB_EXIT_FULL_SCREEN, WEB_FULL_SCREEN } from 'src/ts/features/i18n';
+import { Icon } from 'src/ts/features/icons';
 import { Player } from 'src/ts/player';
 import {
   addDisposable, addDisposableListener, Component, hide, show,
@@ -7,17 +8,19 @@ import {
 import { ControlTip } from './helper';
 
 export class WebFullscreenControlItem extends Component {
+  static readonly id = 'web-fullscreen';
+
   private readonly exitIcon: HTMLElement;
 
   private readonly enterIcon: HTMLElement;
 
-  private readonly tip: ControlTip;
+  readonly tip: ControlTip;
 
   constructor(container: HTMLElement, player: Player) {
     super(container);
     this.tip = new ControlTip(this.element);
-    this.enterIcon = this.element.appendChild(icons.webEnterFullscreen());
-    this.exitIcon = this.element.appendChild(icons.webExitFullscreen());
+    this.enterIcon = this.element.appendChild(Icon.webEnterFullscreen());
+    this.exitIcon = this.element.appendChild(Icon.webExitFullscreen());
 
     if (player.webFullscreen.isActive) {
       this.enter();
@@ -33,12 +36,12 @@ export class WebFullscreenControlItem extends Component {
   private enter = (): void => {
     show(this.exitIcon);
     hide(this.enterIcon);
-    this.tip.html = '退出网页全屏';
+    this.tip.html = I18n.t(WEB_EXIT_FULL_SCREEN);
   }
 
   private exit = (): void => {
     hide(this.exitIcon);
     show(this.enterIcon);
-    this.tip.html = '网页全屏';
+    this.tip.html = I18n.t(WEB_FULL_SCREEN);
   }
 }

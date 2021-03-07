@@ -9,3 +9,7 @@ export function isBool(o: any): o is boolean {
 export function isFunction(o: any): o is Function {
   return typeof o === 'function';
 }
+
+export function isNumber(o: any): o is number {
+  return typeof o === 'number';
+}

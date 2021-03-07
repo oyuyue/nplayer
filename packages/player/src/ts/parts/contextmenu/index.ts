@@ -3,22 +3,23 @@ import {
   $, addClass, show, hide, addDisposableListener, Rect, Component,
 } from 'src/ts/utils';
 
-export interface ContextmenuItem {
+export interface ContextMenuItem {
+  id?: string;
   html?: string;
-  type?: 'normal' | 'separator';
   disabled?: boolean;
   invisible?: boolean;
   checked?: boolean;
-  click?: (item: ContextmenuItem, player: Player) => void;
+  init?: (item: ContextMenuItem, player: Player) => void;
+  click?: (item: ContextMenuItem, player: Player) => void;
 }
 
-export class Contextmenu extends Component {
+export class ContextMenu extends Component {
   private rect: Rect;
 
   constructor(
     container: HTMLElement,
     private player: Player,
-    private readonly items: ContextmenuItem[],
+    private items: ContextMenuItem[],
   ) {
     super(container, '.contextmenu');
     hide(this.element);
@@ -56,12 +57,8 @@ export class Contextmenu extends Component {
   private getDomNodes(): HTMLElement[] {
     return this.items.filter((x) => x && !x.invisible).map((item) => {
       const el = $('.contextmenu_item');
-      if (item.type === 'separator') {
-        addClass(el, '.contextmenu_item-separator');
-        return el;
-      }
       if (item.html) el.innerHTML = item.html;
-      if (item.disabled) addClass(el, '.contextmenu_item-disabled');
+      if (item.disabled) addClass(el, 'contextmenu_item-disabled');
       if (item.checked) addClass(el, 'contextmenu_item-checked');
       if (item.click) {
         el.addEventListener('click', () => (item as any).click(item, this.player), false);

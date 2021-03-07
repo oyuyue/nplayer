@@ -5,6 +5,8 @@ import {
 } from 'src/ts/utils';
 
 export class TimeControlItem extends Component {
+  static readonly id = 'time';
+
   private readonly playedElement: HTMLElement;
 
   private readonly totalElement: HTMLElement;

@@ -77,18 +77,20 @@ export function hide(node: HTMLElement): void {
   node.style.display = 'none';
 }
 
-export function addClass(dom: HTMLElement, cls = '', prefix = CLASS_PREFIX): void {
+export function addClass(dom: HTMLElement, cls = '', prefix = CLASS_PREFIX): HTMLElement {
   cls = cls.trim();
-  if (!cls) return;
+  if (!cls) return dom;
   if (dom.classList) {
     cls.split(' ').forEach((c) => dom.classList.add(prefix + c));
   } else {
     dom.setAttribute('class', `${dom.className.trim()} ${cls}`);
   }
+  return dom;
 }
 
-export function removeClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX): void {
+export function removeClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX): HTMLElement {
   dom.classList.remove(prefix + cls);
+  return dom;
 }
 
 export function containClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX): boolean {
@@ -133,4 +135,24 @@ export class DomListener implements Disposable {
     this.handler = null!;
     this.options = null!;
   }
+}
+
+export function measureElementSize(
+  dom: HTMLElement,
+): { width: number; height: number } {
+  const clone = dom.cloneNode(true) as HTMLElement;
+  clone.style.position = 'absolute';
+  clone.style.opacity = '0';
+  clone.removeAttribute('hidden');
+
+  const parent = dom.parentNode || document.body;
+
+  parent.appendChild(clone);
+
+  const width = clone.scrollWidth;
+  const height = clone.scrollHeight;
+
+  parent.removeChild(clone);
+
+  return { width, height };
 }

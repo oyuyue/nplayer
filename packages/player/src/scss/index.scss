@@ -173,6 +173,14 @@
         opacity: 1;
         transform: translate(-50%, 0);
       }
+
+      &:hover #{$p}_tip-left {
+        transform: translate(0, 0);
+      }
+
+      &:hover #{$p}_tip-right {
+        transform: translate(0, 0);
+      }
     }
 
     &_tip {
@@ -284,15 +292,16 @@
         display: flex;
         margin-bottom: 5px;
         padding: 3px 0;
-        font-size: 14px;
+        font-size: 13px;
         white-space: nowrap;
         overflow: hidden;
         opacity: 0;
         transform: translateY(10px);
         background: rgba(0, 0, 0, .7);
         box-shadow: 0 1px 20px 1px rgba(0,0,0,.2);
-        transition: opacity .2s ease, transform .2s ease;
+        transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
         pointer-events: none;
+        will-change: width, height;
       }
 
       &_item, &_option {
@@ -371,13 +380,14 @@
     top: 0;
     left: 0;
     padding: 3px 0;
-    font-size: 14px;
+    font-size: 13px;
     background: rgba(0, 0, 0, .7);
     z-index: 20;
 
     &_item {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 5px 8px;
       white-space: nowrap;
       cursor: pointer;
@@ -385,6 +395,29 @@
 
       &:hover {
         background: rgba(255, 255, 255, .2);
+      }
+
+      &-disabled {
+        color: rgba(255, 255, 255, .5);
+
+        &:hover {
+          background: transparent;
+        }
+      }
+
+      &-checked {
+        &::after {
+          content: '';
+          display: block;
+          height: 3px;
+          width: 10px;
+          border: 1.5px solid #fff;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          margin-top: -5px;
+          overflow: hidden;
+          transform: rotate(-45deg);
+        }
       }
     }
   }
