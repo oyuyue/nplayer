@@ -5,7 +5,7 @@
     "target": "esnext",
     "module": "esnext",
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "noImplicitAny": true,
     "importHelpers": true,
     "moduleResolution": "node",
@@ -15,7 +15,8 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "plugins": [{ "transform": "typescript-transform-paths", "afterDeclarations": true }]
   },
   "exclude": ["node_modules", "dist", "packages/*/node_modules", "packages/*/dist"]
 }

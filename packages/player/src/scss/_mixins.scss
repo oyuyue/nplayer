@@ -1,0 +1,8 @@
+@mixin check-mark($w: 5px, $h: 12px, $borderWidth: 1px, $color: #fff) {
+  display: inline-block;
+  transform: rotate(45deg);
+  height: $h;
+  width: $w;
+  border-bottom: $borderWidth solid $color;
+  border-right: $borderWidth solid $color;
+}

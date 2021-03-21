@@ -50,7 +50,7 @@ export class Progress extends Component {
 
   private onDragging = (ev: PointerEvent) => {
     const x = ev.pageX - this.rect.x;
-    this.setPlayedBarLength(clamp(x / this.rect.width));
+    this.setPlayedBarLength(x / this.rect.width);
     this.updateThumbnail(ev.pageX);
   }
 

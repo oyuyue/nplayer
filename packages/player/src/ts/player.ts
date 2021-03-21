@@ -25,6 +25,9 @@ import { loopContextMenuItem } from './contextmenu-items/loop';
 import { PipContextMenuItem } from './contextmenu-items/pip';
 import { versionContextMenuItem } from './contextmenu-items/version';
 
+import * as _utils from './utils';
+import * as _components from './components';
+
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
 
@@ -36,7 +39,7 @@ export class Player extends EventEmitter implements Disposable {
 
   readonly controlNamedMap: Record<string, ControlItem> = Object.create(null);
 
-  readonly settingItems: SettingItem[];
+  readonly _settingItems: SettingItem[];
 
   readonly element: HTMLElement;
 
@@ -98,7 +101,7 @@ export class Player extends EventEmitter implements Disposable {
       return item;
     }).filter(Boolean));
 
-    this.settingItems = this.opts.settings.map((item) => {
+    this._settingItems = this.opts.settings.map((item) => {
       if (isString(item)) return this.settingNamedMap[item];
       return item;
     }).filter(Boolean);
@@ -275,4 +278,14 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   dispose(): void {}
+
+  static EVENT = EVENT;
+
+  static _utils = _utils;
+
+  static _components = _components;
+
+  Player!: typeof Player;
 }
+
+Player.prototype.Player = Player;

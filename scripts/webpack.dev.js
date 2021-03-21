@@ -16,7 +16,7 @@ module.exports = env => {
     entry: ['webpack-dev-server/client', path.resolve(pkgDir, 'src', 'index.ts')],
 
     devServer: {
-      contentBase: fixtureDir,
+      contentBase: [fixtureDir, path.resolve(__dirname, '..', 'packages')],
       watchContentBase: true,
       liveReload: true,
       injectClient: false

@@ -1,8 +1,18 @@
+@import 'mixins';
+
 .rplayer {
   position: relative;
   height: 100%;
   color: #fff;
   background: orangered;
+
+  &_flex {
+    display: flex;
+  }
+
+  &_align-center {
+    align-items: center;
+  }
 
   &-web-full {
     position: fixed;
@@ -37,6 +47,105 @@
     right: 0;
     bottom: 0;
     top: 0;
+  }
+
+  &_tooltip {
+    position: relative;
+    padding: 3px;
+    transition: background .2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: #448AFF;
+    }
+
+    &:hover &_content {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    &:hover &-left {
+      transform: translate(0, 0);
+    }
+
+    &:hover &-right {
+      transform: translate(0, 0);
+    }
+
+    &_content {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      white-space: nowrap;
+      background: rgba(0, 0, 0, .7);
+      transform: translate(-50%, 10px) scale(.8);
+      transform-origin: 50% 100%;
+      pointer-events: none;
+      opacity: 0;
+      transition: transform .2s .1s ease,opacity .2s .1s ease;
+    }
+
+    &-left {
+      left: 0;
+      transform: translate(0,10px) scale(.8);
+      transform-origin: 0 100%;
+    }
+
+    &-right {
+      left: auto;
+      right: 0;
+      transform: translate(0,10px) scale(.8);
+      transform-origin: 100% 100%;
+    }
+  }
+
+
+  &_popover {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+
+    &-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &-active &_panel {
+      transform: translateY(0);
+    }
+
+    &_panel {
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: 5px;
+      padding: 3px 0;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      transform: translateY(10px);
+      background: rgba(0, 0, 0, .7);
+      box-shadow: 0 1px 20px 1px rgba(0,0,0,.2);
+      z-index: 2;
+      transition: transform .2s ease, height .2s cubic-bezier(.4,0,.2,1), width .2s cubic-bezier(.4,0,.2,1);
+
+      &-left {
+        left: 0;
+        right: auto;
+      }
+    }
+
+    &_mask {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      z-index: 1;
+    }
   }
 
   &_switch {
@@ -121,6 +230,110 @@
     }
   }
 
+  &_slider {
+    display: inline-block;
+    flex: 1;
+    margin: 0 6px;
+    padding: 5px 0;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &_track {
+      width: 100%;
+      height: 2px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.3);
+
+      &_inner {
+        height: 100%;
+        transform-origin: 0 0;
+        background: #448AFF;
+      }
+    }
+
+    &_stop {
+      position: absolute;
+      width: 3px;
+      height: 6px;
+      top: 3px;
+      white-space: nowrap;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.7);
+
+      span {
+        position: absolute;
+        left: 2px;
+        top: 6px;
+        transform: translateX(-50%);
+      }
+
+    }
+
+    &_dot {
+      position: absolute;
+      top: 0;
+      left: -6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: #448AFF;
+    }
+
+  }
+
+  &_checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    transition: color .2s ease;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 1em;
+      height: 1em;
+      border: 1px solid currentColor;
+      border-radius: 2px;
+      margin-right: 5px;
+      transition: background .2s ease;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      opacity: 0;
+      left: 0.5em;
+      top: 50%;
+      width: 4px;
+      height: 7px;
+      border: 1px solid #fff;
+      border-top: 0;
+      border-left: 0;
+      transform: translate(-30%, -70%) rotate(45deg);
+    }
+
+    &:hover {
+      color: #448AFF;
+    }
+
+    &-active {
+      &::before {
+        background: #448AFF;
+        border-color: #448AFF;
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
   &_control {
     position: absolute;
     left: 0;
@@ -156,60 +369,6 @@
       display: flex;
       align-items: center;
       font-size: 0;
-    }
-
-    $p: &;
-    &_tip_wrapper {
-      position: relative;
-      padding: 3px;
-      transition: background .2s ease;
-      cursor: pointer;
-
-      &:hover {
-        background: #448AFF;
-      }
-
-      &:hover #{$p}_tip {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-
-      &:hover #{$p}_tip-left {
-        transform: translate(0, 0);
-      }
-
-      &:hover #{$p}_tip-right {
-        transform: translate(0, 0);
-      }
-    }
-
-    &_tip {
-      position: absolute;
-      left: 50%;
-      bottom: 100%;
-      font-size: 12px;
-      margin-bottom: 10px;
-      padding: 5px 10px;
-      white-space: nowrap;
-      background: rgba(0, 0, 0, .7);
-      transform: translate(-50%, 10px) scale(.8);
-      transform-origin: 50% 100%;
-      pointer-events: none;
-      opacity: 0;
-      transition: transform .2s .1s ease,opacity .2s .1s ease;
-    }
-
-    &_tip-left {
-      left: 0;
-      transform: translate(0,10px) scale(.8);
-      transform-origin: 0 100%;
-    }
-
-    &_tip-right {
-      left: auto;
-      right: 0;
-      transform: translate(0,10px) scale(.8);
-      transform-origin: 100% 100%;
     }
 
     &_time {
@@ -267,6 +426,7 @@
     }
 
     &_setting {
+
       .rplayer_icon {
         transition: transform .2s ease;
       }
@@ -277,31 +437,6 @@
         .rplayer_icon {
           transform: rotate(90deg);
         }
-      }
-
-      &-active &_panel {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-      }
-
-      &_panel {
-        position: absolute;
-        bottom: 100%;
-        right: 0;
-        display: flex;
-        margin-bottom: 5px;
-        padding: 3px 0;
-        font-size: 13px;
-        white-space: nowrap;
-        overflow: hidden;
-        opacity: 0;
-        transform: translateY(10px);
-        background: rgba(0, 0, 0, .7);
-        box-shadow: 0 1px 20px 1px rgba(0,0,0,.2);
-        transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1),width .2s cubic-bezier(.4,0,.2,1);
-        pointer-events: none;
-        will-change: width, height;
       }
 
       &_item, &_option {
@@ -335,19 +470,13 @@
       }
 
       &_option {
-        
+
         &::before {
           content: '';
-          display: block;
           opacity: 0;
-          height: 5px;
-          width: 12px;
-          border: 1px solid #fff;
-          border-top-color: transparent;
-          border-right-color: transparent;
-          margin-right: 15px;
-          margin-top: -5px;
-          transform: rotate(-45deg);
+          margin-left: 6px;
+          margin-right: 17px;
+          @include check-mark;
         }
 
         &-active {
@@ -408,15 +537,7 @@
       &-checked {
         &::after {
           content: '';
-          display: block;
-          height: 3px;
-          width: 10px;
-          border: 1.5px solid #fff;
-          border-top-color: transparent;
-          border-right-color: transparent;
-          margin-top: -5px;
-          overflow: hidden;
-          transform: rotate(-45deg);
+          @include check-mark;
         }
       }
     }

@@ -2,7 +2,8 @@
   "name": "player",
   "version": "0.6.0",
   "description": "responsive video player",
-  "main": "dist/index.js",
+  "main": "dist/index.min.js",
+  "typings": "dist/src/index.d.ts",
   "license": "MIT",
   "authors": "wopen <nepow@foxmail.com>",
   "files": [

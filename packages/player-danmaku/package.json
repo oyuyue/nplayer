@@ -1,0 +1,11 @@
+{
+  "name": "player-danmaku",
+  "version": "1.0.0",
+  "description": "responsive video player",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}

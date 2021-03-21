@@ -1,0 +1,20 @@
+export declare const FULL_SCREEN = "Fullscreen";
+export declare const EXIT_FULL_SCREEN = "Exit fullscreen";
+export declare const WEB_FULL_SCREEN = "Web fullscreen";
+export declare const WEB_EXIT_FULL_SCREEN = "Web exit fullscreen";
+export declare const SETTINGS = "Settings";
+export declare const PLAY = "Play";
+export declare const PAUSE = "Pause";
+export declare const MUTE = "Mute";
+export declare const UNMUTE = "Unmute";
+export declare const NORMAL = "Normal";
+export declare const SPEED = "Speed";
+export declare const I18n: {
+    defaultLang: string;
+    currentLang: string;
+    t(key: string, lang?: string | undefined): string;
+    add(lang: string, transData: Record<string, string>): void;
+    fallback(): void;
+    setCurrentLang(lang?: string | undefined): void;
+    setDefaultLang(lang?: string | undefined): void;
+};

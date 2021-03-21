@@ -14,7 +14,6 @@ module.exports = (env) => {
     output: {
       libraryTarget: 'umd',
       library: env.target,
-      libraryExport: 'default',
       globalObject: 'this'
     },
 

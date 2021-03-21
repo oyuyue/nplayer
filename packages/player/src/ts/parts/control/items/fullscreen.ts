@@ -5,7 +5,7 @@ import { Player } from 'src/ts/player';
 import {
   hide, Component, addDisposableListener, addDisposable, show,
 } from 'src/ts/utils';
-import { ControlTip } from './helper';
+import { Tooltip } from 'src/ts/components/tooltip';
 
 export class FullscreenControlItem extends Component {
   static readonly id = 'fullscreen';
@@ -14,11 +14,11 @@ export class FullscreenControlItem extends Component {
 
   private readonly enterIcon: HTMLElement;
 
-  readonly tip: ControlTip;
+  readonly tip: Tooltip;
 
   constructor(container: HTMLElement, player: Player) {
     super(container);
-    this.tip = new ControlTip(this.element);
+    this.tip = new Tooltip(this.element);
     this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
     this.enterIcon = this.element.appendChild(Icon.enterFullscreen());
 

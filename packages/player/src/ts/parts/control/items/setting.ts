@@ -1,4 +1,4 @@
-import { Mask } from 'src/ts/components/mask';
+import { Popover } from 'src/ts/components/popover';
 import { Switch } from 'src/ts/components/switch';
 import { EVENT } from 'src/ts/constants';
 import { I18n, SETTINGS } from 'src/ts/features/i18n';
@@ -7,7 +7,7 @@ import { Player } from 'src/ts/player';
 import {
   $, addClass, addDisposable, addDisposableListener, Component, getEventPath, measureElementSize, removeClass,
 } from 'src/ts/utils';
-import { ControlTip } from './helper';
+import { Tooltip } from 'src/ts/components/tooltip';
 
 export interface SettingItemOption<T = any> {
   html?: string;
@@ -47,34 +47,28 @@ const classOptionActive = 'control_setting_option-active';
 export class SettingControlItem extends Component {
   static readonly id = 'settings';
 
-  readonly tip: ControlTip;
-
-  private readonly mask: Mask;
+  readonly tip: Tooltip;
 
   private readonly items: SettingItem[];
 
-  private readonly panelElement: HTMLElement;
-
   private readonly homeElement!: HTMLElement;
+
+  private readonly popover: Popover;
 
   private currentOptionElement!: HTMLElement;
 
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.control_setting');
-    this.items = player.settingItems;
-    this.tip = new ControlTip(this.element, I18n.t(SETTINGS));
+    this.items = player._settingItems;
+    this.tip = new Tooltip(this.element, I18n.t(SETTINGS));
     this.element.appendChild(Icon.cog());
-    this.mask = new Mask(this.element, this.hide, { zIndex: '1', position: 'fixed' });
-    this.panelElement = this.element.appendChild($('.control_setting_panel'));
-    this.panelElement.style.zIndex = '2';
-    this.homeElement = this.panelElement.appendChild($());
+
+    this.popover = new Popover(this.element, this.hide, { willChange: 'width, height' });
+
+    this.homeElement = this.popover.panelElement.appendChild($());
 
     addDisposableListener(this, this.element, 'click', this.show);
-    addDisposable(this, player.on(EVENT.MOUNTED, () => {
-      const panelRect = this.panelElement.getBoundingClientRect();
-      this.panelElement.style.width = `${panelRect.width}px`;
-      this.panelElement.style.height = `${panelRect.height}px`;
-    }));
+    addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
 
     this.renderHome();
   }
@@ -118,7 +112,7 @@ export class SettingControlItem extends Component {
       if (item.type === 'switch') return;
 
       if (!item._optionElement) {
-        item._optionElement = this.panelElement.appendChild($());
+        item._optionElement = this.popover.panelElement.appendChild($());
         const back = item._optionElement.appendChild($('.control_setting_item.control_setting_back'));
         back.innerHTML = item.html || '';
         back.addEventListener('click', this.back(item));
@@ -174,27 +168,32 @@ export class SettingControlItem extends Component {
 
     const { width, height } = measureElementSize(opt);
 
-    this.panelElement.style.width = `${width}px`;
-    this.panelElement.style.height = `${height}px`;
+    this.popover.applyPanelStyle({
+      width: `${width}px`,
+      height: `${height}px`,
+    });
 
     this.currentOptionElement = opt;
   }
 
-  private showHomePage(opt: HTMLElement): void {
-    opt.style.display = 'none';
+  private showHomePage(opt?: HTMLElement): void {
+    if (opt) opt.style.display = 'none';
+
     this.homeElement.style.display = '';
 
     const { width, height } = measureElementSize(this.homeElement);
 
-    this.panelElement.style.width = `${width}px`;
-    this.panelElement.style.height = `${height}px`;
+    this.popover.applyPanelStyle({
+      width: `${width}px`,
+      height: `${height}px`,
+    });
   }
 
   show = (ev?: MouseEvent) => {
-    if (ev && getEventPath(ev).includes(this.panelElement)) return;
-    this.mask.show();
+    if (ev && getEventPath(ev).includes(this.popover.element)) return;
     this.tip.hide();
     this.renderHome();
+    this.popover.show();
     this.homeElement.style.display = '';
     addClass(this.element, classActive);
   }
@@ -202,7 +201,6 @@ export class SettingControlItem extends Component {
   hide = (ev?: MouseEvent) => {
     if (ev) ev.stopPropagation();
 
-    this.mask.hide();
     this.tip.show();
     removeClass(this.element, classActive);
 

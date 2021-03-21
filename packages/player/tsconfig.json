@@ -3,7 +3,10 @@
   "compilerOptions": {
     "rootDir": ".",
     "baseUrl": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "src": ["./src"]
+    }
   },
   "include": ["src/**/*.ts"]
 }

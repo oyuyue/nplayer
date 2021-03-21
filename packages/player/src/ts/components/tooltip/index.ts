@@ -2,13 +2,13 @@ import {
   addClass, Component, hide, show,
 } from 'src/ts/utils';
 
-const classLeft = 'control_tip-left';
-const classRight = 'control_tip-right';
+const classLeft = 'tooltip-left';
+const classRight = 'tooltip-right';
 
-export class ControlTip extends Component {
+export class Tooltip extends Component {
   constructor(container: HTMLElement, html?: string) {
-    super(container, '.control_tip');
-    addClass(container, 'control_tip_wrapper');
+    super(container, '.tooltip_content');
+    addClass(container, 'tooltip');
     if (html) this.html = html;
   }
 

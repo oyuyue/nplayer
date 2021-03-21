@@ -5,7 +5,7 @@ import { Player } from 'src/ts/player';
 import {
   $, addDisposable, addDisposableListener, clamp, Component, Drag, getEventPath, hide, Rect, show,
 } from 'src/ts/utils';
-import { ControlTip } from './helper';
+import { Tooltip } from 'src/ts/components/tooltip';
 
 export class VolumeControlItem extends Component {
   static readonly id = 'volume';
@@ -14,7 +14,7 @@ export class VolumeControlItem extends Component {
 
   private readonly mutedIcon: HTMLElement;
 
-  readonly tip: ControlTip;
+  readonly tip: Tooltip;
 
   private readonly bar: HTMLElement;
 
@@ -22,7 +22,7 @@ export class VolumeControlItem extends Component {
 
   constructor(container: HTMLElement, private player: Player, barWidth = 100) {
     super(container, '.control_volume');
-    this.tip = new ControlTip(this.element);
+    this.tip = new Tooltip(this.element);
     this.volumeIcon = this.element.appendChild(Icon.volume());
     this.mutedIcon = this.element.appendChild(Icon.muted());
 
