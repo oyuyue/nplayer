@@ -1,7 +1,7 @@
 import { Disposable, PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
-  $, addClass, getEl, Rect, EventEmitter, clamp, isString,
+  $, addClass, getEl, Rect, EventEmitter, clamp, isString, addDisposableListener,
 } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
@@ -67,7 +67,7 @@ export class Player extends EventEmitter implements Disposable {
     super();
     this.opts = processOptions(opts);
     this.el = getEl(this.opts.el);
-    this.element = $('.rplayer', undefined, undefined, '');
+    this.element = $('.rplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {
       this.video = this.opts.video;
       addClass(this.video, 'video');
@@ -76,7 +76,7 @@ export class Player extends EventEmitter implements Disposable {
     }
 
     this.setVideoOptions(this.opts.videoOptions);
-
+    addDisposableListener(this, this.video, 'click', this.toggle);
     this.registerNamedMap();
 
     this.element.appendChild(this.video);

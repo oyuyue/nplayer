@@ -6,6 +6,10 @@
   color: #fff;
   background: orangered;
 
+  &:focus {
+    outline: none;
+  }
+
   &_flex {
     display: flex;
   }
@@ -341,6 +345,7 @@
     bottom: 0;
     z-index: 10;
     user-select: none;
+    padding: 0 5px;
     transition: opacity .2s ease;
 
     &-hide {
@@ -369,6 +374,10 @@
       display: flex;
       align-items: center;
       font-size: 0;
+
+      > div {
+        margin: 3px 2px;
+      }
     }
 
     &_time {

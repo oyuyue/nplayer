@@ -103,12 +103,14 @@ export class Fullscreen implements Disposable {
     }
   }
 
-  exit(): void {
+  exit(): boolean {
+    if (!this.isActive) return false;
     if (isIOS) {
       (this.target as any).webkitExitFullscreen();
     } else {
       this.exitFullscreen.call(document);
     }
+    return true;
   }
 
   toggle = (): void => {

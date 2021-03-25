@@ -5,7 +5,7 @@ export declare class WebFullscreen implements Disposable {
     constructor(player: Player);
     get isActive(): boolean;
     enter(): void;
-    exit(): void;
+    exit(): boolean;
     toggle: () => void;
     dispose(): void;
 }

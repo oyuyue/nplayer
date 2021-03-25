@@ -14,7 +14,7 @@ export declare class Fullscreen implements Disposable {
     private removeClass;
     setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void;
     enter(): void;
-    exit(): void;
+    exit(): boolean;
     toggle: () => void;
     dispose(): void;
 }

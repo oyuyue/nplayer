@@ -12,6 +12,9 @@ export class Shortcut implements Disposable {
   constructor(private player: Player, enable: boolean) {
     this.map = Object.create(null);
 
+    this.register(27, (p) => {
+      if (!p.fullscreen.exit()) p.webFullscreen.exit();
+    });
     this.register(32, (p) => p.toggle());
     this.register(37, (p) => p.rewind());
     this.register(38, (p) => p.incVolume());

@@ -21,9 +21,11 @@ export class WebFullscreen implements Disposable {
     this.player.emit(EVENT.WEB_ENTER_FULLSCREEN);
   }
 
-  exit(): void {
+  exit(): boolean {
+    if (!this.isActive) return false;
     removeClass(this.player.element, classFull, CLASS_PLAYER);
     this.player.emit(EVENT.WEB_EXIT_FULLSCREEN);
+    return true;
   }
 
   toggle = (): void => {

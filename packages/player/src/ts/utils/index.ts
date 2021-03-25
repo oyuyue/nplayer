@@ -13,17 +13,18 @@ export function clamp(n: number, lower = 0, upper = 1): number {
   return Math.max(Math.min(n, upper), lower);
 }
 
-const disposableMap: Record<any, Array<Disposable>> = {};
+const disposableMap: Map<any, Array<Disposable>> = new Map();
 
 export function addDisposable<T extends Disposable>(key: any, disposable: T): T {
-  (disposableMap[key] = disposableMap[key] || []).push(disposable);
+  if (!disposableMap.has(key)) disposableMap.set(key, []);
+  disposableMap.get(key)!.push(disposable);
   return disposable;
 }
 
 export function dispose(key: any): void {
-  if (disposableMap[key]) {
-    disposableMap[key].forEach((item) => item.dispose());
-    delete disposableMap[key];
+  if (disposableMap.has(key)) {
+    disposableMap.get(key)!.forEach((item) => item.dispose());
+    disposableMap.delete(key);
   }
 }
 
