@@ -1,4 +1,5 @@
 import './scss/index.scss';
+import './ts/polyfill';
 
 export { Player as default } from './ts/player';
 

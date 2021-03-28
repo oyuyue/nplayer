@@ -27,6 +27,7 @@ import { versionContextMenuItem } from './contextmenu-items/version';
 
 import * as _utils from './utils';
 import * as _components from './components';
+import { CURRENT_VOLUME, I18n } from './features';
 
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
@@ -83,7 +84,7 @@ export class Player extends EventEmitter implements Disposable {
     this.setVideoVolumeFromLocal();
     transferVideoEvent(this);
 
-    this.rect = new Rect(this.element);
+    this.rect = new Rect(this.element, this);
     this.fullscreen = new Fullscreen(this);
     this.webFullscreen = new WebFullscreen(this);
     this.shortcut = new Shortcut(this, this.opts.shortcut);
@@ -115,8 +116,11 @@ export class Player extends EventEmitter implements Disposable {
 
   set currentTime(v: number) {
     if (!this.duration) return;
+    const diff = v - this.video.currentTime;
+    if (!diff) return;
     this.video.currentTime = clamp(v, 0, this.duration);
     this.emit(EVENT.TIME_UPDATE);
+    this.toast.show(`${diff < 0 ? '-' : '+'} ${Math.round(Math.abs(diff))}s`, 'left-bottom', 500);
   }
 
   get duration(): number {
@@ -212,11 +216,11 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   incVolume(v = this.opts.volumeStep): void {
-    this.volume += v;
+    this.updateVolume(this.volume + v);
   }
 
   decVolume(v = this.opts.volumeStep): void {
-    this.volume -= v;
+    this.updateVolume(this.volume - v);
   }
 
   forward(v = this.opts.seekStep): void {
@@ -237,6 +241,11 @@ export class Player extends EventEmitter implements Disposable {
 
   seek(seconds: number): void {
     this.video.currentTime = clamp(seconds, 0, this.duration);
+  }
+
+  updateVolume(v: number): void {
+    this.volume = v;
+    this.toast.show(`${I18n.t(CURRENT_VOLUME)} ${Math.round(this.volume * 100)}`, 'left-bottom', 500);
   }
 
   toggle = () => {

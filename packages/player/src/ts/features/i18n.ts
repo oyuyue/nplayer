@@ -13,6 +13,9 @@ export const MUTE = 'Mute';
 export const UNMUTE = 'Unmute';
 export const NORMAL = 'Normal';
 export const SPEED = 'Speed';
+export const PIP = 'Picture in Picture';
+export const LOOP = 'Loop';
+export const CURRENT_VOLUME = 'Current volume';
 
 export const I18n = {
   defaultLang: '',
@@ -48,6 +51,9 @@ I18n.add('zh-CN', {
   [MUTE]: '静音',
   [UNMUTE]: '取消静音',
   [NORMAL]: '正常',
-  [SPEED]: '速度',
+  [SPEED]: '播放速度',
+  [PIP]: '画中画',
+  [LOOP]: '循环播放',
+  [CURRENT_VOLUME]: '当前音量',
 });
 if (isBrowser) I18n.setCurrentLang();

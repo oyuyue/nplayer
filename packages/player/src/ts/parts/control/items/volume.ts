@@ -30,8 +30,9 @@ export class VolumeControlItem extends Component {
     bars.style.width = `${barWidth}px`;
 
     this.bar = bars.appendChild($('.control_volume_bar'));
+    this.bar.style.background = player.opts.volumeProgressBarColor;
 
-    this.rect = new Rect(bars);
+    this.rect = new Rect(bars, player);
 
     this.onVolumeChange();
 

@@ -1,10 +1,15 @@
+import { EVENT } from '../constants';
+import { Player } from '../player';
 import { Disposable } from '../types';
 
 export class Rect implements Disposable {
   private rect!: DOMRect;
 
-  constructor(private element: HTMLElement) {
+  constructor(private element: HTMLElement, private player?: Player) {
     this.rect = {} as DOMRect;
+    if (player) {
+      player.on(EVENT.UPDATE_SIZE, this.update);
+    }
   }
 
   get width(): number {
@@ -31,11 +36,12 @@ export class Rect implements Disposable {
     if (!v) this.update();
   }
 
-  update(): void {
+  update = (): void => {
     this.rect = this.element.getBoundingClientRect();
   }
 
   dispose(): void {
+    if (this.player) this.player.off(EVENT.UPDATE_SIZE, this.update);
     this.element = null!;
     this.rect = null!;
   }

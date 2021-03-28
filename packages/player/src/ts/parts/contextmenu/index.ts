@@ -24,7 +24,9 @@ export class ContextMenu extends Component {
     super(container, '.contextmenu');
     hide(this.element);
 
-    this.rect = new Rect(this.element);
+    this.rect = new Rect(this.element, player);
+
+    this.items.forEach((item) => item.init && item.init(item, player));
 
     addDisposableListener(this, player.element, 'contextmenu', (ev: MouseEvent) => {
       ev.preventDefault();

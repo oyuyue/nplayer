@@ -13,6 +13,8 @@ module.exports = env => {
     mode: 'development',
     devtool: 'cheap-module-source-map',
 
+    target: ['web', 'es5'],
+
     entry: ['webpack-dev-server/client', path.resolve(pkgDir, 'src', 'index.ts')],
 
     devServer: {

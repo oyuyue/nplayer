@@ -4,7 +4,10 @@
   position: relative;
   height: 100%;
   color: #fff;
-  background: orangered;
+  font-family: -apple-system, BlinkMacSystemFont, 'Microsoft JhengHei', 'Microsoft YaHei';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
 
   &:focus {
     outline: none;
@@ -108,22 +111,21 @@
 
 
   &_popover {
-    opacity: 0;
     pointer-events: none;
-    transition: opacity .2s ease;
 
     &-active {
-      opacity: 1;
       pointer-events: auto;
     }
 
     &-active &_panel {
+      opacity: 1;
       transform: translateY(0);
     }
 
     &_panel {
       position: absolute;
       bottom: 100%;
+      opacity: 0;
       right: 0;
       margin-bottom: 5px;
       padding: 3px 0;
@@ -134,7 +136,7 @@
       background: rgba(0, 0, 0, .7);
       box-shadow: 0 1px 20px 1px rgba(0,0,0,.2);
       z-index: 2;
-      transition: transform .2s ease, height .2s cubic-bezier(.4,0,.2,1), width .2s cubic-bezier(.4,0,.2,1);
+      transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1), width .2s cubic-bezier(.4,0,.2,1);
 
       &-left {
         left: 0;
@@ -198,18 +200,18 @@
       border-radius: 50%;
       animation: rplayer-loading 1.2s cubic-bezier(.5, 0, .5, 1) infinite;
     }
-    div:nth-child(1) { background: rgba(0,0,0,0.15); animation-delay: -.45s; }
+    div:nth-child(1) { animation-delay: -.45s; }
     div:nth-child(2) { animation-delay: -.3s; }
     div:nth-child(3) { animation-delay: -.15s; }
   }
 
   &_toast {
     position: absolute;
-    padding: 2px 5px;
-    font-size: 14px;
+    padding: 3px 5px;
+    font-size: 12px;
     background: rgba(0, 0, 0, .7);
 
-    $pad-size: 15px;
+    $pad-size: 5px;
 
     &-center {
       left: 50%;
@@ -230,7 +232,7 @@
     }
 
     &-left-bottom, &-right-bottom {
-      bottom: 30px;
+      bottom: 60px;
     }
   }
 
@@ -358,9 +360,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      top: 55%;
-      min-height: 55px;
-      background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.5));
+      height: 100px;
+      background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.5));
       pointer-events: none;
       z-index: 9;
       transition: opacity .2s ease;
@@ -427,7 +428,6 @@
       &_bar {
         left: 0;
         right: 0;
-        background: #448AFF;
         transform-origin: 0 0;
         transform: scaleX(0);
         will-change: transform;
@@ -587,7 +587,6 @@
     }
 
     &_played {
-      background: #448AFF;
       transform: scaleX(0);
       will-change: transform;
     }

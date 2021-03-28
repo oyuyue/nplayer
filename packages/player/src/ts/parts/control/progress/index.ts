@@ -24,7 +24,9 @@ export class Progress extends Component {
     this.playedBar = this.bars.appendChild($('.progress_played'));
     this.bufBar = this.bars.appendChild($('.progress_buf'));
 
-    this.rect = new Rect(this.bars);
+    this.playedBar.style.background = player.opts.progressBarColor;
+
+    this.rect = new Rect(this.bars, player);
     this.thumbnail = new Thumbnail(this.element, { images: ['M1.jpg'] });
 
     addDisposable(this, new Drag(this.bars, this.onDragStart, this.onDragging, this.onDragEnd));

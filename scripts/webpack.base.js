@@ -30,7 +30,13 @@ module.exports = (env) => {
           test: /\.ts$/,
           exclude: /node_modules/,
           use: [
-            { loader: 'babel-loader' },
+            { loader: 'babel-loader', options: {
+              presets: [['@babel/preset-env', {
+                targets: {
+                    "ie": "11"
+                }
+            }]]
+            } },
             { loader: 'ts-loader', options: { configFile: path.resolve(pkgDir, 'tsconfig.json') } }
           ]
         },
