@@ -10,6 +10,7 @@ export interface ContextMenuItem {
   invisible?: boolean;
   checked?: boolean;
   init?: (item: ContextMenuItem, player: Player) => void;
+  show?: (item: ContextMenuItem, player: Player) => void;
   click?: (item: ContextMenuItem, player: Player) => void;
 }
 
@@ -64,6 +65,7 @@ export class ContextMenu extends Component {
   private getDomNodes(): HTMLElement[] {
     return this.items.filter((x) => x && !x.invisible).map((item) => {
       const el = $('.contextmenu_item');
+      if (item.show) item.show(item, this.player);
       if (item.html) el.innerHTML = item.html;
       if (item.disabled) addClass(el, 'contextmenu_item-disabled');
       if (item.checked) addClass(el, 'contextmenu_item-checked');

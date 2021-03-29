@@ -4,7 +4,7 @@ import { ContextMenuItem } from '../parts/contextmenu';
 export const loopContextMenuItem: ContextMenuItem = {
   id: 'loop',
   html: I18n.t(LOOP),
-  init(item, player) {
+  show(item, player) {
     item.checked = player.loop;
   },
   click(item, player) {
