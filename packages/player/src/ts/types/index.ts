@@ -20,6 +20,7 @@ export interface PlayerOptions {
   controls?: (ControlItem | string)[];
   settings?: (SettingItem | string)[];
   contextMenus?: (ContextMenuItem | string)[];
+  contextMenuToggle?: boolean;
   plugins?: Plugin[];
   shortcut?: boolean;
   seekStep?: number;

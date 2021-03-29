@@ -16,6 +16,8 @@ export interface ContextMenuItem {
 export class ContextMenu extends Component {
   private rect: Rect;
 
+  private showed = false;
+
   constructor(
     container: HTMLElement,
     private player: Player,
@@ -29,31 +31,33 @@ export class ContextMenu extends Component {
     this.items.forEach((item) => item.init && item.init(item, player));
 
     addDisposableListener(this, player.element, 'contextmenu', (ev: MouseEvent) => {
-      ev.preventDefault();
-      ev.stopPropagation();
+      this.hide();
+      if (!player.opts.contextMenuToggle || !this.showed) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        if (this.renderItems()) {
+          show(this.element);
+          this.rect.update();
 
-      if (this.renderItems()) {
-        show(this.element);
-        this.rect.update();
+          const { width, height } = this.rect;
+          const { x, y } = this.player.rect;
+          const { innerWidth, innerHeight } = window;
+          const { pageX, pageY } = ev;
 
-        const { width, height } = this.rect;
-        const { x, y } = this.player.rect;
-        const { innerWidth, innerHeight } = window;
-        const { pageX, pageY } = ev;
+          let left = pageX - x;
+          let top = pageY - y;
 
-        let left = pageX - x;
-        let top = pageY - y;
+          if (pageX + width > innerWidth) left = innerWidth - width;
+          if (pageY + height > innerHeight) top = innerHeight - height;
 
-        if (pageX + width > innerWidth) left = innerWidth - width;
-        if (pageY + height > innerHeight) top = innerHeight - height;
-
-        this.applyStyle({ left: `${left}px`, top: `${top}px` });
+          this.applyStyle({ left: `${left}px`, top: `${top}px` });
+        }
       }
+
+      this.showed = !this.showed;
     });
 
-    addDisposableListener(this, document, 'click', () => {
-      hide(this.element);
-    });
+    addDisposableListener(this, document, 'click', this.hide);
   }
 
   private getDomNodes(): HTMLElement[] {
@@ -77,5 +81,9 @@ export class ContextMenu extends Component {
     items.forEach((item) => frag.appendChild(item));
     this.element.appendChild(frag);
     return true;
+  }
+
+  hide = () => {
+    hide(this.element);
   }
 }

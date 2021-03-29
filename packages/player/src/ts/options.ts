@@ -10,6 +10,7 @@ const defaultOptions: Partial<PlayerOptions> = {
   controls: ['play', 'volume', 'time', 'spacer', 'settings', 'web-fullscreen', 'fullscreen'],
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
+  contextMenuToggle: true,
 };
 
 export function processOptions(opts: PlayerOptions): Required<PlayerOptions> {
