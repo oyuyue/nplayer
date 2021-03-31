@@ -15,8 +15,7 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "plugins": [{ "transform": "typescript-transform-paths", "afterDeclarations": true }]
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", "dist", "packages/*/node_modules", "packages/*/dist"]
 }
