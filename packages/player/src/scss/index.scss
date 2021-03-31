@@ -8,6 +8,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  background: #000;
 
   &:focus {
     outline: none;
@@ -621,7 +622,11 @@
     }
 
     &_time {
+      display: inline-block;
       margin-top: 5px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      background: rgba(0, 0, 0, .7);
     }
   }
 }

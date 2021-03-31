@@ -89,6 +89,6 @@ export class Progress extends Component {
   }
 
   private getCurrentTime(x: number): number {
-    return ((x - this.rect.x) / this.rect.width) * this.player.duration;
+    return clamp(((x - this.rect.x) / this.rect.width)) * this.player.duration;
   }
 }

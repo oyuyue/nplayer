@@ -23,6 +23,7 @@ export class Fullscreen implements Disposable {
         evt = EVENT.EXIT_FULLSCREEN;
       }
       this.player.emit(evt);
+      this.player.emit(EVENT.UPDATE_SIZE);
     });
 
     addDisposableListener(this, player.video, 'dblclick', (ev: MouseEvent) => {
@@ -100,6 +101,7 @@ export class Fullscreen implements Disposable {
       (this.target as any).webkitEnterFullscreen();
     } else {
       this.requestFullscreen.call(this.target, { navigationUI: 'hide' });
+      this.player.emit(EVENT.UPDATE_SIZE);
     }
   }
 
@@ -109,6 +111,7 @@ export class Fullscreen implements Disposable {
       (this.target as any).webkitExitFullscreen();
     } else {
       this.exitFullscreen.call(document);
+      this.player.emit(EVENT.UPDATE_SIZE);
     }
     return true;
   }
