@@ -7,7 +7,6 @@ import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
-import { Dialog } from './parts/dialog';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import { transferVideoEvent } from './helper';
@@ -63,8 +62,6 @@ export class Player extends EventEmitter implements Disposable {
 
   readonly toast: Toast;
 
-  readonly dialog: Dialog;
-
   constructor(opts: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
@@ -91,7 +88,6 @@ export class Player extends EventEmitter implements Disposable {
     this.shortcut = new Shortcut(this, this.opts.shortcut);
 
     new Loading(this.element, this);
-    this.dialog = new Dialog();
     this.toast = new Toast(this.element);
 
     if (this.opts.plugins) {

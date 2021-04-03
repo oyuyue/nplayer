@@ -17,7 +17,6 @@ export const speedSettingItem: SettingItem = {
     p.playbackRate = 1;
   },
   change(value, player) {
-    player.playbackRate = value;
-    this.value = value;
+    this.value = player.playbackRate = value;
   },
 };

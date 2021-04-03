@@ -558,16 +558,16 @@
     position: relative;
     cursor: pointer;
 
+    &:hover &_bars {
+      height: 16px;
+    }
+
     &_bars {
       position: relative;
       height: 4px;
       background: rgba(255, 255, 255, .3);
       touch-action: none;
       transition: height .12s ease;
-
-      &:hover {
-        height: 16px;
-      }
 
       &::after {
         content: '';
@@ -600,10 +600,11 @@
   }
 
   &_progress:hover &_thumb {
-    opacity: 1;
+    display: block;
   }
 
   &_thumb {
+    display: none;
     position: absolute;
     left: 0;
     bottom: 20px;
@@ -611,8 +612,6 @@
     text-align: center; 
     pointer-events: none;
     text-shadow: 0 0 2px rgba(0,0,0,.3);
-    opacity: 0;
-    transition: opacity .2s ease;
 
     &_img {
       border: 1px solid #fff;

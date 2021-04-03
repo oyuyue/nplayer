@@ -59,7 +59,10 @@ export class ContextMenu extends Component {
       this.showed = !this.showed;
     });
 
-    addDisposableListener(this, document, 'click', this.hide);
+    addDisposableListener(this, document, 'click', () => {
+      this.showed = false;
+      this.hide();
+    });
   }
 
   private getDomNodes(): HTMLElement[] {
