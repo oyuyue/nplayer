@@ -35,9 +35,7 @@ export class DanmakuSendBoxControlItem implements Disposable {
 
     this.element = container.appendChild($('.danmaku_send'));
     const settingElement = this.element.appendChild($());
-    settingElement.appendChild(strToDom(`<svg class="rplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path fill="currentColor" d="M9.62,12L12,5.67L14.37,12M11,3L5.5,17H7.75L8.87,14H15.12L16.25,17H18.5L13,3H11Z" />
-</svg>`));
+    settingElement.appendChild(strToDom('<svg class="rplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9.62,12L12,5.67L14.37,12M11,3L5.5,17H7.75L8.87,14H15.12L16.25,17H18.5L13,3H11Z" /></svg>'));
     this.tip = new _components.Tooltip(settingElement, '发送设置');
     this.popover = new _components.Popover(settingElement, undefined, undefined, true);
     this.inputElement = this.element.appendChild($('input'));
@@ -81,7 +79,7 @@ export class DanmakuSendBoxControlItem implements Disposable {
     addDisposableListener(this, settingElement, 'click', this.show);
     addDisposableListener(this, this.inputElement, 'keypress', (ev: KeyboardEvent) => {
       if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
-      const code = ev.keyCode ? ev.keyCode : ev.which;
+      const code = ev.keyCode || ev.which;
       if (code !== 13) return;
       this.send();
     });

@@ -24,4 +24,5 @@ export declare const EVENT: {
     readonly LOADING_SHOW: "loading-show";
     readonly LOADING_HIDE: "loading-hide";
     readonly MOUNTED: "mounted";
+    readonly UPDATE_SIZE: "update-size";
 };

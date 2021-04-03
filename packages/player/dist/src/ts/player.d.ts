@@ -3,7 +3,6 @@ import { Rect, EventEmitter } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
-import { Dialog } from './parts/dialog';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import { Shortcut } from './features/shortcut';
@@ -27,7 +26,6 @@ export declare class Player extends EventEmitter implements Disposable {
     readonly control: Control;
     readonly contextmenu: ContextMenu;
     readonly toast: Toast;
-    readonly dialog: Dialog;
     constructor(opts: PlayerOptions);
     get currentTime(): number;
     set currentTime(v: number);
@@ -55,6 +53,7 @@ export declare class Player extends EventEmitter implements Disposable {
     play(): Promise<void>;
     pause(): void;
     seek(seconds: number): void;
+    updateVolume(v: number): void;
     toggle: () => void;
     toggleVolume(): void;
     eachBuffer(fn: (start: number, end: number) => boolean | void): void;
@@ -86,6 +85,7 @@ export declare class Player extends EventEmitter implements Disposable {
         readonly LOADING_SHOW: "loading-show";
         readonly LOADING_HIDE: "loading-hide";
         readonly MOUNTED: "mounted";
+        readonly UPDATE_SIZE: "update-size";
     };
     static _utils: typeof _utils;
     static _components: typeof _components;

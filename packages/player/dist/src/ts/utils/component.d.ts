@@ -2,7 +2,7 @@ import { Disposable } from '../types';
 import { EventEmitter } from '.';
 export declare class Component implements Disposable {
     element: HTMLElement;
-    constructor(container?: HTMLElement, desc?: string, attrs?: {
+    constructor(container?: HTMLElement, desc?: string | HTMLElement, attrs?: {
         [key: string]: any;
     }, children?: string | Array<Node>, classPrefix?: string);
     applyStyle(style: Partial<CSSStyleDeclaration>): void;

@@ -6,6 +6,7 @@ export declare type ControlItem = (new (container: HTMLElement, player: Player) 
     tip?: Tooltip;
 }) & {
     id?: string;
+    isSupport?: () => boolean;
 };
 export declare class Control extends Component {
     private player;

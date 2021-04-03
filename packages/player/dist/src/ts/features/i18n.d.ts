@@ -9,6 +9,10 @@ export declare const MUTE = "Mute";
 export declare const UNMUTE = "Unmute";
 export declare const NORMAL = "Normal";
 export declare const SPEED = "Speed";
+export declare const PIP = "Picture in Picture";
+export declare const LOOP = "Loop";
+export declare const CURRENT_VOLUME = "Current volume";
+export declare const AIRPLAY = "Airplay";
 export declare const I18n: {
     defaultLang: string;
     currentLang: string;
