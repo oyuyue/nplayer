@@ -1,6 +1,11 @@
 @import 'mixins';
 
 .rplayer {
+  
+  --theme-color: #007aff;
+  --progress-color: #007aff;
+  --volume-progress-color: #007aff;
+
   position: relative;
   height: 100%;
   color: #fff;
@@ -9,10 +14,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-
-  --theme-color: #448AFF;
-  --progress-color: #448AFF;
-  --volume-progress-color: #448AFF;
 
   &:focus {
     outline: none;
@@ -382,7 +383,7 @@
       font-size: 0;
 
       > div {
-        margin: 3px 2px;
+        margin: 5px 3px;
       }
     }
 
