@@ -1,7 +1,8 @@
 import { Disposable, PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
-  $, addClass, getEl, Rect, EventEmitter, clamp, isString, addDisposableListener, dispose, removeNode, addDisposable,
+  $, addClass, getEl, Rect, EventEmitter, clamp, isString,
+  addDisposableListener, dispose, removeNode, addDisposable, isBrowser,
 } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
@@ -293,3 +294,13 @@ export class Player extends EventEmitter implements Disposable {
 }
 
 Player.prototype.Player = Player;
+
+if (isBrowser) {
+  // eslint-disable-next-line no-console
+  console.log(
+    `%c RPlayer %c v${__VERSION__} %c https://github.com/woopen/RPlayer `,
+    'padding: 1px; border-radius: 3px 0 0 3px; color: #fff; background: #606060;',
+    'padding: 1px; color: #fff; background: #1475b2;',
+    'padding: 1px; border-radius: 0 3px 3px 0; color: #fff; background: #42c02e;',
+  );
+}
