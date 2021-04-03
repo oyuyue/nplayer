@@ -27,10 +27,31 @@ function transThrottle(
   });
 }
 
-export function tryOpenEdge(opts: PlayerOptions): void {
-  if (opts.openEdgeInIE && isWin10IE) {
+export function tryOpenEdge(opts: PlayerOptions['openEdgeInIE']): void {
+  if (opts && isWin10IE) {
     window.location.href = `microsoft-edge:${document.URL}`;
   }
+}
+
+export function setCssVariables(el: HTMLElement, opts: PlayerOptions): void {
+  const style = el.style;
+  if (opts.themeColor) style.setProperty('--theme-color', opts.themeColor);
+  if (opts.progressColor) style.setProperty('--progress-color', opts.progressColor);
+  if (opts.volumeProgressColor) style.setProperty('--volume-progress-color', opts.volumeProgressColor);
+}
+
+export function setVideoAttrs(video: HTMLVideoElement, opts: PlayerOptions['videoAttrs']): void {
+  if (!opts) return;
+  Object.keys(opts).forEach((k) => {
+    video.setAttribute(k, opts[k]);
+  });
+}
+
+export function setVideoVolumeFromLocal(video: HTMLVideoElement): void {
+  const volume = parseFloat(localStorage.getItem('rplayer:volume') as string);
+
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(volume)) video.volume = volume;
 }
 
 export function transferVideoEvent(player: Player): void {

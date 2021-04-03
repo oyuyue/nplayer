@@ -3,7 +3,7 @@ import { I18n, MUTE, UNMUTE } from 'src/ts/features/i18n';
 import { Icon } from 'src/ts/features/icons';
 import { Player } from 'src/ts/player';
 import {
-  $, addDisposable, addDisposableListener, clamp, Component, Drag, getEventPath, hide, Rect, show,
+  $, addDisposable, addDisposableListener, clamp, Component, Drag, getEventPath, hide, isString, Rect, show,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
 
@@ -20,17 +20,17 @@ export class VolumeControlItem extends Component {
 
   private readonly rect: Rect;
 
-  constructor(container: HTMLElement, private player: Player, barWidth = 100) {
+  constructor(container: HTMLElement, private player: Player) {
     super(container, '.control_volume');
     this.tip = new Tooltip(this.element);
     this.volumeIcon = this.element.appendChild(Icon.volume());
     this.mutedIcon = this.element.appendChild(Icon.muted());
 
     const bars = this.element.appendChild($('.control_volume_bars'));
-    bars.style.width = `${barWidth}px`;
+    const barWidth = player.opts.volumeBarWidth;
+    bars.style.width = isString(barWidth) ? barWidth : `${barWidth}px`;
 
     this.bar = bars.appendChild($('.control_volume_bar'));
-    this.bar.style.background = player.opts.volumeProgressBarColor;
 
     this.rect = new Rect(bars, player);
 

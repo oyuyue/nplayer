@@ -9,7 +9,9 @@ import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
-import { transferVideoEvent, tryOpenEdge } from './helper';
+import {
+  setCssVariables, setVideoAttrs, transferVideoEvent, tryOpenEdge, setVideoVolumeFromLocal,
+} from './helper';
 import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
 import { SettingControlItem, SettingItem } from './parts/control/items/setting';
@@ -65,7 +67,7 @@ export class Player extends EventEmitter implements Disposable {
   constructor(opts: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
-    tryOpenEdge(this.opts);
+    tryOpenEdge(this.opts.openEdgeInIE);
     this.el = getEl(this.opts.el);
     this.element = $('.rplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {
@@ -75,21 +77,21 @@ export class Player extends EventEmitter implements Disposable {
       this.video = $('video.video');
     }
 
-    this.setVideoAttrs(this.opts.videoAttrs);
-    addDisposableListener(this, this.video, 'click', this.toggle);
-    this.registerNamedMap();
-
-    this.element.appendChild(this.video);
-    this.setVideoVolumeFromLocal();
+    setCssVariables(this.element, this.opts);
+    setVideoAttrs(this.video, this.opts.videoAttrs);
+    setVideoVolumeFromLocal(this.video);
     transferVideoEvent(this);
+    addDisposableListener(this, this.video, 'click', this.toggle);
+    this.element.appendChild(this.video);
+
+    this.registerNamedMap();
 
     this.rect = addDisposable(this, new Rect(this.element, this));
     this.fullscreen = addDisposable(this, new Fullscreen(this));
     this.webFullscreen = addDisposable(this, new WebFullscreen(this));
     this.shortcut = addDisposable(this, new Shortcut(this, this.opts.shortcut));
-
-    addDisposable(this, new Loading(this.element, this));
     this.toast = addDisposable(this, new Toast(this.element));
+    addDisposable(this, new Loading(this.element, this));
 
     if (this.opts.plugins) {
       this.opts.plugins.forEach((plugin) => plugin.apply(this));
@@ -173,20 +175,6 @@ export class Player extends EventEmitter implements Disposable {
 
   set loop(v: boolean) {
     this.video.loop = v;
-  }
-
-  private setVideoVolumeFromLocal(): void {
-    const volume = parseFloat(localStorage.getItem('rplayer:volume') as string);
-
-    // eslint-disable-next-line no-restricted-globals
-    if (!isNaN(volume)) this.video.volume = volume;
-  }
-
-  private setVideoAttrs(attrs?: Record<string, any>): void {
-    if (!attrs) return;
-    Object.keys(attrs).forEach((k) => {
-      this.video.setAttribute(k, attrs[k]);
-    });
   }
 
   private registerNamedMap(): void {

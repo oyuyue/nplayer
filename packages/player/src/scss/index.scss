@@ -10,6 +10,10 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
 
+  --theme-color: #448AFF;
+  --progress-color: #448AFF;
+  --volume-progress-color: #448AFF;
+
   &:focus {
     outline: none;
   }
@@ -64,7 +68,7 @@
     cursor: pointer;
 
     &:hover {
-      background: #448AFF;
+      background: var(--theme-color);
     }
 
     &:hover &_content {
@@ -177,7 +181,7 @@
     }
 
     &-active {
-      background: #448AFF;
+      background: var(--theme-color);
 
       &::after {
         transform: translateX(16px);
@@ -255,7 +259,7 @@
       &_inner {
         height: 100%;
         transform-origin: 0 0;
-        background: #448AFF;
+        background: var(--theme-color);
       }
     }
 
@@ -285,7 +289,7 @@
       height: 12px;
       border-radius: 50%;
       pointer-events: none;
-      background: #448AFF;
+      background: var(--theme-color);
     }
 
   }
@@ -326,13 +330,13 @@
     }
 
     &:hover {
-      color: #448AFF;
+      color: var(--theme-color);
     }
 
     &-active {
       &::before {
-        background: #448AFF;
-        border-color: #448AFF;
+        background: var(--theme-color);
+        border-color: var(--theme-color);
       }
 
       &::after {
@@ -432,6 +436,7 @@
         transform-origin: 0 0;
         transform: scaleX(0);
         will-change: transform;
+        background: var(--volume-progress-color);
       }
     }
 
@@ -442,7 +447,7 @@
       }
 
       &-active {
-        background: #448AFF;
+        background: var(--theme-color);
 
         .rplayer_icon {
           transform: rotate(90deg);
@@ -591,6 +596,7 @@
     &_played {
       transform: scaleX(0);
       will-change: transform;
+      background: var(--progress-color);
     }
 
     &_hover {

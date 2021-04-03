@@ -26,8 +26,9 @@ export interface PlayerOptions {
   seekStep?: number;
   volumeStep?: number;
   themeColor?: string;
-  progressBarColor?: string;
-  volumeProgressBarColor?: string;
+  progressColor?: string;
+  volumeProgressColor?: string;
+  volumeBarWidth?: number | string;
   loadingElement?: HTMLElement;
   openEdgeInIE?: boolean;
 }
