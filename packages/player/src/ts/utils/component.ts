@@ -2,18 +2,23 @@ import { Disposable } from '../types';
 import {
   $, applyMixins, dispose, removeNode, EventEmitter,
 } from '.';
+import { isString } from './is';
 
 export class Component implements Disposable {
   element: HTMLElement;
 
   constructor(
     container?: HTMLElement,
-    desc?: string,
+    desc?: string | HTMLElement,
     attrs?: { [key: string]: any; },
     children?: string | Array<Node>,
     classPrefix?: string,
   ) {
-    this.element = $(desc, attrs, children, classPrefix);
+    if (desc && !isString(desc)) {
+      this.element = desc;
+    } else {
+      this.element = $(desc, attrs, children, classPrefix);
+    }
     if (container) container.appendChild(this.element);
   }
 

@@ -28,4 +28,5 @@ export interface PlayerOptions {
   themeColor?: string;
   progressBarColor?: string;
   volumeProgressBarColor?: string;
+  loadingElement?: HTMLElement;
 }
