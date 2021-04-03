@@ -27,4 +27,5 @@ export const EVENT = {
   LOADING_HIDE: 'loading-hide',
   MOUNTED: 'mounted',
   UPDATE_SIZE: 'update-size',
+  BEFORE_DISPOSE: 'before-dispose',
 } as const;

@@ -142,7 +142,7 @@ export class EventEmitter {
     return this;
   }
 
-  removeAllListeners(evt: string): this {
+  removeAllListeners(evt?: string): this {
     if (evt) {
       if (this._events[evt]) this.clearEvent(evt);
     } else {

@@ -1,7 +1,7 @@
 import { Disposable, PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
-  $, addClass, getEl, Rect, EventEmitter, clamp, isString, addDisposableListener,
+  $, addClass, getEl, Rect, EventEmitter, clamp, isString, addDisposableListener, dispose, removeNode, addDisposable,
 } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
@@ -32,6 +32,8 @@ import { AirplayControlItem } from './parts/control/items/airplay';
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
 
+  element: HTMLElement;
+
   private prevVolume = 1;
 
   readonly settingNamedMap: Record<string, SettingItem> = Object.create(null);
@@ -41,8 +43,6 @@ export class Player extends EventEmitter implements Disposable {
   readonly controlNamedMap: Record<string, ControlItem> = Object.create(null);
 
   readonly _settingItems: SettingItem[];
-
-  readonly element: HTMLElement;
 
   readonly video: HTMLVideoElement;
 
@@ -82,29 +82,29 @@ export class Player extends EventEmitter implements Disposable {
     this.setVideoVolumeFromLocal();
     transferVideoEvent(this);
 
-    this.rect = new Rect(this.element, this);
-    this.fullscreen = new Fullscreen(this);
-    this.webFullscreen = new WebFullscreen(this);
-    this.shortcut = new Shortcut(this, this.opts.shortcut);
+    this.rect = addDisposable(this, new Rect(this.element, this));
+    this.fullscreen = addDisposable(this, new Fullscreen(this));
+    this.webFullscreen = addDisposable(this, new WebFullscreen(this));
+    this.shortcut = addDisposable(this, new Shortcut(this, this.opts.shortcut));
 
-    new Loading(this.element, this);
-    this.toast = new Toast(this.element);
+    addDisposable(this, new Loading(this.element, this));
+    this.toast = addDisposable(this, new Toast(this.element));
 
     if (this.opts.plugins) {
       this.opts.plugins.forEach((plugin) => plugin.apply(this));
     }
 
-    this.contextmenu = new ContextMenu(this.element, this, this.opts.contextMenus.map((item) => {
+    this.contextmenu = addDisposable(this, new ContextMenu(this.element, this, this.opts.contextMenus.map((item) => {
       if (isString(item)) return this.contextmenuNamedMap[item];
       return item;
-    }).filter(Boolean));
+    }).filter(Boolean)));
 
     this._settingItems = this.opts.settings.map((item) => {
       if (isString(item)) return this.settingNamedMap[item];
       return item;
     }).filter(Boolean);
 
-    this.control = new Control(this.element, this);
+    this.control = addDisposable(this, new Control(this.element, this));
   }
 
   get currentTime(): number {
@@ -284,7 +284,17 @@ export class Player extends EventEmitter implements Disposable {
     this.controlNamedMap[id || item.id!] = item;
   }
 
-  dispose(): void {}
+  dispose(): void {
+    if (!this.element) return;
+    this.emit(EVENT.BEFORE_DISPOSE);
+    dispose(this);
+    const plugins = this.opts.plugins;
+    if (plugins) plugins.forEach((p) => p.dispose && p.dispose());
+    this.removeAllListeners();
+    removeNode(this.element);
+    this.element = null!;
+    this.el = null;
+  }
 
   static EVENT = EVENT;
 
