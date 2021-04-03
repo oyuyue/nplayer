@@ -4,11 +4,11 @@
   position: relative;
   height: 100%;
   color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Microsoft JhengHei', 'Microsoft YaHei';
+  background: #000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-  background: #000;
 
   &:focus {
     outline: none;
@@ -624,7 +624,7 @@
     &_time {
       display: inline-block;
       margin-top: 5px;
-      padding: 2px 5px;
+      padding: 2px 5px 1px;
       border-radius: 3px;
       background: rgba(0, 0, 0, .7);
     }

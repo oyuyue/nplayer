@@ -10,6 +10,7 @@ export class ControlBar extends Component {
     player.opts.controls.forEach((Item, i) => {
       if (isString(Item)) Item = player.controlNamedMap[Item];
       if (Item) {
+        if (Item.isSupport && !Item.isSupport()) return;
         const item = new Item(this.element, player);
         if (item.tip && item.tip instanceof Tooltip) {
           if (i === 0) {

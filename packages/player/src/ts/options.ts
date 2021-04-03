@@ -7,7 +7,7 @@ const defaultOptions: Partial<PlayerOptions> = {
   themeColor: '#448AFF',
   progressBarColor: '#448AFF',
   volumeProgressBarColor: '#448AFF',
-  controls: ['play', 'volume', 'time', 'spacer', 'settings', 'web-fullscreen', 'fullscreen'],
+  controls: ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,

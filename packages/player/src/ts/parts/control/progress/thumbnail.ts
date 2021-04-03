@@ -79,6 +79,8 @@ export class Thumbnail extends Component {
         this.imgElement.style.backgroundImage = `url(${thumb.url})`;
         this.imgElement.style.backgroundPosition = `-${thumb.x}px -${thumb.y}px`;
       }
+    } else {
+      this.rect.update();
     }
 
     const half = this.rect.width / 2;

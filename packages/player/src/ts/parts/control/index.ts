@@ -12,7 +12,7 @@ const classHide = 'control-hide';
 const classBgHide = 'control_bg-hide';
 
 export type ControlItem = (new(container: HTMLElement, player: Player) =>
-  Partial<Disposable> & { tip?: Tooltip }) & { id?:string; }
+  Partial<Disposable> & { tip?: Tooltip }) & { id?:string; isSupport?: () => boolean; }
 
 export class Control extends Component {
   private readonly bgElement: HTMLElement;

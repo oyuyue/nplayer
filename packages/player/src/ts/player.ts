@@ -28,6 +28,7 @@ import { versionContextMenuItem } from './contextmenu-items/version';
 import * as _utils from './utils';
 import * as _components from './components';
 import { CURRENT_VOLUME, I18n } from './features';
+import { AirplayControlItem } from './parts/control/items/airplay';
 
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
@@ -205,6 +206,7 @@ export class Player extends EventEmitter implements Disposable {
     this.registerControlItem(SettingControlItem);
     this.registerControlItem(WebFullscreenControlItem);
     this.registerControlItem(FullscreenControlItem);
+    this.registerControlItem(AirplayControlItem);
   }
 
   mount(el?: PlayerOptions['el']): void {

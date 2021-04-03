@@ -10,6 +10,7 @@ const webEnterFullscreen = 'M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H
 const webExitFullscreen = 'M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z';
 const enterFullscreen = 'M3 3h6.429v2.571H5.57V9.43H3V3m11.571 0H21v6.429h-2.571V5.57H14.57V3m3.858 11.571H21V21h-6.429v-2.571h3.858V14.57m-9 3.858V21H3v-6.429h2.571v3.858H9.43z';
 const exitFullscreen = 'M14.571 14.571H21v2.572h-3.857V21H14.57v-6.429M3 14.571h6.429V21H6.857v-3.857H3V14.57M6.857 3H9.43v6.429H3V6.857h3.857V3M21 6.857V9.43h-6.429V3h2.572v3.857H21z';
+const airplay = 'M6 22h12l-6-6m9-13H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4v-2H3V5h18v12h-4v2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z';
 
 function svgTemplate(d: string): string {
   return `<svg viewBox="0 0 24 24" class="${CLASS_PREFIX}icon" xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`;
@@ -48,5 +49,6 @@ registerIcon('webEnterFullscreen', createIcon(webEnterFullscreen));
 registerIcon('webExitFullscreen', createIcon(webExitFullscreen));
 registerIcon('enterFullscreen', createIcon(enterFullscreen));
 registerIcon('exitFullscreen', createIcon(exitFullscreen));
+registerIcon('airplay', createIcon(airplay));
 
 export { Icon };
