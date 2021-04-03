@@ -9,7 +9,7 @@ import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
-import { transferVideoEvent } from './helper';
+import { transferVideoEvent, tryOpenEdge } from './helper';
 import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
 import { SettingControlItem, SettingItem } from './parts/control/items/setting';
@@ -65,6 +65,7 @@ export class Player extends EventEmitter implements Disposable {
   constructor(opts: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
+    tryOpenEdge(this.opts);
     this.el = getEl(this.opts.el);
     this.element = $('.rplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {
@@ -74,7 +75,7 @@ export class Player extends EventEmitter implements Disposable {
       this.video = $('video.video');
     }
 
-    this.setVideoOptions(this.opts.videoOptions);
+    this.setVideoAttrs(this.opts.videoAttrs);
     addDisposableListener(this, this.video, 'click', this.toggle);
     this.registerNamedMap();
 
@@ -178,15 +179,13 @@ export class Player extends EventEmitter implements Disposable {
     const volume = parseFloat(localStorage.getItem('rplayer:volume') as string);
 
     // eslint-disable-next-line no-restricted-globals
-    if (!isNaN(volume)) {
-      this.video.volume = volume;
-    }
+    if (!isNaN(volume)) this.video.volume = volume;
   }
 
-  private setVideoOptions(options?: Record<string, any>): void {
-    if (!options) return;
-    Object.keys(options).forEach((k) => {
-      (this.video as any)[k] = options[k];
+  private setVideoAttrs(attrs?: Record<string, any>): void {
+    if (!attrs) return;
+    Object.keys(attrs).forEach((k) => {
+      this.video.setAttribute(k, attrs[k]);
     });
   }
 

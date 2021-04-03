@@ -15,7 +15,7 @@ export interface Plugin extends Partial<Disposable> {
 export interface PlayerOptions {
   el?: HTMLElement | string;
   video?: HTMLVideoElement;
-  videoOptions?: Record<string, any>;
+  videoAttrs?: Record<string, any>;
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[];
   settings?: (SettingItem | string)[];
@@ -29,4 +29,5 @@ export interface PlayerOptions {
   progressBarColor?: string;
   volumeProgressBarColor?: string;
   loadingElement?: HTMLElement;
+  openEdgeInIE?: boolean;
 }

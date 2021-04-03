@@ -1,5 +1,7 @@
 import { EVENT } from './constants';
 import { Player } from './player';
+import { PlayerOptions } from './types';
+import { isWin10IE } from './utils';
 
 function trans(
   player: Player,
@@ -23,6 +25,12 @@ function transThrottle(
       pending = false;
     });
   });
+}
+
+export function tryOpenEdge(opts: PlayerOptions): void {
+  if (opts.openEdgeInIE && isWin10IE) {
+    window.location.href = `microsoft-edge:${document.URL}`;
+  }
 }
 
 export function transferVideoEvent(player: Player): void {

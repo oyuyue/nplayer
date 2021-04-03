@@ -11,6 +11,7 @@ const defaultOptions: Partial<PlayerOptions> = {
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,
+  openEdgeInIE: true,
 };
 
 export function processOptions(opts: PlayerOptions): Required<PlayerOptions> {
