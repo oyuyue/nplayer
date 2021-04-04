@@ -10,8 +10,20 @@ const defaultOptions: Partial<PlayerOptions> = {
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,
   openEdgeInIE: true,
+  videoAttrs: {
+    crossorigin: 'anonymous',
+    preload: 'auto',
+    playsinline: 'true',
+  },
 };
 
 export function processOptions(opts: PlayerOptions): Required<PlayerOptions> {
-  return { ...defaultOptions, ...opts } as Required<PlayerOptions>;
+  return {
+    ...defaultOptions,
+    ...opts,
+    videoAttrs: {
+      ...defaultOptions.videoAttrs,
+      ...opts?.videoAttrs,
+    },
+  } as Required<PlayerOptions>;
 }
