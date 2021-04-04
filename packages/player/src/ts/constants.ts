@@ -30,4 +30,6 @@ export const EVENT = {
   BEFORE_DISPOSE: 'before-dispose',
   UPDATE_OPTIONS: 'update-options',
   OPEN_EDGE: 'open-edge',
+  CONTROL_SHOW: 'control-show',
+  CONTROL_HIDE: 'control-hide',
 } as const;

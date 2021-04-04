@@ -92,7 +92,7 @@ export class DanmakuSettingControlItem {
         change(value) {
           player.danmaku.updateOpacity(clamp(value + 0.1, 0.1, 1));
         },
-      });
+      }, player);
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '显示区域'));
@@ -103,7 +103,7 @@ export class DanmakuSettingControlItem {
           v = v === 0 ? 0.25 : v === 0.33 ? 0.5 : v === 0.66 ? 0.75 : 1;
           player.danmaku.updateArea(v as any);
         },
-      });
+      }, player);
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '弹幕速度'));
@@ -112,7 +112,7 @@ export class DanmakuSettingControlItem {
         change(v) {
           player.danmaku.updateSpeed(clamp(-v + 1.5, 0.5, 1.5));
         },
-      });
+      }, player);
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '字体大小'));
@@ -121,7 +121,7 @@ export class DanmakuSettingControlItem {
         change(v) {
           player.danmaku.updateFontsize(clamp(v + 0.5, 0.5, 1.5));
         },
-      });
+      }, player);
       panelElement.appendChild(rowElement);
       rowElement = row();
       this.unlimitedCB = new _components.Checkbox(rowElement, { html: '不限弹幕', change(v) { player.danmaku.updateUnlimited(v); } });

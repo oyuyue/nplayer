@@ -28,4 +28,6 @@ export declare const EVENT: {
     readonly BEFORE_DISPOSE: "before-dispose";
     readonly UPDATE_OPTIONS: "update-options";
     readonly OPEN_EDGE: "open-edge";
+    readonly CONTROL_SHOW: "control-show";
+    readonly CONTROL_HIDE: "control-hide";
 };

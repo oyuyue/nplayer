@@ -1,3 +1,5 @@
+import { EVENT } from 'src/ts/constants';
+import { Player } from 'src/ts/player';
 import {
   $, addDisposable, clamp, Component, Drag, Rect,
 } from 'src/ts/utils';
@@ -14,11 +16,11 @@ export class Slider extends Component {
 
   private readonly dotElement: HTMLElement;
 
-  private readonly rect: Rect;
-
   private readonly step: boolean | undefined;
 
-  constructor(container: HTMLElement, private opts: SliderOption) {
+  readonly rect: Rect;
+
+  constructor(container: HTMLElement, private opts: SliderOption, player?: Player) {
     super(container, '.slider');
 
     this.rect = new Rect(this.element);
@@ -39,6 +41,8 @@ export class Slider extends Component {
     this.step = opts.stops && opts.step;
 
     this.update(opts.value || 0, undefined, false);
+
+    if (player) addDisposable(this, player.on(EVENT.UPDATE_SIZE, () => this.rect.update()));
   }
 
   private onDrag = (ev: PointerEvent) => {

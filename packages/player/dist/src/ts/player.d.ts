@@ -87,6 +87,8 @@ export declare class Player extends EventEmitter implements Disposable {
         readonly BEFORE_DISPOSE: "before-dispose";
         readonly UPDATE_OPTIONS: "update-options";
         readonly OPEN_EDGE: "open-edge";
+        readonly CONTROL_SHOW: "control-show";
+        readonly CONTROL_HIDE: "control-hide";
     };
     static _utils: typeof _utils;
     static _components: typeof _components;

@@ -44,12 +44,14 @@ export class Control extends Component {
     removeClass(this.element, classHide);
     removeClass(this.bgElement, classBgHide);
     this.player.element.style.cursor = '';
+    this.player.emit(EVENT.CONTROL_SHOW);
   }
 
   hide = (): void => {
     addClass(this.element, classHide);
     addClass(this.bgElement, classBgHide);
     this.player.element.style.cursor = 'none';
+    this.player.emit(EVENT.CONTROL_HIDE);
   }
 
   showTransient = (): void => {
