@@ -30,9 +30,8 @@ export class Progress extends Component {
     addDisposable(this, new Drag(this.bars, this.onDragStart, this.onDragging, this.onDragEnd));
     addDisposable(this, player.on(EVENT.TIME_UPDATE, this.updatePlayedBar));
     addDisposable(this, player.on(EVENT.PROGRESS, this.updateBufBar));
-    addDisposableListener(this, this.bars, 'mousemove', throttle((ev: MouseEvent) => {
-      this.updateThumbnail(ev.pageX);
-    }), true);
+    addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => this.thumbnail.updateOptions(player.opts.thumbnail)));
+    addDisposableListener(this, this.bars, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
   }
 
   private setPlayedBarLength(percentage: number): void {

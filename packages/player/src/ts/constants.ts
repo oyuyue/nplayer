@@ -28,4 +28,6 @@ export const EVENT = {
   MOUNTED: 'mounted',
   UPDATE_SIZE: 'update-size',
   BEFORE_DISPOSE: 'before-dispose',
+  UPDATE_OPTIONS: 'update-options',
+  OPEN_EDGE: 'open-edge',
 } as const;

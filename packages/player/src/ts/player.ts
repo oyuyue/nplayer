@@ -11,31 +11,22 @@ import { Toast } from './parts/toast';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import {
-  setCssVariables, setVideoAttrs, transferVideoEvent, tryOpenEdge, setVideoVolumeFromLocal,
+  setCssVariables, setVideoAttrs, transferEvent, tryOpenEdge, setVideoVolumeFromLocal, registerNamedMap,
 } from './helper';
 import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
-import { SettingControlItem, SettingItem } from './parts/control/items/setting';
-import { speedSettingItem } from './setting-items/speed';
-import { PlayControlItem } from './parts/control/items/play';
-import { VolumeControlItem } from './parts/control/items/volume';
-import { TimeControlItem } from './parts/control/items/time';
-import { SpacerControlItem } from './parts/control/items/spacer';
-import { WebFullscreenControlItem } from './parts/control/items/web-fullscreen';
-import { FullscreenControlItem } from './parts/control/items/fullscreen';
-import { loopContextMenuItem } from './contextmenu-items/loop';
-import { PipContextMenuItem } from './contextmenu-items/pip';
-import { versionContextMenuItem } from './contextmenu-items/version';
+import { SettingItem } from './parts/control/items/setting';
 
 import * as _utils from './utils';
 import * as _components from './components';
 import { CURRENT_VOLUME, I18n } from './features';
-import { AirplayControlItem } from './parts/control/items/airplay';
 
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
 
   element: HTMLElement;
+
+  opts: Required<PlayerOptions>;
 
   private prevVolume = 1;
 
@@ -48,8 +39,6 @@ export class Player extends EventEmitter implements Disposable {
   readonly _settingItems: SettingItem[];
 
   readonly video: HTMLVideoElement;
-
-  readonly opts: Required<PlayerOptions>;
 
   readonly rect: Rect;
 
@@ -68,7 +57,7 @@ export class Player extends EventEmitter implements Disposable {
   constructor(opts: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
-    tryOpenEdge(this.opts.openEdgeInIE);
+    tryOpenEdge(this);
     this.el = getEl(this.opts.el);
     this.element = $('.rplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {
@@ -81,11 +70,11 @@ export class Player extends EventEmitter implements Disposable {
     setCssVariables(this.element, this.opts);
     setVideoAttrs(this.video, this.opts.videoAttrs);
     setVideoVolumeFromLocal(this.video);
-    transferVideoEvent(this);
+    transferEvent(this);
     addDisposableListener(this, this.video, 'click', this.toggle);
     this.element.appendChild(this.video);
 
-    this.registerNamedMap();
+    registerNamedMap(this);
 
     this.rect = addDisposable(this, new Rect(this.element, this));
     this.fullscreen = addDisposable(this, new Fullscreen(this));
@@ -178,21 +167,6 @@ export class Player extends EventEmitter implements Disposable {
     this.video.loop = v;
   }
 
-  private registerNamedMap(): void {
-    this.registerContextMenuItem(loopContextMenuItem);
-    this.registerContextMenuItem(PipContextMenuItem);
-    this.registerContextMenuItem(versionContextMenuItem);
-    this.registerSettingItem(speedSettingItem);
-    this.registerControlItem(PlayControlItem);
-    this.registerControlItem(VolumeControlItem);
-    this.registerControlItem(TimeControlItem);
-    this.registerControlItem(SpacerControlItem);
-    this.registerControlItem(SettingControlItem);
-    this.registerControlItem(WebFullscreenControlItem);
-    this.registerControlItem(FullscreenControlItem);
-    this.registerControlItem(AirplayControlItem);
-  }
-
   mount(el?: PlayerOptions['el']): void {
     if (el) this.el = getEl(el) || this.el;
     if (!this.el) throw new Error('require `el` option');
@@ -270,6 +244,18 @@ export class Player extends EventEmitter implements Disposable {
 
   registerControlItem(item: ControlItem, id?: string): void {
     this.controlNamedMap[id || item.id!] = item;
+  }
+
+  updateOptions(opts: PlayerOptions): void {
+    this.opts = { ...this.opts, ...opts };
+    setCssVariables(this.element, this.opts);
+    setVideoAttrs(this.video, this.opts.videoAttrs);
+    if (this.opts.shortcut) {
+      this.shortcut.enable();
+    } else {
+      this.shortcut.disable();
+    }
+    this.emit(EVENT.UPDATE_OPTIONS, this.opts);
   }
 
   dispose(): void {

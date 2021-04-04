@@ -19,7 +19,15 @@ export interface ThumbImg {
 }
 
 export class Thumbnail extends Component {
-  private opts: Required<ThumbnailOptions>;
+  private opts: Required<ThumbnailOptions> = {
+    startSecond: 0,
+    gapSecond: 10,
+    col: 5,
+    row: 5,
+    width: 160,
+    height: 90,
+    images: [],
+  };
 
   private imgElement?: HTMLElement;
 
@@ -33,24 +41,8 @@ export class Thumbnail extends Component {
 
   constructor(container: HTMLElement, opts: ThumbnailOptions) {
     super(container, '.thumb');
-    this.opts = {
-      startSecond: 0,
-      gapSecond: 10,
-      col: 5,
-      row: 5,
-      width: 160,
-      height: 90,
-      images: [],
-      ...opts,
-    };
 
-    if (this.opts.images.length) {
-      this.imgElement = this.element.appendChild($('.thumb_img'));
-      this.imgElement.style.width = `${this.opts.width}px`;
-      this.imgElement.style.height = `${this.opts.height}px`;
-      this.thumbImgPrePic = this.opts.col * this.opts.row;
-      this.ssGapRatio = this.opts.startSecond / this.opts.gapSecond;
-    }
+    this.updateOptions(opts);
 
     this.timeElement = this.element.appendChild($('.thumb_time'));
     this.timeElement.textContent = '0:00';
@@ -68,6 +60,20 @@ export class Thumbnail extends Component {
     const y = ~~((i % this.thumbImgPrePic!) / this.opts.row) * this.opts.height;
 
     return { url, x, y };
+  }
+
+  updateOptions(opts: ThumbnailOptions): void {
+    Object.assign(this.opts, opts);
+
+    if (this.opts.images.length) {
+      if (!this.imgElement) {
+        this.imgElement = this.element.appendChild($('.thumb_img'));
+      }
+      this.imgElement.style.width = `${this.opts.width}px`;
+      this.imgElement.style.height = `${this.opts.height}px`;
+      this.thumbImgPrePic = this.opts.col * this.opts.row;
+      this.ssGapRatio = this.opts.startSecond / this.opts.gapSecond;
+    }
   }
 
   update(seconds: number, x: number, maxX: number): void {

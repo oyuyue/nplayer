@@ -31,4 +31,5 @@ export interface PlayerOptions {
   volumeBarWidth?: number | string;
   loadingElement?: HTMLElement;
   openEdgeInIE?: boolean;
+  [key: string]: any;
 }
