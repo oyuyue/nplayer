@@ -1,7 +1,7 @@
 import { EVENT } from './constants';
 import { Player } from './player';
-import { PlayerOptions } from './types';
-import { isWin10IE } from './utils';
+import { Disposable, PlayerOptions } from './types';
+import { addDisposable, isWin10IE } from './utils';
 import { SettingControlItem } from './parts/control/items/setting';
 import { speedSettingItem } from './setting-items/speed';
 import { PlayControlItem } from './parts/control/items/play';
@@ -19,8 +19,10 @@ function trans(
   player: Player,
   from: string,
   to: string,
-): void {
-  player.video.addEventListener(from, (ev) => player.emit(to, ev));
+): Disposable {
+  const fn = (ev: Event) => player.emit(to, ev);
+  player.video.addEventListener(from, fn);
+  return { dispose: () => player.video.removeEventListener(from, fn) };
 }
 
 function transThrottle(
@@ -28,16 +30,18 @@ function transThrottle(
   from: string,
   to: string,
   dom: HTMLElement | Window = player.video,
-): void {
+): Disposable {
   let pending = false;
-  dom.addEventListener(from, (ev) => {
+  const fn = (ev: Event) => {
     if (pending) return;
     pending = true;
     requestAnimationFrame(() => {
       player.emit(to, ev);
       pending = false;
     });
-  });
+  };
+  dom.addEventListener(from, fn);
+  return { dispose: () => dom.removeEventListener('from', fn) };
 }
 
 export function tryOpenEdge(player: Player): void {
@@ -84,25 +88,32 @@ export function registerNamedMap(player: Player) {
 }
 
 export function transferEvent(player: Player): void {
-  trans(player, 'durationchange', EVENT.DURATION_CHANGE);
-  trans(player, 'ratechange', EVENT.RATE_CHANGE);
-  trans(player, 'play', EVENT.PLAY);
-  trans(player, 'pause', EVENT.PAUSE);
-  trans(player, 'ended', EVENT.ENDED);
-  trans(player, 'waiting', EVENT.WAITING);
-  trans(player, 'stalled', EVENT.STALLED);
-  trans(player, 'canplay', EVENT.CANPLAY);
-  trans(player, 'loadedmetadata', EVENT.LOADED_METADATA);
-  trans(player, 'error', EVENT.ERROR);
-  trans(player, 'seeked', EVENT.SEEKED);
-  trans(player, 'enterpictureinpicture', EVENT.ENTER_PIP);
-  trans(player, 'leavepictureinpicture', EVENT.EXIT_PIP);
+  const dis = (d: Disposable) => addDisposable(player, d);
 
-  transThrottle(player, 'timeupdate', EVENT.TIME_UPDATE);
-  transThrottle(player, 'volumechange', EVENT.VOLUME_CHANGE);
-  transThrottle(player, 'progress', EVENT.PROGRESS);
+  dis(trans(player, 'durationchange', EVENT.DURATION_CHANGE));
+  dis(trans(player, 'ratechange', EVENT.RATE_CHANGE));
+  dis(trans(player, 'play', EVENT.PLAY));
+  dis(trans(player, 'pause', EVENT.PAUSE));
+  dis(trans(player, 'ended', EVENT.ENDED));
+  dis(trans(player, 'waiting', EVENT.WAITING));
+  dis(trans(player, 'stalled', EVENT.STALLED));
+  dis(trans(player, 'canplay', EVENT.CANPLAY));
+  dis(trans(player, 'loadedmetadata', EVENT.LOADED_METADATA));
+  dis(trans(player, 'error', EVENT.ERROR));
+  dis(trans(player, 'seeked', EVENT.SEEKED));
+  dis(trans(player, 'enterpictureinpicture', EVENT.ENTER_PIP));
+  dis(trans(player, 'leavepictureinpicture', EVENT.EXIT_PIP));
 
-  transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window);
+  dis(transThrottle(player, 'timeupdate', EVENT.TIME_UPDATE));
+  dis(transThrottle(player, 'volumechange', EVENT.VOLUME_CHANGE));
+  dis(transThrottle(player, 'progress', EVENT.PROGRESS));
+
+  dis(transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window));
+  if (ResizeObserver) {
+    const ro = new ResizeObserver(() => player.emit(EVENT.UPDATE_SIZE));
+    ro.observe(player.element);
+    dis({ dispose: () => ro.disconnect() });
+  }
 
   player.on(EVENT.LOADED_METADATA, () => {
     if (player.video.paused) {
