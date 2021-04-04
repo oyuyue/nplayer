@@ -11,14 +11,14 @@ import * as _utils from './utils';
 import * as _components from './components';
 export declare class Player extends EventEmitter implements Disposable {
     private el;
+    element: HTMLElement;
+    opts: Required<PlayerOptions>;
     private prevVolume;
     readonly settingNamedMap: Record<string, SettingItem>;
     readonly contextmenuNamedMap: Record<string, ContextMenuItem>;
     readonly controlNamedMap: Record<string, ControlItem>;
     readonly _settingItems: SettingItem[];
-    readonly element: HTMLElement;
     readonly video: HTMLVideoElement;
-    readonly opts: Required<PlayerOptions>;
     readonly rect: Rect;
     readonly fullscreen: Fullscreen;
     readonly webFullscreen: WebFullscreen;
@@ -42,9 +42,6 @@ export declare class Player extends EventEmitter implements Disposable {
     get playing(): boolean;
     get loop(): boolean;
     set loop(v: boolean);
-    private setVideoVolumeFromLocal;
-    private setVideoOptions;
-    private registerNamedMap;
     mount(el?: PlayerOptions['el']): void;
     incVolume(v?: number): void;
     decVolume(v?: number): void;
@@ -60,6 +57,7 @@ export declare class Player extends EventEmitter implements Disposable {
     registerSettingItem(item: SettingItem, id?: string): void;
     registerContextMenuItem(item: ContextMenuItem, id?: string): void;
     registerControlItem(item: ControlItem, id?: string): void;
+    updateOptions(opts: PlayerOptions): void;
     dispose(): void;
     static EVENT: {
         readonly ENTER_FULLSCREEN: "enter-fullscreen";
@@ -86,6 +84,9 @@ export declare class Player extends EventEmitter implements Disposable {
         readonly LOADING_HIDE: "loading-hide";
         readonly MOUNTED: "mounted";
         readonly UPDATE_SIZE: "update-size";
+        readonly BEFORE_DISPOSE: "before-dispose";
+        readonly UPDATE_OPTIONS: "update-options";
+        readonly OPEN_EDGE: "open-edge";
     };
     static _utils: typeof _utils;
     static _components: typeof _components;

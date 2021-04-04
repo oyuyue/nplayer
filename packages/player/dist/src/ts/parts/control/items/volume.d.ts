@@ -9,7 +9,7 @@ export declare class VolumeControlItem extends Component {
     readonly tip: Tooltip;
     private readonly bar;
     private readonly rect;
-    constructor(container: HTMLElement, player: Player, barWidth?: number);
+    constructor(container: HTMLElement, player: Player);
     private onDragStart;
     private onDragging;
     private onVolumeChange;

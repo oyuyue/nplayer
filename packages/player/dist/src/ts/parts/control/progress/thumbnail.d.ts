@@ -22,5 +22,6 @@ export declare class Thumbnail extends Component {
     private rect;
     constructor(container: HTMLElement, opts: ThumbnailOptions);
     private getCurrentThumb;
+    updateOptions(opts: ThumbnailOptions): void;
     update(seconds: number, x: number, maxX: number): void;
 }

@@ -25,4 +25,7 @@ export declare const EVENT: {
     readonly LOADING_HIDE: "loading-hide";
     readonly MOUNTED: "mounted";
     readonly UPDATE_SIZE: "update-size";
+    readonly BEFORE_DISPOSE: "before-dispose";
+    readonly UPDATE_OPTIONS: "update-options";
+    readonly OPEN_EDGE: "open-edge";
 };

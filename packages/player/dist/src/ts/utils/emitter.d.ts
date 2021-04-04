@@ -14,6 +14,6 @@ export declare class EventEmitter {
     on(evt: string, fn: Function, context?: any, once?: boolean): Disposable;
     once(event: string, fn: Function, context?: any): Disposable;
     off(evt: string, fn?: Function, context?: any, once?: boolean): this;
-    removeAllListeners(evt: string): this;
+    removeAllListeners(evt?: string): this;
     private clearEvent;
 }
