@@ -67,6 +67,8 @@ export class SettingControlItem extends Component {
 
     this.homeElement = this.popover.panelElement.appendChild($());
 
+    this.items.forEach((item) => item.init && item.init(player, item));
+
     addDisposableListener(this, this.element, 'click', this.show);
     addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
 
