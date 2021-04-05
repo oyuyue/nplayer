@@ -1,10 +1,21 @@
 .rplayer_danmaku {
 
+  &_screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
   &_send {
     flex: 1;
     display: flex;
     align-items: center;
-    margin: 0 20px;
+    margin: 0 10px !important;
     font-size: 0;
     background: rgba(255, 255, 255, .15);
 
@@ -119,10 +130,9 @@
 
   &_item {
     position: absolute;
-    left: 0;
     white-space: nowrap;
     line-height: 1.125;
-    font-weight: bold;
+    letter-spacing: 1px;
     color: #fff;
     text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
     will-change: transform;
@@ -132,10 +142,4 @@
     }
   }
 
-}
-
-@keyframes danmaku-item {
-  to {
-    transform: translate3d(-100%,0,0);
-  }
 }

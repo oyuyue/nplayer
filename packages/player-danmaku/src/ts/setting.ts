@@ -36,8 +36,8 @@ export class DanmakuSettingControlItem {
     const { $, strToDom, clamp } = _utils;
 
     this.element = container.appendChild($());
-    this.element.appendChild(strToDom('<svg class="rplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9,22V24H7V22H9M13,22V24H11V22H13M17,22V24H15V22H17M20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20M11,13H9V15H11V13M19,13H13V15H19V13M7,9H5V11H7V9M19,9H9V11H19V9Z" /></svg>'));
-    this.tip = new _components.Tooltip(this.element);
+    this.element.appendChild(strToDom('<svg class="rplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21v2H7v-2h2m4 0v2h-2v-2h2m4 0v2h-2v-2h2M2 19V3h20v16m-11-7H9v2h2v-2m8 0h-6v2h6v-2M7 8H5v2h2V8m12 0H9v2h10V8z" /></svg>'));
+    this.tip = new _components.Tooltip(this.element, '弹幕设置');
     this.popover = new _components.Popover(this.element);
 
     _utils.addDisposableListener(this, this.element, 'click', this.show);
@@ -110,7 +110,7 @@ export class DanmakuSettingControlItem {
       this.speedSlider = new _components.Slider(rowElement, {
         stops: [{ value: 0, html: '慢' }, { value: 1, html: '快' }],
         change(v) {
-          player.danmaku.updateSpeed(clamp(-v + 1.5, 0.5, 1.5));
+          player.danmaku.updateSpeed(clamp(v + 0.5, 0.5, 1.5));
         },
       }, player);
       panelElement.appendChild(rowElement);
