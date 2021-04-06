@@ -1,4 +1,5 @@
 import type { Danmaku } from '.';
+import { Timer } from '../utils';
 
 export interface BulletOption {
   color?: string;
@@ -56,14 +57,14 @@ export class Bullet {
     style.fontSize = `${this.danmaku.fontsize}px`;
 
     if (this.type === 'scroll') {
-      this.element.addEventListener('transitionend', this.onTransitionEnd);
+      this.element.addEventListener('transitionend', this.end);
 
       this.width = this.element.getBoundingClientRect().width + 20;
       const danmakuWidth = this.danmaku.width;
       const prev = setting.prev;
-      this.startAt = this.danmaku.currentTime;
+      this.startAt = Timer.now();
       this.left = danmakuWidth;
-      this.speed = this.danmaku.opts.speed * (danmakuWidth + this.width) / this.danmaku.opts.duration;
+      this.speed = this.danmaku.speedScale * (danmakuWidth + this.width) / this.danmaku.opts.duration;
 
       if (prev && !prev.ended) {
         const s = (prev.length - danmakuWidth) - (this.startAt - prev.startAt) * prev.speed;
@@ -91,8 +92,8 @@ export class Bullet {
     return this;
   }
 
-  private onTransitionEnd = () => {
-    this.element.removeEventListener('animationend', this.onTransitionEnd);
+  end = () => {
+    this.element.removeEventListener('animationend', this.end);
     this.element.style.cssText = '';
     this.element.className = 'rplayer_danmaku_item';
     this.ended = true;
@@ -108,15 +109,15 @@ export class Bullet {
     this.element.style.visibility = 'hidden';
   }
 
-  pause(currentTime = this.danmaku.currentTime): void {
+  pause(time: number): void {
     const style = this.element.style;
     style.transition = 'transform 0s linear';
-    style.transform = `translate3d(-${(currentTime - this.startAt) * this.speed}px,0,0)`;
+    style.transform = `translate3d(-${(time - this.startAt) * this.speed}px,0,0)`;
   }
 
-  run(currentTime = this.danmaku.currentTime): void {
+  run(time: number): void {
     const style = this.element.style;
-    style.transition = `transform ${this.endAt - currentTime}s linear`;
+    style.transition = `transform ${this.endAt - time}s linear`;
     style.transform = `translate3d(-${this.length}px,0,0)`;
   }
 }

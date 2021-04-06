@@ -1,5 +1,5 @@
 import type { Player } from 'player';
-import { isDefaultColor } from '../utils';
+import { isDefaultColor, Timer } from '../utils';
 import { Bullet, BulletOption, BulletSetting } from './bullet';
 
 export interface DanmakuOptions {
@@ -59,8 +59,6 @@ export class Danmaku {
 
   trackHeight = 0;
 
-  speed = 0;
-
   private prevPauseTime = 0;
 
   constructor(private readonly player: Player, private _opts?: DanmakuOptions) {
@@ -76,11 +74,7 @@ export class Danmaku {
     if (this.enabled) this.enable();
 
     addDisposable(this, player.on('mounted', () => {
-      this.updateDefaultSpeed();
       this.updateTrack();
-    }));
-    addDisposable(this, player.on('update-size', () => {
-      this.updateDefaultSpeed();
     }));
   }
 
@@ -100,8 +94,8 @@ export class Danmaku {
     return this.opts.fontsize * this.opts.fontsizeScale;
   }
 
-  updateDefaultSpeed(): void {
-    this.speed = this.player.rect.width / this.opts.duration;
+  get speedScale(): number {
+    return this.playbackRate * this.opts.speed;
   }
 
   private createBullet(item: BulletOption, setting: BulletSetting): Bullet {
@@ -155,12 +149,13 @@ export class Danmaku {
     const min = currentTime - inc;
     const max = currentTime + inc;
     let item: BulletOption;
+    const time = Timer.now();
     for (let l = this.items.length; this.pos < l; this.pos++) {
       item = this.items[this.pos];
       if (item.time < min) continue;
       if (item.time > max) break;
       if (this.shouldDiscard(item)) continue;
-      if (!this.insert(item, currentTime) && !this.opts.unlimited) break;
+      if (!this.insert(item, time)) break;
     }
   }
 
@@ -174,11 +169,12 @@ export class Danmaku {
     this.aliveBullets.delete(bullet);
   }
 
-  insert(item: BulletOption, currentTime: number): boolean {
+  insert(item: BulletOption, time: number): boolean {
     if (!item.type || item.type === 'scroll') {
       const [track, bullet] = this.getShortestTrack();
-      if (!item.force && bullet && bullet.showAt > (currentTime + 2)) return false;
-      this.scrollBullets[track] = this.createBullet(item, { track, prev: bullet });
+      const canDiscard = !item.force && bullet && bullet.showAt > (time + 2);
+      if (canDiscard && !this.opts.unlimited) return false;
+      this.scrollBullets[track] = this.createBullet(item, { track, prev: canDiscard ? undefined : bullet });
       return true;
     } if (item.type === 'top') {
       let track = this.getEmptyTopTrack();
@@ -203,12 +199,14 @@ export class Danmaku {
   }
 
   pause = () => {
-    this.prevPauseTime = this.player.currentTime;
+    this.prevPauseTime = Timer.now();
+    Timer.pause();
     this.aliveBullets.forEach((bullet) => bullet.pause(this.prevPauseTime));
     this.paused = true;
   }
 
   resume = () => {
+    Timer.play();
     this.aliveBullets.forEach((bullet) => bullet.run(this.prevPauseTime));
     this.paused = false;
   }
