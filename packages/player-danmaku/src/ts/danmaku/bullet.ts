@@ -50,15 +50,15 @@ export class Bullet {
     this.type = opts.type || 'scroll';
     this.track = setting.track;
     if (opts.color) this.element.style.color = opts.color;
-    if (opts.type && opts.type !== 'scroll') this.element.classList.add('rplayer_danmaku_item-center');
     if (opts.isMe) this.element.classList.add('rplayer_danmaku_item-me');
     const style = this.element.style;
-    style.top = `${this.track * this.danmaku.trackHeight}px`;
     style.fontSize = `${this.danmaku.fontsize}px`;
 
-    if (this.type === 'scroll') {
+    if (this.type === 'bottom' || this.type === 'top') {
+      style[this.type] = `${this.track * this.danmaku.trackHeight}px`;
+      this.element.classList.add('rplayer_danmaku_item-center');
+    } else {
       this.element.addEventListener('transitionend', this.end);
-
       this.width = this.element.getBoundingClientRect().width + 20;
       const danmakuWidth = this.danmaku.width;
       const prev = setting.prev;
@@ -81,6 +81,8 @@ export class Bullet {
       const t = this.length / this.speed;
       this.showAt = this.startAt + (this.length - danmakuWidth) / this.speed;
       this.endAt = this.startAt + t;
+
+      this.updateScrollY();
       style.left = `${this.left}px`;
       style.transition = `transform ${t}s linear`;
       style.transform = `translate3d(-${this.length}px,0,0)`;
@@ -92,8 +94,15 @@ export class Bullet {
     return this;
   }
 
+  updateScrollY(bottomUp = this.danmaku.opts.bottomUp) {
+    if (this.type !== 'scroll') return;
+    const style = this.element.style;
+    style.top = style.bottom = '';
+    style[bottomUp ? 'bottom' : 'top'] = `${this.track * this.danmaku.trackHeight}px`;
+  }
+
   end = () => {
-    this.element.removeEventListener('animationend', this.end);
+    this.element.removeEventListener('transitionend', this.end);
     this.element.style.cssText = '';
     this.element.className = 'rplayer_danmaku_item';
     this.ended = true;

@@ -43,7 +43,7 @@ export class Danmaku {
 
   private readonly aliveBullets: Set<Bullet> = new Set();
 
-  private readonly scrollBullets: Bullet[] = [];
+  private readonly scrollBullets: (Bullet | undefined)[] = [];
 
   private readonly topBullets: Bullet[] = [];
 
@@ -110,10 +110,9 @@ export class Danmaku {
   }
 
   private getShortestTrack(): [number, Bullet | undefined] {
-    let item: Bullet;
-    let shortest: Bullet = this.scrollBullets[0];
+    let shortest = this.scrollBullets[0];
     if (!shortest || shortest.ended) return [0] as any;
-    for (let i = 1; i < this.track; ++i) {
+    for (let i = 1, item; i < this.track; ++i) {
       item = this.scrollBullets[i];
       if (!item || item.ended) return [i] as any;
       if (shortest.showAt > item.showAt) shortest = item;
@@ -167,6 +166,8 @@ export class Danmaku {
   recycleBullet(bullet: Bullet): void {
     this.bulletPool.push(bullet);
     this.aliveBullets.delete(bullet);
+    const bullets = bullet.type === 'top' ? this.topBullets : bullet.type === 'bottom' ? this.bottomBullets : this.scrollBullets;
+    if (bullets[bullet.track] === bullet) bullets[bullet.track] = undefined;
   }
 
   insert(item: BulletOption, time: number): boolean {
@@ -241,6 +242,7 @@ export class Danmaku {
 
   updateBottomUp(bottomUp: boolean): void {
     this.opts.bottomUp = bottomUp;
+    this.aliveBullets.forEach((b) => b.updateScrollY(bottomUp));
   }
 
   updateSpeed(v: number): void {
@@ -269,12 +271,24 @@ export class Danmaku {
     this.updateFontsize();
   }
 
+  clearAliveBullets() {
+    Array.from(this.aliveBullets).forEach((b) => b.end());
+  }
+
+  private onSeeked = () => {
+    this.clearAliveBullets();
+    this.pos = 0;
+  }
+
   enable(): void {
     this.enabled = true;
     this.player.on('time-update', this.fire);
     this.player.on('pause', this.pause);
     this.player.on('ended', this.pause);
     this.player.on('play', this.resume);
+    this.player.on('seeked', this.onSeeked);
+    this.player.on('loading-show', this.pause);
+    this.player.on('loading-hide', this.resume);
   }
 
   disable(): void {
@@ -283,5 +297,8 @@ export class Danmaku {
     this.player.off('pause', this.pause);
     this.player.off('ended', this.pause);
     this.player.off('play', this.resume);
+    this.player.off('seeked', this.onSeeked);
+    this.player.off('loading-show', this.pause);
+    this.player.off('loading-hide', this.resume);
   }
 }
