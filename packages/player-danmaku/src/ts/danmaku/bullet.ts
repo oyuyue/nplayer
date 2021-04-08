@@ -39,6 +39,10 @@ export class Bullet {
 
   ended = false;
 
+  color = '';
+
+  private centerTimer!: any;
+
   constructor(container: HTMLElement, private danmaku: Danmaku, opts: BulletOption, setting: BulletSetting) {
     this.element = container.appendChild(document.createElement('div'));
     this.element.className = 'rplayer_danmaku_item';
@@ -49,20 +53,18 @@ export class Bullet {
     this.element.textContent = opts.text;
     this.type = opts.type || 'scroll';
     this.track = setting.track;
-    if (opts.color) this.element.style.color = opts.color;
+    if (opts.color) this.element.style.color = this.color = opts.color;
     if (opts.isMe) this.element.classList.add('rplayer_danmaku_item-me');
     const style = this.element.style;
     style.fontSize = `${this.danmaku.fontsize}px`;
 
-    if (this.type === 'bottom' || this.type === 'top') {
-      style[this.type] = `${this.track * this.danmaku.trackHeight}px`;
-      this.element.classList.add('rplayer_danmaku_item-center');
-    } else {
+    this.startAt = Timer.now();
+
+    if (this.type === 'scroll') {
       this.element.addEventListener('transitionend', this.end);
       this.width = this.element.getBoundingClientRect().width + 20;
       const danmakuWidth = this.danmaku.width;
       const prev = setting.prev;
-      this.startAt = Timer.now();
       this.left = danmakuWidth;
       this.speed = this.danmaku.speedScale * (danmakuWidth + this.width) / this.danmaku.opts.duration;
 
@@ -86,6 +88,12 @@ export class Bullet {
       style.left = `${this.left}px`;
       style.transition = `transform ${t}s linear`;
       style.transform = `translate3d(-${this.length}px,0,0)`;
+    } else {
+      style[this.type as any] = this.pos();
+      this.element.classList.add('rplayer_danmaku_item-center');
+      const duration = this.danmaku.speedScale * this.danmaku.opts.duration;
+      this.endAt = this.startAt + duration;
+      this.centerTimer = setTimeout(this.end, duration * 1000);
     }
 
     this.ended = false;
@@ -94,16 +102,22 @@ export class Bullet {
     return this;
   }
 
+  private pos(): string {
+    return `${this.track * this.danmaku.trackHeight + 2}px`;
+  }
+
   updateScrollY(bottomUp = this.danmaku.opts.bottomUp) {
     if (this.type !== 'scroll') return;
     const style = this.element.style;
     style.top = style.bottom = '';
-    style[bottomUp ? 'bottom' : 'top'] = `${this.track * this.danmaku.trackHeight}px`;
+    style[bottomUp ? 'bottom' : 'top'] = this.pos();
   }
 
   end = () => {
     this.element.removeEventListener('transitionend', this.end);
+    clearTimeout(this.centerTimer);
     this.element.style.cssText = '';
+    this.color = '';
     this.element.className = 'rplayer_danmaku_item';
     this.ended = true;
     this.hide();
@@ -119,14 +133,22 @@ export class Bullet {
   }
 
   pause(time: number): void {
-    const style = this.element.style;
-    style.transition = 'transform 0s linear';
-    style.transform = `translate3d(-${(time - this.startAt) * this.speed}px,0,0)`;
+    if (this.type === 'scroll') {
+      const style = this.element.style;
+      style.transition = 'transform 0s linear';
+      style.transform = `translate3d(-${(time - this.startAt) * this.speed}px,0,0)`;
+    } else {
+      clearTimeout(this.centerTimer);
+    }
   }
 
   run(time: number): void {
-    const style = this.element.style;
-    style.transition = `transform ${this.endAt - time}s linear`;
-    style.transform = `translate3d(-${this.length}px,0,0)`;
+    if (this.type === 'scroll') {
+      const style = this.element.style;
+      style.transition = `transform ${this.endAt - time}s linear`;
+      style.transform = `translate3d(-${this.length}px,0,0)`;
+    } else {
+      this.centerTimer = setTimeout(this.end, (this.endAt - time) * 1000);
+    }
   }
 }

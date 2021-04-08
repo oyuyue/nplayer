@@ -13,8 +13,11 @@ export declare class Control extends Component {
     private readonly bgElement;
     private showTimer;
     private delayHidTime;
+    private latch;
     constructor(container: HTMLElement, player: Player);
     get showing(): boolean;
+    require(): void;
+    release(): void;
     show: () => void;
     hide: () => void;
     showTransient: () => void;

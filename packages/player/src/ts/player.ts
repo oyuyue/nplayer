@@ -19,7 +19,7 @@ import { SettingItem } from './parts/control/items/setting';
 
 import * as _utils from './utils';
 import * as _components from './components';
-import { CURRENT_VOLUME, I18n } from './features';
+import { CURRENT_VOLUME, I18n, Icon } from './features';
 
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
@@ -271,6 +271,10 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   static EVENT = EVENT;
+
+  static I18n = I18n;
+
+  static Icon = Icon;
 
   static _utils = _utils;
 

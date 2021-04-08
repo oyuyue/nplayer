@@ -365,6 +365,16 @@
       pointer-events: none;
     }
 
+    &:hover {
+      opacity: 1 !important;
+      pointer-events: initial !important;
+      cursor: default !important;
+    }
+
+    &:hover ~ &_bg {
+      opacity: 1 !important;
+    }
+
     &_bg {
       position: absolute;
       left: 0;

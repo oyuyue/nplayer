@@ -1,4 +1,5 @@
-export function isDefaultColor(color: string) {
+export function isDefaultColor(color: string): boolean {
+  if (!color) return true;
   color = color.toLowerCase();
   return color === '#fff' || color === '#ffffff';
 }

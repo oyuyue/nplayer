@@ -1,8 +1,8 @@
 import type {
-  Player, Popover, Tooltip, Checkbox, Slider,
+  Player, Popover, Tooltip, Checkbox, Slider, Disposable,
 } from 'player';
 
-export class DanmakuSettingControlItem {
+export class DanmakuSettingControlItem implements Disposable {
   static readonly id = 'danmaku-setting'
 
   private readonly element: HTMLElement;
@@ -33,14 +33,16 @@ export class DanmakuSettingControlItem {
 
   constructor(container: HTMLElement, private player: Player) {
     const { _utils, _components } = player.Player;
-    const { $, strToDom, clamp } = _utils;
+    const {
+      $, strToDom, clamp, addDisposableListener, addDisposable,
+    } = _utils;
 
     this.element = container.appendChild($());
     this.element.appendChild(strToDom('<svg class="rplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21v2H7v-2h2m4 0v2h-2v-2h2m4 0v2h-2v-2h2M2 19V3h20v16m-11-7H9v2h2v-2m8 0h-6v2h6v-2M7 8H5v2h2V8m12 0H9v2h10V8z" /></svg>'));
-    this.tip = new _components.Tooltip(this.element, '弹幕设置');
-    this.popover = new _components.Popover(this.element);
+    this.tip = addDisposable(this, new _components.Tooltip(this.element, '弹幕设置'));
+    this.popover = addDisposable(this, new _components.Popover(this.element));
 
-    _utils.addDisposableListener(this, this.element, 'click', this.show);
+    addDisposableListener(this, this.element, 'click', this.show);
 
     const panelElement = this.popover.panelElement;
     _utils.addClass(panelElement, 'danmaku_setting');
@@ -50,9 +52,9 @@ export class DanmakuSettingControlItem {
 
       let rowElement = row();
       rowElement.appendChild($('.danmaku_onoff_label', undefined, '开/关'));
-      new _components.Switch(rowElement, player.danmaku.enabled, (v) => player.danmaku[v ? 'enable' : 'disable']());
+      addDisposable(this, new _components.Switch(rowElement, player.danmaku.enabled, (v) => player.danmaku[v ? 'enable' : 'disable']()));
       const resetBtn = rowElement.appendChild($('.danmaku_reset', undefined, '恢复默认设置'));
-      resetBtn.addEventListener('click', () => {
+      addDisposableListener(this, resetBtn, 'click', () => {
         player.danmaku.resetOptions();
         this.update();
       });
@@ -61,71 +63,71 @@ export class DanmakuSettingControlItem {
       panelElement.appendChild(rowElement);
       rowElement.appendChild($(undefined, undefined, '按类型屏蔽'));
       rowElement = rowElement.appendChild($('.flex.align-center'));
-      this.scrollCB = new _components.Checkbox(rowElement, {
+      this.scrollCB = addDisposable(this, new _components.Checkbox(rowElement, {
         html: '滚动',
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('scroll');
         },
-      });
-      this.topCB = new _components.Checkbox(rowElement, {
+      }));
+      this.topCB = addDisposable(this, new _components.Checkbox(rowElement, {
         html: '顶部',
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('top');
         },
-      });
-      this.bottomCB = new _components.Checkbox(rowElement, {
+      }));
+      this.bottomCB = addDisposable(this, new _components.Checkbox(rowElement, {
         html: '底部',
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('bottom');
         },
-      });
-      this.colorCB = new _components.Checkbox(rowElement, {
+      }));
+      this.colorCB = addDisposable(this, new _components.Checkbox(rowElement, {
         html: '彩色',
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('color');
         },
-      });
+      }));
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '不透明度'));
-      this.opacitySlider = new _components.Slider(rowElement, {
+      this.opacitySlider = addDisposable(this, new _components.Slider(rowElement, {
         stops: [{ value: 0, html: '10%' }, { value: 1, html: '100%' }],
         change(value) {
           player.danmaku.updateOpacity(clamp(value + 0.1, 0.1, 1));
         },
-      }, player);
+      }, player));
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '显示区域'));
-      this.areaSlider = new _components.Slider(rowElement, {
+      this.areaSlider = addDisposable(this, new _components.Slider(rowElement, {
         stops: [{ value: 0, html: '1/4' }, { value: 0.33, html: '半屏' }, { value: 0.66, html: '3/4' }, { value: 1, html: '全屏' }],
         step: true,
         change(v) {
           v = v === 0 ? 0.25 : v === 0.33 ? 0.5 : v === 0.66 ? 0.75 : 1;
           player.danmaku.updateArea(v as any);
         },
-      }, player);
+      }, player));
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '弹幕速度'));
-      this.speedSlider = new _components.Slider(rowElement, {
+      this.speedSlider = addDisposable(this, new _components.Slider(rowElement, {
         stops: [{ value: 0, html: '慢' }, { value: 1, html: '快' }],
         change(v) {
           player.danmaku.updateSpeed(clamp(v + 0.5, 0.5, 1.5));
         },
-      }, player);
+      }, player));
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, '字体大小'));
-      this.fontsizeSlider = new _components.Slider(rowElement, {
+      this.fontsizeSlider = addDisposable(this, new _components.Slider(rowElement, {
         stops: [{ value: 0, html: '小' }, { value: 1, html: '大' }],
         change(v) {
           player.danmaku.updateFontsize(clamp(v + 0.5, 0.5, 1.5));
         },
-      }, player);
+      }, player));
       panelElement.appendChild(rowElement);
       rowElement = row();
-      this.unlimitedCB = new _components.Checkbox(rowElement, { html: '不限弹幕', change(v) { player.danmaku.updateUnlimited(v); } });
-      this.bottomUpCB = new _components.Checkbox(rowElement, { html: '从下到上', change(v) { player.danmaku.updateBottomUp(v); } });
+      this.unlimitedCB = addDisposable(this, new _components.Checkbox(rowElement, { html: '不限弹幕', change(v) { player.danmaku.updateUnlimited(v); } }));
+      this.bottomUpCB = addDisposable(this, new _components.Checkbox(rowElement, { html: '从下到上', change(v) { player.danmaku.updateBottomUp(v); } }));
       panelElement.appendChild(rowElement);
 
       this.update();
@@ -151,5 +153,12 @@ export class DanmakuSettingControlItem {
   show = () => {
     this.popover.show();
     this.tip.hide();
+  }
+
+  dispose() {
+    if (!this.player) return;
+    this.player.Player._utils.dispose(this);
+    this.player.Player._utils.removeNode(this.element);
+    this.player = null!;
   }
 }

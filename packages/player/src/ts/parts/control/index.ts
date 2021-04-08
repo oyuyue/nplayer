@@ -21,6 +21,8 @@ export class Control extends Component {
 
   private delayHidTime = 3000;
 
+  private latch = 0;
+
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
@@ -38,6 +40,17 @@ export class Control extends Component {
 
   get showing(): boolean {
     return !containClass(this.element, classHide);
+  }
+
+  require(): void {
+    this.latch++;
+  }
+
+  release(): void {
+    if (this.latch) {
+      this.latch--;
+      this.tryHide();
+    }
   }
 
   show = (): void => {
@@ -61,7 +74,7 @@ export class Control extends Component {
   }
 
   tryHide = (): void => {
-    if (this.player.video.played.length && !this.player.paused) {
+    if (this.player.video.played.length && !this.player.paused && !this.latch) {
       this.hide();
     }
   }

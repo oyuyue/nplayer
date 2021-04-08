@@ -1,4 +1,4 @@
-import type { Player } from 'player';
+import type { Disposable, Player } from 'player';
 import { isDefaultColor, Timer } from '../utils';
 import { Bullet, BulletOption, BulletSetting } from './bullet';
 
@@ -15,6 +15,7 @@ export interface DanmakuOptions {
   colors?: string[];
   duration?: number;
   items?: BulletOption[];
+  discard?: (b: BulletOption) => boolean;
 }
 
 export const defaultOptions: Required<DanmakuOptions> = {
@@ -30,28 +31,15 @@ export const defaultOptions: Required<DanmakuOptions> = {
   colors: ['#FE0302', '#FF7204', '#FFAA02', '#FFD302', '#FFFF00', '#A0EE00', '#00CD00', '#019899', '#4266BE', '#89D5FF', '#CC0273', '#222222', '#9B9B9B', '#FFFFFF'],
   duration: 5,
   items: [],
+  discard() { return false; },
 };
 
-export class Danmaku {
-  readonly element: HTMLElement;
+export class Danmaku implements Disposable {
+  element: HTMLElement;
 
   opts: Required<DanmakuOptions>;
 
   enabled: boolean;
-
-  private readonly bulletPool: Bullet[] = [];
-
-  private readonly aliveBullets: Set<Bullet> = new Set();
-
-  private readonly scrollBullets: (Bullet | undefined)[] = [];
-
-  private readonly topBullets: Bullet[] = [];
-
-  private readonly bottomBullets: Bullet[] = [];
-
-  private items: BulletOption[] = [];
-
-  private pos = 0;
 
   paused = false;
 
@@ -59,9 +47,23 @@ export class Danmaku {
 
   trackHeight = 0;
 
+  private bulletPool: Bullet[] = [];
+
+  private aliveBullets: Set<Bullet> = new Set();
+
+  private scrollBullets: (Bullet | undefined)[] = [];
+
+  private topBullets: number[] = [];
+
+  private bottomBullets: number[] = [];
+
+  private items: BulletOption[] = [];
+
+  private pos = 0;
+
   private prevPauseTime = 0;
 
-  constructor(private readonly player: Player, private _opts?: DanmakuOptions) {
+  constructor(private player: Player, private _opts?: DanmakuOptions) {
     this.opts = { ...defaultOptions, ..._opts };
     this.enabled = !this.opts.disable;
 
@@ -120,22 +122,16 @@ export class Danmaku {
     return [shortest.track, shortest];
   }
 
-  private getEmptyTopTrack(): number {
+  private getEmptyTrack(time: number, list: number[]): number {
     for (let i = 0; i < this.track; ++i) {
-      if (!this.topBullets[i]) return i;
-    }
-    return -1;
-  }
-
-  private getEmptyBottomTrack(): number {
-    for (let i = 0; i < this.track; ++i) {
-      if (!this.bottomBullets[i]) return i;
+      if (!list[i] || list[i] <= time) return i;
     }
     return -1;
   }
 
   private shouldDiscard(item: BulletOption): boolean {
     if (this.opts.blocked.includes(item.type || 'scroll')) return true;
+    if (this.opts.discard(item)) return true;
     if (!item.color || !this.opts.blocked.includes('color')) return false;
     return !isDefaultColor(item.color);
   }
@@ -163,11 +159,15 @@ export class Danmaku {
     this.track = Math.floor(this.player.rect.height * this.opts.area / this.trackHeight);
   }
 
+  private onSeeked = () => {
+    this.clearScreen();
+    this.pos = 0;
+  }
+
   recycleBullet(bullet: Bullet): void {
     this.bulletPool.push(bullet);
     this.aliveBullets.delete(bullet);
-    const bullets = bullet.type === 'top' ? this.topBullets : bullet.type === 'bottom' ? this.bottomBullets : this.scrollBullets;
-    if (bullets[bullet.track] === bullet) bullets[bullet.track] = undefined;
+    if (bullet.type === 'scroll' && this.scrollBullets[bullet.track] === bullet) this.scrollBullets[bullet.track] = undefined;
   }
 
   insert(item: BulletOption, time: number): boolean {
@@ -177,26 +177,26 @@ export class Danmaku {
       if (canDiscard && !this.opts.unlimited) return false;
       this.scrollBullets[track] = this.createBullet(item, { track, prev: canDiscard ? undefined : bullet });
       return true;
-    } if (item.type === 'top') {
-      let track = this.getEmptyTopTrack();
-      track = track === -1 && item.force ? 0 : track;
-      if (track !== -1) {
-        this.topBullets[track] = this.createBullet(item, { track });
-        return true;
-      }
-      return false;
     }
-    let track = this.getEmptyBottomTrack();
+
+    const list = item.type === 'top' ? this.topBullets : this.bottomBullets;
+    let track = this.getEmptyTrack(time, list);
     track = track === -1 && item.force ? 0 : track;
     if (track !== -1) {
-      this.bottomBullets[track] = this.createBullet(item, { track });
+      list[track] = this.createBullet(item, { track }).endAt;
       return true;
     }
     return false;
   }
 
   send(opts: BulletOption): void {
-    this.insert({ isMe: true, force: true, ...opts }, this.player.currentTime);
+    if (opts.time == null) opts.time = this.currentTime;
+    opts = { isMe: true, force: true, ...opts };
+    this.player.emit('danmaku-send', opts);
+    const i = this.addItem(opts);
+    if (this.pos > i) {
+      this.insert(opts, Timer.now());
+    }
   }
 
   pause = () => {
@@ -210,6 +210,24 @@ export class Danmaku {
     Timer.play();
     this.aliveBullets.forEach((bullet) => bullet.run(this.prevPauseTime));
     this.paused = false;
+  }
+
+  getItems(): BulletOption[] {
+    return this.items;
+  }
+
+  addItem(opts: BulletOption): number {
+    if (opts.time == null) return -1;
+    let index = 0;
+    for (let i = 0, l = this.items.length; i < l; i++) {
+      if (this.items[i].time > opts.time) {
+        index = i;
+        break;
+      }
+    }
+
+    this.items.splice(index, 0, opts);
+    return index;
   }
 
   appendItems(items: BulletOption[]): void {
@@ -253,14 +271,18 @@ export class Danmaku {
     if (this.opts.blocked.includes(type)) return;
     this.opts.blocked.push(type);
     this.aliveBullets.forEach((b) => {
-      if (b.type === type) b.hide();
+      if (b.type === type || (type === 'color' && !isDefaultColor(b.color))) {
+        b.hide();
+      }
     });
   }
 
   allowType(type: Parameters<Danmaku['blockType']>[0]): void {
     this.opts.blocked = this.opts.blocked.filter((t) => t !== type);
     this.aliveBullets.forEach((b) => {
-      if (b.type === type) b.show();
+      if (b.type === type || (type === 'color' && !isDefaultColor(b.color))) {
+        b.show();
+      }
     });
   }
 
@@ -271,16 +293,14 @@ export class Danmaku {
     this.updateFontsize();
   }
 
-  clearAliveBullets() {
+  clearScreen() {
     Array.from(this.aliveBullets).forEach((b) => b.end());
-  }
-
-  private onSeeked = () => {
-    this.clearAliveBullets();
-    this.pos = 0;
+    this.topBullets = [];
+    this.bottomBullets = [];
   }
 
   enable(): void {
+    if (this.enabled) return;
     this.enabled = true;
     this.player.on('time-update', this.fire);
     this.player.on('pause', this.pause);
@@ -293,6 +313,7 @@ export class Danmaku {
 
   disable(): void {
     this.enabled = false;
+    this.clearScreen();
     this.player.off('time-update', this.fire);
     this.player.off('pause', this.pause);
     this.player.off('ended', this.pause);
@@ -300,5 +321,21 @@ export class Danmaku {
     this.player.off('seeked', this.onSeeked);
     this.player.off('loading-show', this.pause);
     this.player.off('loading-hide', this.resume);
+  }
+
+  dispose(): void {
+    if (!this.player) return;
+    this.disable();
+    this.player.Player._utils.removeNode(this.element);
+    this.player.Player._utils.dispose(this);
+    this.player = null!;
+    this.bulletPool = null!;
+    this.aliveBullets = null!;
+    this.scrollBullets = null!;
+    this.topBullets = null!;
+    this.bottomBullets = null!;
+    this.items = null!;
+    this.element = null!;
+    this.opts = null!;
   }
 }

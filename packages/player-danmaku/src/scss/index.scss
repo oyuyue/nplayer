@@ -137,8 +137,16 @@
     text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
     will-change: transform;
 
+    &-center {
+      left: 50%;
+      transform: translateX(-50%);
+      will-change: initial;
+      z-index: 1;
+    }
+
     &-me {
-      outline: 1px solid;
+      outline: 2px solid;
+      z-index: 2;
     }
   }
 
