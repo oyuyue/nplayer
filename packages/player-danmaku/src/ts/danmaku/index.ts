@@ -39,7 +39,7 @@ export class Danmaku implements Disposable {
 
   opts: Required<DanmakuOptions>;
 
-  enabled: boolean;
+  enabled = false;
 
   paused = false;
 
@@ -65,7 +65,6 @@ export class Danmaku implements Disposable {
 
   constructor(private player: Player, private _opts?: DanmakuOptions) {
     this.opts = { ...defaultOptions, ..._opts };
-    this.enabled = !this.opts.disable;
 
     const { $, addDisposable } = player.Player._utils;
     this.element = player.element.appendChild($('.danmaku_screen'));
@@ -73,7 +72,7 @@ export class Danmaku implements Disposable {
     this.items = this.opts.items;
 
     this.resetOptions();
-    if (this.enabled) this.enable();
+    if (!this.opts.disable) this.enable();
 
     addDisposable(this, player.on('mounted', () => {
       this.updateTrack();
