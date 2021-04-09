@@ -21,8 +21,8 @@ export class Progress extends Component {
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.progress');
     this.bars = this.element.appendChild($('.progress_bars'));
-    this.playedBar = this.bars.appendChild($('.progress_played'));
     this.bufBar = this.bars.appendChild($('.progress_buf'));
+    this.playedBar = this.bars.appendChild($('.progress_played'));
 
     this.rect = new Rect(this.bars, player);
     this.thumbnail = new Thumbnail(this.element, player.opts.thumbnail);

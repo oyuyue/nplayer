@@ -608,12 +608,16 @@
       top: 0;
       bottom: 0;
       transform-origin: 0 0;
+      transform: scaleX(0);
     }
 
     &_played {
-      transform: scaleX(0);
       will-change: transform;
       background: var(--progress-color);
+    }
+
+    &_buf {
+      background: rgba(255, 255, 255, .5);
     }
 
     &_hover {

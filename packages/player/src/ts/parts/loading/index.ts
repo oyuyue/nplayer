@@ -32,6 +32,8 @@ export class Loading extends Component {
 
       if (show) this.tryShow();
     }));
+
+    if (player.video.readyState < 3) this.show();
   }
 
   get showing(): boolean {
