@@ -37,6 +37,7 @@
     right: 0;
     bottom: 0;
     top: 0;
+    z-index: 99999;
   }
 
   &-loading &_loading {
@@ -52,6 +53,7 @@
   &_video {
     width: 100%;
     max-height: 100%;
+    outline: none;
   }
 
   &_spacer {

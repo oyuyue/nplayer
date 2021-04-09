@@ -90,6 +90,21 @@ export declare class Player extends EventEmitter implements Disposable {
         readonly CONTROL_SHOW: "control-show";
         readonly CONTROL_HIDE: "control-hide";
     };
+    static I18n: {
+        defaultLang: string;
+        currentLang: string;
+        t(key: string, lang?: string | undefined): string;
+        add(lang: string, transData: Record<string, string>): void;
+        fallback(): void;
+        setCurrentLang(lang?: string | undefined): void;
+        setDefaultLang(lang?: string | undefined): void;
+    };
+    static Icon: {
+        register: (iconName: string, icon: HTMLElement, prefix?: string) => void;
+        unregister: (iconName: string) => boolean;
+    } & {
+        [key: string]: (cls?: string | undefined, prefix?: string | undefined) => HTMLElement;
+    };
     static _utils: typeof _utils;
     static _components: typeof _components;
     Player: typeof Player;
