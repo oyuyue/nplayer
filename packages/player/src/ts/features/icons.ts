@@ -1,5 +1,5 @@
 import { CLASS_PREFIX } from '../constants';
-import { strToDom, addClass } from '../utils';
+import { addClass, strToDom } from '../utils';
 
 const play = 'M6 2.914v18.172L20.279 12 6 2.914z';
 const pause = 'M14.333 20.133H19V3.8h-4.667M5 20.133h4.667V3.8H5v16.333z';
@@ -17,7 +17,11 @@ function svgTemplate(d: string): string {
 }
 
 function createIcon(icon: string) {
-  return strToDom(svgTemplate(icon));
+  return (cls?: string) => {
+    const i = strToDom(svgTemplate(icon));
+    if (cls) addClass(i, cls);
+    return i;
+  };
 }
 
 const Icon: {
@@ -26,11 +30,11 @@ const Icon: {
   // eslint-disable-next-line no-use-before-define
   unregister: typeof unregisterIcon;
 } & {
-  [key: string]: (cls?: string, prefix?: string) => HTMLElement;
+  [key: string]: (cls?: string) => HTMLElement;
 } = Object.create(null);
 
-function registerIcon(iconName: string, icon: HTMLElement, prefix = ''): void {
-  Icon[iconName] = (cls?: string, clsPrefix = prefix) => addClass(icon, cls, clsPrefix);
+function registerIcon(iconName: string, icon: (cls?: string) => HTMLElement): void {
+  Icon[iconName] = icon;
 }
 
 function unregisterIcon(iconName: string): boolean {

@@ -20,6 +20,7 @@ import { SettingItem } from './parts/control/items/setting';
 import * as _utils from './utils';
 import * as _components from './components';
 import { CURRENT_VOLUME, I18n, Icon } from './features';
+import { Poster } from './parts/poster';
 
 export class Player extends EventEmitter implements Disposable {
   private el: HTMLElement | null;
@@ -49,6 +50,10 @@ export class Player extends EventEmitter implements Disposable {
   readonly shortcut: Shortcut;
 
   readonly control: Control;
+
+  readonly loading: Loading;
+
+  readonly poster: Poster;
 
   readonly contextmenu: ContextMenu;
 
@@ -81,7 +86,8 @@ export class Player extends EventEmitter implements Disposable {
     this.webFullscreen = addDisposable(this, new WebFullscreen(this));
     this.shortcut = addDisposable(this, new Shortcut(this, this.opts.shortcut));
     this.toast = addDisposable(this, new Toast(this.element));
-    addDisposable(this, new Loading(this.element, this));
+    this.loading = addDisposable(this, new Loading(this.element, this));
+    this.poster = addDisposable(this, new Poster(this.element, this));
 
     if (this.opts.plugins) {
       this.opts.plugins.forEach((plugin) => plugin.apply(this));
@@ -98,6 +104,10 @@ export class Player extends EventEmitter implements Disposable {
     }).filter(Boolean);
 
     this.control = addDisposable(this, new Control(this.element, this));
+
+    addDisposable(this, this.on(EVENT.LOADED_METADATA, () => {
+      if (this.currentTime < 0.3) this.currentTime = 0.3;
+    }));
   }
 
   get currentTime(): number {
@@ -110,7 +120,6 @@ export class Player extends EventEmitter implements Disposable {
     if (!diff) return;
     this.video.currentTime = clamp(v, 0, this.duration);
     this.emit(EVENT.TIME_UPDATE);
-    this.toast.show(`${diff < 0 ? '-' : '+'} ${Math.round(Math.abs(diff))}s`, 'left-bottom', 500);
   }
 
   get duration(): number {
@@ -185,10 +194,12 @@ export class Player extends EventEmitter implements Disposable {
 
   forward(v = this.opts.seekStep): void {
     this.currentTime += v;
+    this.toast.show(`+${v}s`, 'left-bottom', 500);
   }
 
   rewind(v = this.opts.seekStep): void {
     this.currentTime -= v;
+    this.toast.show(`-${v}s`, 'left-bottom', 500);
   }
 
   play(): Promise<void> {
