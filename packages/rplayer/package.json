@@ -1,6 +1,6 @@
 {
   "name": "rplayer",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "responsive video player",
   "main": "dist/index.min.js",
   "typings": "dist/src/index.d.ts",

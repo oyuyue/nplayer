@@ -6,15 +6,15 @@ function run(file, args, opts) {
   return execa.sync(file, args, { stdio: 'inherit', ...opts }).stdout
 }
 
-function red(text) {
+function error(text) {
   console.error(chalk.red(text))
 }
 
-function green(text) {
+function success(text) {
   console.log(chalk.green(text))
 }
 
-function cyan(text) {
+function info(text) {
   console.log(chalk.cyan(text))
 }
 
@@ -23,9 +23,9 @@ function getPkgDir(target) {
 }
 
 module.exports = {
-  red,
-  green,
-  cyan,
+  error,
+  success,
+  info,
   run,
   getPkgDir
 }

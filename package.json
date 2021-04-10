@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "0.6.0",
   "workspaces": [
     "packages/*"
   ],
@@ -9,10 +10,8 @@
     "build:rplayer": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=rplayer",
     "build:danmaku": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=rplayer-danmaku",
     "test": "jest",
-    "bootstrap": "lerna bootstrap",
     "changelog": "conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
-    "publish": "lerna publish from-package --force-publish=* --exact --yes",
-    "release": "bash scripts/release.sh",
+    "release": "node ./scripts/release.js",
     "lint": "eslint packages/*/src/**/*.ts"
   },
   "devDependencies": {
@@ -32,6 +31,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.2",
     "cssnano": "^5.0.0",
+    "enquirer": "^2.3.6",
     "eslint": "^7.19.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",

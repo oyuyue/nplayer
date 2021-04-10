@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const { getPkgDir } = require('./utils')
-const version = require('../lerna.json').version
+const version = require('../package.json').version
 
 const rename = (target) => {
   return target.replace(/^rplayer/i, 'RPlayer').replace(/-([A-Za-z])/g, (_, c) => c.toUpperCase())

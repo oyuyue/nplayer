@@ -1,12 +1,12 @@
 const path = require('path')
 const fs = require('fs-extra')
-const { red, run } = require('./utils')
+const { error, run } = require('./utils')
 
 const name = require('minimist')(process.argv.slice(2)).name
 
 function main(target) {
   if (!target) {
-    red('请指定将要打包的项目')
+    error('请指定将要打包的项目')
     return
   }
 
@@ -49,19 +49,6 @@ function main(target) {
       fs.writeFileSync(f, replaced, { encoding: 'utf8' })
     }
   })
-
-  // const extractorConfig = ExtractorConfig.loadFileAndPrepare(path.resolve(pkgDir, 'api-extractor.json'))
-  // const extractorResult = Extractor.invoke(extractorConfig, {
-  //   localBuild: true,
-  //   showVerboseMessages: true
-  // })
-
-  // if (!extractorResult.succeeded) {
-  //   red(`API Extractor completed with ${extractorResult.errorCount} errors` +
-  //   ` and ${extractorResult.warningCount} warnings`)
-  // }
-
-  // fs.removeSync(path.resolve(pkgDir, 'dist', 'src'))
 }
 
 if (name) main(name)
