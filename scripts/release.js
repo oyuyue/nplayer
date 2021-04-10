@@ -43,10 +43,10 @@ async function main() {
   info('\nBuilding all packages...')
   buildPackages()
 
-  run(`yarn`, ['changelog'])
-
   info('\nUpdating versions...')
   updateVersions(version)
+
+  run(`yarn`, ['changelog'])
 
   info('\nPublishing packages...')
   publishPackages()
@@ -83,11 +83,12 @@ function updateVersions(version) {
     fs.writeJsonSync(f, p, { spaces: 2 })
   })
   pkg.version = version
-  fs.writeJsonSync('../package.json', pkg, { spaces: 2 })
+  fs.writeJsonSync(path.resolve(__dirname, '../package.json'), pkg, { spaces: 2 })
 }
 
 function publishPackages() {
   getValidPkgDirs().forEach(d => {
+    info(`\nPublishing ${d}\n`)
     run('npm', ['publish'], { cwd: path.resolve(packagesDir, d) })
   })
 }
