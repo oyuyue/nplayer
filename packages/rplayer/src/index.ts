@@ -1,7 +1,12 @@
-import '../scss/index.scss';
-import RPlayer from './ts/rplayer';
-export { default as Events } from './ts/events';
+import './scss/index.scss';
 
-export * from './ts/options';
+export { Player as default } from './ts/player';
 
-export default RPlayer;
+export * from './ts/player';
+export * from './ts/features/i18n';
+export * from './ts/features/shortcut';
+export * from './ts/types';
+export * from './ts/parts';
+export * from './ts/constants';
+export * from './ts/features';
+export * from './ts/components';

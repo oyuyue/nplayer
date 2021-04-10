@@ -1,15 +1,22 @@
+import { Disposable } from '../types';
+
 type Fn = (ev: PointerEvent) => any;
 
-export default class Drag {
-  private readonly dom: HTMLElement;
-  private readonly start: Fn;
-  private readonly move: Fn;
-  private readonly end: Fn;
+export class Drag implements Disposable {
+  private element: HTMLElement;
+
+  private start: Fn;
+
+  private move: Fn;
+
+  private end: Fn | undefined;
+
   private pending = false;
-  private lastEv: PointerEvent;
+
+  private lastEv!: PointerEvent;
 
   constructor(dom: HTMLElement, start: Fn, move: Fn, end?: Fn) {
-    this.dom = dom;
+    this.element = dom;
     this.start = start;
     this.move = move;
     this.end = end;
@@ -21,8 +28,8 @@ export default class Drag {
 
   private downHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
-    this.dom.setPointerCapture(ev.pointerId);
-    this.dom.addEventListener('pointermove', this.moveHandler, true);
+    this.element.setPointerCapture(ev.pointerId);
+    this.element.addEventListener('pointermove', this.moveHandler, true);
     this.start(ev);
   };
 
@@ -41,16 +48,22 @@ export default class Drag {
 
   private upHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
-    this.dom.releasePointerCapture(ev.pointerId);
-    this.dom.removeEventListener('pointermove', this.moveHandler, true);
+    this.element.releasePointerCapture(ev.pointerId);
+    this.element.removeEventListener('pointermove', this.moveHandler, true);
 
     if (this.end) this.end(ev);
   };
 
-  destroy(): void {
-    this.dom.removeEventListener('pointerdown', this.downHandler, true);
-    this.dom.removeEventListener('pointerup', this.upHandler, true);
-    this.dom.removeEventListener('pointercancel', this.upHandler, true);
-    this.dom.removeEventListener('pointermove', this.moveHandler, true);
+  dispose(): void {
+    if (!this.element) return;
+    this.element.removeEventListener('pointerdown', this.downHandler, true);
+    this.element.removeEventListener('pointerup', this.upHandler, true);
+    this.element.removeEventListener('pointercancel', this.upHandler, true);
+    this.element.removeEventListener('pointermove', this.moveHandler, true);
+    this.start = null!;
+    this.move = null!;
+    this.end = null!;
+    this.lastEv = null!;
+    this.element = null!;
   }
 }

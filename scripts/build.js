@@ -1,6 +1,5 @@
 const path = require('path')
 const fs = require('fs-extra')
-const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
 const { red, run } = require('./utils')
 
 const name = require('minimist')(process.argv.slice(2)).name

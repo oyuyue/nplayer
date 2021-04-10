@@ -1,71 +1,23 @@
-.rplayer_dan {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  font-family: SimHei, "Microsoft JhengHei", Arial, Helvetica, sans-serif;
+.rplayer_danmaku {
 
-  &_pop {
-    padding: 5px 8px;
-    font-size: 12px;
-  }
-
-  &_mbs {
-    margin-bottom: 3px;
-  }
-
-  &_onoff {
-    display: flex;
-    align-items: center;
-
-    :first-child {
-      margin-right: 8px;
-    }
+  &_screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    overflow: hidden;
+    pointer-events: none;
   }
 
   &_send {
     flex: 1;
     display: flex;
     align-items: center;
-    margin: 0 20px;
+    margin: 0 10px !important;
+    font-size: 0;
     background: rgba(255, 255, 255, .15);
-
-    .rplayer_tray {
-      padding: 5px;
-    }
-
-    .rplayer_pop  {
-      color: #fff;
-    }
-
-    svg {
-      fill: currentColor;
-    }
-
-    &_type {
-      display: flex;
-      align-items: center;
-      margin-top: 5px;
-      margin-bottom: 15px;
-
-      > div {
-        margin-right: 8px;
-        padding: 2px 8px;
-        border: 1px solid rgba(255, 255, 255, .5);
-        transition: opacity .2s ease;
-      }
-
-      > div:hover {
-        opacity: .7;
-      }
-
-      &-active {
-        background: rgba(255, 255, 255, .3);
-      }
-    }
 
     input {
       flex: 1;
@@ -81,114 +33,121 @@
       }
     }
 
-    &_color {
+    &_btn {
+      padding: 0 10px;
+      font-size: 12px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .rplayer_popover_panel {
+      padding: 0 10px;
+    }
+
+    .rplayer_checkbox {
+      margin-top: 3px;
+    }
+
+    .rplayer_checkbox + .rplayer_checkbox {
+      margin-left: 8px;
+    }
+  }
+
+  &_colors {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &_color {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    translate: transform .2s ease;
+
+    &_row {
       display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-top: 5px;
+      align-items: stretch;
+      margin: 5px 0;
 
-      > div {
-        width: 1.7em;
-        height: 1.7em;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        box-shadow: 0 0 1px 1px currentColor;
-        transition: opacity .2s ease;
+      input {
+        width: 0;
+        flex: 3;
+        padding: 0 5px;
+        letter-spacing: 1px;
+        border: 1px solid rgba(255, 255, 255, .8);
       }
+    }
 
-      > div:hover {
-        opacity: .7;
-      }
+    &_preview {
+      height: 20px;
+      margin-left: 5px;
+      flex: 2;
+    }
 
-      &-active {
-        outline: 2px dotted currentColor;
-      }
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &_row {
+    margin: 8px 0;
+    justify-content: space-between;
+  }
+
+  &_onoff_label {
+    margin-right: 5px;
+    margin-top: -2px;
+  }
+
+  &_reset {
+    margin-left: auto;
+    padding: 2px 5px;
+    border: 1px solid rgba(255, 255, 255, .5);
+    transition: opacity .2s ease;
+
+    &:hover {
+      opacity: .7;
     }
   }
 
   &_setting {
-    &_slider {
-      display: flex;
-      align-items: center;
-      margin: 15px 0;
-      padding-right: 5px;
+    padding: 6px 8px;
 
-      > :first-child {
-        margin-right: 8px;
-      }
-
-      > :last-child {
-        min-width: 160px;
-      }
+    .rplayer_slider {
+      margin: 3px 10px;
     }
 
-    &_item {
-      margin: 10px 0;
+    .rplayer_checkbox {
+      margin-top: 3px;
     }
-
-    &_check {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      > * {
-        margin-right: 10px;
-      }
-
-      > :last-child {
-        margin-right: 0;
-      }
-    }
-
-    &_reset {
-      padding: 2px 5px;
-      border: 1px solid rgba(255, 255, 255, .5);
-      transition: color .2s ease, opacity .2s ease;
-
-      &:hover {
-        border-color: var(--rplayer-primary);
-        color: var(--rplayer-primary);
-        opacity: .8;
-      }
+  
+    .rplayer_checkbox + .rplayer_checkbox {
+      margin-left: 8px;
     }
   }
 
-  &_flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &_d {
+  &_item {
     position: absolute;
-    user-select: none;
     white-space: nowrap;
-    will-change: transform;
-    font-weight: bold;
     line-height: 1.125;
+    letter-spacing: 1px;
     color: #fff;
     text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
-
-    &-me {
-      border: 1px solid;
-      padding: 0 1px;
-    }
+    will-change: transform;
 
     &-center {
       left: 50%;
       transform: translateX(-50%);
-      will-change: auto;
+      will-change: initial;
+      z-index: 1;
+    }
+
+    &-me {
+      outline: 2px solid;
+      z-index: 2;
     }
   }
 
-  &_tray {
-    &-active {
-      background: #448AFF !important;
-      background: var(--rplayer-primary) !important;
-
-      .rplayer_tray_tip {
-        opacity: 0 !important;
-      }
-    }
-  }
 }

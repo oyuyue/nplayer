@@ -1,1 +1,0 @@
-{"version":3,"file":"dot.d.ts","sourceRoot":"","sources":["../../src/ts/controls/dot.ts"],"names":[],"mappings":"AAGA,MAAM,CAAC,OAAO,OAAO,GAAG;IACtB,QAAQ,CAAC,GAAG,EAAE,WAAW,CAAC;gBAEd,SAAS,CAAC,EAAE,MAAM;IAK9B,IAAI,CAAC,CAAC,EAAE,MAAM,GAAG,IAAI;CAGtB"}

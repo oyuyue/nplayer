@@ -6,7 +6,8 @@ const baseConfig = require('./webpack.base')
 
 module.exports = env => {
   const pkgDir = getPkgDir(env.target)
-  const fixtureDir = path.resolve(__dirname, '..', 'fixtures', env.fixture || env.target)
+  const fixtureDir = path.resolve(__dirname, '..', 'fixtures')
+  const targetDir = path.resolve(fixtureDir, env.fixture || env.target)
 
   /**@type {import('webpack').Configuration} */
   const config = {
@@ -26,7 +27,7 @@ module.exports = env => {
 
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.resolve(fixtureDir, 'index.html')
+        template: path.resolve(targetDir, 'index.html')
       })
     ]
   }

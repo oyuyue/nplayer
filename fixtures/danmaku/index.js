@@ -1,5 +1,5 @@
 window.onload = function () {
-  const danmaku = new window['player-danmaku']['default']({
+  const danmaku = new RPlayerDanmaku.Plugin({
     items: [
       { text: '美的让人窒息 ', time: 184, color: '#2196F3' },
       {
@@ -531,7 +531,7 @@ window.onload = function () {
       { text: 'stalking 跟踪 hare野兔', time: 25, color: '#2196F3' },
     ].sort((a, b) => a.time - b.time)
   })
-  const player = new window.player.Player({
+  const player = new RPlayer.Player({
     plugins: [danmaku]
   })
 

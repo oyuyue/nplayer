@@ -4,16 +4,20 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 const { getPkgDir } = require('./utils')
 const version = require('../lerna.json').version
 
+const rename = (target) => {
+  return target.replace(/^rplayer/i, 'RPlayer').replace(/-([A-Za-z])/g, (_, c) => c.toUpperCase())
+}
+
 module.exports = (env) => {
   const pkgDir = getPkgDir(env.target)
-  
+
   /**@type {import('webpack').Configuration} */
   const config = {
     entry: path.resolve(pkgDir, 'src', 'index.ts'),
 
     output: {
       libraryTarget: 'umd',
-      library: env.target,
+      library: rename(env.target),
       globalObject: 'this'
     },
 
@@ -31,11 +35,7 @@ module.exports = (env) => {
           exclude: /node_modules/,
           use: [
             { loader: 'babel-loader', options: {
-              presets: [['@babel/preset-env', {
-                targets: {
-                    "ie": "11"
-                }
-            }]]
+              presets: ['@babel/preset-env']
             } },
             { loader: 'ts-loader', options: { configFile: path.resolve(pkgDir, 'tsconfig.json') } }
           ]
@@ -47,10 +47,29 @@ module.exports = (env) => {
             {
               loader: 'css-loader',
               options: {
-                importLoaders: 1,
+                sourceMap: false,
+                importLoaders: 2,
               },
             },
-            'sass-loader',
+            {
+              loader: "postcss-loader",
+              options: {
+                sourceMap: false,
+                postcssOptions: {
+                  plugins: [require('autoprefixer'), require('cssnano')({ preset: ['default',{
+                    discardComments: {
+                      removeAll: true
+                    }
+                  }] })]
+                },
+              },
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: false,
+              }
+            },
           ],
         },
       ]

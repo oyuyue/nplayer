@@ -1,6 +1,2 @@
-declare module '*.svg' {
-  const content: string;
-  export default content;
-}
-
-declare const __VERSION: string;
+declare const __VERSION__: string;
+declare const ResizeObserver: any;

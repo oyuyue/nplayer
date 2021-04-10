@@ -1,14 +1,8 @@
-@mixin respond($breakpoint) {
-  @if $breakpoint == phone {
-      @media only screen and (max-width: 768px) { @content };
-  }
-  @if $breakpoint == tablet {
-      @media only screen and (max-width: 1023px) and (min-width: 769px) { @content };
-  }
-  @if $breakpoint == desktop {
-      @media only screen and (min-width: 1024px) and (max-width: 1215px) { @content };
-  }
-  @if $breakpoint == widescreen {
-    @media only screen and (min-width: 1216px) { @content };
-  }
+@mixin check-mark($w: 5px, $h: 12px, $borderWidth: 1px, $color: #fff) {
+  display: inline-block;
+  transform: rotate(45deg);
+  height: $h;
+  width: $w;
+  border-bottom: $borderWidth solid $color;
+  border-right: $borderWidth solid $color;
 }

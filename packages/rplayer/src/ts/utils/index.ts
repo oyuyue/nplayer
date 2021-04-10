@@ -1,128 +1,83 @@
-export { default as Drag } from './drag';
+import { Disposable } from '../types';
+import { DomListener } from './dom';
 
-export function noop(): void {}
+export * from './drag';
+export * from './rect';
+export * from './dom';
+export * from './is';
+export * from './env';
+export * from './emitter';
+export * from './component';
 
 export function clamp(n: number, lower = 0, upper = 1): number {
   return Math.max(Math.min(n, upper), lower);
 }
 
-export function isStr(o: any): o is string {
-  return typeof o === 'string';
+const disposableMap: Map<any, Array<Disposable>> = new Map();
+
+export function addDisposable<T extends Disposable>(key: any, disposable: T): T {
+  if (!disposableMap.has(key)) disposableMap.set(key, []);
+  disposableMap.get(key)!.push(disposable);
+  return disposable;
 }
 
-export function isNum(o: any): o is number {
-  return typeof o === 'number' && !isNaN(o);
-}
-
-export function isFn(o: any): o is Function {
-  return typeof o === 'function';
-}
-
-export function isObj(o: any): o is Record<string, any> {
-  return typeof o === 'object' && o != null;
-}
-
-export function isElement(o: any): o is Element {
-  return o instanceof Element;
-}
-
-export function isBool(o: any): o is boolean {
-  return typeof o === 'boolean';
-}
-
-export function isCatchable(o: any): o is { catch: Function } {
-  return isObj(o) && isFn(o.catch);
-}
-
-export function clampNeg(n: number, max: number, defaults = max): number {
-  if (n == null) return defaults;
-  if (n >= 0) return Math.min(n, max);
-
-  while (n < 0) {
-    n += max;
+export function dispose(key: any): void {
+  if (disposableMap.has(key)) {
+    disposableMap.get(key)!.forEach((item) => item.dispose());
+    disposableMap.delete(key);
   }
-
-  return n + 1;
 }
 
-export function findIndex<T>(
-  arr: T[],
-  predicate: (value: T, index: number, obj: T[]) => boolean
-): number {
-  if (arr.findIndex) return arr.findIndex(predicate);
-
-  for (let i = 0, l = arr.length; i < l; i++) {
-    if (predicate(arr[i], i, arr)) return i;
-  }
-
-  return -1;
+export function addDisposableListener<K extends keyof GlobalEventHandlersEventMap>(
+  key: any,
+  node: EventTarget,
+  type: K,
+  handler: (event: GlobalEventHandlersEventMap[K]) => void,
+  useCapture?: boolean): DomListener;
+export function addDisposableListener(
+  key: any,
+  el: EventTarget,
+  type: string,
+  listener: EventListener,
+  options?: boolean | AddEventListenerOptions,
+): DomListener {
+  const domListener = new DomListener(el, type, listener, options);
+  if (key) addDisposable(key, domListener);
+  return domListener;
 }
 
-export function getDomOr<T extends HTMLElement>(
-  dom: HTMLElement | string,
-  orReturn?: (() => T) | T
-): T {
-  let ret: T = dom as T;
-  if (typeof dom === 'string') ret = document.querySelector(dom);
-  return ret || (isFn(orReturn) ? orReturn() : orReturn);
+export function applyMixins(derivedCtor: any, constructors: any[]) {
+  constructors.forEach((baseCtor) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
+      Object.defineProperty(
+        derivedCtor.prototype,
+        name,
+        Object.getOwnPropertyDescriptor(baseCtor.prototype, name)
+          || Object.create(null),
+      );
+    });
+  });
 }
 
-export function htmlDom(
-  html = '',
-  tag = 'span',
-  className?: string
-): HTMLElement {
-  const d = document.createElement(tag);
-  d.innerHTML = html;
-  if (className) d.classList.add(className);
-  return d;
-}
-
-export function measureElementSize(
-  dom: HTMLElement
-): { width: number; height: number } {
-  const clone = dom.cloneNode(true) as HTMLElement;
-  clone.style.position = 'absolute';
-  clone.style.opacity = '0';
-  clone.removeAttribute('hidden');
-
-  dom.parentNode.appendChild(clone);
-
-  const width = clone.scrollWidth;
-  const height = clone.scrollHeight;
-
-  dom.parentNode.removeChild(clone);
-
-  return { width, height };
-}
-
-export function newElement<T extends HTMLElement>(
-  className?: string,
-  tag: keyof HTMLElementTagNameMap = 'div'
-): T {
-  const dom = document.createElement(tag) as T;
-  if (className) dom.classList.add(className);
-  return dom;
-}
-
-const domParser = new DOMParser();
-export function strToDom(
-  str: string,
-  type: SupportedType = 'image/svg+xml'
-): HTMLElement {
-  return domParser.parseFromString(str, type).firstChild as HTMLElement;
-}
-
-export function svgToDom(str: string, className?: string): HTMLElement {
-  const dom = strToDom(str);
-  if (className) {
-    if (dom.classList) {
-      dom.classList.add(className);
-    } else {
-      dom.setAttribute('class', className);
+export function throttle(fn: Function, ctx?: any): any {
+  let pending = false;
+  let first = true;
+  let args: typeof arguments | null = null;
+  return function () {
+    args = arguments;
+    if (first) {
+      first = false;
+      return fn.apply(ctx, args);
     }
-  }
-  return dom;
+
+    if (pending) return;
+    pending = true;
+
+    requestAnimationFrame(() => {
+      pending = false;
+      fn.apply(ctx, args);
+    });
+  };
 }
 
 export function padStart(v: string | number, len = 2, str = '0'): string {
@@ -146,87 +101,6 @@ export function formatTime(seconds: number): string {
   }
 
   return `${Math.floor(seconds / 3600)}:${padStart(
-    Math.floor((seconds % 3600) / 60)
+    Math.floor((seconds % 3600) / 60),
   )}:${padStart(seconds % 60)}`;
 }
-
-export const ua = {
-  isEdge: window.navigator.userAgent.indexOf('Edge') > -1,
-  isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
-  isIE: /MSIE|Trident/.test(navigator.userAgent),
-};
-
-export const makeDictionary = <T>(obj: T): T => {
-  (obj as any).__ = undefined;
-  delete (obj as any).__;
-  return obj;
-};
-
-export const getClientWH = (): [number, number] => {
-  return [document.body.clientWidth, document.body.clientHeight];
-};
-
-export const safeJsonParse = <T extends Record<string, any>>(
-  str: string,
-  orRet?: T
-): T | string => {
-  try {
-    return JSON.parse(str);
-  } catch (e) {
-    return orRet || str;
-  }
-};
-
-export const safeJsonStringify = (
-  obj: Record<string, any>,
-  orRet = ''
-): string => {
-  try {
-    return JSON.stringify(obj);
-  } catch (e) {
-    return orRet;
-  }
-};
-
-export const getDeep = <T>(object: Record<string, any>, path: string): T => {
-  return path.split('.').reduce((obj, key) => obj && obj[key], object);
-};
-
-export const extend = (
-  target: Record<string, any> = {},
-  source: Record<string, any>
-): Record<string, any> => {
-  if (!source) return target;
-
-  Object.keys(source).forEach((key) => {
-    if (isObj(source[key]) && !Array.isArray(source[key])) {
-      if (Object.keys(target).indexOf(key) < 0) {
-        target = { ...target, [key]: {} };
-      }
-      target[key] = extend(target[key], source[key]);
-    } else {
-      target = { ...target, [key]: source[key] };
-    }
-  });
-
-  return target;
-};
-
-export const ajax = (
-  url: string,
-  cb: (err: any, data?: string) => any
-): void => {
-  const xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function (): void {
-    if (xhr.readyState == 4) {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        cb(null, xhr.responseText);
-      } else {
-        cb({});
-      }
-    }
-  };
-  xhr.onerror = (err): void => cb(err);
-  xhr.open('GET', url, true);
-  xhr.send();
-};
