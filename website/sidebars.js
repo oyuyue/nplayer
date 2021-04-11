@@ -2,8 +2,9 @@ module.exports = {
   docs: [
     {
       type: 'category',
-      label: 'Docusaurus Tutorial',
+      label: 'RPlayer 文档',
       items: [
+        'installation',
         'getting-started',
         'create-a-page',
         'create-a-document',

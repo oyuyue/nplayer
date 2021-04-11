@@ -11,72 +11,82 @@ module.exports = {
   projectName: 'rplayer', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'RPlayer',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'RPlayer',
         src: 'img/logo.svg',
       },
       items: [
         {
           to: 'docs/',
           activeBasePath: 'docs',
-          label: 'Docs',
+          label: '文档',
           position: 'left',
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
+          to: 'api/',
+          activeBasePath: 'api',
+          label: 'API',
+          position: 'left',
+        },
+        {
+          to: 'api/',
+          activeBasePath: 'api',
+          label: '弹幕文档',
+          position: 'left',
+        },
+        {
+          to: 'playground/',
+          activeBasePath: 'playground',
+          label: '在线演示',
+          position: 'left',
         },
       ],
     },
     footer: {
+      logo: {
+        alt: 'Rplayer',
+        src: 'img/logo.svg',
+        href: 'https://github.com/woopen/RPlayer',
+      },
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: '文档',
           items: [
             {
-              label: 'Getting Started',
+              label: '快速开始',
               to: 'docs/',
             },
           ],
         },
         {
-          title: 'Community',
+          title: '社区',
           items: [
             {
               label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              href: 'https://stackoverflow.com/questions/tagged/rplayer',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              label: 'GitHub',
+              href: 'https://github.com/woopen/RPlayer/issues',
             },
           ],
         },
         {
-          title: 'More',
+          title: '更多',
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/woopen/RPlayer',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} `,
     },
   },
+  plugins: ['docusaurus-plugin-sass'],
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -94,7 +104,7 @@ module.exports = {
             'https://github.com/facebook/docusaurus/edit/master/website/blog/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/custom.scss'),
         },
       },
     ],

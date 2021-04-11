@@ -1,15 +1,11 @@
 ---
-title: Getting Started
+title: 快速开始
 slug: /
 ---
 
-## Step 1: Generate a new Docusaurus site
+## 介绍
 
-If you haven't already, generate a new Docusaurus site using the classic template:
-
-```shell
-npx @docusaurus/init@latest init my-website classic
-```
+RPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三方框架依赖，
 
 ## Step 2: Start your Docusaurus site
 

@@ -2,4 +2,5 @@ dist
 demo
 build
 scripts
+website
 *.js

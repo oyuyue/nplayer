@@ -17,9 +17,14 @@
     "@docusaurus/core": "2.0.0-alpha.72",
     "@docusaurus/preset-classic": "2.0.0-alpha.72",
     "@mdx-js/react": "^1.6.21",
+    "@rplayer/danmaku": "^0.6.1",
     "clsx": "^1.1.1",
+    "hls.js": "^1.0.0",
+    "prism-react-renderer": "^1.2.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-icons": "^4.2.0",
+    "rplayer": "^0.6.1"
   },
   "browserslist": {
     "production": [
@@ -34,6 +39,7 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "docusaurus-plugin-sass": "^0.1.12"
   }
 }
