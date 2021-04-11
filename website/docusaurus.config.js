@@ -24,19 +24,19 @@ module.exports = {
           position: 'left',
         },
         {
-          to: 'api/',
+          to: 'docs/',
           activeBasePath: 'api',
           label: 'API',
           position: 'left',
         },
         {
-          to: 'api/',
+          to: 'docs/',
           activeBasePath: 'api',
           label: '弹幕文档',
           position: 'left',
         },
         {
-          to: 'playground/',
+          to: 'docs/',
           activeBasePath: 'playground',
           label: '在线演示',
           position: 'left',
