@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[11],{83:function(a){a.exports=JSON.parse('{"allTagsPath":"/RPlayer/blog/tags","slug":"facebook","name":"facebook","count":1,"permalink":"/RPlayer/blog/tags/facebook"}')}}]);
