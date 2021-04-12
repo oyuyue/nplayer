@@ -13,7 +13,7 @@ const QuickSocialLinksView = (props) => {
       <FaGithub
         className={styles.Icon}
         onClick={() => {
-          window.open(siteConfig.customFields.githubUrl, "_blank");
+          window.open('https://github.com/woopen/rplayer', "_blank");
         }}
       />
     </div>

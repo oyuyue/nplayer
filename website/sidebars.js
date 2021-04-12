@@ -1,17 +1,40 @@
 module.exports = {
   docs: [
+    'installation',
+    'getting-started',
+    'shortcut',
+    'contextmenu',
+    'control',
+    'settings',
+    'poster',
+    'thumbnail',
+    'ie11',
+    'theme',
+    'plugin',
+    'streaming',
     {
       type: 'category',
-      label: 'RPlayer 文档',
+      label: '生态',
+      collapsed: false,
       items: [
-        'installation',
-        'getting-started',
-        'create-a-page',
-        'create-a-document',
-        'create-a-blog-post',
-        'markdown-features',
-        'thank-you',
+        'ecosystem/danmaku',
+      ],
+    },
+    {
+      type: 'category',
+      label: '例子',
+      collapsed: false,
+      items: [
+        'examples/quantity-switch',
+        'examples/screenshot',
+        'examples/mirroring',
       ],
     },
   ],
+  api: [
+    'api/config',
+    'api/events',
+    'api/attrs',
+    'api/methods',
+  ]
 };

@@ -14,3 +14,9 @@
 .Container {
   margin-left: 30px;
 }
+
+@media screen and (max-width: 997px) {
+  .displayOnlyInLargeViewport {
+    display: none !important;
+  }
+}

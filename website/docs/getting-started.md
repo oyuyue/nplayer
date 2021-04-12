@@ -15,7 +15,7 @@ RPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三
 npm i -S rplayer
 ```
 
-更多安装方式，请查看 安装 章节。
+更多安装方式，请查看 [安装章节](installation.md)。
 
 ## 开始使用
 

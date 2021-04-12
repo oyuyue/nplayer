@@ -1,4 +1,5 @@
 import React from 'react';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import CodeBlock from '../../../components/CodeBlock'
 import PrimaryButton from '../../../components/PrimaryButton';
 import styles from './styles.module.css';
@@ -27,7 +28,7 @@ const StartCoding = () => {
         </div>
         <PrimaryButton
           className={styles.LearnMoreBtn}
-          to={'/docs/introduction'}>
+          to={useBaseUrl('/docs/')}>
           更多用法
         </PrimaryButton>
       </div>

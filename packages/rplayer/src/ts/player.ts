@@ -291,6 +291,8 @@ export class Player extends EventEmitter implements Disposable {
 
   static _components = _components;
 
+  static Player = Player;
+
   Player!: typeof Player;
 }
 

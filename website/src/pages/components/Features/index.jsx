@@ -27,7 +27,7 @@ const features = [
     imageUrl: 'img/undraw_functions_egi3.svg',
     description: (
       <>
-        全屏、网页全屏、快捷键、画中画、速度控制、上下文菜单、视频缩略图、国际化等等。
+        全屏、网页全屏、快捷键、画中画、Airplay、速度控制、上下文菜单、视频缩略图、国际化等等。
       </>
     ),
   },

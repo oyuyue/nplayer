@@ -74,12 +74,6 @@
   margin-right: 20px;
 }
 
-@media (max-width: 996px) {
-  .AstronautImage {
-    opacity: 0;
-  }
-}
-
 @media (max-width: 768px) {
   .Container {
     padding: 8rem 0 0 0;

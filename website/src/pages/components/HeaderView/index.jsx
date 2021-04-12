@@ -1,5 +1,6 @@
 import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import PrimaryButton from '../../../components/PrimaryButton';
 import GithubButton from '../../../components/GithubButton';
 import styles from './styles.module.css';
@@ -21,12 +22,12 @@ const HeaderView = () => {
         <div className={styles.ButtonContainer}>
           <PrimaryButton
             className={styles.GetStartedButton}
-            to={'/docs/introduction'}>
+            to={useBaseUrl('/docs/')}>
             快速开始
           </PrimaryButton>
           <GithubButton
             className={styles.GithubButton}
-            to={siteConfig.customFields.githubUrl}
+            to={'https://github.com/woopen/rplayer'}
           />
         </div>
       </div>
