@@ -5,14 +5,14 @@ slug: /
 
 ## 介绍
 
-RPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三方框架依赖。
+NPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三方框架依赖。
 
 ## 安装
 
-可以使用如下命令快速安装 RPlayer。
+可以使用如下命令快速安装 NPlayer。
 
 ```bash
-npm i -S rplayer
+npm i -S nplayer
 ```
 
 更多安装方式，请查看 [安装章节](installation.md)。
@@ -22,9 +22,9 @@ npm i -S rplayer
 安装好就可以开始使用了。
 
 ```js
-import Player from 'rplayer'
+import Player from 'nplayer'
 
-const player = new RPlayer({
+const player = new NPlayer({
   videoAttrs: { src: 'VIDEO SRC' }
 })
 
@@ -39,11 +39,11 @@ player.mount(document.body)
 也可以自己提供 `video` 元素。
 
 ```js
-import Player from 'rplayer'
+import Player from 'nplayer'
 
 const video = document.createElement('video')
 video.src = 'VIDEO SRC'
-const player = new RPlayer({ video, videoAttrs: { autoplay: 'true' } })
+const player = new NPlayer({ video, videoAttrs: { autoplay: 'true' } })
 
 player.mount(document.body)
 ```
@@ -60,11 +60,11 @@ player.mount(document.body)
 <script src=""></script>
 ```
 
-RPlayer 包是 umd 格式，所以在没使用 amd 或 commonjs 的时候，可以通过 `window.RPlayer` 访问到。
+NPlayer 包是 umd 格式，所以在没使用 amd 或 commonjs 的时候，可以通过 `window.NPlayer` 访问到。
 
 ```js
-const player = new RPlayer.Player({ videoAttrs: { src: 'VIDEO SRC' }})
+const player = new RNlayer.Player({ videoAttrs: { src: 'VIDEO SRC' }})
 player.mount(document.body)
 ```
 
-需要注意，在通过 CDN 的方式使用时，Player 类是 RPlayer 对象的 `Player` 属性。
+需要注意，在通过 CDN 的方式使用时，Player 类是 NPlayer 对象的 `Player` 属性。

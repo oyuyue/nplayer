@@ -4,12 +4,12 @@ title: 事件
 
 `player` 对象会触发一些事件，可以通过 `on`、`once` 方法进行监听，`emit` 方法用与触发自定义事件或已定义事件。
 
-`RPlayer` 类上有 `EVENT` 属性，它上面定义了所有 `player` 会触发的事件名。比如 `RPlayer.EVENT.PLAY` 的值是 `play` 字符串，当视频播放时会触发该事件。
+`NPlayer` 类上有 `EVENT` 属性，它上面定义了所有 `player` 会触发的事件名。比如 `NPlayer.EVENT.PLAY` 的值是 `play` 字符串，当视频播放时会触发该事件。
 
 `EVENT` 对象属性与事件名对应关系是，事件名是 `EVENT` 属性的小写，并将 `_` 变成 `-`。如，`RATE_CHANGE` 等于 `rate-change`。
 
 ```js
-import Player, { EVENT } from 'rplayer'
+import Player, { EVENT } from 'nplayer'
 
 const player = Player()
 

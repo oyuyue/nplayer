@@ -17,7 +17,7 @@ const HeaderView = () => {
       className={styles.Container}
       style={{ height: windowHeight > 800 ? windowHeight : undefined }}>
       <div style={{paddingBottom: '5rem'}}>
-        <div className={styles.HeaderTitle}>RPlayer</div>
+        <div className={styles.HeaderTitle}>NPlayer</div>
         <div className={styles.DescriptionText}>可定制、插件化、美观、实用的视频播放器</div>
         <div className={styles.ButtonContainer}>
           <PrimaryButton
@@ -27,7 +27,7 @@ const HeaderView = () => {
           </PrimaryButton>
           <GithubButton
             className={styles.GithubButton}
-            to={'https://github.com/woopen/rplayer'}
+            to={'https://github.com/woopen/nplayer'}
           />
         </div>
       </div>

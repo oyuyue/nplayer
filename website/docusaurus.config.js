@@ -1,21 +1,21 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'RPlayer',
+  title: 'NPlayer',
   tagline: 'video player',
   url: 'https://woopen.github.io',
-  baseUrl: '/rplayer/',
+  baseUrl: '/nplayer/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'woopen', // Usually your GitHub org/user name.
-  projectName: 'rplayer', // Usually your repo name.
+  projectName: 'nplayer', // Usually your repo name.
   themeConfig: {
     hideableSidebar: true,
     navbar: {
-      title: 'RPlayer',
+      title: 'NPlayer',
       hideOnScroll: true,
       logo: {
-        alt: 'RPlayer',
+        alt: 'NPlayer',
         src: 'img/logo.svg',
       },
       items: [
@@ -47,9 +47,9 @@ module.exports = {
     },
     footer: {
       logo: {
-        alt: 'Rplayer',
+        alt: 'NPlayer',
         src: 'img/logo.svg',
-        href: 'https://github.com/woopen/rplayer',
+        href: 'https://github.com/woopen/nplayer',
       },
       style: 'dark',
       links: [
@@ -67,11 +67,11 @@ module.exports = {
           items: [
             {
               label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/rplayer',
+              href: 'https://stackoverflow.com/questions/tagged/nplayer',
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/woopen/rplayer/issues',
+              href: 'https://github.com/woopen/nplayer/issues',
             },
           ],
         },
@@ -80,7 +80,7 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/woopen/rplayer',
+              href: 'https://github.com/woopen/nplayer',
             },
           ],
         },
@@ -96,7 +96,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/woopen/rplayer/edit/main/website/',
+          editUrl: 'https://github.com/woopen/nplayer/edit/main/website/',
         },
         // blog: {
         //   showReadingTime: true,

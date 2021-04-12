@@ -4,7 +4,7 @@ import CodeBlock from '../../../components/CodeBlock'
 import PrimaryButton from '../../../components/PrimaryButton';
 import styles from './styles.module.css';
 
-const code = `import Player from 'rplayer'
+const code = `import Player from 'nplayer'
 
 const player = new Player({
   videoAttrs: { src: 'VIDEO_SRC' }
@@ -19,11 +19,11 @@ const StartCoding = () => {
       <div className={styles.Content}>
         <div className={styles.Title}>快速上手</div>
         <div>
-          <div className={styles.Tagline}>第一步：安装 RPlayer</div>
-          <CodeBlock code="npm i -S rplayer" />
+          <div className={styles.Tagline}>第一步：安装 NPlayer</div>
+          <CodeBlock code="npm i -S nplayer" />
         </div>
         <div>
-          <div className={styles.Tagline}>第二步：使用 RPlayer</div>
+          <div className={styles.Tagline}>第二步：使用 NPlayer</div>
           <CodeBlock code={code} />
         </div>
         <PrimaryButton
