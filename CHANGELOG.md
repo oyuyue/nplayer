@@ -1,3 +1,12 @@
+## [0.0.1](https://github.com/woopen/RPlayer/compare/v0.6.1...v0.0.1) (2021-04-12)
+
+
+### Features
+
+* rename to nplayer ([e6bad1d](https://github.com/woopen/RPlayer/commit/e6bad1d0e7c3bc7f04298cbbf4aae01234a7bdc9))
+
+
+
 # [0.6.0](https://github.com/woopen/RPlayer/compare/v0.5.0...v0.6.0) (2020-07-12)
 
 
