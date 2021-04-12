@@ -5,20 +5,66 @@ slug: /
 
 ## 介绍
 
-RPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三方框架依赖，
+RPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三方框架依赖。
 
-## Step 2: Start your Docusaurus site
+## 安装
 
-Run the development server in the newly created `my-website` folder:
+可以使用如下命令快速安装 RPlayer。
 
-```shell
-cd my-website
-
-npx docusaurus start
+```bash
+npm i -S rplayer
 ```
 
-Open `docs/getting-started.md` and edit some lines. The site reloads automatically and display your changes.
+更多安装方式，请查看 安装 章节。
 
-## That's it!
+## 开始使用
 
-Congratulations! You've successfully run and modified your Docusaurus project.
+安装好就可以开始使用了。
+
+```js
+import Player from 'rplayer'
+
+const player = new RPlayer({
+  videoAttrs: { src: 'VIDEO SRC' }
+})
+
+// player.mount('#app')
+player.mount(document.body)
+```
+
+上面是创建一个播放器最简单的方法，创建一个 `player` 对象，然后将它挂载到 `document.body` 中。
+
+其中 `videoAttrs` 参数会直接传给 `video` 元素，我们这里制定了 `video` 元素的 `src` 属性。
+
+也可以自己提供 `video` 元素。
+
+```js
+import Player from 'rplayer'
+
+const video = document.createElement('video')
+video.src = 'VIDEO SRC'
+const player = new RPlayer({ video, videoAttrs: { autoplay: 'true' } })
+
+player.mount(document.body)
+```
+
+在自己提供 `video` 元素的时候，依旧可以使用 `videoAttrs` 参数，将属性添加到这个 `video` 元素上。
+
+`player.mount` 方法可以将播放器挂载到页面上，它接收一个参数，可以是一个字符串或一个 dom 元素。当是字符串时，将会自动查找该 dom 元素。
+
+## 通过 CDN 的方式
+
+还可以通过 CDN 来使用。
+
+```html
+<script src=""></script>
+```
+
+RPlayer 包是 umd 格式，所以在没使用 amd 或 commonjs 的时候，可以通过 `window.RPlayer` 访问到。
+
+```js
+const player = new RPlayer.Player({ videoAttrs: { src: 'VIDEO SRC' }})
+player.mount(document.body)
+```
+
+需要注意，在通过 CDN 的方式使用时，Player 类是 RPlayer 对象的 `Player` 属性。
