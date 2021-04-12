@@ -16,7 +16,7 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["packages/rplayer"],
+        "paths": ["packages/nplayer"],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }

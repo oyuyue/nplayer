@@ -1,0 +1,153 @@
+.nplayer_danmaku {
+
+  &_screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  &_send {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 0 10px !important;
+    font-size: 0;
+    background: rgba(255, 255, 255, .15);
+
+    input {
+      flex: 1;
+      width: 100px;
+      padding: 0;
+      color: currentColor;
+      background: transparent;
+      border: 0;
+      outline: 0;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, .5);
+      }
+    }
+
+    &_btn {
+      padding: 0 10px;
+      font-size: 12px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .nplayer_popover_panel {
+      padding: 0 10px;
+    }
+
+    .nplayer_checkbox {
+      margin-top: 3px;
+    }
+
+    .nplayer_checkbox + .nplayer_checkbox {
+      margin-left: 8px;
+    }
+  }
+
+  &_colors {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &_color {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    translate: transform .2s ease;
+
+    &_row {
+      display: flex;
+      align-items: stretch;
+      margin: 5px 0;
+
+      input {
+        width: 0;
+        flex: 3;
+        padding: 0 5px;
+        letter-spacing: 1px;
+        border: 1px solid rgba(255, 255, 255, .8);
+      }
+    }
+
+    &_preview {
+      height: 20px;
+      margin-left: 5px;
+      flex: 2;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &_row {
+    margin: 8px 0;
+    justify-content: space-between;
+  }
+
+  &_onoff_label {
+    margin-right: 5px;
+    margin-top: -2px;
+  }
+
+  &_reset {
+    margin-left: auto;
+    padding: 2px 5px;
+    border: 1px solid rgba(255, 255, 255, .5);
+    transition: opacity .2s ease;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
+
+  &_setting {
+    padding: 6px 8px;
+
+    .nplayer_slider {
+      margin: 3px 10px;
+    }
+
+    .nplayer_checkbox {
+      margin-top: 3px;
+    }
+  
+    .nplayer_checkbox + .nplayer_checkbox {
+      margin-left: 8px;
+    }
+  }
+
+  &_item {
+    position: absolute;
+    white-space: nowrap;
+    line-height: 1.125;
+    letter-spacing: 1px;
+    color: #fff;
+    text-shadow: rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px;
+    will-change: transform;
+
+    &-center {
+      left: 50%;
+      transform: translateX(-50%);
+      will-change: initial;
+      z-index: 1;
+    }
+
+    &-me {
+      outline: 2px solid;
+      z-index: 2;
+    }
+  }
+
+}

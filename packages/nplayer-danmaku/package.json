@@ -1,0 +1,28 @@
+{
+  "name": "@nplayer/danmaku",
+  "version": "0.0.1",
+  "description": "video player",
+  "main": "dist/index.min.js",
+  "typings": "dist/src/index.d.ts",
+  "license": "MIT",
+  "authors": "wopen <nepow@foxmail.com>",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "url": "https://github.com/woopen/nplayer.git",
+    "type": "git"
+  },
+  "keywords": [
+    "player",
+    "video",
+    "html5",
+    "danmaku"
+  ],
+  "homepage": "https://github.com/woopen/nplayer",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}

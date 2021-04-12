@@ -14,13 +14,30 @@
       resize: both;
       overflow: scroll;
     }
+    .quantity {
+      position: relative;
+      padding: 0 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      opacity: .8;
+    }
+    .quantity:hover {
+      opacity: 1;
+    }
+    .quantity_item {
+      padding: 5px 20px;
+      font-weight: normal;
+    }
+    .quantity_item:hover {
+      background: rgba(255, 255, 255, .3);
+    }
   </style>
   <script src="../polyfill.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.js"></script>
 </head>
 <body>
   <div id="app"></div>
-  <script src="nplayer/dist/index.min.js"></script>
-  <script defer src="danmaku/index.js"></script>
+  <script defer src="nplayer/index.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ const { getPkgDir } = require('./utils')
 const version = require('../package.json').version
 
 const rename = (target) => {
-  return target.replace(/^rplayer/i, 'RPlayer').replace(/-([A-Za-z])/g, (_, c) => c.toUpperCase())
+  return target.replace(/^nplayer/i, 'NPlayer').replace(/-([A-Za-z])/g, (_, c) => c.toUpperCase())
 }
 
 module.exports = (env) => {

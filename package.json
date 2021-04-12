@@ -1,14 +1,14 @@
 {
   "private": true,
-  "version": "0.6.1",
+  "version": "0.0.1",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "serve:rplayer": "webpack serve --config ./scripts/webpack.dev.js --env target=rplayer",
-    "serve:danmaku": "webpack serve --config ./scripts/webpack.dev.js --env target=rplayer-danmaku  fixture=danmaku",
-    "build:rplayer": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=rplayer",
-    "build:danmaku": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=rplayer-danmaku",
+    "serve:nplayer": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer",
+    "serve:danmaku": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-danmaku  fixture=danmaku",
+    "build:nplayer": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=nplayer",
+    "build:danmaku": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=nplayer-danmaku",
     "test": "jest",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "release": "node ./scripts/release.js",
