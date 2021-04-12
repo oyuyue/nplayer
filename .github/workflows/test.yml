@@ -38,10 +38,10 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install Dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
 
       - name: Test
-        run: npm test
+        run: yarn test
