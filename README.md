@@ -1,7 +1,8 @@
 # (WIP) RPlayer
 
-[![npm version](https://img.shields.io/npm/v/rplayer.svg)](https://github.com/woopen/RPlayer)
-[![Test](https://github.com/woopen/RPlayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/RPlayer/actions/workflows/test.yml)
+[![npm version](https://img.shields.io/npm/v/rplayer.svg)](https://github.com/woopen/RPlayer) 
+[![gzip size](https://img.badgesize.io/https:/unpkg.com/rplayer/dist/index.min.js?amp%3Blabel=size&compression=gzip)](https:/unpkg.com/rplayer/dist/index.min.js) 
+[![Test](https://github.com/woopen/RPlayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/RPlayer/actions/workflows/test.yml) 
 
 美观、功能强大的视频播放器
 
