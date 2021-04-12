@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[11],{57:function(e,a,n){"use strict";n.r(a);var s=n(0),t=n.n(s),c=n(63),i=n.n(c);a.default=()=>t.a.createElement("div",{className:i.a.Container},t.a.createElement("img",{className:i.a.Img,src:"img/preview.jpg"}),t.a.createElement("div",{className:i.a.Text},"\u70b9\u51fb \ud83d\udc46 \u5728\u7ebf\u9884\u89c8"))}}]);
