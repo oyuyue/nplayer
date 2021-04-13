@@ -24,3 +24,11 @@
   padding: 0 var(--ifm-spacing-horizontal);
   max-width: var(--ifm-container-width);
 }
+
+.InnerContainer > :first-child {
+  margin-left: calc(var(--ifm-navbar-item-padding-horizontal) * -1);
+}
+
+.InnerContainer > :last-child {
+  margin-right: calc(var(--ifm-navbar-item-padding-horizontal) * -1);
+}

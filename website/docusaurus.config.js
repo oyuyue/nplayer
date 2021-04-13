@@ -3,7 +3,7 @@ module.exports = {
   title: 'NPlayer',
   tagline: 'video player',
   url: 'https://woopen.github.io',
-  baseUrl: '/nplayer/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',

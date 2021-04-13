@@ -15,6 +15,7 @@ import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import useWindowSize, { windowSizes } from '@theme/hooks/useWindowSize';
 import NavbarItem from '@theme/NavbarItem';
 import Logo from '@theme/Logo';
+import { useLocation, useRouteMatch } from "react-router-dom";
 import IconMenu from '@theme/IconMenu';
 import QuickSocialLinksView from './components/QuickSocialLinksView';
 import styles from './styles.module.css'; // retrocompatible with v1
@@ -63,6 +64,11 @@ function Navbar() {
   const hasSearchNavbarItem = items.some((item) => item.type === 'search');
   const { leftItems, rightItems } = splitNavItemsByPosition(items);
 
+  let innerClass = ''
+  if (useLocation().pathname === '/') {
+    innerClass = styles.InnerContainer
+  }
+
   return (
     <nav
       ref={navbarRef}
@@ -73,9 +79,8 @@ function Navbar() {
         [styles.navbarHideable]: hideOnScroll,
         [styles.navbarHidden]: hideOnScroll && !isNavbarVisible,
       })}>
-      <div className={clsx('navbar__inner', styles.InnerContainer)}>
+      <div className={clsx('navbar__inner', innerClass)}>
         <div className="navbar__items">
-
           <Logo
             className="navbar__brand"
             imageClassName="navbar__logo"
