@@ -30,7 +30,7 @@
     "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.2",
-    "cssnano": "^5.0.0",
+    "cssnano": "^5.0.1",
     "enquirer": "^2.3.6",
     "eslint": "^7.24.0",
     "eslint-config-airbnb-base": "^14.2.1",
