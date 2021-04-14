@@ -1,4 +1,4 @@
-# (WIP) NPlayer
+# NPlayer <img width="20" height="20" src="website/static/img/logo.svg" />
 
 [![npm version](https://img.shields.io/npm/v/nplayer)](https://github.com/woopen/nplayer) 
 [![gzip size](https://img.badgesize.io/https:/unpkg.com/nplayer/dist/index.min.js?amp%3Blabel=size&compression=gzip)](https:/unpkg.com/nplayer/dist/index.min.js) 
@@ -7,7 +7,7 @@
 
 NPlayer 是一个可定制、插件化、美观、实用的视频播放器。
 
-![](https://i.loli.net/2020/07/12/QW1pa3O2JUAGyT6.png)
+![](website/static/img/preview.jpg)
 
 ## 兼容
 
