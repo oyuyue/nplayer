@@ -16,7 +16,7 @@ const HeaderView = () => {
     <div
       className={styles.Container}
       style={{ height: windowHeight > 800 ? windowHeight : undefined }}>
-      <div style={{paddingBottom: '5rem'}}>
+      <div className={styles.ContainerLeft}>
         <div className={styles.HeaderTitle}>NPlayer</div>
         <div className={styles.DescriptionText}>可定制、插件化、美观、实用的视频播放器</div>
         <div className={styles.ButtonContainer}>

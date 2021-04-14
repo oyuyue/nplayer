@@ -74,11 +74,20 @@
   margin-right: 20px;
 }
 
+.ContainerLeft {
+  padding-bottom: 5rem;
+}
+
 @media (max-width: 768px) {
   .Container {
-    padding: 8rem 0 0 0;
+    flex-wrap: wrap;
+    padding: 0;
     justify-content: center;
     text-align: center;
+  }
+
+  .ContainerLeft {
+    padding-bottom: 0;
   }
 
   .HeaderTitle {

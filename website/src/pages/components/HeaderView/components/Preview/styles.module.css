@@ -15,8 +15,8 @@
   margin-left: 30px;
 }
 
-@media screen and (max-width: 997px) {
-  .displayOnlyInLargeViewport {
-    display: none !important;
+@media (max-width: 768px) {
+  .Container {
+    margin-left: 0;
   }
 }

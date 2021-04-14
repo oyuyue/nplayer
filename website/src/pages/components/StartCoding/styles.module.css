@@ -40,3 +40,9 @@
     padding: 4em 0 !important;
   }
 }
+
+@media screen and (max-width: 997px) {
+  .Content {
+    padding: 0 !important;
+  }
+}
