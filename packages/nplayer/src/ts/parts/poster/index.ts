@@ -35,8 +35,8 @@ export class Poster extends Component {
       player.play();
     });
 
-    addDisposable(this, player.on(EVENT.CANPLAY, this.hide));
-    addDisposable(this, player.on(EVENT.LOADED_METADATA, this.hide));
+    addDisposable(this, player.on(EVENT.CANPLAY, this.tryHide));
+    addDisposable(this, player.on(EVENT.LOADED_METADATA, this.tryHide));
     addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => {
       if (player.opts.poster && player.opts.poster !== this.poster && player.video.readyState < 3) {
         this.tryToPlayed = false;
@@ -61,13 +61,17 @@ export class Poster extends Component {
     }
   }
 
+  private tryHide = () => {
+    if (!this.tryToPlayed) return;
+    this.hide();
+  }
+
   show() {
     show(this.element);
     show(this.playElement);
   }
 
-  hide = () => {
-    if (!this.tryToPlayed) return;
+  hide() {
     hide(this.element);
   }
 }

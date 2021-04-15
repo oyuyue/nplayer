@@ -1,5 +1,5 @@
 import { ContextMenuItem } from '../parts/contextmenu';
-import { ControlItem } from '../parts/control';
+import { ControlItemEntry } from '../parts/control';
 import { SettingItem } from '../parts/control/items/setting';
 import { ThumbnailOptions } from '../parts/control/progress/thumbnail';
 import { Player } from '../player';
@@ -14,7 +14,7 @@ export interface PlayerOptions {
     video?: HTMLVideoElement;
     videoAttrs?: Record<string, any>;
     thumbnail?: ThumbnailOptions;
-    controls?: (ControlItem | string)[];
+    controls?: (ControlItemEntry | string)[];
     settings?: (SettingItem | string)[];
     contextMenus?: (ContextMenuItem | string)[];
     contextMenuToggle?: boolean;

@@ -6,9 +6,9 @@ export interface ContextMenuItem {
     disabled?: boolean;
     invisible?: boolean;
     checked?: boolean;
-    init?: (item: ContextMenuItem, player: Player) => void;
-    show?: (item: ContextMenuItem, player: Player) => void;
-    click?: (item: ContextMenuItem, player: Player) => void;
+    init?: (player: Player, item: ContextMenuItem) => void;
+    show?: (player: Player, item: ContextMenuItem) => void;
+    click?: (player: Player, item: ContextMenuItem) => void;
 }
 export declare class ContextMenu extends Component {
     private player;

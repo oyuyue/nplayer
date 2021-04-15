@@ -4,7 +4,7 @@ import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
   addDisposableListener, dispose, removeNode, addDisposable, isBrowser,
 } from './utils';
-import { Control, ControlItem } from './parts/control';
+import { Control, ControlItemEntry } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
@@ -18,7 +18,7 @@ import { Shortcut } from './features/shortcut';
 import { SettingItem } from './parts/control/items/setting';
 
 import * as _utils from './utils';
-import * as _components from './components';
+import * as components from './components';
 import { CURRENT_VOLUME, I18n, Icon } from './features';
 import { Poster } from './parts/poster';
 
@@ -35,7 +35,7 @@ export class Player extends EventEmitter implements Disposable {
 
   readonly contextmenuNamedMap: Record<string, ContextMenuItem> = Object.create(null);
 
-  readonly controlNamedMap: Record<string, ControlItem> = Object.create(null);
+  readonly controlNamedMap: Record<string, ControlItemEntry> = Object.create(null);
 
   readonly _settingItems: SettingItem[];
 
@@ -253,8 +253,20 @@ export class Player extends EventEmitter implements Disposable {
     this.contextmenuNamedMap[id || item.id!] = item;
   }
 
-  registerControlItem(item: ControlItem, id?: string): void {
+  registerControlItem(item: ControlItemEntry, id?: string): void {
     this.controlNamedMap[id || item.id!] = item;
+  }
+
+  getSettingItem(id: string): SettingItem | null {
+    return this.settingNamedMap[id];
+  }
+
+  getContextMenuItem(id: string): ContextMenuItem | null {
+    return this.contextmenuNamedMap[id];
+  }
+
+  getControlItem(id: string): ControlItemEntry | null {
+    return this.controlNamedMap[id] as ControlItemEntry;
   }
 
   updateOptions(opts: PlayerOptions): void {
@@ -281,15 +293,23 @@ export class Player extends EventEmitter implements Disposable {
     this.el = null;
   }
 
+  static _utils = _utils;
+
+  static addDisposable = _utils.addDisposable;
+
+  static addDisposableListener = _utils.addDisposableListener;
+
+  static dispose = _utils.dispose;
+
+  static getDisposableMap = _utils.getDisposableMap;
+
   static EVENT = EVENT;
 
   static I18n = I18n;
 
   static Icon = Icon;
 
-  static _utils = _utils;
-
-  static _components = _components;
+  static components = components;
 
   static Player = Player;
 

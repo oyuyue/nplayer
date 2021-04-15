@@ -8,6 +8,7 @@ export declare class Poster extends Component {
     constructor(container: HTMLElement, player: Player);
     private addTimeUpdateHandler;
     private onTimeUpdate;
+    private tryHide;
     show(): void;
-    hide: () => void;
+    hide(): void;
 }

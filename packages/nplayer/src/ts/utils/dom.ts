@@ -53,14 +53,6 @@ export function getEl(el: HTMLElement | string | undefined | null): HTMLElement 
   return el;
 }
 
-const domParser = new DOMParser();
-export function strToDom(
-  str: string,
-  type: DOMParserSupportedType = 'image/svg+xml',
-): HTMLElement {
-  return domParser.parseFromString(str, type).firstChild as HTMLElement;
-}
-
 export function removeNode(node: Element): void {
   if (node.remove) {
     node.remove();
@@ -69,36 +61,44 @@ export function removeNode(node: Element): void {
   }
 }
 
-export function show(node: HTMLElement): void {
+export function show(node: HTMLElement | SVGElement): void {
   node.style.display = '';
 }
 
-export function hide(node: HTMLElement): void {
+export function hide(node: HTMLElement | SVGElement): void {
   node.style.display = 'none';
 }
 
-export function addClass(dom: HTMLElement, cls = '', prefix = CLASS_PREFIX): HTMLElement {
+export function addClass<T extends Element>(dom: T, cls = '', prefix = CLASS_PREFIX): T {
   cls = cls.trim();
   if (!cls) return dom;
   if (dom.classList) {
     cls.split(' ').forEach((c) => dom.classList.add(prefix + c));
   } else {
-    dom.setAttribute('class', `${dom.className.trim()} ${cls}`);
+    dom.setAttribute('class', `${dom.className.trim()} ${cls.split(' ').map((c) => prefix + c).join(' ')}`);
   }
   return dom;
 }
 
-export function removeClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX): HTMLElement {
+export function removeClass<T extends Element>(dom: T, cls: string, prefix = CLASS_PREFIX): T {
   dom.classList.remove(prefix + cls);
   return dom;
 }
 
-export function containClass(dom: HTMLElement, cls: string, prefix = CLASS_PREFIX): boolean {
+export function containClass(dom: Element, cls: string, prefix = CLASS_PREFIX): boolean {
   return dom.classList.contains(prefix + cls);
 }
 
-export function toggleClass(dom: HTMLElement, cls: string, force?: boolean, prefix = CLASS_PREFIX): boolean {
+export function toggleClass(dom: Element, cls: string, force?: boolean, prefix = CLASS_PREFIX): boolean {
   return dom.classList.toggle(prefix + cls, force);
+}
+
+export function createSvg(cls?: string, html?: string, viewBox = '0 0 24 24'): SVGSVGElement {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', viewBox);
+  if (cls) addClass(svg, cls);
+  if (html) svg.innerHTML = html;
+  return svg;
 }
 
 export function getEventPath(ev: Event): EventTarget[] {

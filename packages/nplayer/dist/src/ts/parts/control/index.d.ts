@@ -2,17 +2,18 @@ import { Player } from '../../player';
 import { Disposable } from '../../types';
 import { Tooltip } from '../../components/tooltip';
 import { Component } from '../../utils';
-export declare type ClassControlItem = new (container: HTMLElement, player: Player) => Partial<Disposable> & {
-    tip?: Tooltip;
-};
-export declare type ObjControlItem = {
-    init: (container: HTMLElement, player: Player) => void;
-    tip?: Tooltip;
-};
-export declare type ControlItem = (ClassControlItem | ObjControlItem) & {
+export interface ControlItem extends Partial<Disposable> {
+    element: HTMLElement;
     id?: string;
-    isSupport?: () => boolean;
-};
+    tip?: string;
+    tooltip?: Tooltip;
+    init?: (player: Player, tooltip: Tooltip) => void;
+    isSupport?: (player: Player) => boolean;
+    [key: string]: any;
+}
+export declare type ControlItemEntry = ControlItem | (((player: Player) => ControlItem) & {
+    id?: string;
+});
 export declare class Control extends Component {
     private player;
     private readonly bgElement;

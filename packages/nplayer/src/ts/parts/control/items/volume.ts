@@ -6,23 +6,21 @@ import {
   $, addDisposable, addDisposableListener, clamp, Component, Drag, getEventPath, hide, isString, Rect, show,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
+import { ControlItem } from '..';
 
-export class VolumeControlItem extends Component {
-  static readonly id = 'volume';
-
+class Volume extends Component implements ControlItem {
   private readonly volumeIcon: HTMLElement;
 
   private readonly mutedIcon: HTMLElement;
-
-  readonly tip: Tooltip;
 
   private readonly bar: HTMLElement;
 
   private readonly rect: Rect;
 
-  constructor(container: HTMLElement, private player: Player) {
-    super(container, '.control_volume');
-    this.tip = new Tooltip(this.element);
+  tooltip!: Tooltip;
+
+  constructor(private player: Player) {
+    super(undefined, '.control_volume');
     this.volumeIcon = this.element.appendChild(Icon.volume());
     this.mutedIcon = this.element.appendChild(Icon.muted());
 
@@ -34,14 +32,17 @@ export class VolumeControlItem extends Component {
 
     this.rect = new Rect(bars, player);
 
-    this.onVolumeChange();
-
     addDisposable(this, player.on(EVENT.VOLUME_CHANGE, this.onVolumeChange));
     addDisposable(this, new Drag(bars, this.onDragStart, this.onDragging));
     addDisposableListener(this, this.element, 'click', (ev:MouseEvent) => {
       if (getEventPath(ev).includes(bars)) return;
       player.toggleVolume();
     });
+  }
+
+  init(_: any, tooltip: Tooltip) {
+    this.tooltip = tooltip;
+    this.onVolumeChange();
   }
 
   private onDragStart = (ev: PointerEvent) => {
@@ -66,12 +67,16 @@ export class VolumeControlItem extends Component {
   mute(): void {
     show(this.mutedIcon);
     hide(this.volumeIcon);
-    this.tip.html = I18n.t(UNMUTE);
+    this.tooltip.html = I18n.t(UNMUTE);
   }
 
   unmute(): void {
     show(this.volumeIcon);
     hide(this.mutedIcon);
-    this.tip.html = I18n.t(MUTE);
+    this.tooltip.html = I18n.t(MUTE);
   }
 }
+
+const volumeControlItem = (player: Player) => new Volume(player);
+volumeControlItem.id = 'volume';
+export { volumeControlItem };

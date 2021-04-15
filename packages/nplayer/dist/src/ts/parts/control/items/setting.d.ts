@@ -2,6 +2,7 @@ import { Switch } from '../../../components/switch';
 import { Player } from '../../../player';
 import { Component } from '../../../utils';
 import { Tooltip } from '../../../components/tooltip';
+import { ControlItem } from '..';
 export interface SettingItemOption<T = any> {
     html?: string;
     selectedHtml?: string;
@@ -29,15 +30,16 @@ export declare class SettingPanelHome extends Component {
 export declare class SettingPanel extends Component {
     constructor(container: HTMLElement);
 }
-export declare class SettingControlItem extends Component {
+declare class Setting extends Component implements ControlItem {
     private player;
-    static readonly id = "settings";
-    readonly tip: Tooltip;
     private readonly items;
     private readonly homeElement;
     private readonly popover;
     private currentOptionElement;
-    constructor(container: HTMLElement, player: Player);
+    tooltip: Tooltip;
+    tip: string;
+    constructor(player: Player);
+    init(player: Player, tooltip: Tooltip): void;
     private renderHome;
     private renderOptions;
     private onItemClick;
@@ -48,3 +50,8 @@ export declare class SettingControlItem extends Component {
     show: (ev?: MouseEvent | undefined) => void;
     hide: (ev?: MouseEvent | undefined) => void;
 }
+declare const settingControlItem: {
+    (player: Player): Setting;
+    id: string;
+};
+export { settingControlItem };

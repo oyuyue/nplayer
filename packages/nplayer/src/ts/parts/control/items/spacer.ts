@@ -1,5 +1,7 @@
-import { Spacer } from 'src/ts/components/spacer';
+import { $ } from 'src/ts/utils';
+import { ControlItem } from '..';
 
-export class SpacerControlItem extends Spacer {
-  static id = 'spacer';
-}
+export const spacerControlItem: ControlItem = {
+  id: 'spacer',
+  element: $('.spacer'),
+};

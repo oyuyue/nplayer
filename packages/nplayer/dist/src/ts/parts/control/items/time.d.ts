@@ -1,10 +1,15 @@
 import { Player } from '../../../player';
 import { Component } from '../../../utils';
-export declare class TimeControlItem extends Component {
-    static readonly id = "time";
+import { ControlItem } from '..';
+declare class Time extends Component implements ControlItem {
     private readonly playedElement;
     private readonly totalElement;
-    constructor(container: HTMLElement, player: Player);
+    constructor(player: Player);
     private set played(value);
     private set total(value);
 }
+declare const timeControlItem: {
+    (player: Player): Time;
+    id: string;
+};
+export { timeControlItem };

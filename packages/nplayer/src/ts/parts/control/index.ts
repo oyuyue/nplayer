@@ -11,9 +11,17 @@ import { Progress } from './progress';
 const classHide = 'control-hide';
 const classBgHide = 'control_bg-hide';
 
-export type ClassControlItem = new(container: HTMLElement, player: Player) => Partial<Disposable> & { tip?: Tooltip }
-export type ObjControlItem = { init: (container: HTMLElement, player: Player) => void; tip?: Tooltip }
-export type ControlItem = (ClassControlItem | ObjControlItem) & { id?:string; isSupport?: () => boolean; }
+export interface ControlItem extends Partial<Disposable> {
+  element: HTMLElement;
+  id?: string;
+  tip?: string;
+  tooltip?: Tooltip;
+  init?: (player: Player, tooltip: Tooltip) => void;
+  isSupport?: (player: Player) => boolean;
+  [key: string]: any;
+}
+
+export type ControlItemEntry = ControlItem | (((player: Player) => ControlItem) & { id?: string });
 
 export class Control extends Component {
   private readonly bgElement: HTMLElement;

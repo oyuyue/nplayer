@@ -1,5 +1,4 @@
-import { CLASS_PREFIX } from '../constants';
-import { addClass, strToDom } from '../utils';
+import { addClass, createSvg } from '../utils';
 
 const play = 'M6 2.914v18.172L20.279 12 6 2.914z';
 const pause = 'M14.333 20.133H19V3.8h-4.667M5 20.133h4.667V3.8H5v16.333z';
@@ -12,37 +11,26 @@ const enterFullscreen = 'M3 3h6.429v2.571H5.57V9.43H3V3m11.571 0H21v6.429h-2.571
 const exitFullscreen = 'M14.571 14.571H21v2.572h-3.857V21H14.57v-6.429M3 14.571h6.429V21H6.857v-3.857H3V14.57M6.857 3H9.43v6.429H3V6.857h3.857V3M21 6.857V9.43h-6.429V3h2.572v3.857H21z';
 const airplay = 'M6 22h12l-6-6m9-13H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4v-2H3V5h18v12h-4v2h4a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z';
 
-function svgTemplate(d: string): string {
-  return `<svg viewBox="0 0 24 24" class="${CLASS_PREFIX}icon" xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`;
-}
-
 function createIcon(icon: string) {
   return (cls?: string) => {
-    const i = strToDom(svgTemplate(icon));
-    if (cls) addClass(i, cls);
-    return i;
+    const svg = createSvg('icon', `<path d="${icon}"/>`);
+    if (cls) addClass(svg, cls);
+    return svg;
   };
 }
 
 const Icon: {
   // eslint-disable-next-line no-use-before-define
   register: typeof registerIcon;
-  // eslint-disable-next-line no-use-before-define
-  unregister: typeof unregisterIcon;
 } & {
-  [key: string]: (cls?: string) => HTMLElement;
+  [key: string]: <T extends Element>(cls?: string) => T;
 } = Object.create(null);
 
-function registerIcon(iconName: string, icon: (cls?: string) => HTMLElement): void {
+function registerIcon(iconName: string, icon: (cls?: string) => any): void {
   Icon[iconName] = icon;
 }
 
-function unregisterIcon(iconName: string): boolean {
-  return delete Icon[iconName];
-}
-
 Object.defineProperty(Icon, 'register', { value: registerIcon });
-Object.defineProperty(Icon, 'unregister', { value: unregisterIcon });
 
 registerIcon('play', createIcon(play));
 registerIcon('pause', createIcon(pause));

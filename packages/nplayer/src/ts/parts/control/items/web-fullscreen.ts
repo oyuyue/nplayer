@@ -6,28 +6,28 @@ import {
   addDisposable, addDisposableListener, Component, hide, show,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
+import { ControlItem } from '..';
 
-export class WebFullscreenControlItem extends Component {
-  static readonly id = 'web-fullscreen';
-
+class WebFullscreen extends Component implements ControlItem {
   private readonly exitIcon: HTMLElement;
 
   private readonly enterIcon: HTMLElement;
 
-  readonly tip: Tooltip;
+  tooltip!: Tooltip;
 
-  constructor(container: HTMLElement, player: Player) {
-    super(container);
-    this.tip = new Tooltip(this.element);
+  constructor() {
+    super();
     this.enterIcon = this.element.appendChild(Icon.webEnterFullscreen());
     this.exitIcon = this.element.appendChild(Icon.webExitFullscreen());
+  }
 
+  init(player: Player, tooltip: Tooltip) {
+    this.tooltip = tooltip;
     if (player.webFullscreen.isActive) {
       this.enter();
     } else {
       this.exit();
     }
-
     addDisposable(this, player.on(EVENT.WEB_ENTER_FULLSCREEN, this.enter));
     addDisposable(this, player.on(EVENT.WEB_EXIT_FULLSCREEN, this.exit));
     addDisposableListener(this, this.element, 'click', player.webFullscreen.toggle);
@@ -36,12 +36,16 @@ export class WebFullscreenControlItem extends Component {
   private enter = (): void => {
     show(this.exitIcon);
     hide(this.enterIcon);
-    this.tip.html = I18n.t(WEB_EXIT_FULL_SCREEN);
+    this.tooltip.html = I18n.t(WEB_EXIT_FULL_SCREEN);
   }
 
   private exit = (): void => {
     hide(this.exitIcon);
     show(this.enterIcon);
-    this.tip.html = I18n.t(WEB_FULL_SCREEN);
+    this.tooltip.html = I18n.t(WEB_FULL_SCREEN);
   }
 }
+
+const webFullscreenControlItem = () => new WebFullscreen();
+webFullscreenControlItem.id = 'web-fullscreen';
+export { webFullscreenControlItem };

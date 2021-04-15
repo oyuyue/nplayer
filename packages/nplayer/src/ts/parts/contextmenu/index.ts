@@ -9,9 +9,9 @@ export interface ContextMenuItem {
   disabled?: boolean;
   invisible?: boolean;
   checked?: boolean;
-  init?: (item: ContextMenuItem, player: Player) => void;
-  show?: (item: ContextMenuItem, player: Player) => void;
-  click?: (item: ContextMenuItem, player: Player) => void;
+  init?: (player: Player, item: ContextMenuItem) => void;
+  show?: (player: Player, item: ContextMenuItem) => void;
+  click?: (player: Player, item: ContextMenuItem) => void;
 }
 
 export class ContextMenu extends Component {
@@ -29,7 +29,7 @@ export class ContextMenu extends Component {
 
     this.rect = new Rect(this.element, player);
 
-    this.items.forEach((item) => item.init && item.init(item, player));
+    this.items.forEach((item) => item.init && item.init(player, item));
 
     addDisposableListener(this, player.element, 'contextmenu', (ev: MouseEvent) => {
       this.hide();
@@ -68,12 +68,12 @@ export class ContextMenu extends Component {
   private getDomNodes(): HTMLElement[] {
     return this.items.filter((x) => x && !x.invisible).map((item) => {
       const el = $('.contextmenu_item');
-      if (item.show) item.show(item, this.player);
+      if (item.show) item.show(this.player, item);
       if (item.html) el.innerHTML = item.html;
       if (item.disabled) addClass(el, 'contextmenu_item-disabled');
       if (item.checked) addClass(el, 'contextmenu_item-checked');
       if (item.click) {
-        el.addEventListener('click', () => (item as any).click(item, this.player), false);
+        el.addEventListener('click', () => (item as any).click(this.player, item), false);
       }
       return el;
     });

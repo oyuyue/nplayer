@@ -31,17 +31,17 @@ export class DanmakuSendBoxControlItem implements Disposable {
   private currentType = 'scroll';
 
   constructor(container: HTMLElement, private player: Player) {
-    const { _utils, _components, I18n } = player.Player;
+    const { _utils, components, I18n } = player.Player;
     utils = _utils;
     const {
-      $, strToDom, addDisposableListener, addDisposable,
+      $, addDisposableListener, addDisposable, createSvg,
     } = utils;
 
     this.element = container.appendChild($('.danmaku_send'));
     const settingElement = this.element.appendChild($());
-    settingElement.appendChild(strToDom('<svg class="nplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.62 14L12 7.67 14.37 14M11 5L5.5 19h2.25l1.12-3h6.25l1.13 3h2.25L13 5h-2z" /></svg>'));
-    this.tip = addDisposable(this, new _components.Tooltip(settingElement, I18n.t(SEND_SETTINGS)));
-    this.popover = addDisposable(this, new _components.Popover(settingElement, undefined, undefined, true));
+    settingElement.appendChild(createSvg('icon', '<path d="M9.62 14L12 7.67 14.37 14M11 5L5.5 19h2.25l1.12-3h6.25l1.13 3h2.25L13 5h-2z" />'));
+    this.tip = addDisposable(this, new components.Tooltip(settingElement, I18n.t(SEND_SETTINGS)));
+    this.popover = addDisposable(this, new components.Popover(settingElement, undefined, undefined, true));
     this.inputElement = this.element.appendChild($('input'));
     this.sendElement = this.element.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
 
@@ -51,9 +51,9 @@ export class DanmakuSendBoxControlItem implements Disposable {
     panelElement.appendChild(rowElement);
     rowElement.appendChild($(undefined, undefined, I18n.t(MODE)));
     rowElement = rowElement.appendChild($('.flex.align-center'));
-    this.typeCBs.scroll = addDisposable(this, new _components.Checkbox(rowElement, { html: I18n.t(SCROLL), checked: true, change: this.onTypeChange('scroll') }));
-    this.typeCBs.top = addDisposable(this, new _components.Checkbox(rowElement, { html: I18n.t(TOP), change: this.onTypeChange('top') }));
-    this.typeCBs.bottom = addDisposable(this, new _components.Checkbox(rowElement, { html: I18n.t(BOTTOM), change: this.onTypeChange('bottom') }));
+    this.typeCBs.scroll = addDisposable(this, new components.Checkbox(rowElement, { html: I18n.t(SCROLL), checked: true, change: this.onTypeChange('scroll') }));
+    this.typeCBs.top = addDisposable(this, new components.Checkbox(rowElement, { html: I18n.t(TOP), change: this.onTypeChange('top') }));
+    this.typeCBs.bottom = addDisposable(this, new components.Checkbox(rowElement, { html: I18n.t(BOTTOM), change: this.onTypeChange('bottom') }));
     rowElement = row();
     rowElement = $('.danmaku_row');
     panelElement.appendChild(rowElement);

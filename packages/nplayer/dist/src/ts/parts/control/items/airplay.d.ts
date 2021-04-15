@@ -1,9 +1,13 @@
 import { Player } from '../../../player';
 import { Component } from '../../../utils';
-import { Tooltip } from '../../../components/tooltip';
-export declare class AirplayControlItem extends Component {
-    static readonly id = "airplay";
-    readonly tip: Tooltip;
-    constructor(container: HTMLElement, player: Player);
-    static isSupport(): boolean;
+import { ControlItem } from '..';
+declare class Airplay extends Component implements ControlItem {
+    tip: string;
+    constructor(player: Player);
+    isSupport(): boolean;
 }
+declare const airplayControlItem: {
+    (player: Player): Airplay;
+    id: string;
+};
+export { airplayControlItem };

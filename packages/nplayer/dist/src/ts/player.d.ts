@@ -1,6 +1,6 @@
 import { Disposable, PlayerOptions } from './types';
-import { Rect, EventEmitter } from './utils';
-import { Control, ControlItem } from './parts/control';
+import { Rect, EventEmitter, addDisposableListener, dispose, addDisposable } from './utils';
+import { Control, ControlItemEntry } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
@@ -9,7 +9,7 @@ import { WebFullscreen } from './features/web-fullscreen';
 import { Shortcut } from './features/shortcut';
 import { SettingItem } from './parts/control/items/setting';
 import * as _utils from './utils';
-import * as _components from './components';
+import * as components from './components';
 import { Poster } from './parts/poster';
 export declare class Player extends EventEmitter implements Disposable {
     private el;
@@ -18,7 +18,7 @@ export declare class Player extends EventEmitter implements Disposable {
     private prevVolume;
     readonly settingNamedMap: Record<string, SettingItem>;
     readonly contextmenuNamedMap: Record<string, ContextMenuItem>;
-    readonly controlNamedMap: Record<string, ControlItem>;
+    readonly controlNamedMap: Record<string, ControlItemEntry>;
     readonly _settingItems: SettingItem[];
     readonly video: HTMLVideoElement;
     readonly rect: Rect;
@@ -60,9 +60,17 @@ export declare class Player extends EventEmitter implements Disposable {
     eachBuffer(fn: (start: number, end: number) => boolean | void): void;
     registerSettingItem(item: SettingItem, id?: string): void;
     registerContextMenuItem(item: ContextMenuItem, id?: string): void;
-    registerControlItem(item: ControlItem, id?: string): void;
+    registerControlItem(item: ControlItemEntry, id?: string): void;
+    getSettingItem(id: string): SettingItem | null;
+    getContextMenuItem(id: string): ContextMenuItem | null;
+    getControlItem(id: string): ControlItemEntry | null;
     updateOptions(opts: PlayerOptions): void;
     dispose(): void;
+    static _utils: typeof _utils;
+    static addDisposable: typeof addDisposable;
+    static addDisposableListener: typeof addDisposableListener;
+    static dispose: typeof dispose;
+    static getDisposableMap: typeof _utils.getDisposableMap;
     static EVENT: {
         readonly ENTER_FULLSCREEN: "enter-fullscreen";
         readonly EXIT_FULLSCREEN: "exit-fullscreen";
@@ -104,13 +112,11 @@ export declare class Player extends EventEmitter implements Disposable {
         setDefaultLang(lang?: string | undefined): void;
     };
     static Icon: {
-        register: (iconName: string, icon: (cls?: string | undefined) => HTMLElement) => void;
-        unregister: (iconName: string) => boolean;
+        register: (iconName: string, icon: (cls?: string | undefined) => any) => void;
     } & {
-        [key: string]: (cls?: string | undefined) => HTMLElement;
+        [key: string]: <T extends Element>(cls?: string | undefined) => T;
     };
-    static _utils: typeof _utils;
-    static _components: typeof _components;
+    static components: typeof components;
     static Player: typeof Player;
     Player: typeof Player;
 }

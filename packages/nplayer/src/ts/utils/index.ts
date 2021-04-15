@@ -15,6 +15,10 @@ export function clamp(n: number, lower = 0, upper = 1): number {
 
 const disposableMap: Map<any, Array<Disposable>> = new Map();
 
+export function getDisposableMap(): Map<any, Array<Disposable>> {
+  return disposableMap;
+}
+
 export function addDisposable<T extends Disposable>(key: any, disposable: T): T {
   if (!disposableMap.has(key)) disposableMap.set(key, []);
   disposableMap.get(key)!.push(disposable);

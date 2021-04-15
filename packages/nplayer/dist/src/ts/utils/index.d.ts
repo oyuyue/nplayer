@@ -8,6 +8,7 @@ export * from './env';
 export * from './emitter';
 export * from './component';
 export declare function clamp(n: number, lower?: number, upper?: number): number;
+export declare function getDisposableMap(): Map<any, Array<Disposable>>;
 export declare function addDisposable<T extends Disposable>(key: any, disposable: T): T;
 export declare function dispose(key: any): void;
 export declare function addDisposableListener<K extends keyof GlobalEventHandlersEventMap>(key: any, node: EventTarget, type: K, handler: (event: GlobalEventHandlersEventMap[K]) => void, useCapture?: boolean): DomListener;

@@ -2,18 +2,18 @@ import { EVENT } from './constants';
 import { Player } from './player';
 import { Disposable, PlayerOptions } from './types';
 import { addDisposable, isWin10IE } from './utils';
-import { SettingControlItem } from './parts/control/items/setting';
+import { settingControlItem } from './parts/control/items/setting';
 import { speedSettingItem } from './setting-items/speed';
-import { PlayControlItem } from './parts/control/items/play';
-import { VolumeControlItem } from './parts/control/items/volume';
-import { TimeControlItem } from './parts/control/items/time';
-import { SpacerControlItem } from './parts/control/items/spacer';
-import { WebFullscreenControlItem } from './parts/control/items/web-fullscreen';
-import { FullscreenControlItem } from './parts/control/items/fullscreen';
+import { playControlItem } from './parts/control/items/play';
+import { volumeControlItem } from './parts/control/items/volume';
+import { timeControlItem } from './parts/control/items/time';
+import { spacerControlItem } from './parts/control/items/spacer';
+import { webFullscreenControlItem } from './parts/control/items/web-fullscreen';
+import { fullscreenControlItem } from './parts/control/items/fullscreen';
 import { loopContextMenuItem } from './contextmenu-items/loop';
-import { PipContextMenuItem } from './contextmenu-items/pip';
+import { pipContextMenuItem } from './contextmenu-items/pip';
 import { versionContextMenuItem } from './contextmenu-items/version';
-import { AirplayControlItem } from './parts/control/items/airplay';
+import { airplayControlItem } from './parts/control/items/airplay';
 
 function trans(
   player: Player,
@@ -74,17 +74,17 @@ export function setVideoVolumeFromLocal(video: HTMLVideoElement): void {
 
 export function registerNamedMap(player: Player) {
   player.registerContextMenuItem(loopContextMenuItem);
-  player.registerContextMenuItem(PipContextMenuItem);
+  player.registerContextMenuItem(pipContextMenuItem);
   player.registerContextMenuItem(versionContextMenuItem);
   player.registerSettingItem(speedSettingItem);
-  player.registerControlItem(PlayControlItem);
-  player.registerControlItem(VolumeControlItem);
-  player.registerControlItem(TimeControlItem);
-  player.registerControlItem(SpacerControlItem);
-  player.registerControlItem(SettingControlItem);
-  player.registerControlItem(WebFullscreenControlItem);
-  player.registerControlItem(FullscreenControlItem);
-  player.registerControlItem(AirplayControlItem);
+  player.registerControlItem(playControlItem);
+  player.registerControlItem(volumeControlItem);
+  player.registerControlItem(timeControlItem);
+  player.registerControlItem(spacerControlItem);
+  player.registerControlItem(settingControlItem);
+  player.registerControlItem(webFullscreenControlItem);
+  player.registerControlItem(fullscreenControlItem);
+  player.registerControlItem(airplayControlItem);
 }
 
 export function transferEvent(player: Player): void {

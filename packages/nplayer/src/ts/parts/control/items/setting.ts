@@ -8,6 +8,7 @@ import {
   $, addClass, addDisposable, addDisposableListener, Component, getEventPath, measureElementSize, removeClass,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
+import { ControlItem } from '..';
 
 export interface SettingItemOption<T = any> {
   html?: string;
@@ -44,11 +45,7 @@ export class SettingPanel extends Component {
 const classActive = 'control_setting-active';
 const classOptionActive = 'control_setting_option-active';
 
-export class SettingControlItem extends Component {
-  static readonly id = 'settings';
-
-  readonly tip: Tooltip;
-
+class Setting extends Component implements ControlItem {
   private readonly items: SettingItem[];
 
   private readonly homeElement!: HTMLElement;
@@ -57,21 +54,24 @@ export class SettingControlItem extends Component {
 
   private currentOptionElement!: HTMLElement;
 
-  constructor(container: HTMLElement, private player: Player) {
-    super(container, '.control_setting');
+  tooltip!: Tooltip;
+
+  tip = I18n.t(SETTINGS);
+
+  constructor(private player: Player) {
+    super(undefined, '.control_setting');
     this.items = player._settingItems;
-    this.tip = new Tooltip(this.element, I18n.t(SETTINGS));
     this.element.appendChild(Icon.cog());
-
     this.popover = new Popover(this.element, this.hide, { willChange: 'width, height' });
-
     this.homeElement = this.popover.panelElement.appendChild($());
-
-    this.items.forEach((item) => item.init && item.init(player, item));
 
     addDisposableListener(this, this.element, 'click', this.show);
     addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
+  }
 
+  init(player: Player, tooltip: Tooltip) {
+    this.tooltip = tooltip;
+    this.items.forEach((item) => item.init && item.init(player, item));
     this.renderHome();
   }
 
@@ -145,6 +145,7 @@ export class SettingControlItem extends Component {
     if (item.type === 'switch') {
       item.checked = !item.checked;
       item._switch!.toggle(item.checked);
+      if (item.change) item.change(item.checked, this.player, item);
     } else {
       this.renderOptions();
       this.showOptionPage(item._optionElement as HTMLElement);
@@ -193,7 +194,7 @@ export class SettingControlItem extends Component {
 
   show = (ev?: MouseEvent) => {
     if (ev && getEventPath(ev).includes(this.popover.element)) return;
-    this.tip.hide();
+    this.tooltip.hide();
     this.renderHome();
     this.popover.show();
     this.homeElement.style.display = '';
@@ -203,7 +204,7 @@ export class SettingControlItem extends Component {
   hide = (ev?: MouseEvent) => {
     if (ev) ev.stopPropagation();
 
-    this.tip.show();
+    this.tooltip.show();
     removeClass(this.element, classActive);
 
     if (this.currentOptionElement) {
@@ -211,3 +212,7 @@ export class SettingControlItem extends Component {
     }
   }
 }
+
+const settingControlItem = (player: Player) => new Setting(player);
+settingControlItem.id = 'settings';
+export { settingControlItem };

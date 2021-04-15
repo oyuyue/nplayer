@@ -1,2 +1,2 @@
 import { ContextMenuItem } from '../parts/contextmenu';
-export declare const PipContextMenuItem: ContextMenuItem;
+export declare const pipContextMenuItem: ContextMenuItem;

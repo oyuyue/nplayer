@@ -36,15 +36,15 @@ export class DanmakuSettingControlItem implements Disposable {
   private fontsizeSlider!: Slider;
 
   constructor(container: HTMLElement, private player: Player) {
-    const { _utils, _components, I18n } = player.Player;
+    const { _utils, components, I18n } = player.Player;
     const {
-      $, strToDom, clamp, addDisposableListener, addDisposable,
+      $, clamp, addDisposableListener, addDisposable, createSvg,
     } = _utils;
 
     this.element = container.appendChild($());
-    this.element.appendChild(strToDom('<svg class="nplayer_icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21v2H7v-2h2m4 0v2h-2v-2h2m4 0v2h-2v-2h2M2 19V3h20v16m-11-7H9v2h2v-2m8 0h-6v2h6v-2M7 8H5v2h2V8m12 0H9v2h10V8z" /></svg>'));
-    this.tip = addDisposable(this, new _components.Tooltip(this.element, I18n.t(DANMAKU_SETTINGS)));
-    this.popover = addDisposable(this, new _components.Popover(this.element));
+    this.element.appendChild(createSvg('icon', '<path d="M9 21v2H7v-2h2m4 0v2h-2v-2h2m4 0v2h-2v-2h2M2 19V3h20v16m-11-7H9v2h2v-2m8 0h-6v2h6v-2M7 8H5v2h2V8m12 0H9v2h10V8z" />'));
+    this.tip = addDisposable(this, new components.Tooltip(this.element, I18n.t(DANMAKU_SETTINGS)));
+    this.popover = addDisposable(this, new components.Popover(this.element));
 
     addDisposableListener(this, this.element, 'click', this.show);
 
@@ -56,7 +56,7 @@ export class DanmakuSettingControlItem implements Disposable {
 
       let rowElement = row();
       rowElement.appendChild($('.danmaku_onoff_label', undefined, I18n.t(ONOFF)));
-      addDisposable(this, new _components.Switch(rowElement, player.danmaku.enabled, (v) => player.danmaku[v ? 'enable' : 'disable']()));
+      addDisposable(this, new components.Switch(rowElement, player.danmaku.enabled, (v) => player.danmaku[v ? 'enable' : 'disable']()));
       const resetBtn = rowElement.appendChild($('.danmaku_reset', undefined, I18n.t(RESTORE)));
       addDisposableListener(this, resetBtn, 'click', () => {
         player.danmaku.resetOptions();
@@ -67,25 +67,25 @@ export class DanmakuSettingControlItem implements Disposable {
       panelElement.appendChild(rowElement);
       rowElement.appendChild($(undefined, undefined, I18n.t(BLOCK_BT)));
       rowElement = rowElement.appendChild($('.flex.align-center'));
-      this.scrollCB = addDisposable(this, new _components.Checkbox(rowElement, {
+      this.scrollCB = addDisposable(this, new components.Checkbox(rowElement, {
         html: I18n.t(SCROLL),
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('scroll');
         },
       }));
-      this.topCB = addDisposable(this, new _components.Checkbox(rowElement, {
+      this.topCB = addDisposable(this, new components.Checkbox(rowElement, {
         html: I18n.t(TOP),
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('top');
         },
       }));
-      this.bottomCB = addDisposable(this, new _components.Checkbox(rowElement, {
+      this.bottomCB = addDisposable(this, new components.Checkbox(rowElement, {
         html: I18n.t(BOTTOM),
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('bottom');
         },
       }));
-      this.colorCB = addDisposable(this, new _components.Checkbox(rowElement, {
+      this.colorCB = addDisposable(this, new components.Checkbox(rowElement, {
         html: I18n.t(COLOUR),
         change(v) {
           player.danmaku[v ? 'blockType' : 'allowType']('color');
@@ -93,7 +93,7 @@ export class DanmakuSettingControlItem implements Disposable {
       }));
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(OPACITY)));
-      this.opacitySlider = addDisposable(this, new _components.Slider(rowElement, {
+      this.opacitySlider = addDisposable(this, new components.Slider(rowElement, {
         stops: [{ value: 0, html: '10%' }, { value: 1, html: '100%' }],
         change(value) {
           player.danmaku.updateOpacity(clamp(value + 0.1, 0.1, 1));
@@ -102,7 +102,7 @@ export class DanmakuSettingControlItem implements Disposable {
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(DISPLAY_A)));
-      this.areaSlider = addDisposable(this, new _components.Slider(rowElement, {
+      this.areaSlider = addDisposable(this, new components.Slider(rowElement, {
         stops: [{ value: 0, html: '1/4' }, { value: 0.33, html: I18n.t(HALF_S) }, { value: 0.66, html: '3/4' }, { value: 1, html: I18n.t(FULL_S) }],
         step: true,
         change(v) {
@@ -113,7 +113,7 @@ export class DanmakuSettingControlItem implements Disposable {
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(DANMAKU_S)));
-      this.speedSlider = addDisposable(this, new _components.Slider(rowElement, {
+      this.speedSlider = addDisposable(this, new components.Slider(rowElement, {
         stops: [{ value: 0, html: I18n.t(SLOW) }, { value: 1, html: I18n.t(FAST) }],
         change(v) {
           player.danmaku.updateSpeed(clamp(v + 0.5, 0.5, 1.5));
@@ -122,7 +122,7 @@ export class DanmakuSettingControlItem implements Disposable {
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(FONTSIZE)));
-      this.fontsizeSlider = addDisposable(this, new _components.Slider(rowElement, {
+      this.fontsizeSlider = addDisposable(this, new components.Slider(rowElement, {
         stops: [{ value: 0, html: I18n.t(SMALL) }, { value: 1, html: I18n.t(BIG) }],
         change(v) {
           player.danmaku.updateFontsize(clamp(v + 0.5, 0.5, 1.5));
@@ -130,10 +130,10 @@ export class DanmakuSettingControlItem implements Disposable {
       }, player));
       panelElement.appendChild(rowElement);
       rowElement = row();
-      this.unlimitedCB = addDisposable(this, new _components.Checkbox(rowElement, {
+      this.unlimitedCB = addDisposable(this, new components.Checkbox(rowElement, {
         html: I18n.t(UNLIMITED), change(v) { player.danmaku.updateUnlimited(v); },
       }));
-      this.bottomUpCB = addDisposable(this, new _components.Checkbox(rowElement, {
+      this.bottomUpCB = addDisposable(this, new components.Checkbox(rowElement, {
         html: I18n.t(BOTTOM_TT), change(v) { player.danmaku.updateBottomUp(v); },
       }));
       panelElement.appendChild(rowElement);

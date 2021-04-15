@@ -1,18 +1,24 @@
 import { Player } from '../../../player';
 import { Component } from '../../../utils';
 import { Tooltip } from '../../../components/tooltip';
-export declare class VolumeControlItem extends Component {
+import { ControlItem } from '..';
+declare class Volume extends Component implements ControlItem {
     private player;
-    static readonly id = "volume";
     private readonly volumeIcon;
     private readonly mutedIcon;
-    readonly tip: Tooltip;
     private readonly bar;
     private readonly rect;
-    constructor(container: HTMLElement, player: Player);
+    tooltip: Tooltip;
+    constructor(player: Player);
+    init(_: any, tooltip: Tooltip): void;
     private onDragStart;
     private onDragging;
     private onVolumeChange;
     mute(): void;
     unmute(): void;
 }
+declare const volumeControlItem: {
+    (player: Player): Volume;
+    id: string;
+};
+export { volumeControlItem };

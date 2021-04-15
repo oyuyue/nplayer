@@ -3,23 +3,20 @@ import { Player } from 'src/ts/player';
 import {
   hide, Component, addDisposableListener, show,
 } from 'src/ts/utils';
-import { Tooltip } from 'src/ts/components/tooltip';
 import { AIRPLAY, I18n } from 'src/ts/features';
+import { ControlItem } from '..';
 
-export class AirplayControlItem extends Component {
-  static readonly id = 'airplay';
+class Airplay extends Component implements ControlItem {
+  tip = I18n.t(AIRPLAY);
 
-  readonly tip!: Tooltip;
+  constructor(player: Player) {
+    super();
 
-  constructor(container: HTMLElement, player: Player) {
-    super(container);
-
-    if (!AirplayControlItem.isSupport()) {
+    if (!this.isSupport()) {
       hide(this.element);
       return;
     }
 
-    this.tip = new Tooltip(this.element, I18n.t(AIRPLAY));
     this.element.appendChild(Icon.airplay());
 
     addDisposableListener(this, player.video, 'webkitplaybacktargetavailabilitychanged' as any, (ev) => {
@@ -37,7 +34,11 @@ export class AirplayControlItem extends Component {
     });
   }
 
-  static isSupport(): boolean {
+  isSupport(): boolean {
     return !!(window as any).WebKitPlaybackTargetAvailabilityEvent;
   }
 }
+
+const airplayControlItem = (player: Player) => new Airplay(player);
+airplayControlItem.id = 'airplay';
+export { airplayControlItem };

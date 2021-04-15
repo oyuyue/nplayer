@@ -6,22 +6,23 @@ import {
   hide, Component, addDisposableListener, addDisposable, show,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
+import { ControlItem } from '..';
 
-export class FullscreenControlItem extends Component {
-  static readonly id = 'fullscreen';
-
+class Fullscreen extends Component implements ControlItem {
   private readonly exitIcon: HTMLElement;
 
   private readonly enterIcon: HTMLElement;
 
-  readonly tip: Tooltip;
+  tooltip!: Tooltip;
 
-  constructor(container: HTMLElement, player: Player) {
-    super(container);
-    this.tip = new Tooltip(this.element);
+  constructor() {
+    super();
     this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
     this.enterIcon = this.element.appendChild(Icon.enterFullscreen());
+  }
 
+  init(player: Player, tooltip: Tooltip) {
+    this.tooltip = tooltip;
     if (player.fullscreen.isActive) {
       this.enter();
     } else {
@@ -36,12 +37,16 @@ export class FullscreenControlItem extends Component {
   private enter = (): void => {
     show(this.exitIcon);
     hide(this.enterIcon);
-    this.tip.html = I18n.t(EXIT_FULL_SCREEN);
+    this.tooltip.html = I18n.t(EXIT_FULL_SCREEN);
   }
 
   private exit = (): void => {
     hide(this.exitIcon);
     show(this.enterIcon);
-    this.tip.html = I18n.t(FULL_SCREEN);
+    this.tooltip.html = I18n.t(FULL_SCREEN);
   }
 }
+
+const fullscreenControlItem = () => new Fullscreen();
+fullscreenControlItem.id = 'fullscreen';
+export { fullscreenControlItem };

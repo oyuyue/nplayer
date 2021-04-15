@@ -1,12 +1,18 @@
 import { Player } from '../../../player';
 import { Component } from '../../../utils';
 import { Tooltip } from '../../../components/tooltip';
-export declare class FullscreenControlItem extends Component {
-    static readonly id = "fullscreen";
+import { ControlItem } from '..';
+declare class Fullscreen extends Component implements ControlItem {
     private readonly exitIcon;
     private readonly enterIcon;
-    readonly tip: Tooltip;
-    constructor(container: HTMLElement, player: Player);
+    tooltip: Tooltip;
+    constructor();
+    init(player: Player, tooltip: Tooltip): void;
     private enter;
     private exit;
 }
+declare const fullscreenControlItem: {
+    (): Fullscreen;
+    id: string;
+};
+export { fullscreenControlItem };

@@ -1,9 +1,7 @@
 declare const Icon: {
     register: typeof registerIcon;
-    unregister: typeof unregisterIcon;
 } & {
-    [key: string]: (cls?: string) => HTMLElement;
+    [key: string]: <T extends Element>(cls?: string) => T;
 };
-declare function registerIcon(iconName: string, icon: (cls?: string) => HTMLElement): void;
-declare function unregisterIcon(iconName: string): boolean;
+declare function registerIcon(iconName: string, icon: (cls?: string) => any): void;
 export { Icon };
