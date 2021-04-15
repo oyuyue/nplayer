@@ -1,3 +1,7 @@
+## [0.0.2](https://github.com/woopen/RPlayer/compare/v0.0.1...v0.0.2) (2021-04-15)
+
+
+
 ## [0.0.1](https://github.com/woopen/RPlayer/compare/v0.6.1...v0.0.1) (2021-04-12)
 
 
