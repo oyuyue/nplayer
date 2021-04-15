@@ -11,6 +11,10 @@ module.exports = {
   projectName: 'nplayer', // Usually your repo name.
   themeConfig: {
     hideableSidebar: true,
+    algolia: {
+      apiKey: 'ba04a103ecb970278df9a94f32184c74',
+      indexName: 'nplayer'
+    },
     navbar: {
       title: 'NPlayer',
       hideOnScroll: true,

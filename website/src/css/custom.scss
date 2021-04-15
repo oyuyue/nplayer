@@ -340,6 +340,11 @@ body {
 // Searchbar
 // ==============================================================================
 
+.navbar__toggle {
+  margin: 0;
+  margin-left: 15px;
+}
+
 .navbar {
   .DocSearch {
     margin-left: 25px;
