@@ -1,7 +1,7 @@
 import type { Plugin as P, Player } from 'nplayer';
 import { Danmaku, DanmakuOptions } from './danmaku';
-import { DanmakuSendBoxControlItem } from './send-box';
-import { DanmakuSettingControlItem } from './setting';
+import { danmakuSendBoxControlItem } from './send-box';
+import { danmakuSettingControlItem } from './setting';
 import { trans } from './utils';
 
 export class Plugin implements P {
@@ -12,12 +12,15 @@ export class Plugin implements P {
   }
 
   apply(player: Player) {
-    player.registerControlItem(DanmakuSendBoxControlItem);
-    player.registerControlItem(DanmakuSettingControlItem);
+    player.registerControlItem(danmakuSendBoxControlItem);
+    player.registerControlItem(danmakuSettingControlItem);
 
     player.Player.I18n.add('zh-CN', trans);
     player.danmaku = new Danmaku(player, this.opts);
 
-    player.opts.controls.splice(3, 1, 'danmaku', 'danmaku-setting');
+    const i = player.opts.controls.findIndex((c) => c === 'spacer');
+    if (i > -1) {
+      player.opts.controls.splice(i, 1, 'danmaku', 'danmaku-setting');
+    }
   }
 }

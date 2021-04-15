@@ -1,17 +1,15 @@
 import type {
-  Player, Popover, Tooltip, Checkbox, Slider, Disposable,
+  Player, Popover, Tooltip, Checkbox, Slider, ControlItem,
 } from 'nplayer';
 import {
   BIG, BLOCK_BT, BOTTOM, BOTTOM_TT, COLOUR, DANMAKU_S, DANMAKU_SETTINGS, DISPLAY_A, FAST, FONTSIZE,
   FULL_S, HALF_S, ONOFF, OPACITY, RESTORE, SCROLL, SLOW, SMALL, TOP, UNLIMITED,
 } from './utils';
 
-export class DanmakuSettingControlItem implements Disposable {
-  static readonly id = 'danmaku-setting'
+class DanmakuSetting implements ControlItem {
+  readonly element: HTMLElement;
 
-  private readonly element: HTMLElement;
-
-  readonly tip: Tooltip;
+  readonly tooltip: Tooltip;
 
   private readonly popover: Popover;
 
@@ -35,15 +33,15 @@ export class DanmakuSettingControlItem implements Disposable {
 
   private fontsizeSlider!: Slider;
 
-  constructor(container: HTMLElement, private player: Player) {
+  constructor(private player: Player) {
     const { _utils, components, I18n } = player.Player;
     const {
       $, clamp, addDisposableListener, addDisposable, createSvg,
     } = _utils;
 
-    this.element = container.appendChild($());
+    this.element = $();
     this.element.appendChild(createSvg('icon', '<path d="M9 21v2H7v-2h2m4 0v2h-2v-2h2m4 0v2h-2v-2h2M2 19V3h20v16m-11-7H9v2h2v-2m8 0h-6v2h6v-2M7 8H5v2h2V8m12 0H9v2h10V8z" />'));
-    this.tip = addDisposable(this, new components.Tooltip(this.element, I18n.t(DANMAKU_SETTINGS)));
+    this.tooltip = addDisposable(this, new components.Tooltip(this.element, I18n.t(DANMAKU_SETTINGS)));
     this.popover = addDisposable(this, new components.Popover(this.element));
 
     addDisposableListener(this, this.element, 'click', this.show);
@@ -160,7 +158,7 @@ export class DanmakuSettingControlItem implements Disposable {
 
   show = () => {
     this.popover.show();
-    this.tip.hide();
+    this.tooltip.hide();
   }
 
   dispose() {
@@ -170,3 +168,7 @@ export class DanmakuSettingControlItem implements Disposable {
     this.player = null!;
   }
 }
+
+const danmakuSettingControlItem = (player: Player) => new DanmakuSetting(player);
+danmakuSettingControlItem.id = 'danmaku-setting';
+export { danmakuSettingControlItem };

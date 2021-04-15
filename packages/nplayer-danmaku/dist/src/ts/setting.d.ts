@@ -1,9 +1,8 @@
-import type { Player, Tooltip, Disposable } from 'nplayer';
-export declare class DanmakuSettingControlItem implements Disposable {
+import type { Player, Tooltip, ControlItem } from 'nplayer';
+declare class DanmakuSetting implements ControlItem {
     private player;
-    static readonly id = "danmaku-setting";
-    private readonly element;
-    readonly tip: Tooltip;
+    readonly element: HTMLElement;
+    readonly tooltip: Tooltip;
     private readonly popover;
     private scrollCB;
     private topCB;
@@ -15,8 +14,13 @@ export declare class DanmakuSettingControlItem implements Disposable {
     private areaSlider;
     private speedSlider;
     private fontsizeSlider;
-    constructor(container: HTMLElement, player: Player);
+    constructor(player: Player);
     update(): void;
     show: () => void;
     dispose(): void;
 }
+declare const danmakuSettingControlItem: {
+    (player: Player): DanmakuSetting;
+    id: string;
+};
+export { danmakuSettingControlItem };
