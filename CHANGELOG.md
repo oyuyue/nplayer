@@ -1,3 +1,12 @@
+## [0.0.4](https://github.com/woopen/RPlayer/compare/v0.0.3...v0.0.4) (2021-04-17)
+
+
+### Bug Fixes
+
+* bugs ([64d8c81](https://github.com/woopen/RPlayer/commit/64d8c81763766a37425265d92319bdac0c968980))
+
+
+
 ## [0.0.3](https://github.com/woopen/RPlayer/compare/v0.0.2...v0.0.3) (2021-04-17)
 
 

@@ -17,7 +17,7 @@ export interface DanmakuOptions {
     persistOptions: boolean;
     discard?: (b: BulletOption) => boolean;
 }
-export declare const defaultOptions: Required<DanmakuOptions>;
+export declare const defaultOptions: () => Required<DanmakuOptions>;
 export declare class Danmaku implements Disposable {
     private player;
     private _opts?;
