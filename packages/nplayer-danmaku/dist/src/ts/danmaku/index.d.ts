@@ -13,6 +13,8 @@ export interface DanmakuOptions {
     colors?: string[];
     duration?: number;
     items?: BulletOption[];
+    zIndex?: number;
+    persistOptions: boolean;
     discard?: (b: BulletOption) => boolean;
 }
 export declare const defaultOptions: Required<DanmakuOptions>;
@@ -46,6 +48,7 @@ export declare class Danmaku implements Disposable {
     private fire;
     private updateTrack;
     private onSeeked;
+    private storeOptions;
     recycleBullet(bullet: Bullet): void;
     insert(item: BulletOption, time: number): boolean;
     send(opts: BulletOption): void;

@@ -1,3 +1,4 @@
+import { DanmakuOptions } from './danmaku';
 export declare function isDefaultColor(color: string): boolean;
 export declare const Timer: {
     _prevPauseTime: number;
@@ -7,6 +8,8 @@ export declare const Timer: {
     play(): void;
     pause(): void;
 };
+export declare function getStorageOptions(): DanmakuOptions | undefined;
+export declare function setStorageOptions(opts: DanmakuOptions): void;
 export declare const SEND_SETTINGS = "Send settings";
 export declare const SEND = "Send";
 export declare const MODE = "Mode";
