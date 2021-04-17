@@ -22,7 +22,7 @@ export interface DanmakuOptions {
   discard?: (b: BulletOption) => boolean;
 }
 
-export const defaultOptions: Required<DanmakuOptions> = {
+export const defaultOptions = (): Required<DanmakuOptions> => ({
   disable: false,
   blocked: [],
   fontsize: 24,
@@ -38,7 +38,7 @@ export const defaultOptions: Required<DanmakuOptions> = {
   zIndex: 5,
   persistOptions: false,
   discard() { return false; },
-};
+});
 
 export class Danmaku implements Disposable {
   element: HTMLElement;
@@ -70,7 +70,7 @@ export class Danmaku implements Disposable {
   private prevPauseTime = 0;
 
   constructor(private player: Player, private _opts?: DanmakuOptions) {
-    this.opts = { ...defaultOptions, ...getStorageOptions(), ..._opts };
+    this.opts = { ...defaultOptions(), ...getStorageOptions(), ..._opts };
 
     const { $, addDisposable } = player.Player._utils;
     this.element = player.element.appendChild($('.danmaku_screen'));
@@ -321,7 +321,7 @@ export class Danmaku implements Disposable {
   }
 
   resetOptions(): void {
-    this.opts = { ...defaultOptions, ...this._opts };
+    this.opts = { ...defaultOptions(), ...this._opts };
     this.opts.blocked = [];
     this.updateOpacity();
     this.updateFontsize();

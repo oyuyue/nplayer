@@ -36,8 +36,8 @@ export class Control extends Component {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
 
-    new Progress(this.element, player);
-    new ControlBar(this.element, player);
+    addDisposable(this, new Progress(this.element, player));
+    addDisposable(this, new ControlBar(this.element, player));
 
     addDisposable(this, player.on(EVENT.PAUSE, this.show));
     addDisposable(this, player.on(EVENT.PLAY, this.showTransient));

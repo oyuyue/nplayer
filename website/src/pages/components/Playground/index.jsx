@@ -17,6 +17,8 @@ const Playground = () => {
       plugins: [danmaku]
     })
 
+    console.log(player)
+
     const hls = new Hls();
     hls.attachMedia(player.video)
     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
@@ -24,10 +26,19 @@ const Playground = () => {
     })
 
     player.mount(container.current);
+
+    console.log('mount')
+
+    return () => {
+      console.log('dispose')
+      console.log(player.opts)
+      hls.destroy()
+      player.dispose()
+    }
   }, [])
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.Container} id="demo">
       <div className={styles.Title}>演示</div>
       <div>
         <div ref={container}></div>

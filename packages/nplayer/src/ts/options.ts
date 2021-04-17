@@ -1,6 +1,6 @@
 import { PlayerOptions } from './types';
 
-const defaultOptions: Partial<PlayerOptions> = {
+const defaultOptions = (): Partial<PlayerOptions> => ({
   shortcut: true,
   seekStep: 10,
   volumeStep: 0.1,
@@ -16,14 +16,15 @@ const defaultOptions: Partial<PlayerOptions> = {
     preload: 'auto',
     playsinline: 'true',
   },
-};
+});
 
 export function processOptions(opts: PlayerOptions): Required<PlayerOptions> {
+  const dOpts = defaultOptions();
   return {
-    ...defaultOptions,
+    ...dOpts,
     ...opts,
     videoAttrs: {
-      ...defaultOptions.videoAttrs,
+      ...dOpts.videoAttrs,
       ...opts?.videoAttrs,
     },
   } as Required<PlayerOptions>;

@@ -74,10 +74,10 @@ export function setVideoVolumeFromLocal(video: HTMLVideoElement): void {
 }
 
 export function registerNamedMap(player: Player) {
-  player.registerContextMenuItem(loopContextMenuItem);
-  player.registerContextMenuItem(pipContextMenuItem);
-  player.registerContextMenuItem(versionContextMenuItem);
-  player.registerSettingItem(speedSettingItem);
+  player.registerContextMenuItem(loopContextMenuItem());
+  player.registerContextMenuItem(pipContextMenuItem());
+  player.registerContextMenuItem(versionContextMenuItem());
+  player.registerSettingItem(speedSettingItem());
   player.registerControlItem(playControlItem);
   player.registerControlItem(volumeControlItem);
   player.registerControlItem(timeControlItem);

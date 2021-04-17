@@ -1,7 +1,7 @@
 import { I18n, NORMAL, SPEED } from '../features';
 import { SettingItem } from '../parts/control/items/setting';
 
-export const speedSettingItem: SettingItem = {
+export const speedSettingItem = (): SettingItem => ({
   id: 'speed',
   html: I18n.t(SPEED),
   type: 'select',
@@ -19,4 +19,4 @@ export const speedSettingItem: SettingItem = {
   change(value, player) {
     this.value = player.playbackRate = value;
   },
-};
+});

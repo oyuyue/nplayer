@@ -1,5 +1,5 @@
 import {
-  $, clamp, Component, formatTime, Rect,
+  $, addDisposable, clamp, Component, formatTime, Rect,
 } from 'src/ts/utils';
 
 export interface ThumbnailOptions {
@@ -47,7 +47,7 @@ export class Thumbnail extends Component {
     this.timeElement = this.element.appendChild($('.thumb_time'));
     this.timeElement.textContent = '0:00';
 
-    this.rect = new Rect(this.element);
+    this.rect = addDisposable(this, new Rect(this.element));
   }
 
   private getCurrentThumb(seconds: number): ThumbImg | void {

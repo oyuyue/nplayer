@@ -1,7 +1,7 @@
 import { I18n, PIP } from '../features';
 import { ContextMenuItem } from '../parts/contextmenu';
 
-export const pipContextMenuItem: ContextMenuItem = {
+export const pipContextMenuItem = (): ContextMenuItem => ({
   id: 'pip',
   html: I18n.t(PIP),
   init() {
@@ -15,4 +15,4 @@ export const pipContextMenuItem: ContextMenuItem = {
       (document as any).exitPictureInPicture();
     }
   },
-};
+});
