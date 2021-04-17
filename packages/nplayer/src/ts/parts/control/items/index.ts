@@ -4,14 +4,14 @@ import {
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
 import { Disposable } from 'src/ts/types';
-import { ControlItem } from '..';
+import { ControlItem, ControlItemEntry } from '..';
 
 export class ControlBar extends Component {
   constructor(container: HTMLElement, player: Player) {
     super(container, '.control_bar');
     const last = player.opts.controls.length - 1;
     player.opts.controls.forEach((Item, i) => {
-      if (isString(Item)) Item = player.controlNamedMap[Item];
+      if (isString(Item)) Item = player.getControlItem(Item) as ControlItemEntry;
       if (Item) {
         let item: ControlItem;
         if (isFunction(Item)) {

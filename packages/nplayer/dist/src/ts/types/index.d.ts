@@ -23,11 +23,14 @@ export interface PlayerOptions {
     seekStep?: number;
     volumeStep?: number;
     themeColor?: string;
-    progressColor?: string;
-    volumeProgressColor?: string;
+    posterBgColor?: string;
+    progressBg?: string;
+    volumeProgressBg?: string;
     volumeBarWidth?: number | string;
     loadingElement?: HTMLElement;
     openEdgeInIE?: boolean;
     poster?: string;
+    posterEnable?: boolean;
+    posterPlayElement?: HTMLElement;
     [key: string]: any;
 }

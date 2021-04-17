@@ -13,7 +13,7 @@ const airplay = 'M6 22h12l-6-6m9-13H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4v-2H3V5h18
 
 function createIcon(icon: string) {
   return (cls?: string) => {
-    const svg = createSvg('icon', `<path d="${icon}"/>`);
+    const svg = createSvg('icon', icon);
     if (cls) addClass(svg, cls);
     return svg;
   };

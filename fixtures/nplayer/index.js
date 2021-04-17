@@ -1,14 +1,15 @@
 window.onload = function () {
 
-  const Quantity = {
+  var Quantity = {
     element: document.createElement('div'),
-    init(player) {
+    init: function(player) {
       this.btn = document.createElement('div')
       this.btn.textContent = '画质'
       this.element.appendChild(this.btn);
       this.popover = new player.Player.components.Popover(this.element)
-      this.btn.addEventListener('click', () => {
-        this.popover.show();
+      var _this = this;
+      this.btn.addEventListener('click', function () {
+        _this.popover.show();
       })
       this.element.style.display = 'none';
       this.element.classList.add('quantity')
@@ -16,6 +17,7 @@ window.onload = function () {
   }
 
   var player = new NPlayer.Player({
+    // videoAttrs: { src: 'http://vjs.zencdn.net/v/oceans.mp4' },
     poster: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1625100497,827999043&fm=26&gp=0.jpg',
     controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
   })
@@ -25,10 +27,10 @@ window.onload = function () {
   hls.on(Hls.Events.MEDIA_ATTACHED, function () {
     hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
     hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      hls.levels.sort((a, b) => b.height - a.height)
-      const frag = document.createDocumentFragment();
-      const listener = (i) => (init) => {
-        const el = Quantity.itemElements[i] || Quantity.itemElements[Quantity.itemElements.length - 1]
+      hls.levels.sort(function (a, b) { return b.height - a.height })
+      var frag = document.createDocumentFragment();
+      var listener = (i) => (init) => {
+        var el = Quantity.itemElements[i] || Quantity.itemElements[Quantity.itemElements.length - 1]
         if (el) {
           Quantity.btn.textContent = el.textContent
           if (init !== true && !player.paused) setTimeout(() => player.play())
@@ -38,7 +40,7 @@ window.onload = function () {
         Quantity.popover.hide();
       }
       Quantity.itemElements = hls.levels.map((l, i) => {
-        const el = document.createElement('div')
+        var el = document.createElement('div')
         el.textContent = l.name + 'P'
         if (l.height === 1080) el.textContent += ' 超清'
         if (l.height === 720) el.textContent += ' 高清'
@@ -48,7 +50,7 @@ window.onload = function () {
         frag.appendChild(el)
         return el;
       })
-      const el = document.createElement('div')
+      var el = document.createElement('div')
       el.textContent = '自动'
       el.addEventListener('click', listener(-1))
       el.classList.add('quantity_item')

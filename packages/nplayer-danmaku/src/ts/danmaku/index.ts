@@ -1,5 +1,7 @@
 import type { Disposable, Player } from 'nplayer';
-import { isDefaultColor, Timer } from '../utils';
+import {
+  getStorageOptions, isDefaultColor, setStorageOptions, Timer,
+} from '../utils';
 import { Bullet, BulletOption, BulletSetting } from './bullet';
 
 export interface DanmakuOptions {
@@ -15,6 +17,8 @@ export interface DanmakuOptions {
   colors?: string[];
   duration?: number;
   items?: BulletOption[];
+  zIndex?: number;
+  persistOptions: boolean;
   discard?: (b: BulletOption) => boolean;
 }
 
@@ -31,6 +35,8 @@ export const defaultOptions: Required<DanmakuOptions> = {
   colors: ['#FE0302', '#FF7204', '#FFAA02', '#FFD302', '#FFFF00', '#A0EE00', '#00CD00', '#019899', '#4266BE', '#89D5FF', '#CC0273', '#222222', '#9B9B9B', '#FFFFFF'],
   duration: 5,
   items: [],
+  zIndex: 5,
+  persistOptions: false,
   discard() { return false; },
 };
 
@@ -64,19 +70,21 @@ export class Danmaku implements Disposable {
   private prevPauseTime = 0;
 
   constructor(private player: Player, private _opts?: DanmakuOptions) {
-    this.opts = { ...defaultOptions, ..._opts };
+    this.opts = { ...defaultOptions, ...getStorageOptions(), ..._opts };
 
     const { $, addDisposable } = player.Player._utils;
     this.element = player.element.appendChild($('.danmaku_screen'));
+    this.element.style.zIndex = String(this.opts.zIndex);
 
     this.items = this.opts.items;
 
-    this.resetOptions();
     if (!this.opts.disable) this.enable();
 
     addDisposable(this, player.on('mounted', () => {
       this.updateTrack();
     }));
+
+    addDisposable(player, this);
   }
 
   get width(): number {
@@ -163,6 +171,21 @@ export class Danmaku implements Disposable {
     this.pos = 0;
   }
 
+  private storeOptions() {
+    if (this.opts.persistOptions) {
+      const opts = this.opts;
+      setStorageOptions({
+        blocked: opts.blocked,
+        fontsizeScale: opts.fontsizeScale,
+        opacity: opts.opacity,
+        speed: opts.speed,
+        area: opts.area,
+        unlimited: opts.unlimited,
+        bottomUp: opts.bottomUp,
+      } as DanmakuOptions);
+    }
+  }
+
   recycleBullet(bullet: Bullet): void {
     this.bulletPool.push(bullet);
     this.aliveBullets.delete(bullet);
@@ -206,6 +229,10 @@ export class Danmaku implements Disposable {
   }
 
   resume = () => {
+    if (!this.player.playing || this.player.loading.showing) {
+      return;
+    }
+
     Timer.play();
     this.aliveBullets.forEach((bullet) => bullet.run(this.prevPauseTime));
     this.paused = false;
@@ -240,30 +267,36 @@ export class Danmaku implements Disposable {
 
   updateOpacity(opacity = this.opts.opacity): void {
     this.element.style.opacity = String(opacity);
+    this.storeOptions();
   }
 
   updateFontsize(scale = this.opts.fontsizeScale): void {
     this.opts.fontsizeScale = scale;
     this.updateTrack();
+    this.storeOptions();
   }
 
   updateArea(area: Required<DanmakuOptions>['area']): void {
     if (![0.25, 0.5, 0.75, 1].includes(area)) return;
     this.opts.area = area;
     this.updateTrack();
+    this.storeOptions();
   }
 
   updateUnlimited(unlimited: boolean): void {
     this.opts.unlimited = unlimited;
+    this.storeOptions();
   }
 
   updateBottomUp(bottomUp: boolean): void {
     this.opts.bottomUp = bottomUp;
     this.aliveBullets.forEach((b) => b.updateScrollY(bottomUp));
+    this.storeOptions();
   }
 
   updateSpeed(v: number): void {
     this.opts.speed = v;
+    this.storeOptions();
   }
 
   blockType(type: Required<DanmakuOptions>['blocked'][0]): void {
@@ -274,6 +307,7 @@ export class Danmaku implements Disposable {
         b.hide();
       }
     });
+    this.storeOptions();
   }
 
   allowType(type: Parameters<Danmaku['blockType']>[0]): void {
@@ -283,6 +317,7 @@ export class Danmaku implements Disposable {
         b.show();
       }
     });
+    this.storeOptions();
   }
 
   resetOptions(): void {
@@ -290,6 +325,7 @@ export class Danmaku implements Disposable {
     this.opts.blocked = [];
     this.updateOpacity();
     this.updateFontsize();
+    this.storeOptions();
   }
 
   clearScreen() {

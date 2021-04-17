@@ -18,8 +18,8 @@ export default function Home() {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
       <HeaderView />
-      {/* <Playground /> */}
       <Features />
+      <Playground />
       <StartCoding />
     </Layout>
   );

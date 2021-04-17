@@ -75,7 +75,8 @@ export function addClass<T extends Element>(dom: T, cls = '', prefix = CLASS_PRE
   if (dom.classList) {
     cls.split(' ').forEach((c) => dom.classList.add(prefix + c));
   } else {
-    dom.setAttribute('class', `${dom.className.trim()} ${cls.split(' ').map((c) => prefix + c).join(' ')}`);
+    const oldCls = (dom.className && (dom.className as any).baseVal) || '';
+    dom.setAttribute('class', (oldCls ? `${oldCls} ` : '') + cls.split(' ').map((c) => prefix + c).join(' '));
   }
   return dom;
 }
@@ -90,14 +91,28 @@ export function containClass(dom: Element, cls: string, prefix = CLASS_PREFIX): 
 }
 
 export function toggleClass(dom: Element, cls: string, force?: boolean, prefix = CLASS_PREFIX): boolean {
-  return dom.classList.toggle(prefix + cls, force);
+  cls = prefix + cls;
+  if (force) {
+    dom.classList.add(cls);
+    return true;
+  } if (force === false) {
+    dom.classList.remove(cls);
+    return true;
+  }
+  return dom.classList.toggle(cls, force);
 }
 
-export function createSvg(cls?: string, html?: string, viewBox = '0 0 24 24'): SVGSVGElement {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+const svgNS = 'http://www.w3.org/2000/svg';
+
+export function createSvg(cls?: string, d?: string, viewBox = '0 0 24 24'): SVGSVGElement {
+  const svg = document.createElementNS(svgNS, 'svg');
   svg.setAttribute('viewBox', viewBox);
   if (cls) addClass(svg, cls);
-  if (html) svg.innerHTML = html;
+  if (d) {
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttributeNS(null, 'd', d);
+    svg.appendChild(path);
+  }
   return svg;
 }
 

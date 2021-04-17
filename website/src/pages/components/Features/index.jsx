@@ -50,15 +50,17 @@ const Features = () => {
 
   return (
     <div className={styles.Container}>
-      <section className={styles.features}>
-        <div className="container">
-          <div className="row">
-            {features.map((props, idx) => (
-              <Feature key={idx} {...props} />
-            ))}
+      <div className={styles.Content}>
+        <section className={styles.features}>
+          <div className="container">
+            <div className="row">
+              {features.map((props, idx) => (
+                <Feature key={idx} {...props} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ export declare function addClass<T extends Element>(dom: T, cls?: string, prefix
 export declare function removeClass<T extends Element>(dom: T, cls: string, prefix?: string): T;
 export declare function containClass(dom: Element, cls: string, prefix?: string): boolean;
 export declare function toggleClass(dom: Element, cls: string, force?: boolean, prefix?: string): boolean;
-export declare function createSvg(cls?: string, html?: string, viewBox?: string): SVGSVGElement;
+export declare function createSvg(cls?: string, d?: string, viewBox?: string): SVGSVGElement;
 export declare function getEventPath(ev: Event): EventTarget[];
 export declare function isListenerObjOptsSupported(): boolean;
 export declare class DomListener implements Disposable {

@@ -101,6 +101,8 @@ export class Bullet {
     this.ended = false;
     this.show();
 
+    if (this.danmaku.paused) this.pause(this.startAt);
+
     return this;
   }
 

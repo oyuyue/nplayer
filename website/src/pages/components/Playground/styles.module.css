@@ -1,17 +1,17 @@
 .Container {
-  background-color: var(--ifm-color-background-2);
-  transform: skewY(-2deg);
-  padding: 8rem 0;
-}
-
-.Content {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 95%;
   max-width: var(--ifm-container-width);
   margin: 0 auto;
-  transform: skewY(2deg);
+  padding: 12rem 0;
+}
+
+.Title {
+  margin-bottom: 30px;
+  font-size: var(--ifm-font-size-36);
+  color: var(--ifm-color-on-background);
+  font-weight: bold;
 }
 
 @media (max-height: 800px) and (max-width: 768px) {

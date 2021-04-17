@@ -22,7 +22,8 @@ module.exports = env => {
       contentBase: [fixtureDir, path.resolve(__dirname, '..', 'packages')],
       watchContentBase: true,
       liveReload: true,
-      injectClient: false
+      injectClient: false,
+      host: '0.0.0.0'
     },
 
     plugins: [

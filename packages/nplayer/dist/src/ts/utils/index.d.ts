@@ -12,7 +12,6 @@ export declare function getDisposableMap(): Map<any, Array<Disposable>>;
 export declare function addDisposable<T extends Disposable>(key: any, disposable: T): T;
 export declare function dispose(key: any): void;
 export declare function addDisposableListener<K extends keyof GlobalEventHandlersEventMap>(key: any, node: EventTarget, type: K, handler: (event: GlobalEventHandlersEventMap[K]) => void, useCapture?: boolean): DomListener;
-export declare function applyMixins(derivedCtor: any, constructors: any[]): void;
 export declare function throttle(fn: Function, ctx?: any): any;
 export declare function padStart(v: string | number, len?: number, str?: string): string;
 export declare function formatTime(seconds: number): string;

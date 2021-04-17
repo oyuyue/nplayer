@@ -1547,6 +1547,11 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@nplayer/danmaku@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npm.taobao.org/@nplayer/danmaku/download/@nplayer/danmaku-0.0.2.tgz#2a8143a481d03f978bb1e97f0f81a3f6aa3b1f96"
+  integrity sha1-KoFDpIHQP5eLsel/D4Gj9qo7H5Y=
+
 "@npmcli/move-file@^1.0.1":
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/@npmcli/move-file/download/@npmcli/move-file-1.1.2.tgz#1a82c3e372f7cae9253eb66d72543d6b8685c674"
@@ -1559,11 +1564,6 @@
   version "1.0.0-next.12"
   resolved "https://registry.npm.taobao.org/@polka/url/download/@polka/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha1-Qx7DQqcZViL4Zoi72oLjFmzoyyg=
-
-"@rplayer/danmaku@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.npm.taobao.org/@rplayer/danmaku/download/@rplayer/danmaku-0.6.1.tgz#de223f8b8aad9c3a76536e38dd2847baafb8cef5"
-  integrity sha1-3iI/i4qtnDp2U2443ShHuq+4zvU=
 
 "@sideway/address@^4.1.0":
   version "4.1.1"
@@ -7024,6 +7024,11 @@ normalize-url@^4.1.0:
   resolved "https://registry.npm.taobao.org/normalize-url/download/normalize-url-4.5.0.tgz?cache=0&sync_timestamp=1602432435724&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnormalize-url%2Fdownload%2Fnormalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha1-RTNUCH5sqWlXvY9br3U/WYIUISk=
 
+nplayer@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npm.taobao.org/nplayer/download/nplayer-0.0.2.tgz#cf714424f5f291e43516d39e36aa85a4a7454f04"
+  integrity sha1-z3FEJPXykeQ1FtOeNqqFpKdFTwQ=
+
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npm.taobao.org/npm-run-path/download/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -9112,11 +9117,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
-
-rplayer@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.npm.taobao.org/rplayer/download/rplayer-0.6.1.tgz#48cb4f984ab20a20cf141d917fb38589bb791fe1"
-  integrity sha1-SMtPmEqyCiDPFB2Rf7OFibt5H+E=
 
 rtlcss@^2.6.2:
   version "2.6.2"

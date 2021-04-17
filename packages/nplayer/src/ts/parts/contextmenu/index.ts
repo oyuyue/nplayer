@@ -40,17 +40,18 @@ export class ContextMenu extends Component {
 
           show(this.element);
           this.rect.update();
+          this.player.rect.update();
 
           const { width, height } = this.rect;
           const { x, y } = this.player.rect;
           const { innerWidth, innerHeight } = window;
-          const { pageX, pageY } = ev;
+          const { clientX, clientY } = ev;
 
-          let left = pageX - x;
-          let top = pageY - y;
+          let left = clientX - x;
+          let top = clientY - y;
 
-          if (pageX + width > innerWidth) left = innerWidth - width;
-          if (pageY + height > innerHeight) top = innerHeight - height;
+          if (clientX + width > innerWidth) left = innerWidth - width;
+          if (clientY + height > innerHeight) top = innerHeight - height;
 
           this.applyStyle({ left: `${left}px`, top: `${top}px` });
         }

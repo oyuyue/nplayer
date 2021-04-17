@@ -4,8 +4,8 @@
   
   --theme-color: #007aff;
   --poster-bg-color: transparent;
-  --progress-color: #007aff;
-  --volume-progress-color: #007aff;
+  --progress-bg: #007aff;
+  --volume-progress-bg: #007aff;
 
   position: relative;
   width: 100%;
@@ -20,11 +20,13 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
 
+  * { box-sizing: content-box; }
+
   &_control { z-index: 10; &_bg { z-index: 9; } }
   &_poster { z-index: 20; }
   &_loading { z-index: 30; }
-  &_toast { z-index: 40; }
-  &_contextmenu { z-index: 50; }
+  &_contextmenu { z-index: 40; }
+  &_toast { z-index: 50; }
 
   &:focus {
     outline: none;
@@ -500,7 +502,7 @@
         transform-origin: 0 0;
         transform: scaleX(0);
         will-change: transform;
-        background: var(--volume-progress-color);
+        background: var(--volume-progress-bg);
       }
     }
 
@@ -660,7 +662,7 @@
 
     &_played {
       will-change: transform;
-      background: var(--progress-color);
+      background: var(--progress-bg);
     }
 
     &_buf {

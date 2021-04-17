@@ -1,5 +1,4 @@
 import { Disposable } from '../types';
-import { EventEmitter } from '.';
 export declare class Component implements Disposable {
     element: HTMLElement;
     constructor(container?: HTMLElement, desc?: string | HTMLElement, attrs?: {
@@ -8,6 +7,3 @@ export declare class Component implements Disposable {
     applyStyle(style: Partial<CSSStyleDeclaration>): void;
     dispose(): void;
 }
-declare type IEventComponent = new (...args: ConstructorParameters<typeof Component>) => Component & EventEmitter;
-export declare const EventComponent: IEventComponent;
-export {};

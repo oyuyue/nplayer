@@ -17,14 +17,14 @@
     "@docusaurus/core": "2.0.0-alpha.72",
     "@docusaurus/preset-classic": "2.0.0-alpha.72",
     "@mdx-js/react": "^1.6.21",
-    "@rplayer/danmaku": "^0.6.1",
+    "@nplayer/danmaku": "^0.0.2",
     "clsx": "^1.1.1",
     "hls.js": "^1.0.0",
+    "nplayer": "^0.0.2",
     "prism-react-renderer": "^1.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-icons": "^4.2.0",
-    "rplayer": "^0.6.1"
+    "react-icons": "^4.2.0"
   },
   "browserslist": {
     "production": [

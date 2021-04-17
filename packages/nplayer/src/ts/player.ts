@@ -31,11 +31,11 @@ export class Player extends EventEmitter implements Disposable {
 
   private prevVolume = 1;
 
-  readonly settingNamedMap: Record<string, SettingItem> = Object.create(null);
+  private readonly settingNamedMap: Record<string, SettingItem> = Object.create(null);
 
-  readonly contextmenuNamedMap: Record<string, ContextMenuItem> = Object.create(null);
+  private readonly contextmenuNamedMap: Record<string, ContextMenuItem> = Object.create(null);
 
-  readonly controlNamedMap: Record<string, ControlItemEntry> = Object.create(null);
+  private readonly controlNamedMap: Record<string, ControlItemEntry> = Object.create(null);
 
   readonly _settingItems: SettingItem[];
 
@@ -90,7 +90,12 @@ export class Player extends EventEmitter implements Disposable {
     this.poster = addDisposable(this, new Poster(this.element, this));
 
     if (this.opts.plugins) {
-      this.opts.plugins.forEach((plugin) => plugin.apply(this));
+      this.opts.plugins.forEach((plugin) => {
+        if (plugin.dispose) {
+          addDisposable(this, plugin as Disposable);
+        }
+        plugin.apply(this);
+      });
     }
 
     this.contextmenu = addDisposable(this, new ContextMenu(this.element, this, this.opts.contextMenus.map((item) => {

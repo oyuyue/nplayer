@@ -1,3 +1,5 @@
+import { DanmakuOptions } from './danmaku';
+
 export function isDefaultColor(color: string): boolean {
   if (!color) return true;
   color = color.toLowerCase();
@@ -25,6 +27,24 @@ export const Timer = {
     this._paused = true;
   },
 };
+
+const storageKey = 'nplayer:danmaku';
+export function getStorageOptions(): DanmakuOptions | undefined {
+  try {
+    const optStr = window.localStorage.getItem(storageKey);
+    if (!optStr) return;
+    return JSON.parse(optStr);
+  } catch (error) {
+    // ignore
+  }
+}
+export function setStorageOptions(opts: DanmakuOptions) {
+  try {
+    window.localStorage.setItem(storageKey, JSON.stringify(opts));
+  } catch (error) {
+    // ignore
+  }
+}
 
 export const SEND_SETTINGS = 'Send settings';
 export const SEND = 'Send';

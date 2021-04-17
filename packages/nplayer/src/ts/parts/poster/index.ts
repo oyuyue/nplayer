@@ -15,7 +15,10 @@ export class Poster extends Component {
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.poster');
     this.poster = player.opts.poster;
-    this.playElement = this.element.appendChild(Icon.play('poster_play'));
+    this.playElement = player.opts.posterPlayElement || Icon.play('poster_play');
+    this.element.appendChild(this.playElement);
+
+    if (!player.opts.posterEnable) return;
 
     if (this.poster) {
       this.applyStyle({

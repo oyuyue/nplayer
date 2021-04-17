@@ -10,10 +10,7 @@
   width: 95%;
   max-width: var(--ifm-container-width);
   margin: 0 auto;
-  padding: 0 5rem;
   transform: skewY(-3deg);
-
-  transition: padding 100ms cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
 
 .Tagline {
@@ -38,11 +35,5 @@
 @media (max-height: 800px) and (max-width: 768px) {
   .Container {
     padding: 4em 0 !important;
-  }
-}
-
-@media screen and (max-width: 997px) {
-  .Content {
-    padding: 0 !important;
   }
 }

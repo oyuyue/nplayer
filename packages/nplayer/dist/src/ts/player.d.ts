@@ -16,9 +16,9 @@ export declare class Player extends EventEmitter implements Disposable {
     element: HTMLElement;
     opts: Required<PlayerOptions>;
     private prevVolume;
-    readonly settingNamedMap: Record<string, SettingItem>;
-    readonly contextmenuNamedMap: Record<string, ContextMenuItem>;
-    readonly controlNamedMap: Record<string, ControlItemEntry>;
+    private readonly settingNamedMap;
+    private readonly contextmenuNamedMap;
+    private readonly controlNamedMap;
     readonly _settingItems: SettingItem[];
     readonly video: HTMLVideoElement;
     readonly rect: Rect;

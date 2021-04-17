@@ -35,13 +35,14 @@ export const I18n = {
   },
   setCurrentLang(lang?: string): void {
     this.currentLang = lang || navigator.language || (navigator as any).userLanguage;
+    if (this.currentLang) this.currentLang = this.currentLang.toLowerCase();
   },
   setDefaultLang(lang?: string): void {
     this.defaultLang = lang || '';
   },
 };
 
-I18n.add('zh-CN', {
+I18n.add('zh-cn', {
   [FULL_SCREEN]: '全屏',
   [EXIT_FULL_SCREEN]: '取消全屏',
   [WEB_FULL_SCREEN]: '网页全屏',

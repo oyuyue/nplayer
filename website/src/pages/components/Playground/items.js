@@ -1,6 +1,4 @@
-window.onload = function () {
-  var danmaku = new NPlayerDanmaku.Plugin({
-    items: [
+export default [
       { text: '美的让人窒息 ', time: 184, color: '#2196F3' },
       {
         text: '这可以去拍科幻大片了，敌人还有5秒到达战场 ',
@@ -529,16 +527,4 @@ window.onload = function () {
       { text: 'Primate灵长类动物 ', time: 169, color: '' },
       { text: '啊啊啊啊啊疯了 ', time: 61, color: '' },
       { text: 'stalking 跟踪 hare野兔', time: 25, color: '#2196F3' },
-    ].sort(function (a, b) { return a.time - b.time })
-  })
-  var player = new NPlayer.Player({
-    // videoAttrs: { src: 'https://www.w3schools.com/html/movie.mp4' },
-    plugins: [danmaku]
-  })
-
-  var hls = new Hls();
-  hls.attachMedia(player.video)
-  hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
-
-  player.mount('#app')
-}
+    ].sort((a, b) => a.time - b.time)

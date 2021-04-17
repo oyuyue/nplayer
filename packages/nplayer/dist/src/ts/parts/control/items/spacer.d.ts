@@ -1,2 +1,6 @@
 import { ControlItem } from '..';
-export declare const spacerControlItem: ControlItem;
+declare const spacerControlItem: {
+    (): ControlItem;
+    id: string;
+};
+export { spacerControlItem };

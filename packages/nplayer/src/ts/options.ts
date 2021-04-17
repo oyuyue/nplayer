@@ -10,6 +10,7 @@ const defaultOptions: Partial<PlayerOptions> = {
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,
   openEdgeInIE: true,
+  posterEnable: true,
   videoAttrs: {
     crossorigin: 'anonymous',
     preload: 'auto',

@@ -1,13 +1,3 @@
-.Container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 95%;
-  max-width: var(--ifm-container-width);
-  margin: 0 auto;
-  padding: 12rem 0;
-}
-
 .features {
   display: flex;
   align-items: center;
@@ -24,6 +14,20 @@
   max-height: 200px;
 }
 
+.Container {
+  background-color: var(--ifm-color-background-2);
+  transform: skewY(-2deg);
+  padding: 8rem 0;
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
+  transform: skewY(2deg);
+}
 
 @media (max-height: 800px) and (max-width: 768px) {
   .Container {

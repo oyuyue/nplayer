@@ -54,8 +54,9 @@ export function tryOpenEdge(player: Player): void {
 export function setCssVariables(el: HTMLElement, opts: PlayerOptions): void {
   const style = el.style;
   if (opts.themeColor) style.setProperty('--theme-color', opts.themeColor);
-  if (opts.progressColor) style.setProperty('--progress-color', opts.progressColor);
-  if (opts.volumeProgressColor) style.setProperty('--volume-progress-color', opts.volumeProgressColor);
+  if (opts.progressBg) style.setProperty('--progress-bg', opts.progressBg);
+  if (opts.posterBgColor) style.setProperty('--poster-bg-color', opts.posterBgColor);
+  if (opts.volumeProgressBg) style.setProperty('--volume-progress-bg', opts.volumeProgressBg);
 }
 
 export function setVideoAttrs(video: HTMLVideoElement, opts: PlayerOptions['videoAttrs']): void {
@@ -109,7 +110,7 @@ export function transferEvent(player: Player): void {
   dis(transThrottle(player, 'progress', EVENT.PROGRESS));
 
   dis(transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window));
-  if (ResizeObserver) {
+  if ((window as any).ResizeObserver) {
     const ro = new ResizeObserver(() => player.emit(EVENT.UPDATE_SIZE));
     ro.observe(player.element);
     dis({ dispose: () => ro.disconnect() });
