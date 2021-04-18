@@ -1,6 +1,7 @@
 import { isBool, isString } from '.';
 import { CLASS_PREFIX } from '../constants';
 import { Disposable } from '../types';
+import { isBrowser } from './env';
 
 const SELECTOR_REGEX = /([\w-]+)?(?:#([\w-]+))?((?:\.(?:[\w-]+))*)/;
 
@@ -122,11 +123,13 @@ export function getEventPath(ev: Event): EventTarget[] {
 
 let thirdOptsSupported = false;
 
-try {
-  const options = Object.defineProperty({}, 'once', { get() { thirdOptsSupported = true; } });
-  window.addEventListener('test', null as any, options);
-// eslint-disable-next-line no-empty
-} catch (e) {}
+if (isBrowser) {
+  try {
+    const options = Object.defineProperty({}, 'once', { get() { thirdOptsSupported = true; } });
+    window.addEventListener('test', null as any, options);
+  // eslint-disable-next-line no-empty
+  } catch (e) {}
+}
 
 export function isListenerObjOptsSupported(): boolean {
   return thirdOptsSupported;

@@ -43,7 +43,8 @@ module.exports = (env) => {
         {
           test: /\.scss$/,
           use: [
-            'style-loader',
+            path.resolve(__dirname, './style-loader.js'),
+            // 'style-loader',
             {
               loader: 'css-loader',
               options: {
