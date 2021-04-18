@@ -40,11 +40,11 @@ async function main() {
   info('\nRunning tests...')
   run('yarn', ['test'])
 
-  info('\nBuilding all packages...')
-  buildPackages()
-
   info('\nUpdating versions...')
   updateVersions(version)
+
+  info('\nBuilding all packages...')
+  buildPackages()
 
   run(`yarn`, ['changelog'])
 
