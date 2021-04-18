@@ -1,5 +1,4 @@
 import React from 'react';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import PrimaryButton from '../../../components/PrimaryButton';
 import GithubButton from '../../../components/GithubButton';
@@ -9,7 +8,6 @@ import MouseScroller from './components/MouseScroller';
 import Preview from './components/Preview';
 
 const HeaderView = () => {
-  const { siteConfig } = useDocusaurusContext();
   const { windowHeight } = useWindowSize();
 
   return (

@@ -39,7 +39,6 @@ function splitNavItemsByPosition(items) {
 function Navbar() {
   const {
     navbar: { items, hideOnScroll, style },
-    colorMode: { disableSwitch: disableColorModeSwitch },
   } = useThemeConfig();
   const [sidebarShown, setSidebarShown] = useState(false);
   const { isDarkTheme, setLightTheme, setDarkTheme } = useThemeContext();
