@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[10],{64:function(e,a,n){"use strict";n.r(a);var t=n(0),s=n.n(t),c=n(70),i=n.n(c);a.default=()=>s.a.createElement("div",{className:i.a.Container},s.a.createElement("div",{className:i.a.Content},"\u6f14\u793a"))}}]);
