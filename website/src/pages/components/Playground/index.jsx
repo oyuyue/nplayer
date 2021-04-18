@@ -88,13 +88,12 @@ const Playground = () => {
     if (player.rect.width < 575) {
       const danmaku = player.getControlItem('danmaku')
       const spacer = player.getControlItem('spacer')
-      console.log(danmaku, spacer)
-      // if (danmaku) {
-      //   danmaku.element.style.display = 'none';
-      // }
-      // if (spacer) {
-      //   spacer.flex(1)
-      // }
+      if (danmaku && danmaku.element) {
+        danmaku.element.style.display = 'none';
+      }
+      if (spacer) {
+        spacer.flex(1)
+      }
     }
 
     return () => {
