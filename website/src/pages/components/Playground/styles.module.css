@@ -14,6 +14,28 @@
   font-weight: bold;
 }
 
+.Quantity {
+  position: relative;
+  padding: 0 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  opacity: .8;
+}
+.Quantity:hover {
+  opacity: 1;
+}
+.QuantityItem {
+  padding: 5px 20px;
+  font-weight: normal;
+}
+.QuantityItem:hover {
+  background: rgba(255, 255, 255, .3);
+}
+.QuantityItemActive {
+  color: var(--theme-color);
+}
+
 @media (max-height: 800px) and (max-width: 768px) {
   .Container {
     padding: 4em 0 !important;

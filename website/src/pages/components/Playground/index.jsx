@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import Player from 'nplayer'
 import Danmaku from '@nplayer/danmaku'
 import Hls from 'hls.js'
+import M1 from '@site/static/img/M1.jpg';
+import M2 from '@site/static/img/M2.jpg';
+import M3 from '@site/static/img/M3.jpg';
 import styles from './styles.module.css';
 import items from './items'
 
@@ -10,28 +13,74 @@ const Playground = () => {
   const container = useRef()
 
   useEffect(() => {
-    const danmaku = new Danmaku({
-      items
-    })
-    const player = new Player({
-      plugins: [danmaku]
-    })
+    const Quantity = {
+      element: document.createElement('div'),
+      init(player) {
+        this.btn = document.createElement('div')
+        this.btn.textContent = '画质'
+        this.element.appendChild(this.btn)
+        this.popover = new player.Player.components.Popover(this.element)
+        this.btn.addEventListener('click', () =>  this.popover.show())
+        this.element.style.display = 'none'
+        this.element.classList.add(styles.Quantity)
+      }
+    }
 
-    console.log(player)
+    const player = new Player({
+      plugins: [new Danmaku({ items })],
+      thumbnail: {
+        startSecond: 1,
+        images: [M1, M2, M3]
+      },
+      controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    })
 
     const hls = new Hls();
-    hls.attachMedia(player.video)
     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+        hls.levels.sort((a, b) => b.height - a.height)
+        const frag = document.createDocumentFragment()
+        const listener = (i) => (init) => {
+          const last = Quantity.itemElements[Quantity.itemElements.length - 1]
+          const prev = Quantity.itemElements[Quantity.value] || last
+          const el = Quantity.itemElements[i] || last
+          prev.classList.remove(styles.QuantityItemActive)
+          el.classList.add(styles.QuantityItemActive)
+          Quantity.btn.textContent = el.textContent
+          if (init !== true && !player.paused) setTimeout(() => player.play())
+          Quantity.value = hls.currentLevel = hls.loadLevel = i;
+          Quantity.popover.hide();
+        }
+        Quantity.itemElements = hls.levels.map((l, i) => {
+          const el = document.createElement('div')
+          el.textContent = l.name + 'P'
+          if (l.height === 1080) el.textContent += ' 超清'
+          if (l.height === 720) el.textContent += ' 高清'
+          if (l.height === 480) el.textContent += ' 清晰'
+          el.classList.add(styles.QuantityItem)
+          el.addEventListener('click', listener(i))
+          frag.appendChild(el)
+          return el;
+        })
+        const el = document.createElement('div')
+        el.textContent = '自动'
+        el.addEventListener('click', listener(-1))
+        el.classList.add(styles.QuantityItem)
+        frag.appendChild(el)
+        Quantity.itemElements.push(el)
+
+        Quantity.popover.panelElement.appendChild(frag);
+        Quantity.element.style.display = 'block';
+
+        listener(hls.currentLevel)(true)
+      })
       hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
     })
 
+    hls.attachMedia(player.video)
     player.mount(container.current);
 
-    console.log('mount')
-
     return () => {
-      console.log('dispose')
-      console.log(player.opts)
       hls.destroy()
       player.dispose()
     }
