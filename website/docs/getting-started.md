@@ -5,7 +5,7 @@ slug: /
 
 ## 介绍
 
-NPlayer 是由 Typescript 编写的视频播放器，它没有任何任何第三方框架依赖。
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11 。该播放器高度可定制，并且有用插件系统，可以接入任何流媒体，如 hls、dash 和 flv 等。
 
 ## 安装
 
@@ -71,6 +71,7 @@ const Plugin = {
   apply(player) {
     console.log(player.Player.components) 
     console.log(player.Player.EVENT)
+    console.log(player.EVENT)
     // ...
   }
 }
@@ -94,7 +95,24 @@ Player 实例上有很多属性和方法，比如 `player.fullscreen` 是 `Fulls
 | off(evt: string, fn?: Function) | 解除事件监听 |
 | removeAllListeners(evt?: string) | 移除所有事件监听 |
 
-你可以使用这些方法监听内置事件或触发自定义事件。事件详情请查看 [事件章节](api/events)。
+你可以使用这些方法监听内置事件或触发自定义事件。
+
+NPlayer 事件名是大驼峰形式的字符串。
+
+```js
+import Player, { EVENT } form 'nplayer'
+
+const player = new Player()
+
+console.log(EVENT.CONTROL_SHOW)
+console.log(Player.EVENT.CONTROL_SHOW)
+console.log(player.EVENT.CONTROL_SHOW)
+console.log('ControlShow')
+```
+
+上面打印都是相同的字符串。
+
+事件详情请查看 [事件章节](api/events)。
 
 ## 播放器尺寸变化
 
@@ -111,19 +129,19 @@ console.log(player.rect.x)
 console.log(player.rect.y)
 ```
 
-你可以监听 `update-size` 事件来进行相关操作，防止自己添加的组件由于用了老的数据，而导致变形或者位置出错。
+你可以监听 `UpdateSize` 事件来进行相关操作，防止自己添加的组件由于用了老的数据，而导致变形或者位置出错。
 
 ```js
 const Plugin = {
   apply(player) {
-    player.on('update-size', () => this.updatePositionAndSize())
+    player.on('UpdateSize', () => this.updatePositionAndSize())
   }
 }
 ```
 
 :::caution 注意
 
-NPlayer 监听自身尺寸变化使用了 `ResizeObserver` api。如果你的目标浏览器不支持 `ResizeObserver`。当时播放器尺寸变化时，请手动触发 `update-size`，`player.emit('update-size')` 或者在 NPlayer 之前引入 `ResizeObserver` 的 polyfill。
+NPlayer 监听自身尺寸变化使用了 `ResizeObserver` api。如果你的目标浏览器不支持 `ResizeObserver`。当时播放器尺寸变化时，请手动触发 `UpdateSize`，`player.emit('UpdateSize')` 或者在 NPlayer 之前引入 `ResizeObserver` 的 polyfill。
 
 :::
 
@@ -176,12 +194,12 @@ player.updateOptions({
 
 上面这个例子是使用它来更新海报和预览缩略图。
 
-你还可以监听 `update-options` 事件来做出变更。
+你还可以监听 `UpdateOptions` 事件来做出变更。
 
 ```js
 const Plugin = {
   apply(player) {
-    player.on('update-options', () => this.update(player.opts))
+    player.on('UpdateOptions', () => this.update(player.opts))
   }
 }
 ```

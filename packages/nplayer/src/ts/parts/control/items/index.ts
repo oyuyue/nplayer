@@ -35,7 +35,7 @@ export class ControlBar extends Component {
             tooltip.setRight();
           }
         }
-        if (item.id) player.registerControlItem(item);
+        if (Item.id) player.registerControlItem(item, Item.id);
 
         this.element.appendChild(item.element);
       }

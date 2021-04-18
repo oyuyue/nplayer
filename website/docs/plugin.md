@@ -24,8 +24,8 @@ new Player({
   plugins: [
     {
       apply(player) {
-        player.on('mounted', () => console.log('mounted'))
-        player.on('play', () => console.log('play'))
+        player.on('Mounted', () => console.log('mounted'))
+        player.on('Play', () => console.log('play'))
         // ...
       }
     }

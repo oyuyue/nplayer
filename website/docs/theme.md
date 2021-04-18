@@ -95,5 +95,3 @@ new Player({ loadingElement: loading })
 ## 音量进度条宽度
 
 音量按钮的宽度可以通过 `volumeBarWidth` 修改，它是一个 `number` 或 `string` 类型。默认是 `100px`。
-
-

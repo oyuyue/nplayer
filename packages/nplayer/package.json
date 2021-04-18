@@ -1,6 +1,6 @@
 {
   "name": "nplayer",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "video player",
   "main": "dist/index.min.js",
   "typings": "dist/src/index.d.ts",

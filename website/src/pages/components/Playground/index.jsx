@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import Player from 'nplayer'
+import Player, { EVENT } from 'nplayer'
 import Danmaku from '@nplayer/danmaku'
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Hls from 'hls.js'
@@ -36,6 +36,9 @@ const Playground = () => {
       },
       controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
     })
+
+    player.on(EVENT.WEB_ENTER_FULLSCREEN, () => { document.body.style.overflow = 'hidden' })
+    player.on(EVENT.WEB_EXIT_FULLSCREEN, () => { document.body.style.overflow = '' })
 
     const hls = new Hls();
     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
@@ -81,6 +84,18 @@ const Playground = () => {
 
     hls.attachMedia(player.video)
     player.mount(container.current);
+
+    if (player.rect.width < 575) {
+      const danmaku = player.getControlItem('danmaku')
+      const spacer = player.getControlItem('spacer')
+      console.log(danmaku, spacer)
+      // if (danmaku) {
+      //   danmaku.element.style.display = 'none';
+      // }
+      // if (spacer) {
+      //   spacer.flex(1)
+      // }
+    }
 
     return () => {
       hls.destroy()
