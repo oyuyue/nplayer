@@ -6,7 +6,7 @@ import M1 from '@site/static/img/M1.jpg';
 import M2 from '@site/static/img/M2.jpg';
 import M3 from '@site/static/img/M3.jpg';
 import styles from './styles.module.css';
-import items from './items'
+import { danmakuItems } from '../../../utils'
 
 const Playground = () => {
 
@@ -30,7 +30,7 @@ const Playground = () => {
     }
 
     const player = new Player({
-      plugins: [new Danmaku({ items })],
+      plugins: [new Danmaku({ items: danmakuItems })],
       thumbnail: {
         startSecond: 1,
         images: [M1, M2, M3]

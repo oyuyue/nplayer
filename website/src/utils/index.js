@@ -1,4 +1,4 @@
-export default [
+export const danmakuItems = [
   {
     text: '口技 ',
     time: 0,
