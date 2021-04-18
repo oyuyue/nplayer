@@ -25,7 +25,13 @@ export class Plugin implements P {
     if (this.opts && this.opts.autoInsertControl !== false) {
       const i = player.opts.controls.findIndex((c) => c === 'spacer');
       if (i > -1) {
-        player.opts.controls.splice(i, 1, 'danmaku', 'danmaku-setting');
+        player.opts.controls.splice(i + 1, 0, 'danmaku', 'danmaku-setting');
+        player.once(player.EVENT.AFTER_INIT, () => {
+          const spacer = player.getControlItem('spacer');
+          if (spacer && (spacer as any).flex) {
+            (spacer as any).flex(0);
+          }
+        });
       } else {
         player.opts.controls.push('danmaku', 'danmaku-setting');
       }

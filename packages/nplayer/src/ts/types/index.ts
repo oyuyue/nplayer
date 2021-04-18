@@ -35,5 +35,7 @@ export interface PlayerOptions {
   poster?: string;
   posterEnable?: boolean;
   posterPlayElement?: HTMLElement;
+  dblclickFullscreen?: boolean;
+  clickPause?: boolean;
   [key: string]: any;
 }

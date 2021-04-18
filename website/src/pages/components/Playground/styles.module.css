@@ -20,6 +20,7 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
+  white-space: nowrap;
   opacity: .8;
 }
 .Quantity:hover {

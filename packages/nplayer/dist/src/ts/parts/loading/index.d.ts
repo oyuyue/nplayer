@@ -5,7 +5,7 @@ export declare class Loading extends Component {
     private showTimer;
     private startWaitingTime;
     constructor(container: HTMLElement, player: Player);
-    get showing(): boolean;
+    get isActive(): boolean;
     private _checkCanplay;
     private checkCanplay;
     private tryShow;

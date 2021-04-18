@@ -21,7 +21,7 @@ export declare class Control extends Component {
     private delayHidTime;
     private latch;
     constructor(container: HTMLElement, player: Player);
-    get showing(): boolean;
+    get isActive(): boolean;
     require(): void;
     release(): void;
     show: () => void;

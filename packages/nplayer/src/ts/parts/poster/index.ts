@@ -17,9 +17,11 @@ export class Poster extends Component {
     this.poster = player.opts.poster;
     this.playElement = player.opts.posterPlayElement || Icon.play('poster_play');
     this.element.appendChild(this.playElement);
+    this.hide();
 
     if (!player.opts.posterEnable) return;
 
+    this.show();
     if (this.poster) {
       this.applyStyle({
         backgroundImage: `url(${this.poster})`,
@@ -67,6 +69,10 @@ export class Poster extends Component {
   private tryHide = () => {
     if (!this.tryToPlayed) return;
     this.hide();
+  }
+
+  get isActive(): boolean {
+    return this.element.style.display !== 'none';
   }
 
   show() {

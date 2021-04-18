@@ -2,7 +2,7 @@ import { Disposable, PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
-  addDisposableListener, dispose, removeNode, addDisposable, isBrowser,
+  dispose, removeNode, addDisposable, isBrowser,
 } from './utils';
 import { Control, ControlItemEntry } from './parts/control';
 import { Loading } from './parts/loading';
@@ -76,7 +76,7 @@ export class Player extends EventEmitter implements Disposable {
     setVideoAttrs(this.video, this.opts.videoAttrs);
     setVideoVolumeFromLocal(this.video);
     transferEvent(this);
-    addDisposableListener(this, this.video, 'click', this.toggle);
+    if (this.opts.clickPause) this.enableClickPause();
     this.element.appendChild(this.video);
 
     registerNamedMap(this);
@@ -113,6 +113,8 @@ export class Player extends EventEmitter implements Disposable {
     addDisposable(this, this.on(EVENT.LOADED_METADATA, () => {
       if (this.currentTime < 0.3) this.currentTime = 0.3;
     }));
+
+    this.emit(EVENT.AFTER_INIT);
   }
 
   get currentTime(): number {
@@ -179,6 +181,14 @@ export class Player extends EventEmitter implements Disposable {
 
   set loop(v: boolean) {
     this.video.loop = v;
+  }
+
+  enableClickPause() {
+    this.video.addEventListener('click', this.toggle);
+  }
+
+  disableClickPause() {
+    this.video.removeEventListener('click', this.toggle);
   }
 
   mount(el?: PlayerOptions['el']): void {
@@ -283,6 +293,8 @@ export class Player extends EventEmitter implements Disposable {
     } else {
       this.shortcut.disable();
     }
+    this.disableClickPause();
+    if (this.opts.clickPause) this.enableClickPause();
     this.emit(EVENT.UPDATE_OPTIONS, this.opts);
   }
 
@@ -319,9 +331,12 @@ export class Player extends EventEmitter implements Disposable {
   static Player = Player;
 
   Player!: typeof Player;
+
+  EVENT!: typeof EVENT;
 }
 
 Player.prototype.Player = Player;
+Player.prototype.EVENT = EVENT;
 
 if (isBrowser) {
   // eslint-disable-next-line no-console

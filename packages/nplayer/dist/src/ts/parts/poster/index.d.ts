@@ -9,6 +9,7 @@ export declare class Poster extends Component {
     private addTimeUpdateHandler;
     private onTimeUpdate;
     private tryHide;
+    get isActive(): boolean;
     show(): void;
     hide(): void;
 }

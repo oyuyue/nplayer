@@ -1,6 +1,6 @@
 import type { Disposable, Player } from 'nplayer';
 import {
-  getStorageOptions, isDefaultColor, setStorageOptions, Timer,
+  getStorageOptions, isDefaultColor, setStorageOptions, Timer, EVENT,
 } from '../utils';
 import { Bullet, BulletOption, BulletSetting } from './bullet';
 
@@ -80,7 +80,7 @@ export class Danmaku implements Disposable {
 
     if (!this.opts.disable) this.enable();
 
-    addDisposable(this, player.on('mounted', () => {
+    addDisposable(this, player.on(player.EVENT.MOUNTED, () => {
       this.updateTrack();
     }));
 
@@ -172,6 +172,7 @@ export class Danmaku implements Disposable {
   }
 
   private storeOptions() {
+    this.player.emit(EVENT.DANMAKU_UPDATE_OPTIONS, this.opts);
     if (this.opts.persistOptions) {
       const opts = this.opts;
       setStorageOptions({
@@ -214,7 +215,7 @@ export class Danmaku implements Disposable {
   send(opts: BulletOption): void {
     if (opts.time == null) opts.time = this.currentTime;
     opts = { isMe: true, force: true, ...opts };
-    this.player.emit('danmaku-send', opts);
+    this.player.emit(EVENT.DANMAKU_SEND, opts);
     const i = this.addItem(opts);
     if (this.pos > i) {
       this.insert(opts, Timer.now());
@@ -229,7 +230,7 @@ export class Danmaku implements Disposable {
   }
 
   resume = () => {
-    if (!this.player.playing || this.player.loading.showing) {
+    if (!this.player.playing || this.player.loading.isActive) {
       return;
     }
 
@@ -321,11 +322,14 @@ export class Danmaku implements Disposable {
   }
 
   resetOptions(): void {
+    this.opts.blocked.forEach((t) => {
+      this.allowType(t);
+    });
     this.opts = { ...defaultOptions(), ...this._opts };
     this.opts.blocked = [];
     this.updateOpacity();
     this.updateFontsize();
-    this.storeOptions();
+    this.updateBottomUp(this.opts.bottomUp);
   }
 
   clearScreen() {
@@ -337,25 +341,27 @@ export class Danmaku implements Disposable {
   enable(): void {
     if (this.enabled) return;
     this.enabled = true;
-    this.player.on('time-update', this.fire);
-    this.player.on('pause', this.pause);
-    this.player.on('ended', this.pause);
-    this.player.on('play', this.resume);
-    this.player.on('seeked', this.onSeeked);
-    this.player.on('loading-show', this.pause);
-    this.player.on('loading-hide', this.resume);
+    const EV = this.player.EVENT;
+    this.player.on(EV.TIME_UPDATE, this.fire);
+    this.player.on(EV.PAUSE, this.pause);
+    this.player.on(EV.ENDED, this.pause);
+    this.player.on(EV.PLAY, this.resume);
+    this.player.on(EV.SEEKED, this.onSeeked);
+    this.player.on(EV.LOADING_SHOW, this.pause);
+    this.player.on(EV.LOADING_HIDE, this.resume);
   }
 
   disable(): void {
     this.enabled = false;
     this.clearScreen();
-    this.player.off('time-update', this.fire);
-    this.player.off('pause', this.pause);
-    this.player.off('ended', this.pause);
-    this.player.off('play', this.resume);
-    this.player.off('seeked', this.onSeeked);
-    this.player.off('loading-show', this.pause);
-    this.player.off('loading-hide', this.resume);
+    const EV = this.player.EVENT;
+    this.player.off(EV.TIME_UPDATE, this.fire);
+    this.player.off(EV.PAUSE, this.pause);
+    this.player.off(EV.ENDED, this.pause);
+    this.player.off(EV.PLAY, this.resume);
+    this.player.off(EV.SEEKED, this.onSeeked);
+    this.player.off(EV.LOADING_SHOW, this.pause);
+    this.player.off(EV.LOADING_HIDE, this.resume);
   }
 
   dispose(): void {
@@ -373,4 +379,8 @@ export class Danmaku implements Disposable {
     this.element = null!;
     this.opts = null!;
   }
+
+  EVENT!: typeof EVENT
 }
+
+Danmaku.prototype.EVENT = EVENT;

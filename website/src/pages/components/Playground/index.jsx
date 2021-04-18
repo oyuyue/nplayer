@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Player from 'nplayer'
 import Danmaku from '@nplayer/danmaku'
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Hls from 'hls.js'
 import M1 from '@site/static/img/M1.jpg';
 import M2 from '@site/static/img/M2.jpg';
@@ -13,6 +14,7 @@ const Playground = () => {
   const container = useRef()
 
   useEffect(() => {
+    if (!ExecutionEnvironment.canUseDOM) return; 
     const Quantity = {
       element: document.createElement('div'),
       init(player) {

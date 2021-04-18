@@ -97,3 +97,8 @@ export const trans = {
   [UNLIMITED]: '不限弹幕',
   [BOTTOM_TT]: '从下到上',
 };
+
+export const EVENT = {
+  DANMAKU_SEND: 'DanmakuSend',
+  DANMAKU_UPDATE_OPTIONS: 'DanmakuUpdateOptions',
+} as const;

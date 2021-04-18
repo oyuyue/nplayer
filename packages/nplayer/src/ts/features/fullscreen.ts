@@ -2,7 +2,7 @@ import { CLASS_PLAYER, EVENT } from '../constants';
 import { Player } from '../player';
 import { Disposable } from '../types';
 import {
-  addClass, addDisposableListener, dispose, isFunction, isIOS, removeClass,
+  addClass, addDisposable, addDisposableListener, dispose, isFunction, isIOS, removeClass,
 } from '../utils';
 
 const CLASS_FULL = '-full';
@@ -26,10 +26,12 @@ export class Fullscreen implements Disposable {
       this.player.emit(EVENT.UPDATE_SIZE);
     });
 
-    addDisposableListener(this, player.video, 'dblclick', (ev: MouseEvent) => {
-      ev.preventDefault();
-      this.toggle();
-    });
+    if (player.opts.dblclickFullscreen) this.enableDblclick();
+
+    addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => {
+      this.disableDblclick();
+      if (player.opts.dblclickFullscreen) this.enableDblclick();
+    }));
 
     this.setTarget();
     if (this.isActive) this.addClass();
@@ -91,6 +93,14 @@ export class Fullscreen implements Disposable {
     removeClass(this.player.element, CLASS_FULL, CLASS_PLAYER);
   }
 
+  enableDblclick(): void {
+    this.player.video.addEventListener('dblclick', this.toggle);
+  }
+
+  disableDblclick(): void {
+    this.player.video.removeEventListener('dblclick', this.toggle);
+  }
+
   setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void {
     this.target = (dom && isIOS ? video : dom) || (isIOS ? this.player.video : this.player.element);
     if (this.isActive) this.enter();
@@ -128,6 +138,7 @@ export class Fullscreen implements Disposable {
     if (!this.player) return;
     this.player.off(EVENT.ENTER_FULLSCREEN);
     this.player.off(EVENT.EXIT_FULLSCREEN);
+    this.disableDblclick();
     this.player = null!;
     dispose(this);
   }

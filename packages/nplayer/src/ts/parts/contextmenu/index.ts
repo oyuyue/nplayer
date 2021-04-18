@@ -90,6 +90,10 @@ export class ContextMenu extends Component {
     return true;
   }
 
+  get isActive(): boolean {
+    return this.element.style.display !== 'none';
+  }
+
   hide = () => {
     hide(this.element);
   }

@@ -49,7 +49,7 @@ class DanmakuSetting implements ControlItem {
     const panelElement = this.popover.panelElement;
     _utils.addClass(panelElement, 'danmaku_setting');
 
-    player.on('mounted', () => {
+    player.on('Mounted', () => {
       const row = () => $('.flex.align-center.danmaku_row');
 
       let rowElement = row();

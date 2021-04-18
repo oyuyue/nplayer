@@ -18,5 +18,6 @@ export declare class ContextMenu extends Component {
     constructor(container: HTMLElement, player: Player, items: ContextMenuItem[]);
     private getDomNodes;
     private renderItems;
+    get isActive(): boolean;
     hide: () => void;
 }

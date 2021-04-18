@@ -12,6 +12,8 @@ export declare class Fullscreen implements Disposable {
     get isActive(): boolean;
     private addClass;
     private removeClass;
+    enableDblclick(): void;
+    disableDblclick(): void;
     setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void;
     enter(): void;
     exit(): boolean;

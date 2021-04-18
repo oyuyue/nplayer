@@ -34,7 +34,7 @@ export class Loading extends Component {
     }));
   }
 
-  get showing(): boolean {
+  get isActive(): boolean {
     return containClass(this.player.element, classLoading, CLASS_PLAYER);
   }
 

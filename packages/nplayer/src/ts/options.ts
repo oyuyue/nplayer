@@ -11,6 +11,8 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   contextMenuToggle: true,
   openEdgeInIE: true,
   posterEnable: true,
+  clickPause: true,
+  dblclickFullscreen: true,
   videoAttrs: {
     crossorigin: 'anonymous',
     preload: 'auto',

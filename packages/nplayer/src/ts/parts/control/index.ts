@@ -47,7 +47,7 @@ export class Control extends Component {
     this.showTransient();
   }
 
-  get showing(): boolean {
+  get isActive(): boolean {
     return !containClass(this.element, classHide);
   }
 
