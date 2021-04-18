@@ -1,3 +1,12 @@
+## [0.0.8](https://github.com/woopen/RPlayer/compare/v0.0.7...v0.0.8) (2021-04-18)
+
+
+### Features
+
+* ssr ([83729e2](https://github.com/woopen/RPlayer/commit/83729e25af064f75b95d1f7c13f5d353be0d79e5))
+
+
+
 ## [0.0.7](https://github.com/woopen/RPlayer/compare/v0.0.6...v0.0.7) (2021-04-18)
 
 
