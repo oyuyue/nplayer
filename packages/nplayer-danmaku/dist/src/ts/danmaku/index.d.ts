@@ -1,4 +1,5 @@
 import type { Disposable, Player } from 'nplayer';
+import { EVENT } from '../utils';
 import { Bullet, BulletOption } from './bullet';
 export interface DanmakuOptions {
     disable?: boolean;
@@ -71,4 +72,5 @@ export declare class Danmaku implements Disposable {
     enable(): void;
     disable(): void;
     dispose(): void;
+    EVENT: typeof EVENT;
 }

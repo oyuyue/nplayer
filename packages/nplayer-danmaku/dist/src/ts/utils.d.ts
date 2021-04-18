@@ -59,3 +59,7 @@ export declare const trans: {
     Unlimited: string;
     "Bottom to top": string;
 };
+export declare const EVENT: {
+    readonly DANMAKU_SEND: "DanmakuSend";
+    readonly DANMAKU_UPDATE_OPTIONS: "DanmakuUpdateOptions";
+};

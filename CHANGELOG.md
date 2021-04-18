@@ -1,3 +1,12 @@
+## [0.0.5](https://github.com/woopen/RPlayer/compare/v0.0.4...v0.0.5) (2021-04-18)
+
+
+### Features
+
+* optimization ([0e9df81](https://github.com/woopen/RPlayer/commit/0e9df8156d819dd50bb1fef7275b524e67f5549c))
+
+
+
 ## [0.0.4](https://github.com/woopen/RPlayer/compare/v0.0.3...v0.0.4) (2021-04-17)
 
 
