@@ -1,3 +1,12 @@
+## [0.0.9](https://github.com/woopen/RPlayer/compare/v0.0.8...v0.0.9) (2021-04-19)
+
+
+### Features
+
+* control item object ([4e99a27](https://github.com/woopen/RPlayer/commit/4e99a279027337cc014e698fe467c0f2acd4a49a))
+
+
+
 ## [0.0.8](https://github.com/woopen/RPlayer/compare/v0.0.7...v0.0.8) (2021-04-18)
 
 

@@ -1,25 +1,22 @@
 import type { ControlItem, Player, Tooltip } from 'nplayer';
 declare class DanmakuSendBox implements ControlItem {
-    private player;
-    static readonly id = "danmaku";
+    readonly id = "danmaku";
     element: HTMLElement;
-    readonly tooltip: Tooltip;
-    private readonly popover;
-    private readonly inputElement;
-    private readonly sendElement;
-    private readonly colorInputElement;
-    private readonly colorElement;
-    private readonly typeCBs;
+    private player;
+    tooltip: Tooltip;
+    private popover;
+    private inputElement;
+    private sendElement;
+    private colorInputElement;
+    private colorElement;
+    private typeCBs;
     private currentType;
-    constructor(player: Player);
+    init(player: Player): void;
     private onTypeChange;
     updateColor(v: string): void;
     show: (ev?: MouseEvent | undefined) => void;
     send: () => void;
     dispose(): void;
 }
-declare const danmakuSendBoxControlItem: {
-    (player: Player): DanmakuSendBox;
-    id: string;
-};
-export { danmakuSendBoxControlItem };
+export declare const danmakuSendBoxControlItem: () => DanmakuSendBox;
+export {};

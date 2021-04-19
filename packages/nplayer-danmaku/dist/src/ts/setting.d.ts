@@ -1,9 +1,10 @@
 import type { Player, Tooltip, ControlItem } from 'nplayer';
 declare class DanmakuSetting implements ControlItem {
+    readonly id = "danmaku-setting";
     private player;
-    readonly element: HTMLElement;
-    readonly tooltip: Tooltip;
-    private readonly popover;
+    element: HTMLElement;
+    tooltip: Tooltip;
+    private popover;
     private scrollCB;
     private topCB;
     private bottomCB;
@@ -14,13 +15,10 @@ declare class DanmakuSetting implements ControlItem {
     private areaSlider;
     private speedSlider;
     private fontsizeSlider;
-    constructor(player: Player);
+    init(player: Player): void;
     update(): void;
     show: () => void;
     dispose(): void;
 }
-declare const danmakuSettingControlItem: {
-    (player: Player): DanmakuSetting;
-    id: string;
-};
-export { danmakuSettingControlItem };
+export declare const danmakuSettingControlItem: () => DanmakuSetting;
+export {};
