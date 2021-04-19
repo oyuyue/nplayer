@@ -86,10 +86,11 @@ const pip = player.getContextMenuItem('pip')
 
 if (pip) {
   pip.disabled = true
+  pip.html = '我的PIP'
 }
 ```
 
-上面代码，获取了内置的 `pip` 对象，并把它设置为禁用状态。
+对于 `contenxtmenu` 的配置项，你可以随便修改它的字段，在下一次展示右键菜单时，会使用最新的值。
 
 ## 例子
 
