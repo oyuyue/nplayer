@@ -96,4 +96,4 @@ if (pip) {
 
 点击下面链接查看对应右键菜单例子。
 
-- [视频截图](screenshot.md)
+- [视频截图](examples/screenshot.md)

@@ -94,4 +94,4 @@ if (spacer) {
 
 点击下方链接，可以查看具体例子。
 
-- [清晰度切换](quantity-switch.md)
+- [清晰度切换](examples/quantity-switch.md)
