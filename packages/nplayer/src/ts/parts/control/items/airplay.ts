@@ -7,11 +7,11 @@ import { AIRPLAY, I18n } from 'src/ts/features';
 import { ControlItem } from '..';
 
 class Airplay extends Component implements ControlItem {
+  readonly id = 'airplay'
+
   tip = I18n.t(AIRPLAY);
 
-  constructor(player: Player) {
-    super();
-
+  init(player: Player) {
     if (!this.isSupport()) {
       hide(this.element);
       return;
@@ -39,6 +39,4 @@ class Airplay extends Component implements ControlItem {
   }
 }
 
-const airplayControlItem = (player: Player) => new Airplay(player);
-airplayControlItem.id = 'airplay';
-export { airplayControlItem };
+export const airplayControlItem = () => new Airplay();

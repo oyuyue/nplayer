@@ -7,11 +7,15 @@ import {
 } from './utils';
 
 class DanmakuSetting implements ControlItem {
-  readonly element: HTMLElement;
+  readonly id = 'danmaku-setting';
 
-  readonly tooltip: Tooltip;
+  private player!: Player
 
-  private readonly popover: Popover;
+  element!: HTMLElement;
+
+  tooltip!: Tooltip;
+
+  private popover!: Popover;
 
   private scrollCB!: Checkbox;
 
@@ -33,7 +37,8 @@ class DanmakuSetting implements ControlItem {
 
   private fontsizeSlider!: Slider;
 
-  constructor(private player: Player) {
+  init(player: Player) {
+    this.player = player;
     const { _utils, components, I18n } = player.Player;
     const {
       $, clamp, addDisposableListener, addDisposable, createSvg,
@@ -169,6 +174,4 @@ class DanmakuSetting implements ControlItem {
   }
 }
 
-const danmakuSettingControlItem = (player: Player) => new DanmakuSetting(player);
-danmakuSettingControlItem.id = 'danmaku-setting';
-export { danmakuSettingControlItem };
+export const danmakuSettingControlItem = () => new DanmakuSetting();

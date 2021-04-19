@@ -1,17 +1,19 @@
 import { EVENT } from 'src/ts/constants';
 import { Player } from 'src/ts/player';
 import {
-  $, addDisposable, Component, formatTime,
+  $, addClass, addDisposable, Component, formatTime,
 } from 'src/ts/utils';
 import { ControlItem } from '..';
 
 class Time extends Component implements ControlItem {
-  private readonly playedElement: HTMLElement;
+  readonly id = 'time';
 
-  private readonly totalElement: HTMLElement;
+  private playedElement!: HTMLElement;
 
-  constructor(player: Player) {
-    super(undefined, '.control_time');
+  private totalElement!: HTMLElement;
+
+  init(player: Player) {
+    addClass(this.element, 'control_time');
     this.playedElement = this.element.appendChild($('span'));
     this.totalElement = this.element.appendChild($('span'));
 
@@ -35,6 +37,4 @@ class Time extends Component implements ControlItem {
   }
 }
 
-const timeControlItem = (player: Player) => new Time(player);
-timeControlItem.id = 'time';
-export { timeControlItem };
+export const timeControlItem = () => new Time();

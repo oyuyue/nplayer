@@ -9,20 +9,18 @@ import { Tooltip } from 'src/ts/components/tooltip';
 import { ControlItem } from '..';
 
 class Play extends Component implements ControlItem {
+  readonly id = 'play';
+
   private playIcon!: HTMLElement;
 
   private pauseIcon!: HTMLElement;
 
   tooltip!: Tooltip;
 
-  constructor() {
-    super();
-    this.playIcon = this.element.appendChild(Icon.play());
-    this.pauseIcon = this.element.appendChild(Icon.pause());
-  }
-
   init(player: Player, tooltip: Tooltip) {
     this.tooltip = tooltip;
+    this.playIcon = this.element.appendChild(Icon.play());
+    this.pauseIcon = this.element.appendChild(Icon.pause());
 
     if (player.paused) {
       this.onPause();
@@ -47,6 +45,4 @@ class Play extends Component implements ControlItem {
   }
 }
 
-const playControlItem = () => new Play();
-playControlItem.id = 'play';
-export { playControlItem };
+export const playControlItem = () => new Play();

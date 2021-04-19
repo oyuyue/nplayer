@@ -46,11 +46,15 @@ const classActive = 'control_setting-active';
 const classOptionActive = 'control_setting_option-active';
 
 class Setting extends Component implements ControlItem {
-  private readonly items: SettingItem[];
+  readonly id = 'settings';
 
-  private readonly homeElement!: HTMLElement;
+  private player!: Player;
 
-  private readonly popover: Popover;
+  private items!: SettingItem[];
+
+  private homeElement!: HTMLElement;
+
+  private popover!: Popover;
 
   private currentOptionElement!: HTMLElement;
 
@@ -58,8 +62,10 @@ class Setting extends Component implements ControlItem {
 
   tip = I18n.t(SETTINGS);
 
-  constructor(private player: Player) {
-    super(undefined, '.control_setting');
+  init(player: Player, tooltip: Tooltip) {
+    this.player = player;
+    this.tooltip = tooltip;
+    addClass(this.element, 'control_setting');
     this.items = player._settingItems;
     this.element.appendChild(Icon.cog());
     this.popover = new Popover(this.element, this.hide, { willChange: 'width, height' });
@@ -67,10 +73,6 @@ class Setting extends Component implements ControlItem {
 
     addDisposableListener(this, this.element, 'click', this.show);
     addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
-  }
-
-  init(player: Player, tooltip: Tooltip) {
-    this.tooltip = tooltip;
     this.items.forEach((item) => item.init && item.init(player, item));
     this.renderHome();
   }
@@ -213,6 +215,4 @@ class Setting extends Component implements ControlItem {
   }
 }
 
-const settingControlItem = (player: Player) => new Setting(player);
-settingControlItem.id = 'settings';
-export { settingControlItem };
+export const settingControlItem = () => new Setting();

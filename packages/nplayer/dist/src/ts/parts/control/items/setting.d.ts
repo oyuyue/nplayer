@@ -31,14 +31,14 @@ export declare class SettingPanel extends Component {
     constructor(container: HTMLElement);
 }
 declare class Setting extends Component implements ControlItem {
+    readonly id = "settings";
     private player;
-    private readonly items;
-    private readonly homeElement;
-    private readonly popover;
+    private items;
+    private homeElement;
+    private popover;
     private currentOptionElement;
     tooltip: Tooltip;
     tip: string;
-    constructor(player: Player);
     init(player: Player, tooltip: Tooltip): void;
     private renderHome;
     private renderOptions;
@@ -50,8 +50,5 @@ declare class Setting extends Component implements ControlItem {
     show: (ev?: MouseEvent | undefined) => void;
     hide: (ev?: MouseEvent | undefined) => void;
 }
-declare const settingControlItem: {
-    (player: Player): Setting;
-    id: string;
-};
-export { settingControlItem };
+export declare const settingControlItem: () => Setting;
+export {};

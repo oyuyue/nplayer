@@ -1,7 +1,7 @@
 import { $ } from 'src/ts/utils';
 import { ControlItem } from '..';
 
-const spacerControlItem = (): ControlItem => ({
+export const spacerControlItem = (): ControlItem => ({
   id: 'spacer',
   element: $('.spacer'),
   flex(n = 0) {
@@ -10,5 +10,3 @@ const spacerControlItem = (): ControlItem => ({
     }
   },
 });
-spacerControlItem.id = 'spacer';
-export { spacerControlItem };

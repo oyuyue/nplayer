@@ -3,16 +3,13 @@ import { Component } from '../../../utils';
 import { Tooltip } from '../../../components/tooltip';
 import { ControlItem } from '..';
 declare class WebFullscreen extends Component implements ControlItem {
-    private readonly exitIcon;
-    private readonly enterIcon;
+    readonly id = "web-fullscreen";
+    private exitIcon;
+    private enterIcon;
     tooltip: Tooltip;
-    constructor();
     init(player: Player, tooltip: Tooltip): void;
     private enter;
     private exit;
 }
-declare const webFullscreenControlItem: {
-    (): WebFullscreen;
-    id: string;
-};
-export { webFullscreenControlItem };
+export declare const webFullscreenControlItem: () => WebFullscreen;
+export {};

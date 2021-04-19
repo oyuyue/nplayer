@@ -16,8 +16,8 @@ export class Plugin implements P {
   }
 
   apply(player: Player) {
-    player.registerControlItem(danmakuSendBoxControlItem);
-    player.registerControlItem(danmakuSettingControlItem);
+    player.registerControlItem(danmakuSendBoxControlItem());
+    player.registerControlItem(danmakuSettingControlItem());
 
     player.Player.I18n.add('zh-cn', trans);
     player.danmaku = new Danmaku(player, this.opts);

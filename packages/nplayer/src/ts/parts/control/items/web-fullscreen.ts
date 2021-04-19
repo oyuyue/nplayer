@@ -9,20 +9,18 @@ import { Tooltip } from 'src/ts/components/tooltip';
 import { ControlItem } from '..';
 
 class WebFullscreen extends Component implements ControlItem {
-  private readonly exitIcon: HTMLElement;
+  readonly id = 'web-fullscreen'
 
-  private readonly enterIcon: HTMLElement;
+  private exitIcon!: HTMLElement;
+
+  private enterIcon!: HTMLElement;
 
   tooltip!: Tooltip;
 
-  constructor() {
-    super();
-    this.enterIcon = this.element.appendChild(Icon.webEnterFullscreen());
-    this.exitIcon = this.element.appendChild(Icon.webExitFullscreen());
-  }
-
   init(player: Player, tooltip: Tooltip) {
     this.tooltip = tooltip;
+    this.enterIcon = this.element.appendChild(Icon.webEnterFullscreen());
+    this.exitIcon = this.element.appendChild(Icon.webExitFullscreen());
     if (player.webFullscreen.isActive) {
       this.enter();
     } else {
@@ -46,6 +44,4 @@ class WebFullscreen extends Component implements ControlItem {
   }
 }
 
-const webFullscreenControlItem = () => new WebFullscreen();
-webFullscreenControlItem.id = 'web-fullscreen';
-export { webFullscreenControlItem };
+export const webFullscreenControlItem = () => new WebFullscreen();

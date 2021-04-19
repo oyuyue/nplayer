@@ -78,14 +78,14 @@ export function registerNamedMap(player: Player) {
   player.registerContextMenuItem(pipContextMenuItem());
   player.registerContextMenuItem(versionContextMenuItem());
   player.registerSettingItem(speedSettingItem());
-  player.registerControlItem(playControlItem);
-  player.registerControlItem(volumeControlItem);
-  player.registerControlItem(timeControlItem);
-  player.registerControlItem(spacerControlItem);
-  player.registerControlItem(settingControlItem);
-  player.registerControlItem(webFullscreenControlItem);
-  player.registerControlItem(fullscreenControlItem);
-  player.registerControlItem(airplayControlItem);
+  player.registerControlItem(playControlItem());
+  player.registerControlItem(volumeControlItem());
+  player.registerControlItem(timeControlItem());
+  player.registerControlItem(spacerControlItem());
+  player.registerControlItem(settingControlItem());
+  player.registerControlItem(webFullscreenControlItem());
+  player.registerControlItem(fullscreenControlItem());
+  player.registerControlItem(airplayControlItem());
 }
 
 export function transferEvent(player: Player): void {

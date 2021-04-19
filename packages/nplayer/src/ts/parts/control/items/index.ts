@@ -1,24 +1,18 @@
 import { Player } from 'src/ts/player';
 import {
-  addDisposable, Component, isFunction, isString,
+  addDisposable, Component, isString,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
 import { Disposable } from 'src/ts/types';
-import { ControlItem, ControlItemEntry } from '..';
+import { ControlItem } from '..';
 
 export class ControlBar extends Component {
   constructor(container: HTMLElement, player: Player) {
     super(container, '.control_bar');
     const last = player.opts.controls.length - 1;
-    player.opts.controls.forEach((Item, i) => {
-      if (isString(Item)) Item = player.getControlItem(Item) as ControlItemEntry;
-      if (Item) {
-        let item: ControlItem;
-        if (isFunction(Item)) {
-          item = Item(player);
-        } else {
-          item = Item;
-        }
+    player.opts.controls.forEach((item, i) => {
+      if (isString(item)) item = player.getControlItem(item) as ControlItem;
+      if (item) {
         if (item.isSupport && !item.isSupport(player)) return;
         let tooltip: Tooltip | undefined;
         if (item.tip) tooltip = new Tooltip(item.element, item.tip);
@@ -35,7 +29,6 @@ export class ControlBar extends Component {
             tooltip.setRight();
           }
         }
-        if (Item.id) player.registerControlItem(item, Item.id);
 
         this.element.appendChild(item.element);
       }

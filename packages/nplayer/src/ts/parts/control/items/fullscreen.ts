@@ -9,20 +9,18 @@ import { Tooltip } from 'src/ts/components/tooltip';
 import { ControlItem } from '..';
 
 class Fullscreen extends Component implements ControlItem {
-  private readonly exitIcon: HTMLElement;
+  readonly id = 'fullscreen'
 
-  private readonly enterIcon: HTMLElement;
+  private exitIcon!: HTMLElement;
+
+  private enterIcon!: HTMLElement;
 
   tooltip!: Tooltip;
 
-  constructor() {
-    super();
-    this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
-    this.enterIcon = this.element.appendChild(Icon.enterFullscreen());
-  }
-
   init(player: Player, tooltip: Tooltip) {
     this.tooltip = tooltip;
+    this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
+    this.enterIcon = this.element.appendChild(Icon.enterFullscreen());
     if (player.fullscreen.isActive) {
       this.enter();
     } else {
@@ -47,6 +45,4 @@ class Fullscreen extends Component implements ControlItem {
   }
 }
 
-const fullscreenControlItem = () => new Fullscreen();
-fullscreenControlItem.id = 'fullscreen';
-export { fullscreenControlItem };
+export const fullscreenControlItem = () => new Fullscreen();

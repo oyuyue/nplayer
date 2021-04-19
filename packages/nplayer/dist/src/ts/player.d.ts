@@ -1,6 +1,6 @@
 import { Disposable, PlayerOptions } from './types';
 import { Rect, EventEmitter, dispose, addDisposable } from './utils';
-import { Control, ControlItemEntry } from './parts/control';
+import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
@@ -63,10 +63,10 @@ export declare class Player extends EventEmitter implements Disposable {
     eachBuffer(fn: (start: number, end: number) => boolean | void): void;
     registerSettingItem(item: SettingItem, id?: string): void;
     registerContextMenuItem(item: ContextMenuItem, id?: string): void;
-    registerControlItem(item: ControlItemEntry, id?: string): void;
+    registerControlItem(item: ControlItem, id?: string): void;
     getSettingItem(id: string): SettingItem | null;
     getContextMenuItem(id: string): ContextMenuItem | null;
-    getControlItem(id: string): ControlItemEntry | null;
+    getControlItem(id: string): ControlItem | null;
     updateOptions(opts: PlayerOptions): void;
     dispose(): void;
     static _utils: typeof _utils;

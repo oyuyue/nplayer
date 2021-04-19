@@ -11,27 +11,30 @@ import {
 let utils: Player['Player']['_utils'];
 
 class DanmakuSendBox implements ControlItem {
-  static readonly id = 'danmaku';
+  readonly id = 'danmaku';
 
-  element: HTMLElement;
+  element!: HTMLElement;
 
-  readonly tooltip: Tooltip;
+  private player!: Player
 
-  private readonly popover: Popover;
+   tooltip!: Tooltip;
 
-  private readonly inputElement: HTMLInputElement;
+  private popover!: Popover;
 
-  private readonly sendElement: HTMLElement;
+  private inputElement!: HTMLInputElement;
 
-  private readonly colorInputElement: HTMLInputElement;
+  private sendElement!: HTMLElement;
 
-  private readonly colorElement: HTMLElement;
+  private colorInputElement!: HTMLInputElement;
 
-  private readonly typeCBs: Record<Required<BulletOption>['type'], Checkbox> = {} as any;
+  private colorElement!: HTMLElement;
+
+  private typeCBs: Record<Required<BulletOption>['type'], Checkbox> = {} as any;
 
   private currentType = 'scroll';
 
-  constructor(private player: Player) {
+  init(player: Player) {
+    this.player = player;
     const { _utils, components, I18n } = player.Player;
     utils = _utils;
     const {
@@ -137,6 +140,4 @@ class DanmakuSendBox implements ControlItem {
   }
 }
 
-const danmakuSendBoxControlItem = (player: Player) => new DanmakuSendBox(player);
-danmakuSendBoxControlItem.id = 'danmaku';
-export { danmakuSendBoxControlItem };
+export const danmakuSendBoxControlItem = () => new DanmakuSendBox();

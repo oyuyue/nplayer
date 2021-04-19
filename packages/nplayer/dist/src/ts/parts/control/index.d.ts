@@ -11,9 +11,6 @@ export interface ControlItem extends Partial<Disposable> {
     isSupport?: (player: Player) => boolean;
     [key: string]: any;
 }
-export declare type ControlItemEntry = ControlItem | (((player: Player) => ControlItem) & {
-    id?: string;
-});
 export declare class Control extends Component {
     private player;
     private readonly bgElement;

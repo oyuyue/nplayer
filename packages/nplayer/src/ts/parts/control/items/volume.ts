@@ -3,24 +3,31 @@ import { I18n, MUTE, UNMUTE } from 'src/ts/features/i18n';
 import { Icon } from 'src/ts/features/icons';
 import { Player } from 'src/ts/player';
 import {
-  $, addDisposable, addDisposableListener, clamp, Component, Drag, getEventPath, hide, isString, Rect, show,
+  $, addClass, addDisposable, addDisposableListener, clamp, Component, Drag, getEventPath, hide, isString, Rect, show,
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
 import { ControlItem } from '..';
 
 class Volume extends Component implements ControlItem {
-  private readonly volumeIcon: HTMLElement;
+  readonly id = 'volume';
 
-  private readonly mutedIcon: HTMLElement;
+  private player!: Player;
 
-  private readonly bar: HTMLElement;
+  private volumeIcon!: HTMLElement;
 
-  private readonly rect: Rect;
+  private mutedIcon!: HTMLElement;
+
+  private bar!: HTMLElement;
+
+  private rect!: Rect;
 
   tooltip!: Tooltip;
 
-  constructor(private player: Player) {
-    super(undefined, '.control_volume');
+  init(player: Player, tooltip: Tooltip) {
+    this.player = player;
+    this.tooltip = tooltip;
+
+    addClass(this.element, 'control_volume');
     this.volumeIcon = this.element.appendChild(Icon.volume());
     this.mutedIcon = this.element.appendChild(Icon.muted());
 
@@ -38,10 +45,6 @@ class Volume extends Component implements ControlItem {
       if (getEventPath(ev).includes(bars)) return;
       player.toggleVolume();
     });
-  }
-
-  init(_: any, tooltip: Tooltip) {
-    this.tooltip = tooltip;
     this.onVolumeChange();
   }
 
@@ -77,6 +80,4 @@ class Volume extends Component implements ControlItem {
   }
 }
 
-const volumeControlItem = (player: Player) => new Volume(player);
-volumeControlItem.id = 'volume';
-export { volumeControlItem };
+export const volumeControlItem = () => new Volume();

@@ -21,8 +21,6 @@ export interface ControlItem extends Partial<Disposable> {
   [key: string]: any;
 }
 
-export type ControlItemEntry = ControlItem | (((player: Player) => ControlItem) & { id?: string });
-
 export class Control extends Component {
   private readonly bgElement: HTMLElement;
 

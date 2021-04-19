@@ -3,22 +3,19 @@ import { Component } from '../../../utils';
 import { Tooltip } from '../../../components/tooltip';
 import { ControlItem } from '..';
 declare class Volume extends Component implements ControlItem {
+    readonly id = "volume";
     private player;
-    private readonly volumeIcon;
-    private readonly mutedIcon;
-    private readonly bar;
-    private readonly rect;
+    private volumeIcon;
+    private mutedIcon;
+    private bar;
+    private rect;
     tooltip: Tooltip;
-    constructor(player: Player);
-    init(_: any, tooltip: Tooltip): void;
+    init(player: Player, tooltip: Tooltip): void;
     private onDragStart;
     private onDragging;
     private onVolumeChange;
     mute(): void;
     unmute(): void;
 }
-declare const volumeControlItem: {
-    (player: Player): Volume;
-    id: string;
-};
-export { volumeControlItem };
+export declare const volumeControlItem: () => Volume;
+export {};

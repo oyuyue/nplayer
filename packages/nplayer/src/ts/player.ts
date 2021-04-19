@@ -4,7 +4,7 @@ import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
   dispose, removeNode, addDisposable, isBrowser,
 } from './utils';
-import { Control, ControlItemEntry } from './parts/control';
+import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
 import { Toast } from './parts/toast';
@@ -35,7 +35,7 @@ export class Player extends EventEmitter implements Disposable {
 
   private readonly contextmenuNamedMap: Record<string, ContextMenuItem> = Object.create(null);
 
-  private readonly controlNamedMap: Record<string, ControlItemEntry> = Object.create(null);
+  private readonly controlNamedMap: Record<string, ControlItem> = Object.create(null);
 
   readonly _settingItems: SettingItem[];
 
@@ -268,7 +268,7 @@ export class Player extends EventEmitter implements Disposable {
     this.contextmenuNamedMap[id || item.id!] = item;
   }
 
-  registerControlItem(item: ControlItemEntry, id?: string): void {
+  registerControlItem(item: ControlItem, id?: string): void {
     this.controlNamedMap[id || item.id!] = item;
   }
 
@@ -280,8 +280,8 @@ export class Player extends EventEmitter implements Disposable {
     return this.contextmenuNamedMap[id];
   }
 
-  getControlItem(id: string): ControlItemEntry | null {
-    return this.controlNamedMap[id] as ControlItemEntry;
+  getControlItem(id: string): ControlItem | null {
+    return this.controlNamedMap[id] as ControlItem;
   }
 
   updateOptions(opts: PlayerOptions): void {
