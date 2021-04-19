@@ -16,3 +16,12 @@ NPlayer 内置多个快捷键可以用于播放器行为。它们只有在播放
 | 下 | 降低音量 |
 | esc | 退出全屏或网页全屏 |
 | space | 播放或暂停 |
+
+音量和进度递增的大小可以通过 `seekStep` 和 `volumeStep` 参数控制，它们的默认值是 `10` 和 `0.1`。
+
+```js
+new Player({
+  seekStep: 15,
+  volumeStep: 0.2
+})
+```
