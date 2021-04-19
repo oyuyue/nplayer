@@ -64,17 +64,17 @@ NPlayer 可以使用构造参数和 CSS 变量修改颜色。
 | 参数名 | 描述 |
 | --- | --- |
 | themeColor | 主题色 |
-| progressColor | 播放进度条颜色 |
-| volumeProgressColor | 音量条颜色 |
-| posterColor | 海报背景色，默认是透明色 |
+| progressBg | 播放进度条背景 |
+| volumeProgressBg | 音量条背景 |
+| posterBgColor | 海报背景色，默认是透明色 |
 
 还可以通过 CSS 变量修改这些颜色，与之对应的 CSS 变量分别如下：
 
 ```css
 --theme-color: #007aff;
---progress-color: #007aff;
---volume-progress-color: #007aff;
 --poster-bg-color: transparent;
+--progress-bg: #007aff;
+--volume-progress-bg: #007aff;
 ```
 
 ## loading
