@@ -37,9 +37,9 @@ player.mount('#app')
 
 ```js
 <script src="https://cdn.jsdelivr.net/npm/nplayer@latest/dist/index.min.js"></script>
+```
 
 同样，使用 CDN 的方式，也无需引入 NPlayer 的样式文件。
-```
 
 :::info
 

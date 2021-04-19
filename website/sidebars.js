@@ -36,5 +36,6 @@ module.exports = {
     'api/events',
     'api/attrs',
     'api/methods',
+    'api/components',
   ]
 };

@@ -64,21 +64,33 @@ new Player({
 
 ## control 和 contextmenu
 
-在执行插件 `apply` 的时候，`player` 对象的 `control` 和 `contextmenu` 都是 `undefined`。
+在执行插件 `apply` 的时候，`player` 对象的 `control` 和 `contextmenu` 还没初始化，都是 `undefined`。（player 上的其他对象都已初始化完成）
 
 ```js
 {
   apply(player) {
     console.log(player.control) // undefined
     console.log(player.contextmenu) // undefined
-    
+
     player.on('AfterInit', () => {
       console.log(player.control) // 有值
-      console.log(player.contextmenu) // 
+      console.log(player.contextmenu) // 有值
     })
   }
 }
 ```
+
+所以在插件中，可以修改 `player.opts` 的 `controls`、`settings` 和 `contextMenus` 的值。
+
+```js
+{
+  apply(player) {
+    player.opts.controls = player.opts.controls.filter(c => c.id !== 'volume')
+  }
+}
+```
+
+上面代码将去除音量控制。
 
 ## 弹幕插件
 

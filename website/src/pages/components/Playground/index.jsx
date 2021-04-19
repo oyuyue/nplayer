@@ -54,7 +54,11 @@ const Playground = () => {
           el.classList.add(styles.QuantityItemActive)
           Quantity.btn.textContent = el.textContent
           if (init !== true && !player.paused) setTimeout(() => player.play())
-          Quantity.value = hls.currentLevel = hls.loadLevel = i;
+          if (init === true) {
+            Quantity.value = i
+          } else {
+            Quantity.value = hls.currentLevel = hls.loadLevel = i;
+          }
           Quantity.popover.hide();
         }
         Quantity.itemElements = hls.levels.map((l, i) => {
@@ -108,6 +112,7 @@ const Playground = () => {
       <div className={styles.Title}>演示</div>
       <div>
         <div ref={container}></div>
+        <div className={styles.Tip}>* 外网视频可能需要翻墙才能访问</div>
       </div>
     </div>
   );
