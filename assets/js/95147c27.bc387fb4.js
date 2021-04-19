@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[20],{56:function(e,a,s){"use strict";s.r(a);var n=s(0),t=s.n(n),c=s(62),o=s.n(c);a.default=()=>t.a.createElement("div",{className:o.a.MouseContainer},t.a.createElement("div",{className:o.a.Mouse},t.a.createElement("span",{className:o.a.MouseWheel})))}}]);
