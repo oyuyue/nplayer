@@ -5,21 +5,19 @@ slug: /
 
 ## 介绍
 
-NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11 。该播放器高度可定制，并且有用插件系统，可以接入任何流媒体，如 hls、dash 和 flv 等。
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持 SSR。该播放器高度可定制，并且有用插件系统，可以接入任何流媒体，如 hls、dash 和 flv 等。
 
 ## 安装
 
-可以使用如下命令快速安装 NPlayer。
+使用如下命令快速安装 NPlayer。
 
 ```bash
 npm i -S nplayer
 ```
 
-更多安装方式，请查看 [安装章节](installation.md)。
+更多请查看 [安装章节](installation.md)。
 
 ## 开始使用
-
-安装好就可以开始使用了。
 
 ```js
 import Player from 'nplayer'
@@ -71,13 +69,13 @@ const Plugin = {
   apply(player) {
     console.log(player.Player.components) 
     console.log(player.Player.EVENT)
-    console.log(player.EVENT)
+    console.log(player.EVENT) // EVENT 也在原型上
     // ...
   }
 }
 ```
 
-自定义插件中只能访问到 Player 实例，这时你就可以通过 `Player` 属性访问静态属性。一共有多少静态属性？请参考 [属性章节](api/attrs.md)。
+自定义插件中只能访问到 Player 实例，这时你就可以通过 `Player` 属性访问静态属性。具体属性，请参考 [属性章节](api/attrs.md)。
 
 Player 实例上有很多属性和方法，比如 `player.fullscreen` 是 `Fullscreen` 对象，通过它你可以手动进入和退出全屏，`player.playing` 属性来判断当前时候在播放等等。
 
@@ -112,7 +110,7 @@ console.log('ControlShow')
 
 上面打印都是相同的字符串。
 
-事件详情请查看 [事件章节](api/events)。
+详情请查看 [事件章节](api/events)。
 
 ## 播放器尺寸变化
 
@@ -194,7 +192,7 @@ player.updateOptions({
 
 上面这个例子是使用它来更新海报和预览缩略图。
 
-你还可以监听 `UpdateOptions` 事件来做出变更。
+你还可以监听 `UpdateOptions` 事件来做出变更，如，在自定义插件中可以这样。
 
 ```js
 const Plugin = {
@@ -203,8 +201,6 @@ const Plugin = {
   }
 }
 ```
-
-如果你的自定义插件，支持修改配置的话，就可以监听这个事件来做出变化。
 
 但并不是所有配置项都会做出对应修改，`settings`、`contextMenus` 和 `controls` 变化并不会做出对应修改。
 
@@ -236,5 +232,9 @@ Player 提供了一些内置组件来方便二次开发和统一交互。比如�
 请查看 [内置组件章节](ie11.md) 了解更多。
 
 ## 贡献
+
+如果你遇到 BUG 或者是想要新功能，可以到 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose) 中创建一个新 issue。
+
+如果想提交 PR，请查看 [贡献章节](ie11.md) 了解代码结构等信息。
 
 ## 更多
