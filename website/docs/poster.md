@@ -12,6 +12,8 @@ new Player({
 
 NPlayer 的海报由两个元素组成，一个是海报图片，一个是上面的播放按钮。播放按钮和海报背景色（默认是透明色）都可以自定义，具体详情可以查看的 [定制主题章节](theme.md)。
 
+`posterEnable` 参数用来启用和禁用海报，默认该参数是 `true`。
+
 ## Poster
 
 还可以使用 `player.poster` 访问 Poster 对象，来控制海报的显示隐藏。
@@ -21,4 +23,5 @@ const player = new Player()
 
 player.poster.show()
 player.poster.hide()
+console.log(player.poster.isActive) // 是否在展示海报
 ```
