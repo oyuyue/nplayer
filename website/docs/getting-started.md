@@ -5,7 +5,7 @@ slug: /
 
 ## 介绍
 
-NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持 SSR。该播放器高度可定制，并且有用插件系统，可以接入任何流媒体，如 hls、dash 和 flv 等。
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持 SSR。该播放器高度可定制，提供了内置组件方便二次开发。并且有用插件系统，其弹幕功能就是使用插件形式提供。该播放器可以接入任何流媒体，如 hls、dash 和 flv 等。
 
 ## 安装
 
@@ -110,7 +110,7 @@ console.log('ControlShow')
 
 上面打印都是相同的字符串。
 
-详情请查看 [事件章节](api/events)。
+详情请查看 [事件章节](api/events.md)。
 
 ## 播放器尺寸变化
 
@@ -175,7 +175,7 @@ NPlayer 几乎所有部分都可以配置。
 
 - 配置主题，请参考 [主题章节](theme.md)。
 - 添加、移除控制条项目或改变顺序，请参考 [控制条章节](control.md)。
-- 添加、移除控制条设置项目或改变顺序，请参考 [设置菜单章节](contextmenu.md)。
+- 添加、移除控制条设置项目或改变顺序，请参考 [设置菜单章节](settings.md)。
 - 添加、移除右键菜单项目或改变顺序，请参考 [右键章节](contextmenu.md)。
 - 更多请直接的点击侧边栏对应章节。
 
@@ -229,12 +229,12 @@ player.toast.show('提示~', 'left-top', 1000)
 
 Player 提供了一些内置组件来方便二次开发和统一交互。比如控制条项目的 `Tooltip` 组件，进度条 `Slider` 组件，`Checkout` 选择框组件等等。
 
-请查看 [内置组件章节](ie11.md) 了解更多。
+请查看 [内置组件章节](api/components.md) 了解更多。
 
 ## 贡献
 
 如果你遇到 BUG 或者是想要新功能，可以到 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose) 中创建一个新 issue。
 
-如果想提交 PR，请查看 [贡献章节](ie11.md) 了解代码结构等信息。
+如果想提交 PR，请查看 [贡献](https://github.com/woopen/nplayer/blob/main/CONTRIBUTING.md) 了解代码结构等信息。
 
 ## 更多
