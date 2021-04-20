@@ -2,43 +2,73 @@
 title: 属性
 ---
 
-属性分为实例属性和静态属性。
+NPlayer 属性分为实例属性和静态属性。
 
 ## 实例属性
 
-| 属性 | 描述 |
-| --- | --- |
-| el |  |
-| element |  |
-| opts |  |
-| video |  |
-| rect |  |
-| fullscreen |  |
-| webFullscreen |  |
-| shortcut |  |
-| control |  |
-| loading |  |
-| poster |  |
-| contextmenu |  |
-| toast |  |
-| currentTime |  |
-| duration |  |
-| buffered |  |
-| volume |  |
-| muted |  |
-| playbackRate |  |
-| ended |  |
-| paused |  |
-| playing |  |
-| loop |  |
-| Player |  |
+```js
+const player = new Player()
+console.log(player)
+```
 
-## Player 静态属性
+你可以通过 `player` 对象来访问这些属性。
 
-| 属性 | 描述 |
-| --- | --- |
-| EVENT |  |
-| I18n |  |
-| Icon |  |
-| components |  |
-| Player |  |
+### element: HTMLElement
+
+### opts: PlayerOptions
+
+### video: HTMLVideoElement
+
+### rect: Rect
+
+### loading: Loading
+
+### poster: Poster
+
+### toast: Toast
+
+### fullscreen: Fullscreen
+
+### webFullscreen: WebFullscreen
+
+### shortcut: Shortcut
+
+### control: Control
+
+### contextmenu: ContextMenu
+
+### currentTime: number
+
+### duration: number
+
+### buffered: TimeRanges
+
+### volume: number
+
+### muted: boolean
+
+### playbackRate: number
+
+### ended: boolean
+
+### paused: boolean
+
+### playing: boolean
+
+### loop: boolean
+
+### Player
+
+### EVENT
+
+## 静态属性
+
+### EVENT
+
+### I18n
+
+### Icon
+
+### components
+
+### Player
