@@ -25,6 +25,10 @@ console.log(player)
 
 播放器视频元素。
 
+### mounted: boolean
+
+播放器是否已挂载。
+
 ### rect: Rect
 
 播放器尺寸。

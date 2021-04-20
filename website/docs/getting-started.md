@@ -9,7 +9,7 @@ slug: /
 
 ## 介绍
 
-NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持 SSR。该播放器高度可定制，提供了内置组件方便二次开发。并且有用插件系统，其弹幕功能就是使用插件形式提供。该播放器可以接入任何流媒体，如 hls、dash 和 flv 等。
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，[兼容 IE11](ie11.md)，支持 SSR。该播放器高度可定制，提供了 [内置组件](api/components.md) 方便二次开发。并且有用插件系统，其 [弹幕功能](ecosystem/danmaku.md) 就是使用插件形式提供。该播放器可以接入任何 [流媒体](streaming.md)，如 hls、dash 和 flv 等。
 
 ![NPlayer](/img/preview.jpg)
 
@@ -55,6 +55,26 @@ player.mount(document.body)
 在自己提供 `video` 元素的时候，依旧可以使用 `videoAttrs` 参数，将属性添加到这个 `video` 元素上。
 
 `player.mount` 方法可以将播放器挂载到页面上，它接收一个参数，可以是一个字符串或一个 dom 元素。当是字符串时，将会自动查找该 dom 元素。
+
+## video source
+
+除了设置 video 的 `src` 参数，还可以添加 [Source DOM 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/source)。
+
+```js
+new Player({ video, videoSources: [{ src: 'video.webm', type: 'video/webm' }] })
+```
+
+参数签名如下。
+
+```typescript
+interface VideoSource {
+  media?: string;
+  sizes?: string;
+  src?: string;
+  srcset?: string;
+  type?: string;
+}
+```
 
 ## 属性和方法
 
@@ -239,4 +259,4 @@ Player 提供了一些内置组件来方便二次开发和统一交互。比如�
 
 ## 问题 & 新功能
 
-如果你遇到 BUG 或者是想要新功能，可以到 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose) 中创建一个新 issue。
+如果你遇到 BUG 或者是想要新功能，欢迎提交 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose)。

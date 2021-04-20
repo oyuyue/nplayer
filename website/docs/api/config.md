@@ -11,6 +11,7 @@ interface PlayerOptions {
   el?: HTMLElement | string;
   video?: HTMLVideoElement;
   videoAttrs?: Record<string, any>;
+  videoSources?: VideoSource[];
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[];
   settings?: (SettingItem | string)[];
@@ -43,6 +44,7 @@ interface PlayerOptions {
 | el | 播放器挂载容器元素，同 `mount` 方法参数，如果 `mount` 没有传入参数时，将使用该参数 |
 | video | 自己提供 video 元素 |
 | videoAttrs | video 元素的属性 |
+| videoSources| video source 子元素数组，请查看 [快速开始](getting-started.md) |
 | thumbnail | 请查看 [预览缩略图](thumbnail.md) |
 | controls | 请查看 [控制条](control.md) |
 | settings | 请查看 [设置菜单](settings.md) |
