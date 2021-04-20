@@ -28,7 +28,7 @@ NPlayer 实例方法如下。
 
 快退，步长为 `seekStep` 设置的值。
 
-### play(): Promise<void> | void
+### play(): Promise\<void\> | void
   
 播放视频，对一些老浏览器可能什么都不返回。详情请查看 [这里](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play)。
 

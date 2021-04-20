@@ -87,7 +87,7 @@ const switch = new Switch(document.body, false, (v) => {
 
 ### API
 
-#### constructor(container: HTMLElement, onHide?: (ev?: MouseEvent) => void, style?: Partial<CSSStyleDeclaration>, left?: boolean)
+#### constructor(container: HTMLElement, onHide?: (ev?: MouseEvent) => void, style?: Partial\<CSSStyleDeclaration\>, left?: boolean)
   
 - `onHide` 当弹出框隐藏时会调用。
 - `style` 弹出框的样式。
@@ -101,7 +101,7 @@ const switch = new Switch(document.body, false, (v) => {
 
 遮罩元素。
 
-#### applyPanelStyle(style: Partial<CSSStyleDeclaration>): void
+#### applyPanelStyle(style: Partial\<CSSStyleDeclaration\>): void
   
 设置弹出框的样式。
 

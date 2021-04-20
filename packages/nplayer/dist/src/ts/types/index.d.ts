@@ -9,10 +9,18 @@ export interface Disposable {
 export interface Plugin extends Partial<Disposable> {
     apply: (player: Player) => void;
 }
+export interface VideoSource {
+    media?: string;
+    sizes?: string;
+    src?: string;
+    srcset?: string;
+    type?: string;
+}
 export interface PlayerOptions {
     el?: HTMLElement | string;
     video?: HTMLVideoElement;
     videoAttrs?: Record<string, any>;
+    videoSources?: VideoSource[];
     thumbnail?: ThumbnailOptions;
     controls?: (ControlItem | string)[];
     settings?: (SettingItem | string)[];

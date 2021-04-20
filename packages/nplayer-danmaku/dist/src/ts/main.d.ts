@@ -7,4 +7,5 @@ export declare class Plugin implements P {
     private opts;
     constructor(opts: DanmakuPluginOption);
     apply(player: Player): void;
+    static Plugin: typeof Plugin;
 }

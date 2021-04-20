@@ -25,7 +25,7 @@ export const I18n = {
     return data[lang || I18n.currentLang || I18n.defaultLang]?.[key] || key;
   },
   add(lang: string, transData: Record<string, string>): void {
-    data[lang] = { ...data[lang], ...transData };
+    data[lang.toLowerCase()] = { ...data[lang.toLowerCase()], ...transData };
     I18n.fallback();
   },
   fallback(): void {
@@ -38,7 +38,7 @@ export const I18n = {
     if (this.currentLang) this.currentLang = this.currentLang.toLowerCase();
   },
   setDefaultLang(lang?: string): void {
-    this.defaultLang = lang || '';
+    this.defaultLang = (lang || '').toLowerCase();
   },
 };
 

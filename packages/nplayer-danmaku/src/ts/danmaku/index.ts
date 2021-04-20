@@ -18,7 +18,8 @@ export interface DanmakuOptions {
   duration?: number;
   items?: BulletOption[];
   zIndex?: number;
-  persistOptions: boolean;
+  persistOptions?: boolean;
+  isDefaultColor?: (color: string) => boolean;
   discard?: (b: BulletOption) => boolean;
 }
 
@@ -37,6 +38,7 @@ export const defaultOptions = (): Required<DanmakuOptions> => ({
   items: [],
   zIndex: 5,
   persistOptions: false,
+  isDefaultColor,
   discard() { return false; },
 });
 
@@ -140,7 +142,7 @@ export class Danmaku implements Disposable {
     if (this.opts.blocked.includes(item.type || 'scroll')) return true;
     if (this.opts.discard(item)) return true;
     if (!item.color || !this.opts.blocked.includes('color')) return false;
-    return !isDefaultColor(item.color);
+    return !this.opts.isDefaultColor(item.color);
   }
 
   private fire = () => {
@@ -193,7 +195,7 @@ export class Danmaku implements Disposable {
     if (bullet.type === 'scroll' && this.scrollBullets[bullet.track] === bullet) this.scrollBullets[bullet.track] = undefined;
   }
 
-  insert(item: BulletOption, time: number): boolean {
+  private insert(item: BulletOption, time: number): boolean {
     if (!item.type || item.type === 'scroll') {
       const [track, bullet] = this.getShortestTrack();
       const canDiscard = !item.force && bullet && bullet.showAt > (time + 2);
@@ -304,7 +306,7 @@ export class Danmaku implements Disposable {
     if (this.opts.blocked.includes(type)) return;
     this.opts.blocked.push(type);
     this.aliveBullets.forEach((b) => {
-      if (b.type === type || (type === 'color' && !isDefaultColor(b.color))) {
+      if (b.type === type || (type === 'color' && !this.opts.isDefaultColor(b.color))) {
         b.hide();
       }
     });
@@ -314,7 +316,7 @@ export class Danmaku implements Disposable {
   allowType(type: Parameters<Danmaku['blockType']>[0]): void {
     this.opts.blocked = this.opts.blocked.filter((t) => t !== type);
     this.aliveBullets.forEach((b) => {
-      if (b.type === type || (type === 'color' && !isDefaultColor(b.color))) {
+      if (b.type === type || (type === 'color' && !this.opts.isDefaultColor(b.color))) {
         b.show();
       }
     });

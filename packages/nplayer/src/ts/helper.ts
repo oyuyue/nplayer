@@ -66,6 +66,21 @@ export function setVideoAttrs(video: HTMLVideoElement, opts: PlayerOptions['vide
   });
 }
 
+export function setVideoSources(video: HTMLVideoElement, opts: PlayerOptions['videoSources']): void {
+  if (!opts) return;
+  video.innerHTML = '';
+  if (!opts.length) return;
+  const frag = document.createDocumentFragment();
+  opts.forEach((s) => {
+    const source = document.createElement('source');
+    Object.keys(s).forEach((k) => {
+      source.setAttribute(k, (s as any)[k]);
+    });
+    frag.appendChild(source);
+  });
+  video.appendChild(frag);
+}
+
 export function setVideoVolumeFromLocal(video: HTMLVideoElement): void {
   const volume = parseFloat(localStorage.getItem('nplayer:volume') as string);
 

@@ -11,7 +11,8 @@ import { Toast } from './parts/toast';
 import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import {
-  setCssVariables, setVideoAttrs, transferEvent, tryOpenEdge, setVideoVolumeFromLocal, registerNamedMap,
+  setCssVariables, setVideoAttrs, transferEvent, tryOpenEdge,
+  setVideoVolumeFromLocal, registerNamedMap, setVideoSources,
 } from './helper';
 import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
@@ -19,15 +20,17 @@ import { SettingItem } from './parts/control/items/setting';
 
 import * as _utils from './utils';
 import * as components from './components';
-import { CURRENT_VOLUME, I18n, Icon } from './features';
+import { I18n, Icon } from './features';
 import { Poster } from './parts/poster';
 
 export class Player extends EventEmitter implements Disposable {
-  private el: HTMLElement | null;
+  el: HTMLElement | null;
 
   element: HTMLElement;
 
   opts: Required<PlayerOptions>;
+
+  mounted = false;
 
   private prevVolume = 1;
 
@@ -74,6 +77,7 @@ export class Player extends EventEmitter implements Disposable {
 
     setCssVariables(this.element, this.opts);
     setVideoAttrs(this.video, this.opts.videoAttrs);
+    setVideoSources(this.video, this.opts.videoSources);
     setVideoVolumeFromLocal(this.video);
     transferEvent(this);
     if (this.opts.clickPause) this.enableClickPause();
@@ -192,32 +196,31 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   mount(el?: PlayerOptions['el']): void {
+    if (this.mounted) return;
     if (el) this.el = getEl(el) || this.el;
     if (!this.el) throw new Error('require `el` option');
     this.el.appendChild(this.element);
-
     this.emit(EVENT.MOUNTED);
+    this.mounted = true;
   }
 
   incVolume(v = this.opts.volumeStep): void {
-    this.updateVolume(this.volume + v);
+    this.volume += v;
   }
 
   decVolume(v = this.opts.volumeStep): void {
-    this.updateVolume(this.volume - v);
+    this.volume -= v;
   }
 
   forward(v = this.opts.seekStep): void {
     this.currentTime += v;
-    this.toast.show(`+${v}s`, 'left-bottom', 500);
   }
 
   rewind(v = this.opts.seekStep): void {
     this.currentTime -= v;
-    this.toast.show(`-${v}s`, 'left-bottom', 500);
   }
 
-  play(): Promise<void> {
+  play(): Promise<void> | void {
     return this.video.play();
   }
 
@@ -227,11 +230,6 @@ export class Player extends EventEmitter implements Disposable {
 
   seek(seconds: number): void {
     this.video.currentTime = clamp(seconds, 0, this.duration);
-  }
-
-  updateVolume(v: number): void {
-    this.volume = v;
-    this.toast.show(`${I18n.t(CURRENT_VOLUME)} ${Math.round(this.volume * 100)}`, 'left-bottom', 500);
   }
 
   toggle = () => {
@@ -272,22 +270,23 @@ export class Player extends EventEmitter implements Disposable {
     this.controlNamedMap[id || item.id!] = item;
   }
 
-  getSettingItem(id: string): SettingItem | null {
+  getSettingItem(id: string): SettingItem | undefined {
     return this.settingNamedMap[id];
   }
 
-  getContextMenuItem(id: string): ContextMenuItem | null {
+  getContextMenuItem(id: string): ContextMenuItem | undefined {
     return this.contextmenuNamedMap[id];
   }
 
-  getControlItem(id: string): ControlItem | null {
+  getControlItem(id: string): ControlItem | undefined {
     return this.controlNamedMap[id] as ControlItem;
   }
 
   updateOptions(opts: PlayerOptions): void {
+    if (opts.videoAttrs !== this.opts.videoAttrs) setVideoAttrs(this.video, opts.videoAttrs);
+    if (opts.videoSources !== this.opts.videoSources) setVideoAttrs(this.video, opts.videoAttrs);
     this.opts = { ...this.opts, ...opts };
     setCssVariables(this.element, this.opts);
-    setVideoAttrs(this.video, this.opts.videoAttrs);
     if (this.opts.shortcut) {
       this.shortcut.enable();
     } else {
@@ -311,14 +310,6 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   static _utils = _utils;
-
-  static addDisposable = _utils.addDisposable;
-
-  static addDisposableListener = _utils.addDisposableListener;
-
-  static dispose = _utils.dispose;
-
-  static getDisposableMap = _utils.getDisposableMap;
 
   static EVENT = EVENT;
 

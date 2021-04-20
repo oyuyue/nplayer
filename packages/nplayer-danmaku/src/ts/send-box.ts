@@ -11,7 +11,7 @@ import {
 let utils: Player['Player']['_utils'];
 
 class DanmakuSendBox implements ControlItem {
-  readonly id = 'danmaku';
+  readonly id = 'danmaku-send';
 
   element!: HTMLElement;
 

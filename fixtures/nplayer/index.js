@@ -20,6 +20,7 @@ window.onload = function () {
     // videoAttrs: { src: 'http://vjs.zencdn.net/v/oceans.mp4' },
     poster: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1625100497,827999043&fm=26&gp=0.jpg',
     controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    settings: [{ html: '切换', type: 'switch'}, 'speed']
   })
   var hls = new Hls();
   hls.attachMedia(player.video)

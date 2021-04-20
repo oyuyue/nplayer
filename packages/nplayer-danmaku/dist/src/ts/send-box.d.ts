@@ -1,6 +1,6 @@
 import type { ControlItem, Player, Tooltip } from 'nplayer';
 declare class DanmakuSendBox implements ControlItem {
-    readonly id = "danmaku";
+    readonly id = "danmaku-send";
     element: HTMLElement;
     private player;
     tooltip: Tooltip;

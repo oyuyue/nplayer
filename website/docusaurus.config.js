@@ -10,6 +10,9 @@ module.exports = {
   organizationName: 'woopen', // Usually your GitHub org/user name.
   projectName: 'nplayer', // Usually your repo name.
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+    },
     hideableSidebar: true,
     algolia: {
       apiKey: 'ba04a103ecb970278df9a94f32184c74',

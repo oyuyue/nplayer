@@ -11,6 +11,8 @@ slug: /
 
 NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持 SSR。该播放器高度可定制，提供了内置组件方便二次开发。并且有用插件系统，其弹幕功能就是使用插件形式提供。该播放器可以接入任何流媒体，如 hls、dash 和 flv 等。
 
+![NPlayer](/img/preview.jpg)
+
 ## 安装
 
 使用如下命令快速安装 NPlayer。
@@ -235,10 +237,6 @@ Player 提供了一些内置组件来方便二次开发和统一交互。比如�
 
 请查看 [内置组件章节](api/components.md) 了解更多。
 
-## 贡献
+## 问题 & 新功能
 
 如果你遇到 BUG 或者是想要新功能，可以到 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose) 中创建一个新 issue。
-
-如果想提交 PR，请查看 [贡献](https://github.com/woopen/nplayer/blob/main/CONTRIBUTING.md) 了解代码结构等信息。
-
-## 更多
