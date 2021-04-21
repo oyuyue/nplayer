@@ -147,6 +147,11 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
   items: [],
   zIndex: 5,
   persistOptions: false,
+  isDefaultColor(color: string): boolean {
+    if (!color) return true;
+    color = color.toLowerCase();
+    return color === '#fff' || color === '#ffffff';
+  },
   discard() { return false; },
 }
 ```
@@ -210,6 +215,12 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 ### persistOptions: boolean
 
 是否持久化，用户弹幕设置。
+
+### isDefaultColor?: (color: string) => boolean
+
+用于判断是否是默认颜色，当用户屏蔽才彩色类型弹幕时，会调用该方法，把这个方法返回 `false` 的弹幕全部屏蔽。
+
+默认只对 `#fff`、 `#ffffff` 或空返回 `true`。
 
 ### discard: (b: BulletOption) => boolean
 
