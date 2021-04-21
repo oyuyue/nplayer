@@ -21,7 +21,7 @@ player.mount(document.body)
 
 更多关于 hls.js 使用方法，请查看 [hls.js 官方文档](https://github.com/video-dev/hls.js) 。
 
-hls 是视频点播很常用的协议，本教程还提供了使用 hls.js 实现清晰度切换功能，详情可以查看 [这篇文章](examples/quantity-switch) 。
+hls 是视频点播很常用的协议，本教程还提供了使用 hls.js 实现清晰度切换功能，详情请查看 [清晰度切换](examples/quantity-switch) 。
 
 ### DASH
 
