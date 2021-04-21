@@ -25,6 +25,44 @@ npm i -S nplayer
 <script src="https://unpkg.com/nplayer@latest/dist/index.min.js"></script>
 ```
 
+## 快速使用
+
+```js
+import Player from "nplayer";
+import Danmaku from "@nplayer/danmaku";
+import items from "./items";
+
+const danmaku = new Danmaku({
+  items
+});
+
+/**
+ * 测试视频地址
+ * https://blog.csdn.net/qq_17497931/article/details/80824328
+ *
+ * 部分地址
+ * https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218114723HDu3hhxqIT.mp4
+ * https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218093206z8V1JuPlpe.mp4
+ * https://stream7.iqilu.com/10339/article/202002/18/2fca1c77730e54c7b500573c2437003f.mp4
+ *
+ * 还可以使用 .m3u8 .mpd 等视频格式，请引入 hls.js 等
+ * 参考 流媒体章节 https://nplayer.js.org/ 
+ */
+
+const player = new Player({
+  videoAttrs: {
+    src: "https://v-cdn.zjol.com.cn/280443.mp4"
+  },
+  plugins: [danmaku]
+});
+
+player.mount(document.body);
+```
+
+![image](https://user-images.githubusercontent.com/25923128/115495970-4d925b80-a29b-11eb-9735-97c57bea23cc.png)
+
+[![DEMO](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/ancient-sky-ujtms?file=/src/index.js)
+
 ## 文档
 
 你可以在 [nplayer.js.org](http://nplayer.js.org) 查看 NPlayer 的文档。
