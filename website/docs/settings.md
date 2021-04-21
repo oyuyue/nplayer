@@ -73,9 +73,9 @@ const speedSettingItem = {
 
 ## 注册和获取设置项
 
-`registerSettingItem(item: SettingItem, id?: string): void` 用来注册设置项，一般只在插件中使用，详情请查看 [插件章节](plugin.md)。
+- `registerSettingItem(item: SettingItem, id?: string): void` 用来注册设置项，一般只在插件中使用，详情请查看 [插件章节](plugin.md)。
 
-`getSettingItem(id: string): SettingItem | null` 可以获取相关设置项。
+- `getSettingItem(id: string): SettingItem | null` 可以获取相关设置项。
 
 ```js
 const player = new Player()
@@ -95,4 +95,4 @@ interface SettingItem<T = any> {
 }
 ```
 
-内部会使用上面这 4 字段缓存，`switch` 和 `select` 类型的 DOM 元素。从而避免每次重写创建对应元素。
+内部会使用上面这 4 字段缓存，`switch` 和 `select` 类型的 DOM 元素。从而避免每次创建对应 DOM 元素。所以自定义字段不要与这些字段重名。
