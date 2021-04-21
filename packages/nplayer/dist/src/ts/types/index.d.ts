@@ -19,6 +19,7 @@ export interface VideoSource {
 export interface PlayerOptions {
     el?: HTMLElement | string;
     video?: HTMLVideoElement;
+    src?: string;
     videoAttrs?: Record<string, any>;
     videoSources?: VideoSource[];
     thumbnail?: ThumbnailOptions;

@@ -81,11 +81,24 @@ export function setVideoSources(video: HTMLVideoElement, opts: PlayerOptions['vi
   video.appendChild(frag);
 }
 
+const storageVolumeKey = 'nplayer:volume';
 export function setVideoVolumeFromLocal(video: HTMLVideoElement): void {
-  const volume = parseFloat(localStorage.getItem('nplayer:volume') as string);
+  try {
+    const volume = parseFloat(localStorage.getItem(storageVolumeKey) as string);
 
-  // eslint-disable-next-line no-restricted-globals
-  if (!isNaN(volume)) video.volume = volume;
+    // eslint-disable-next-line no-restricted-globals
+    if (!isNaN(volume)) video.volume = volume;
+  } catch (error) {
+    // ignore
+  }
+}
+
+export function saveVideoVolume(volume: number) {
+  try {
+    localStorage.setItem(storageVolumeKey, String(volume));
+  } catch (error) {
+    // ignore
+  }
 }
 
 export function registerNamedMap(player: Player) {

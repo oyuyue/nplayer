@@ -12,7 +12,7 @@ import { Fullscreen } from './features/fullscreen';
 import { WebFullscreen } from './features/web-fullscreen';
 import {
   setCssVariables, setVideoAttrs, transferEvent, tryOpenEdge,
-  setVideoVolumeFromLocal, registerNamedMap, setVideoSources,
+  setVideoVolumeFromLocal, registerNamedMap, setVideoSources, saveVideoVolume,
 } from './helper';
 import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
@@ -75,6 +75,7 @@ export class Player extends EventEmitter implements Disposable {
       this.video = $('video.video');
     }
 
+    if (opts.src) this.opts.videoAttrs.src = opts.src;
     setCssVariables(this.element, this.opts);
     setVideoAttrs(this.video, this.opts.videoAttrs);
     setVideoSources(this.video, this.opts.videoSources);
@@ -148,7 +149,7 @@ export class Player extends EventEmitter implements Disposable {
   set volume(v: number) {
     this.video.volume = clamp(v);
     if (this.muted && v > 0) this.muted = false;
-    localStorage.setItem('nplayer:volume', String(this.video.volume));
+    saveVideoVolume(this.video.volume);
   }
 
   get muted(): boolean {
@@ -284,6 +285,7 @@ export class Player extends EventEmitter implements Disposable {
 
   updateOptions(opts: PlayerOptions): void {
     if (opts.videoAttrs !== this.opts.videoAttrs) setVideoAttrs(this.video, opts.videoAttrs);
+    if (opts.src && opts.src !== this.opts.src) this.video.src = opts.src;
     if (opts.videoSources !== this.opts.videoSources) setVideoAttrs(this.video, opts.videoAttrs);
     this.opts = { ...this.opts, ...opts };
     setCssVariables(this.element, this.opts);
