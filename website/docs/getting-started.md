@@ -37,11 +37,9 @@ const player = new NPlayer({
 player.mount(document.body)
 ```
 
-上面是创建一个播放器最简单的方法，创建一个 `player` 对象，然后将它挂载到 `document.body` 中。
+上面是创建一个播放器最简单的方法，创建一个 `player` 对象，设置视频元素的 `src`，然后将它挂载到 `document.body` 中。
 
-其中 `videoAttrs` 参数会直接传给 `video` 元素，我们这里制定了 `video` 元素的 `src` 属性。
-
-也可以自己提供 `video` 元素。
+当然你也可以自己提供 `video` 元素。
 
 ```js
 import Player from 'nplayer'
@@ -53,7 +51,7 @@ const player = new Player({ video, videoAttrs: { autoplay: 'true' } })
 player.mount(document.body)
 ```
 
-在自己提供 `video` 元素的时候，依旧可以使用 `videoAttrs` 参数，将属性添加到这个 `video` 元素上。
+你还可以使用 `videoAttrs` 参数，将视频元素的属性添加到这个 `video` 元素上，`videoAttrs` 有一些默认值，它会和你传入的合并再设置到视频元素上，详情请查看 [参数](api/config.md) 。
 
 `player.mount` 方法可以将播放器挂载到页面上，它接收一个参数，可以是一个字符串或一个 dom 元素。当是字符串时，将会自动查找该 dom 元素。
 
@@ -260,4 +258,4 @@ Player 提供了一些内置组件来方便二次开发和统一交互。比如�
 
 ## 问题 & 新功能
 
-如果你遇到 BUG 或者是想要新功能，欢迎提交 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose)。
+如果你遇到 BUG 或者是想要新功能，欢迎提交 [issue](https://github.com/woopen/nplayer/issues/new/choose)。
