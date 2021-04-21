@@ -5,7 +5,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
 [![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，[兼容 IE11](https://nplayer.js.org/docs/ie11)，支持 SSR。该播放器高度可定制，提供了 [内置组件](https://nplayer.js.org/docs/api/components) 方便二次开发。并且有用插件系统，其 [弹幕功能](https://nplayer.js.org/docs/ecosystem/danmaku) 就是使用插件形式提供。该播放器可以接入任何 [流媒体](https://nplayer.js.org/docs/streaming)，如 hls、dash 和 flv 等。
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，Gzip 大小只有 21KB，[兼容 IE11](https://nplayer.js.org/docs/ie11)，支持 SSR。该播放器高度可定制，所有图标、按钮、色彩等都可以替换，并且提供了 [内置组件](https://nplayer.js.org/docs/api/components) 方便二次开发。它还拥有插件系统，[弹幕功能](https://nplayer.js.org/docs/ecosystem/danmaku) 就是使用插件形式提供。该播放器可以接入任何 [流媒体](https://nplayer.js.org/docs/streaming)，如 hls、dash 和 flv 等。
 
 ![](website/static/img/preview.jpg)
 
