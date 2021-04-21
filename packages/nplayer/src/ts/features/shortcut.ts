@@ -13,7 +13,7 @@ export class Shortcut implements Disposable {
   constructor(private player: Player, enable: boolean) {
     this.map = Object.create(null);
 
-    const showVolume = (p: Player) => p.toast.show(`${I18n.t(CURRENT_VOLUME)} ${Math.round(p.opts.volumeStep * 100)}`, 'left-bottom', 500);
+    const showVolume = (p: Player) => p.toast.show(`${I18n.t(CURRENT_VOLUME)} ${Math.round(p.volume * 100)}`, 'left-bottom', 500);
 
     this.register(27, (p) => {
       if (!p.fullscreen.exit()) p.webFullscreen.exit();
