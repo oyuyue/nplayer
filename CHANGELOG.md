@@ -1,3 +1,12 @@
+## [0.1.3](https://github.com/woopen/RPlayer/compare/v0.1.2...v0.1.3) (2021-04-21)
+
+
+### Bug Fixes
+
+* shortcut volume toast ([99e5598](https://github.com/woopen/RPlayer/commit/99e5598c2125c2c57fccb4e182a9cedc98f6d430))
+
+
+
 ## [0.1.2](https://github.com/woopen/RPlayer/compare/v0.1.1...v0.1.2) (2021-04-21)
 
 
