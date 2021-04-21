@@ -9,6 +9,7 @@ title: 参数
 ```typescript
 interface PlayerOptions {
   el?: HTMLElement | string;
+  src?: string;
   video?: HTMLVideoElement;
   videoAttrs?: Record<string, any>;
   videoSources?: VideoSource[];
@@ -42,6 +43,7 @@ interface PlayerOptions {
 | 参数 | 描述 |
 | --- | --- |
 | el | 播放器挂载容器元素，同 `mount` 方法参数，如果 `mount` 没有传入参数时，将使用该参数 |
+| src | 视频地址 |
 | video | 自己提供 video 元素 |
 | videoAttrs | video 元素的属性 |
 | videoSources| video source 子元素数组，请查看 [快速开始](getting-started.md) |

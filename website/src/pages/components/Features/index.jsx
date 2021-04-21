@@ -18,16 +18,16 @@ const features = [
     imageUrl: 'img/undraw_design_components_9vy6.svg',
     description: (
       <>
-        可轻松配置控制条、上下文菜单、设置和主题，并可以使用插件扩充播放器功能。
+        可轻松配置控制条、上下文菜单、设置和定制主题，并可以使用插件扩充播放器功能，提供了 内置组件 方便二次开发。
       </>
     ),
   },
   {
-    title: '更多功能',
+    title: '多功能',
     imageUrl: 'img/undraw_functions_egi3.svg',
     description: (
       <>
-        全屏、网页全屏、快捷键、画中画、Airplay、速度控制、上下文菜单、视频缩略图、国际化等等。
+        弹幕、全屏、网页全屏、快捷键、画中画、隔空播放、速度控制、上下文菜单、视频缩略图、国际化等等。
       </>
     ),
   },

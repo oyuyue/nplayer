@@ -37,6 +37,10 @@ const danmaku = new Danmaku({
 });
 
 /**
+ * 官网：https://nplayer.js.org/
+ * 源码：https://github.com/woopen/nplayer
+ * 
+ * 
  * 测试视频地址
  * https://blog.csdn.net/qq_17497931/article/details/80824328
  *
@@ -46,13 +50,11 @@ const danmaku = new Danmaku({
  * https://stream7.iqilu.com/10339/article/202002/18/2fca1c77730e54c7b500573c2437003f.mp4
  *
  * 还可以使用 .m3u8 .mpd 等视频格式，请引入 hls.js 等
- * 参考 流媒体章节 https://nplayer.js.org/ 
+ * 参考 https://nplayer.js.org/docs/streaming
  */
 
 const player = new Player({
-  videoAttrs: {
-    src: "https://v-cdn.zjol.com.cn/280443.mp4"
-  },
+  src: "https://v-cdn.zjol.com.cn/280443.mp4",
   plugins: [danmaku]
 });
 

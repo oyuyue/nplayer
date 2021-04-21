@@ -2,11 +2,12 @@
 title: 弹幕插件
 ---
 
-[![npm version](https://img.shields.io/npm/v/nplayer)](https://github.com/woopen/nplayer) 
+[![npm version](https://img.shields.io/npm/v/nplayer?logo=npm)](https://github.com/woopen/nplayer) 
 [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-danmaku/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/danmaku/dist/index.min.js) 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
+[![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-该插件可以给 NPlayer 添加弹幕功能。它可以保持大量弹幕而不卡顿，该弹幕系统体验和性能与B站弹幕十分相似，支持非常多的设置，弹幕防碰撞、弹幕速度、字体、速度、透明度、显示区域、无限弹幕等。
+该插件可以给 NPlayer 添加弹幕功能。它可以保持大量弹幕而不卡顿，该弹幕系统体验和性能与 B 站弹幕十分相似，支持非常多的设置，弹幕防碰撞、弹幕速度、字体、速度、透明度、显示区域、无限弹幕等。
 
 ![nplayer danmaku](/img/preview.jpg)
 

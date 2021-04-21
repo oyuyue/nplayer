@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 const code = `import Player from 'nplayer'
 
 const player = new Player({
-  videoAttrs: { src: 'VIDEO_SRC' }
+  src: "https://v-cdn.zjol.com.cn/280443.mp4",
 })
 
 player.mount(document.body)`
@@ -29,7 +29,7 @@ const StartCoding = () => {
         <PrimaryButton
           className={styles.LearnMoreBtn}
           to={useBaseUrl('/docs/')}>
-          更多用法
+          了解更多
         </PrimaryButton>
       </div>
     </div>

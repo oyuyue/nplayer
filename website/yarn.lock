@@ -1547,10 +1547,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@nplayer/danmaku@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.nlark.com/@nplayer/danmaku/download/@nplayer/danmaku-0.1.0.tgz#7a7fdf63ddd6d0f9d535b1d5a50ab9c04c09aa56"
-  integrity sha1-en/fY93W0PnVNbHVpQq5wEwJqlY=
+"@nplayer/danmaku@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.nlark.com/@nplayer/danmaku/download/@nplayer/danmaku-0.1.2.tgz?cache=0&sync_timestamp=1619011733408&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40nplayer%2Fdanmaku%2Fdownload%2F%40nplayer%2Fdanmaku-0.1.2.tgz#412bbecbf04278929956b0141413c0b580db0121"
+  integrity sha1-QSu+y/BCeJKZVrAUFBPAtYDbASE=
 
 "@npmcli/move-file@^1.0.1":
   version "1.1.2"
@@ -7024,10 +7024,10 @@ normalize-url@^4.1.0:
   resolved "https://registry.npm.taobao.org/normalize-url/download/normalize-url-4.5.0.tgz?cache=0&sync_timestamp=1602432435724&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnormalize-url%2Fdownload%2Fnormalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha1-RTNUCH5sqWlXvY9br3U/WYIUISk=
 
-nplayer@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.nlark.com/nplayer/download/nplayer-0.1.1.tgz#d2e2f2eafa6aeee5fec9874ebae4fa972a24b8bb"
-  integrity sha1-0uLy6vpq7uX+yYdOuuT6lyokuLs=
+nplayer@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.nlark.com/nplayer/download/nplayer-0.1.2.tgz?cache=0&sync_timestamp=1619011128444&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnplayer%2Fdownload%2Fnplayer-0.1.2.tgz#836c29e41b81d3c6f2c7aaf6828c78185d4f73d7"
+  integrity sha1-g2wp5BuB08byx6r2gox4GF1Pc9c=
 
 npm-run-path@^2.0.0:
   version "2.0.2"
