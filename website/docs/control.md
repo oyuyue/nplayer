@@ -26,7 +26,7 @@ title: 控制条
 
 ```typescript
 interface ControlItem {
-  element?: HTMLElement; // 控制项的根 DOM 元素
+  element: HTMLElement; // 控制项的 DOM 元素
   id?: string; // 一般只有在自定义插件中才会设置
   tip?: string; // 提示字符串
   tooltip?: Tooltip; // 提示组件对象
@@ -37,7 +37,7 @@ interface ControlItem {
 }
 ```
 
-播放器初始化时，会调用 `isSupport` 判断当前是否支持该控制项，如果不支持则会中断，处理下一个。接下来会执行 `init` 方法，并传入两个参数，然后会将 `element` 添加到控制条中。
+播放器初始化时，会调用 `isSupport` 判断当前是否支持该控制项，如果不支持则会中断，处理下一个。接下来会执行 `init` 方法，并传入两个参数，最后会将 `element` 添加到控制条中。
 
 `tip` 参数是一个字符串，用户鼠标放到对应控制项上时会显示这个提示字符串。如果想自己控制这个提示字符串时，可以接收在 `init` 方法中的第二个参数。
 
@@ -57,7 +57,7 @@ new Player({
 
 :::info
 
-Tooltip 是内置组件，Tooltip 的使用方法请查看 [内置组件章节](ie11.md)
+Tooltip 是内置组件，Tooltip 的使用方法请查看 [内置组件章节](api/components.md)
 
 :::
 
@@ -91,7 +91,5 @@ if (spacer) {
 上面获取内置 `spacer` 控制项，并使用它的 `flex` 方法将 `flex` 设置为 `0`（`flex` 方法是 `spacer` 特有的方法）。你也可以通过 `spacer.element.style.flex` 设置。
 
 ## 例子
-
-点击下方链接，可以查看具体例子。
 
 - [清晰度切换](examples/quantity-switch.md)
