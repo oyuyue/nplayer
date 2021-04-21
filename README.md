@@ -79,4 +79,4 @@ player.mount(document.body);
 
 ## 问题 & 新功能
 
-如果你遇到 BUG 或者是想要新功能，欢迎提交 [GitHub issues](https://github.com/woopen/nplayer/issues/new/choose)。
+如果你遇到 BUG 或者是想要新功能，欢迎提交 [issue](https://github.com/woopen/nplayer/issues/new/choose)。
