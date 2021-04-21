@@ -6,14 +6,14 @@ NPlayer 可以通过插件来扩充它的功能，编写一个插件也非常的
 
 NPlayer 的插件是一个对象，它的接口定义如下。
 
-```tyescript
+```typescript
 interface Plugin {
   apply: (player: Player) => void;
   dispose?: () => void;
 }
 ```
 
-插件其实就是一个接收 `player` 对象的一个函数。其中 `dispose` 可选的卸载方法，当播放器卸载时会调用该方法。
+插件其实就是一个接收 `player` 对象的一个函数。其中 `dispose` 可选的卸载方法，当播放器卸载时会调用该方法。应用插件时播放器会调用 `apply` 方法并传入 `player` 对象作为参数。
 
 ## 例子
 
@@ -80,7 +80,7 @@ new Player({
 }
 ```
 
-所以在插件中，可以修改 `player.opts` 的 `controls`、`settings` 和 `contextMenus` 的值。
+所以在插件中，可以修改 `player.opts` 的 `controls`、`settings` 和 `contextMenus` 的值，从而影响最终的渲染结果。
 
 ```js
 {
@@ -91,6 +91,60 @@ new Player({
 ```
 
 上面代码将去除音量控制。
+
+## 插件参数
+
+插件可以是类或函数的方式，这方便接收插件参数。
+
+```js
+function createMyPlugin(opts) {
+  return {
+    apply(player) {
+      console.log(opts)
+    }
+  }
+}
+
+class MyPlugin {
+  constructor(opts) {
+    this.opts = opts
+  }
+  
+  apply(player) {
+    console.log(this.opts)
+  }
+}
+
+new Player({
+  plugins: [createMyPlugin({ // 参数 }), new MyPlugin({ // 参数 })]
+})
+```
+
+## 内置组件
+
+开发插件的时候还可以使用 NPlayer 的内置组件来加速开发。
+
+```js
+{
+  apply(player) {
+    const { components } = player.Player
+  }
+}
+```
+
+请查看 [内置插件](api/components.md)。
+
+## 主题
+
+如果插件包含 UI 的话，可以使用 CSS 变量来统一主题。
+
+```css
+.nplayer_my_plugin {
+  color: var(--theme-color);
+}
+```
+
+插件的 CSS 应该使用 `.nplayer_` 作为开头，统一命名，更多 CSS 变量可以查看 [定制主题](theme.md)。
 
 ## 弹幕插件
 
@@ -103,4 +157,4 @@ import Danmaku from '@nplayer/danmaku'
 new Player(plugins: [new Danmaku()])
 ```
 
-更多插件详情可以查看弹幕插件章节。
+更多插件详情可以查看 [弹幕插件章节](ecosystem/danmaku.md)。
