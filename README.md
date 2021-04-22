@@ -75,7 +75,7 @@ player.mount(document.body);
 
 | 名称 | 版本 | 大小 |
 | --- | --- | --- |
-| [弹幕插件](https://nplayer.js.org/docs/ecosystem/danmaku) | [![npm version](https://img.shields.io/npm/v/nplayer)](https://github.com/woopen/nplayer) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-danmaku/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/danmaku/dist/index.min.js)
+| [弹幕插件](https://nplayer.js.org/docs/ecosystem/danmaku) | [![npm](https://img.shields.io/npm/v/@nplayer/danmaku?logo=npm)](https://nplayer.js.org/docs/ecosystem/danmaku) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-danmaku/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/danmaku/dist/index.min.js)
 
 ## 问题 & 新功能
 
