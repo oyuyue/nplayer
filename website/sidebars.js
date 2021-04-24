@@ -18,6 +18,8 @@ module.exports = {
       collapsed: false,
       items: [
         'ecosystem/danmaku',
+        'ecosystem/react',
+        'ecosystem/vue',
       ],
     },
     {

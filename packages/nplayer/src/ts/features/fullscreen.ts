@@ -107,16 +107,11 @@ export class Fullscreen implements Disposable {
   }
 
   enter(): void {
-    try {
-      if (isIOS) {
-        (this.target as any).webkitEnterFullscreen();
-      } else {
-        this.requestFullscreen.call(this.target, { navigationUI: 'hide' });
-        this.player.emit(EVENT.UPDATE_SIZE);
-      }
-    } catch (error) {
-      // in iframe
-      this.player.toast.show('fullscreen error', 'left-top', 500);
+    if (isIOS) {
+      (this.target as any).webkitEnterFullscreen();
+    } else {
+      this.requestFullscreen.call(this.target, { navigationUI: 'hide' });
+      this.player.emit(EVENT.UPDATE_SIZE);
     }
   }
 
