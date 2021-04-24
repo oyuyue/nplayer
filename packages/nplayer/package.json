@@ -1,7 +1,7 @@
 {
   "name": "nplayer",
   "version": "0.1.3",
-  "description": "video player",
+  "description": "powerful danmaku video player",
   "main": "dist/index.min.js",
   "typings": "dist/src/index.d.ts",
   "license": "MIT",
@@ -17,7 +17,10 @@
   "keywords": [
     "player",
     "video",
-    "html5"
+    "html5",
+    "danmaku",
+    "vue",
+    "react"
   ],
   "homepage": "https://github.com/woopen/nplayer",
   "publishConfig": {

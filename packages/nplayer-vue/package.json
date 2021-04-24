@@ -1,5 +1,5 @@
 {
-  "name": "@nplayer/danmaku",
+  "name": "@nplayer/vue",
   "version": "0.1.3",
   "description": "powerful danmaku video player",
   "main": "dist/index.min.js",

@@ -23,6 +23,7 @@
   },
   "rules": {
     "max-len": ["error", { "code": 120, "ignoreStrings": true, "ignoreUrls": true }],
+    "import/no-unresolved": ["error", { "ignore": ["react"] }],
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-empty-function": 0,

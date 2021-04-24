@@ -10,6 +10,7 @@ const rename = (target) => {
 
 module.exports = (env) => {
   const pkgDir = getPkgDir(env.target)
+  const pkg = require(path.resolve(pkgDir, 'package.json'))
 
   /**@type {import('webpack').Configuration} */
   const config = {
@@ -18,7 +19,8 @@ module.exports = (env) => {
     output: {
       libraryTarget: 'umd',
       library: rename(env.target),
-      globalObject: 'this'
+      globalObject: 'this',
+      umdNamedDefine: true
     },
 
     resolve: {
@@ -27,6 +29,8 @@ module.exports = (env) => {
         src: path.resolve(pkgDir, 'src')
       }
     },
+
+    externals: { react: 'React' },
   
     module: {
       rules: [
@@ -85,6 +89,8 @@ module.exports = (env) => {
       })
     ],
   }
+
+  if (pkg.umdDefault) config.output.libraryExport = 'default'
 
   return config
 }

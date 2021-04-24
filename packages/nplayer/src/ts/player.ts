@@ -62,7 +62,7 @@ export class Player extends EventEmitter implements Disposable {
 
   readonly toast: Toast;
 
-  constructor(opts: PlayerOptions) {
+  constructor(opts?: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
     tryOpenEdge(this);
@@ -75,7 +75,7 @@ export class Player extends EventEmitter implements Disposable {
       this.video = $('video.video');
     }
 
-    if (opts.src) this.opts.videoAttrs.src = opts.src;
+    if (this.opts.src) this.opts.videoAttrs.src = this.opts.src;
     setCssVariables(this.element, this.opts);
     setVideoAttrs(this.video, this.opts.videoAttrs);
     setVideoSources(this.video, this.opts.videoSources);
@@ -199,7 +199,7 @@ export class Player extends EventEmitter implements Disposable {
   mount(el?: PlayerOptions['el']): void {
     if (this.mounted) return;
     if (el) this.el = getEl(el) || this.el;
-    if (!this.el) throw new Error('require `el` option');
+    if (!this.el) return;
     this.el.appendChild(this.element);
     this.emit(EVENT.MOUNTED);
     this.mounted = true;

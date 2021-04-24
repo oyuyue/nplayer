@@ -32,7 +32,7 @@ export declare class Player extends EventEmitter implements Disposable {
     readonly poster: Poster;
     readonly contextmenu: ContextMenu;
     readonly toast: Toast;
-    constructor(opts: PlayerOptions);
+    constructor(opts?: PlayerOptions);
     get currentTime(): number;
     set currentTime(v: number);
     get duration(): number;

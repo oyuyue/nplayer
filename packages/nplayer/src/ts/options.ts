@@ -20,7 +20,7 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   },
 });
 
-export function processOptions(opts: PlayerOptions): Required<PlayerOptions> {
+export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   const dOpts = defaultOptions();
   return {
     ...dOpts,
