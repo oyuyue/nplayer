@@ -1,3 +1,12 @@
+## [0.1.4](https://github.com/woopen/nplayer/compare/v0.1.3...v0.1.4) (2021-04-24)
+
+
+### Features
+
+* vue & react ([d12eb15](https://github.com/woopen/nplayer/commit/d12eb15ef5e35a04f4a76ba1e656945c1da01bea))
+
+
+
 ## [0.1.3](https://github.com/woopen/RPlayer/compare/v0.1.2...v0.1.3) (2021-04-21)
 
 
