@@ -1,3 +1,12 @@
+## [0.1.5](https://github.com/woopen/nplayer/compare/v0.1.4...v0.1.5) (2021-04-25)
+
+
+### Features
+
+* remount ([fe16b79](https://github.com/woopen/nplayer/commit/fe16b79af00fc0da488deb91225eff83c58da87d))
+
+
+
 ## [0.1.4](https://github.com/woopen/nplayer/compare/v0.1.3...v0.1.4) (2021-04-24)
 
 
