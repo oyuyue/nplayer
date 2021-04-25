@@ -1,8 +1,7 @@
 import React from 'react';
-import type { Player, PlayerOptions } from 'nplayer';
+import { Player, PlayerOptions } from 'nplayer';
 export declare type NPlayerProps = {
     options?: PlayerOptions;
-    Player?: typeof Player;
     style?: Partial<CSSStyleDeclaration>;
     className?: string;
     [key: string]: any;

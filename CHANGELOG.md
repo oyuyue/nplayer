@@ -1,3 +1,12 @@
+## [0.1.9](https://github.com/woopen/nplayer/compare/v0.1.8...v0.1.9) (2021-04-25)
+
+
+### Features
+
+* auto import Player ([b6afa25](https://github.com/woopen/nplayer/commit/b6afa256cd7cbd0c2a3bd9b21abb0a5be41e6b21))
+
+
+
 ## [0.1.8](https://github.com/woopen/nplayer/compare/v0.1.7...v0.1.8) (2021-04-25)
 
 
