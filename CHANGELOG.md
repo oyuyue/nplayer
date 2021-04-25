@@ -1,3 +1,12 @@
+## [0.1.7](https://github.com/woopen/nplayer/compare/v0.1.6...v0.1.7) (2021-04-25)
+
+
+### Bug Fixes
+
+* vue3 h ([d7370f9](https://github.com/woopen/nplayer/commit/d7370f99952a6e675ad2963913877cb872cf0039))
+
+
+
 ## [0.1.6](https://github.com/woopen/nplayer/compare/v0.1.5...v0.1.6) (2021-04-25)
 
 
