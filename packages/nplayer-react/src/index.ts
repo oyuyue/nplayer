@@ -21,12 +21,14 @@ export const NPlayer = React.forwardRef<Player, NPlayerProps>(
 
     useEffect(() => {
       if (!divRef.current) return;
+      const NP: typeof Player = PlayerCtor || (window as any).NPlayer?.Player;
+      if (!NP) throw new Error('[NPlayer] required Player options');
 
-      const NPlyr: typeof Player = PlayerCtor || (window as any).NPlayer?.Player;
-      if (!playerRef.current && NPlayer) {
-        playerRef.current = new NPlyr(options || {});
-        playerRef.current.mount(divRef.current);
+      if (!playerRef.current) {
+        playerRef.current = new NP(options);
       }
+
+      playerRef.current.mount(divRef.current);
 
       if (typeof ref === 'function') {
         if (playerRef.current) ref(playerRef.current);

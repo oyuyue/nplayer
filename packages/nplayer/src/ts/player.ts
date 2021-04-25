@@ -197,7 +197,16 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   mount(el?: PlayerOptions['el']): void {
-    if (this.mounted) return;
+    if (this.mounted) {
+      el = getEl(el) as any;
+      if (el && el !== this.el) {
+        if (this.el) this.el.removeChild(this.element);
+        this.el = el as HTMLElement;
+        this.el.appendChild(this.element);
+        this.emit(EVENT.UPDATE_SIZE);
+      }
+      return;
+    }
     if (el) this.el = getEl(el) || this.el;
     if (!this.el) return;
     this.el.appendChild(this.element);

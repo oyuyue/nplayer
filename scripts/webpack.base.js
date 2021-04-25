@@ -30,7 +30,7 @@ module.exports = (env) => {
       }
     },
 
-    externals: { react: 'React' },
+    externals: { react: 'React', vue: 'Vue' },
   
     module: {
       rules: [

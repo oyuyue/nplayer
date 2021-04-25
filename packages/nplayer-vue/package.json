@@ -27,5 +27,8 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "umdDefault": true
+  "umdDefault": true,
+  "peerDependencies": {
+    "vue": "^3.0.11"
+  }
 }
