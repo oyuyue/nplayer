@@ -39,7 +39,6 @@ const danmaku = new Danmaku({ items });
  * 源码：https://github.com/woopen/nplayer
  * 介绍文章：https://juejin.cn/post/6953803485636722702
  *
- *
  * 测试视频地址
  * https://blog.csdn.net/qq_17497931/article/details/80824328
  *
@@ -55,8 +54,13 @@ const danmaku = new Danmaku({ items });
  * 原来爱优腾等视频网站都是用这个来播放流媒体的
  * https://juejin.cn/post/6954761121727250439
  *
+ * React DEMO:
+ *    https://codesandbox.io/s/nplayer-react-demo-p558g?file=/src/App.js
+ * Vue2 DEMO:
+ *    https://codesandbox.io/s/nplayer-vue2-demo-9lps9?file=/src/main.js
+ * Vue3 DEMO:
+ *    https://codesandbox.io/s/nplayer-vue3-demo-mt8s4?file=/src/main.js
  */
-
 const player = new Player({
   src: "https://v-cdn.zjol.com.cn/280443.mp4",
   plugins: [danmaku]
