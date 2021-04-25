@@ -1,10 +1,12 @@
-import Vue from 'vue';
+import { h } from 'vue';
 import type { Player } from 'nplayer';
 
 export interface NPlayerVueOptions {
   Player?: typeof Player,
   name?: string;
 }
+
+const isVue3 = typeof h === 'function';
 
 const plugin = {
   install(app: any, opts: NPlayerVueOptions = {}) {
@@ -34,11 +36,10 @@ const plugin = {
         this.player.mount(this.$refs.element);
         if (this.set) this.set(this.player);
       },
-      beforeDestroy() { this.dispose(); },
-      beforeUnmount() { this.dispose(); },
-      render(h: any) {
-        h = Vue.h || h;
-        return h('div', { style: { width: '100%', height: '100%' }, ref: 'element' });
+      [isVue3 ? 'beforeUnmount' : 'beforeDestroy']() { this.dispose(); },
+      render(e: any) {
+        e = isVue3 ? h : e;
+        return e('div', { style: { width: '100%', height: '100%' }, ref: 'element' });
       },
     } as any;
 
