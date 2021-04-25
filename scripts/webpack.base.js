@@ -42,6 +42,12 @@ module.exports = (env) => {
         commonjs2: 'vue',
         commonjs: 'vue',
         amd: 'vue'
+      },
+      nplayer: {
+        root: 'NPlayer',
+        commonjs2: 'nplayer',
+        commonjs: 'nplayer',
+        amd: 'nplayer'
       }
     },
   

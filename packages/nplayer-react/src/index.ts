@@ -3,11 +3,10 @@ import React, {
   useRef,
   memo,
 } from 'react';
-import type { Player, PlayerOptions } from 'nplayer';
+import { Player, PlayerOptions } from 'nplayer';
 
 export type NPlayerProps = {
   options?: PlayerOptions;
-  Player?: typeof Player;
   style?: Partial<CSSStyleDeclaration>;
   className?: string;
   [key: string]: any;
@@ -17,15 +16,12 @@ export const NPlayer = React.forwardRef<Player, NPlayerProps>(
   (props = {}, ref) => {
     const divRef = useRef<HTMLDivElement>();
     const playerRef = useRef<Player>();
-    const { Player: PlayerCtor, options, ...rest } = props;
+    const { options, ...rest } = props;
 
     useEffect(() => {
       if (!divRef.current || typeof document === 'undefined') return;
-      const NP: typeof Player = PlayerCtor || (window as any).NPlayer?.Player;
-      if (!NP) throw new Error('[NPlayer] required Player options');
-
       if (!playerRef.current) {
-        playerRef.current = new NP(options);
+        playerRef.current = new Player.Player(options);
       }
 
       playerRef.current.mount(divRef.current);

@@ -80,6 +80,11 @@ function updateVersions(version) {
     const f = path.resolve(packagesDir, d, 'package.json')
     const p = require(f)
     p.version = version
+    if (p.peerDependencies) {
+      Object.keys(p.peerDependencies).forEach(d => {
+        if (d === 'nplayer') p.peerDependencies[d] = version
+      })
+    }
     fs.writeJsonSync(f, p, { spaces: 2 })
   })
   pkg.version = version

@@ -1,8 +1,7 @@
 import { h } from 'vue';
-import type { Player } from 'nplayer';
+import Player from 'nplayer';
 
 export interface NPlayerVueOptions {
-  Player?: typeof Player,
   name?: string;
 }
 
@@ -29,11 +28,9 @@ const plugin = {
         },
       },
       mounted() {
-        if (typeof document === 'undefined') return;
-        const NPlayer: typeof Player = opts.Player || ((window as any).NPlayer?.Player);
-        if (!NPlayer) throw new Error('[NPlayer] required Player option');
+        if (!this.$refs.element || typeof document === 'undefined') return;
         if (!this.player) {
-          this.player = new NPlayer(this.options);
+          this.player = new Player.Player(this.options);
         }
         this.player.mount(this.$refs.element);
         if (this.set) this.set(this.player);
