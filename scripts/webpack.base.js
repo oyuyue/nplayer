@@ -30,7 +30,20 @@ module.exports = (env) => {
       }
     },
 
-    externals: { react: 'React', vue: 'Vue' },
+    externals: {
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
+      },
+      vue: {
+        root: 'Vue',
+        commonjs2: 'vue',
+        commonjs: 'vue',
+        amd: 'vue'
+      }
+    },
   
     module: {
       rules: [

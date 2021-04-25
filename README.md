@@ -32,15 +32,14 @@ import Player from "nplayer";
 import Danmaku from "@nplayer/danmaku";
 import items from "./items";
 
-const danmaku = new Danmaku({
-  items
-});
+const danmaku = new Danmaku({ items });
 
 /**
  * 官网：https://nplayer.js.org/
  * 源码：https://github.com/woopen/nplayer
- * 
- * 
+ * 介绍文章：https://juejin.cn/post/6953803485636722702
+ *
+ *
  * 测试视频地址
  * https://blog.csdn.net/qq_17497931/article/details/80824328
  *
@@ -49,8 +48,13 @@ const danmaku = new Danmaku({
  * https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218093206z8V1JuPlpe.mp4
  * https://stream7.iqilu.com/10339/article/202002/18/2fca1c77730e54c7b500573c2437003f.mp4
  *
- * 还可以使用 .m3u8 .mpd 等视频格式，请引入 hls.js 等
- * 参考 https://nplayer.js.org/docs/streaming
+ * 还可以使用 .m3u8 .mpd 等视频格式，请引入 hls.js 或 dashjs
+ * 可参考文档 https://nplayer.js.org/docs/streaming
+ * 流媒体视频基础 MSE 入门 & FFmpeg 制作视频预览缩略图和 fmp4
+ * https://juejin.cn/post/6953777965838630926
+ * 原来爱优腾等视频网站都是用这个来播放流媒体的
+ * https://juejin.cn/post/6954761121727250439
+ *
  */
 
 const player = new Player({
