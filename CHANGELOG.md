@@ -1,3 +1,12 @@
+## [0.1.8](https://github.com/woopen/nplayer/compare/v0.1.7...v0.1.8) (2021-04-25)
+
+
+### Features
+
+* vue & react ssr ([bcec3a2](https://github.com/woopen/nplayer/commit/bcec3a274615d5e89f6987580d6cc26f8ac8ef19))
+
+
+
 ## [0.1.7](https://github.com/woopen/nplayer/compare/v0.1.6...v0.1.7) (2021-04-25)
 
 
