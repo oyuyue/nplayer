@@ -20,7 +20,7 @@ export const NPlayer = React.forwardRef<Player, NPlayerProps>(
     const { Player: PlayerCtor, options, ...rest } = props;
 
     useEffect(() => {
-      if (!divRef.current) return;
+      if (!divRef.current || typeof document === 'undefined') return;
       const NP: typeof Player = PlayerCtor || (window as any).NPlayer?.Player;
       if (!NP) throw new Error('[NPlayer] required Player options');
 

@@ -10,9 +10,6 @@ const isVue3 = typeof h === 'function';
 
 const plugin = {
   install(app: any, opts: NPlayerVueOptions = {}) {
-    const NPlayer: typeof Player = opts.Player || ((window as any).NPlayer?.Player);
-    if (!NPlayer) throw new Error('[NPlayer] required Player option');
-
     const NPlayerVue = {
       name: opts.name || 'NPlayer',
       props: {
@@ -26,10 +23,15 @@ const plugin = {
       },
       methods: {
         dispose() {
-          (this as any).player.dispose();
+          if ((this as any).player) {
+            (this as any).player.dispose();
+          }
         },
       },
       mounted() {
+        if (typeof document === 'undefined') return;
+        const NPlayer: typeof Player = opts.Player || ((window as any).NPlayer?.Player);
+        if (!NPlayer) throw new Error('[NPlayer] required Player option');
         if (!this.player) {
           this.player = new NPlayer(this.options);
         }
