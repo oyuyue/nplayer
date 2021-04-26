@@ -90,3 +90,7 @@ player.mount(document.body);
 ## 问题 & 新功能
 
 如果你遇到 BUG 或者是想要新功能，欢迎提交 [issue](https://github.com/woopen/nplayer/issues/new/choose)。
+
+## 贡献
+
+如果想参与贡献，请查看 [CONTRIBUTING~](https://github.com/woopen/nplayer/blob/main/CONTRIBUTING.md)
