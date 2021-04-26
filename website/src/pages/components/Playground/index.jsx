@@ -111,17 +111,12 @@ const Playground = () => {
     <div className={styles.Container} id="demo">
       <div className={styles.Title}>演示</div>
       <div>
-        <div ref={container}></div>
-        <div className={styles.Tip}>* 外网视频可能需要翻墙才能访问</div>
+        <div className={styles.VideoContainer} ref={container}></div>
+        <div className={styles.Tip}>* 外网视频可能需要翻墙才能访问，如果觉得弹幕有点卡顿，请设置一个固定清晰度(因为懒得给视频容器添加宽高😂，而自适应码率会让播放器尺寸频繁变化)</div>
       </div>
       <div>
-        <iframe 
-          className={styles.Iframe}
-          src="https://codesandbox.io/embed/nplayer-demo-ujtms?fontsize=14&hidenavigation=1&theme=dark"
-          title="nplayer-demo"
-          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-        ></iframe>
+        <a href="https://codesandbox.io/s/nplayer-demo-ujtms" target="_blank"><img src="img/csb.png" /></a>
+        <a href="https://codesandbox.io/s/nplayer-demo-ujtms" target="_blank"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" /></a>
       </div>
     </div>
   );
