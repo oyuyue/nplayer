@@ -85,7 +85,7 @@ player.mount(document.body);
 | --- | --- | --- |
 | [弹幕插件](https://nplayer.js.org/docs/ecosystem/danmaku) | [![npm](https://img.shields.io/npm/v/@nplayer/danmaku?logo=npm)](https://nplayer.js.org/docs/ecosystem/danmaku) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-danmaku/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/danmaku/dist/index.min.js)
 | [React](https://nplayer.js.org/docs/ecosystem/react) | [![npm](https://img.shields.io/npm/v/@nplayer/react?logo=npm)](https://nplayer.js.org/docs/ecosystem/react) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-react/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/react/dist/index.min.js)
-| [Vue](https://nplayer.js.org/docs/ecosystem/vue) | [![npm](https://img.shields.io/npm/v/@nplayer/vue?logo=npm)](https://nplayer.js.org/docs/ecosystem/vue) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-vue/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/vue/dist/index.min.js)
+| [Vue2 / Vue3](https://nplayer.js.org/docs/ecosystem/vue) | [![npm](https://img.shields.io/npm/v/@nplayer/vue?logo=npm)](https://nplayer.js.org/docs/ecosystem/vue) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-vue/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/vue/dist/index.min.js)
 
 ## 问题 & 新功能
 
