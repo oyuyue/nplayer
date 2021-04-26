@@ -27,7 +27,7 @@ npm i -S @nplayer/danmaku
 
 :::caution 注意
 
-与 NPlayer 类似，在使用 CDN 方式引入的时候，全局插件时 `NPlayerDanmaku.Plugin` 而不是 `NPlayerDanmaku`。
+与 NPlayer 不同，在使用 CDN 方式引入的时候，直接用 `NPlayerDanmaku` 即可，而不是 `NPlayerDanmaku.Plugin`。
 
 :::
 
