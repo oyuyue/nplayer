@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useRef,
   memo,
+// eslint-disable-next-line import/no-extraneous-dependencies
 } from 'react';
 import { Player, PlayerOptions } from 'nplayer';
 
