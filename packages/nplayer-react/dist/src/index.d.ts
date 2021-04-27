@@ -6,6 +6,6 @@ export declare type NPlayerProps = {
     className?: string;
     [key: string]: any;
 };
-export declare const NPlayer: React.ForwardRefExoticComponent<Pick<NPlayerProps, React.ReactText> & React.RefAttributes<Player>>;
-declare const _default: React.MemoExoticComponent<React.ForwardRefExoticComponent<Pick<NPlayerProps, React.ReactText> & React.RefAttributes<Player>>>;
+export declare const NPlayer: React.ForwardRefExoticComponent<Pick<NPlayerProps, string | number> & React.RefAttributes<Player>>;
+declare const _default: React.MemoExoticComponent<React.ForwardRefExoticComponent<Pick<NPlayerProps, string | number> & React.RefAttributes<Player>>>;
 export default _default;

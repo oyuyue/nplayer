@@ -1,6 +1,6 @@
 import { DanmakuOptions } from './danmaku';
 export declare function isDefaultColor(color: string): boolean;
-export declare const Timer: {
+export declare function createTimer(): {
     _prevPauseTime: number;
     _pausedTime: number;
     _paused: boolean;

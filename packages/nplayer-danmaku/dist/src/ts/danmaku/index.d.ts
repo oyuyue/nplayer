@@ -1,5 +1,5 @@
 import type { Disposable, Player } from 'nplayer';
-import { EVENT } from '../utils';
+import { createTimer, EVENT } from '../utils';
 import { Bullet, BulletOption } from './bullet';
 export interface DanmakuOptions {
     disable?: boolean;
@@ -29,6 +29,7 @@ export declare class Danmaku implements Disposable {
     paused: boolean;
     track: number;
     trackHeight: number;
+    timer: ReturnType<typeof createTimer>;
     private bulletPool;
     private aliveBullets;
     private scrollBullets;

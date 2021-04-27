@@ -1,3 +1,18 @@
+## [0.2.1](https://github.com/woopen/nplayer/compare/v0.2.0...v0.2.1) (2021-04-27)
+
+
+### Bug Fixes
+
+* remove shared timer ([3b6ff2b](https://github.com/woopen/nplayer/commit/3b6ff2b513ae94662ec5ac860fb7e7d5ee3a1680))
+
+
+### Features
+
+* add husky ([b037627](https://github.com/woopen/nplayer/commit/b037627358d680a5a023305da328025055f44d1e))
+* remove commit-msg ([8dc3caf](https://github.com/woopen/nplayer/commit/8dc3caf7950fd881754567bd83bc2cc7d8c25638))
+
+
+
 # [0.2.0](https://github.com/woopen/nplayer/compare/v0.1.9...v0.2.0) (2021-04-27)
 
 
