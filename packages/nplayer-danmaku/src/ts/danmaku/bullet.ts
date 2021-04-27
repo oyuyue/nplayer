@@ -1,5 +1,4 @@
 import type { Danmaku } from '.';
-import { Timer } from '../utils';
 
 export interface BulletOption {
   color?: string;
@@ -60,7 +59,7 @@ export class Bullet {
     const style = this.element.style;
     style.fontSize = `${this.danmaku.fontsize}px`;
 
-    this.startAt = Timer.now();
+    this.startAt = this.danmaku.timer.now();
 
     if (this.type === 'scroll') {
       this.element.addEventListener('transitionend', this.end);

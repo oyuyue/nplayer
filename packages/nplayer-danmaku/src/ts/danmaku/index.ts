@@ -1,6 +1,6 @@
 import type { Disposable, Player } from 'nplayer';
 import {
-  getStorageOptions, isDefaultColor, setStorageOptions, Timer, EVENT,
+  getStorageOptions, isDefaultColor, setStorageOptions, createTimer, EVENT,
 } from '../utils';
 import { Bullet, BulletOption, BulletSetting } from './bullet';
 
@@ -55,6 +55,8 @@ export class Danmaku implements Disposable {
 
   trackHeight = 0;
 
+  timer: ReturnType<typeof createTimer>;
+
   private bulletPool: Bullet[] = [];
 
   private aliveBullets: Set<Bullet> = new Set();
@@ -79,6 +81,8 @@ export class Danmaku implements Disposable {
     this.element.style.zIndex = String(this.opts.zIndex);
 
     this.items = this.opts.items;
+
+    this.timer = createTimer();
 
     if (!this.opts.disable) this.enable();
 
@@ -153,7 +157,7 @@ export class Danmaku implements Disposable {
     const min = currentTime - inc;
     const max = currentTime + inc;
     let item: BulletOption;
-    const time = Timer.now();
+    const time = this.timer.now();
     for (let l = this.items.length; this.pos < l; this.pos++) {
       item = this.items[this.pos];
       if (item.time < min) continue;
@@ -220,13 +224,13 @@ export class Danmaku implements Disposable {
     this.player.emit(EVENT.DANMAKU_SEND, opts);
     const i = this.addItem(opts);
     if (this.pos > i) {
-      this.insert(opts, Timer.now());
+      this.insert(opts, this.timer.now());
     }
   }
 
   pause = () => {
-    this.prevPauseTime = Timer.now();
-    Timer.pause();
+    this.prevPauseTime = this.timer.now();
+    this.timer.pause();
     this.aliveBullets.forEach((bullet) => bullet.pause(this.prevPauseTime));
     this.paused = true;
   }
@@ -236,7 +240,7 @@ export class Danmaku implements Disposable {
       return;
     }
 
-    Timer.play();
+    this.timer.play();
     this.aliveBullets.forEach((bullet) => bullet.run(this.prevPauseTime));
     this.paused = false;
   }
