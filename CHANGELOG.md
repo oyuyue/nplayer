@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/woopen/nplayer/compare/v0.1.9...v0.2.0) (2021-04-27)
+
+
+### Features
+
+* throttle event function & options autoSeekTime ([76b8fcd](https://github.com/woopen/nplayer/commit/76b8fcd40a0365b2d0e2c49993be868db592054f))
+
+
+
 ## [0.1.9](https://github.com/woopen/nplayer/compare/v0.1.8...v0.1.9) (2021-04-25)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@nplayer/vue",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "powerful danmaku video player",
   "main": "dist/index.min.js",
   "typings": "dist/src/index.d.ts",
@@ -29,6 +29,6 @@
   },
   "umdDefault": true,
   "peerDependencies": {
-    "nplayer": "0.1.9"
+    "nplayer": "0.2.0"
   }
 }
