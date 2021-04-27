@@ -38,18 +38,11 @@ module.exports = {
           label: 'API',
           position: 'left',
         },
-        // {
-        //   to: 'docs/',
-        //   activeBasePath: 'api',
-        //   label: '弹幕文档',
-        //   position: 'left',
-        // },
-        // {
-        //   to: 'docs/',
-        //   activeBasePath: 'playground',
-        //   label: '在线演示',
-        //   position: 'left',
-        // },
+        {
+          href: 'https://github.com/woopen/nplayer/issues/new/choose',
+          label: '问题反馈',
+          position: 'left'
+        }
       ],
     },
     footer: {
@@ -105,12 +98,6 @@ module.exports = {
           // Please change this to your repo.
           editUrl: 'https://github.com/woopen/nplayer/edit/main/website/',
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   editUrl:
-        //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        // },
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),
         },

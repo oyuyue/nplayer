@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { h } from 'vue';
 import Player from 'nplayer';
 
@@ -15,18 +16,6 @@ const plugin = {
         options: Object,
         set: Function,
       },
-      data() {
-        return {
-          player: null,
-        };
-      },
-      methods: {
-        dispose() {
-          if ((this as any).player) {
-            (this as any).player.dispose();
-          }
-        },
-      },
       mounted() {
         if (!this.$refs.element || typeof document === 'undefined') return;
         if (!this.player) {
@@ -35,7 +24,11 @@ const plugin = {
         this.player.mount(this.$refs.element);
         if (this.set) this.set(this.player);
       },
-      [isVue3 ? 'beforeUnmount' : 'beforeDestroy']() { this.dispose(); },
+      [isVue3 ? 'beforeUnmount' : 'beforeDestroy']() {
+        if ((this as any).player) {
+          (this as any).player.dispose();
+        }
+      },
       render(e: any) {
         e = isVue3 ? h : e;
         return e('div', { style: { width: '100%', height: '100%' }, ref: 'element' });

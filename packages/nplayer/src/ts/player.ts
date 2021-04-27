@@ -116,7 +116,9 @@ export class Player extends EventEmitter implements Disposable {
     this.control = addDisposable(this, new Control(this.element, this));
 
     addDisposable(this, this.on(EVENT.LOADED_METADATA, () => {
-      if (this.currentTime < 0.3) this.currentTime = 0.3;
+      const time = this.opts.autoSeekTime || 0.3;
+      if (this.currentTime < time) this.currentTime = time;
+      this.opts.autoSeekTime = 0;
     }));
 
     this.emit(EVENT.AFTER_INIT);

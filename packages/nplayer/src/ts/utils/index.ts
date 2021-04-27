@@ -1,5 +1,6 @@
 import { Disposable } from '../types';
 import { DomListener } from './dom';
+import { isNumber } from './is';
 
 export * from './drag';
 export * from './rect';
@@ -65,8 +66,8 @@ export function throttle(fn: Function, ctx?: any): any {
     pending = true;
 
     requestAnimationFrame(() => {
-      pending = false;
       fn.apply(ctx, args);
+      pending = false;
     });
   };
 }
@@ -83,7 +84,9 @@ export function padStart(v: string | number, len = 2, str = '0'): string {
 }
 
 export function formatTime(seconds: number): string {
-  if (!seconds || seconds < 0) return '0:00';
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNumber(seconds) || isNaN(seconds) || !isFinite(seconds)) return '·';
+  if (seconds <= 0) return '0:00';
 
   seconds = Math.round(seconds);
   if (seconds < 60) return `0:${padStart(seconds)}`;

@@ -1,7 +1,7 @@
 import { EVENT } from './constants';
 import { Player } from './player';
 import { Disposable, PlayerOptions } from './types';
-import { addDisposable, isWin10IE } from './utils';
+import { addDisposable, isWin10IE, throttle } from './utils';
 import { settingControlItem } from './parts/control/items/setting';
 import { speedSettingItem } from './setting-items/speed';
 import { playControlItem } from './parts/control/items/play';
@@ -31,16 +31,8 @@ function transThrottle(
   to: string,
   dom: HTMLElement | Window = player.video,
 ): Disposable {
-  let pending = false;
-  const fn = (ev: Event) => {
-    if (pending) return;
-    pending = true;
-    requestAnimationFrame(() => {
-      player.emit(to, ev);
-      pending = false;
-    });
-  };
-  dom.addEventListener(from, fn);
+  const fn = (ev: Event) => player.emit(to, ev);
+  dom.addEventListener(from, throttle(fn));
   return { dispose: () => dom.removeEventListener('from', fn) };
 }
 
@@ -139,7 +131,7 @@ export function transferEvent(player: Player): void {
 
   dis(transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window));
   if ((window as any).ResizeObserver) {
-    const ro = new ResizeObserver(() => player.emit(EVENT.UPDATE_SIZE));
+    const ro = new ResizeObserver(throttle(() => player.emit(EVENT.UPDATE_SIZE)));
     ro.observe(player.element);
     dis({ dispose: () => ro.disconnect() });
   }

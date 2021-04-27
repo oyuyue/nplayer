@@ -26,6 +26,7 @@ export interface PlayerOptions {
   src?: string;
   videoAttrs?: Record<string, any>;
   videoSources?: VideoSource[];
+  autoSeekTime?: number;
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[];
   settings?: (SettingItem | string)[];

@@ -38,9 +38,12 @@
 }
 
 .VideoContainer {
+  position: relative;
   width: 100%;
-  max-width: 1100px;
+  height: 35vh;
   margin: 0 auto;
+  resize: both;
+  overflow: scroll;
 }
 
 .Tip {

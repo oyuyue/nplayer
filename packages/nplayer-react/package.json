@@ -29,7 +29,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
     "nplayer": "0.1.9"
   },
   "devDependencies": {
