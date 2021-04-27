@@ -29,7 +29,7 @@ export const NPlayer = React.forwardRef<Player, NPlayerProps>(
 
       if (typeof ref === 'function') {
         if (playerRef.current) ref(playerRef.current);
-      } else if (ref && playerRef.current) ref.current = playerRef.current;
+      } else if (ref) ref.current = playerRef.current;
 
       return () => {
         if (playerRef.current) playerRef.current.dispose();
