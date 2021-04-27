@@ -13,7 +13,8 @@
     "test": "jest",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "release": "node ./scripts/release.js",
-    "lint": "eslint packages/*/src/**/*.ts --fix"
+    "lint": "eslint packages/*/src/**/*.ts --fix",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
@@ -46,6 +47,7 @@
     "minimist": "^1.2.5",
     "postcss": "^8.2.12",
     "postcss-loader": "^5.2.0",
+    "react": "^17.0.2",
     "sass": "^1.32.11",
     "sass-loader": "^11.0.1",
     "semver": "^7.3.5",
@@ -53,12 +55,12 @@
     "terser-webpack-plugin": "^5.1.1",
     "ts-loader": "^9.1.1",
     "typescript": "^4.1.3",
+    "vue": "^3.0.11",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3",
-    "vue": "^3.0.11",
-    "react": "^17.0.2"
+    "husky": "^6.0.0"
   },
   "browserslist": [
     "> 1%",
