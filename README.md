@@ -9,10 +9,6 @@ NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，
 
 ![](website/static/img/preview.jpg)
 
-## 兼容
-
-NPlayer 兼容 IE11, Edge, Chrome, FireFox, Safari 等现代浏览器。
-
 ## 安装
 
 ```
@@ -86,6 +82,14 @@ player.mount(document.body);
 | [弹幕插件](https://nplayer.js.org/docs/ecosystem/danmaku) | [![npm](https://img.shields.io/npm/v/@nplayer/danmaku?logo=npm)](https://nplayer.js.org/docs/ecosystem/danmaku) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-danmaku/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/danmaku/dist/index.min.js)
 | [React](https://nplayer.js.org/docs/ecosystem/react) | [![npm](https://img.shields.io/npm/v/@nplayer/react?logo=npm)](https://nplayer.js.org/docs/ecosystem/react) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-react/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/react/dist/index.min.js)
 | [Vue2 / Vue3](https://nplayer.js.org/docs/ecosystem/vue) | [![npm](https://img.shields.io/npm/v/@nplayer/vue?logo=npm)](https://nplayer.js.org/docs/ecosystem/vue) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-vue/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/vue/dist/index.min.js)
+
+## 推荐文章
+
+- [NPlayer 支持任何流媒体和 B 站弹幕体验的视频播放器](https://juejin.cn/post/6953803485636722702)
+- [从零开发弹幕视频播放器1](https://juejin.cn/post/6953429334937829384)
+- [流媒体视频基础 MSE 入门 & FFmpeg 制作视频预览缩略图和 fmp4](https://juejin.cn/post/6953777965838630926)
+- [原来爱优腾等视频网站都是用这个来播放流媒体的](https://juejin.cn/post/6954761121727250439)
+- [如何保护会员或付费视频？优酷是怎么做的？ - HLS 流媒体加密](https://juejin.cn/post/6955287754670342174)
 
 ## 问题 & 新功能
 
