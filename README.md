@@ -48,7 +48,7 @@ player.mount(document.body);
 
 [![image](https://user-images.githubusercontent.com/25923128/115495970-4d925b80-a29b-11eb-9735-97c57bea23cc.png)](https://codesandbox.io/s/ancient-sky-ujtms?file=/src/index.js)
 
-[![DEMO](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/ancient-sky-ujtms?file=/src/index.js){:target="_blank"}
+[![DEMO](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/ancient-sky-ujtms?file=/src/index.js)
 
 ## 文档
 
