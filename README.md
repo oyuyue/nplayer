@@ -93,4 +93,4 @@ player.mount(document.body);
 
 ## 贡献
 
-如果想参与贡献，请查看 [CONTRIBUTING~](https://github.com/woopen/nplayer/blob/main/CONTRIBUTING.md)
+如果想参与贡献，请查看 [CONTRIBUTING](https://github.com/woopen/nplayer/blob/main/CONTRIBUTING.md) 。
