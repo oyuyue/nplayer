@@ -13,6 +13,7 @@ interface PlayerOptions {
   video?: HTMLVideoElement;
   videoAttrs?: Record<string, any>;
   videoSources?: VideoSource[];
+  autoSeekTime?: number;
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[];
   settings?: (SettingItem | string)[];
@@ -47,6 +48,7 @@ interface PlayerOptions {
 | video | 自己提供 video 元素 |
 | videoAttrs | video 元素的属性 |
 | videoSources| video source 子元素数组，请查看 [快速开始](getting-started.md) |
+| autoSeekTime| 视频加载成功时自动跳转到的时间点（跳转后该参数会自动设为 0），你可以用这个参数实现记忆上次用户观看时间 |
 | thumbnail | 请查看 [预览缩略图](thumbnail.md) |
 | controls | 请查看 [控制条](control.md) |
 | settings | 请查看 [设置菜单](settings.md) |
