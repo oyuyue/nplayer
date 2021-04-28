@@ -1,6 +1,5 @@
 import { Disposable } from '../types';
 import { DomListener } from './dom';
-import { isNumber } from './is';
 
 export * from './drag';
 export * from './rect';
@@ -84,8 +83,6 @@ export function padStart(v: string | number, len = 2, str = '0'): string {
 }
 
 export function formatTime(seconds: number): string {
-  // eslint-disable-next-line no-restricted-globals
-  if (!isNumber(seconds) || isNaN(seconds) || !isFinite(seconds)) return '·';
   if (seconds <= 0) return '0:00';
 
   seconds = Math.round(seconds);

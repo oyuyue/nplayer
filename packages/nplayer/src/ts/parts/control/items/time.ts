@@ -1,4 +1,5 @@
 import { EVENT } from 'src/ts/constants';
+import { I18n, LIVE } from 'src/ts/features';
 import { Player } from 'src/ts/player';
 import {
   $, addClass, addDisposable, Component, formatTime,
@@ -14,18 +15,24 @@ class Time extends Component implements ControlItem {
 
   init(player: Player) {
     addClass(this.element, 'control_time');
-    this.playedElement = this.element.appendChild($('span'));
-    this.totalElement = this.element.appendChild($('span'));
 
-    this.played = player.currentTime;
-    this.total = player.duration;
+    if (player.opts.live) {
+      addClass(this.element, 'control_time-live');
+      this.element.textContent = I18n.t(LIVE);
+    } else {
+      this.playedElement = this.element.appendChild($('span'));
+      this.totalElement = this.element.appendChild($('span'));
 
-    addDisposable(this, player.on(EVENT.TIME_UPDATE, () => {
       this.played = player.currentTime;
-    }));
-    addDisposable(this, player.on(EVENT.DURATION_CHANGE, () => {
       this.total = player.duration;
-    }));
+
+      addDisposable(this, player.on(EVENT.TIME_UPDATE, () => {
+        this.played = player.currentTime;
+      }));
+      addDisposable(this, player.on(EVENT.DURATION_CHANGE, () => {
+        this.total = player.duration;
+      }));
+    }
   }
 
   private set played(v: number) {

@@ -17,6 +17,7 @@ export const PIP = 'Picture in Picture';
 export const LOOP = 'Loop';
 export const CURRENT_VOLUME = 'Current volume';
 export const AIRPLAY = 'Airplay';
+export const LIVE = 'Live';
 
 export const I18n = {
   defaultLang: '',
@@ -58,5 +59,6 @@ I18n.add('zh-cn', {
   [LOOP]: '循环播放',
   [CURRENT_VOLUME]: '当前音量',
   [AIRPLAY]: '隔空播放',
+  [LIVE]: '直播',
 });
 if (isBrowser) I18n.setCurrentLang();

@@ -67,7 +67,7 @@ window.onload = function () {
 
 
  // { src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' }
-  player.mount('#app')
+  player.mount('.app')
 
   // var button = document.createElement('button')
   // button.textContent = 'next'
@@ -81,4 +81,15 @@ window.onload = function () {
   // })
 
   // document.body.appendChild(button)
+
+  ;(function() {
+    var player2 = new NPlayer.Player({ live: true })
+    var flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: 'http://1011.hlsplay.aodianyun.com/demo/game.flv'
+    });
+    flvPlayer.attachMediaElement(player2.video);
+    flvPlayer.load();
+    player2.mount('.app2')
+  })()
 }

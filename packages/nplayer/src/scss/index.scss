@@ -454,6 +454,22 @@
       white-space: nowrap;
       letter-spacing: 1px;
 
+      &-live {
+        display: flex;
+        align-items: center;
+      }
+
+      &-live::before {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+        margin-top: 2px;
+        border-radius: 50%;
+        background: var(--theme-color);
+      }
+
       :first-child::after {
         content: '/';
         display: inline-block;
