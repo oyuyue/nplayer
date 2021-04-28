@@ -20,6 +20,7 @@ export interface PlayerOptions {
     el?: HTMLElement | string;
     video?: HTMLVideoElement;
     src?: string;
+    live?: boolean;
     videoAttrs?: Record<string, any>;
     videoSources?: VideoSource[];
     autoSeekTime?: number;

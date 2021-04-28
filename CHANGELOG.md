@@ -1,3 +1,13 @@
+## [0.2.2](https://github.com/woopen/nplayer/compare/v0.2.1...v0.2.2) (2021-04-28)
+
+
+### Features
+
+* live ([5d6c8be](https://github.com/woopen/nplayer/commit/5d6c8beff48d55af18c399ad4d77c44309b6a4f0))
+* remove check player ref ([218a137](https://github.com/woopen/nplayer/commit/218a1373853f0d8ba4b231606dde9372d01e828e))
+
+
+
 ## [0.2.1](https://github.com/woopen/nplayer/compare/v0.2.0...v0.2.1) (2021-04-27)
 
 

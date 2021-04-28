@@ -13,6 +13,7 @@ export declare const PIP = "Picture in Picture";
 export declare const LOOP = "Loop";
 export declare const CURRENT_VOLUME = "Current volume";
 export declare const AIRPLAY = "Airplay";
+export declare const LIVE = "Live";
 export declare const I18n: {
     defaultLang: string;
     currentLang: string;
