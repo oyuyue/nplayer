@@ -2891,10 +2891,10 @@ cssesc@^3.0.0:
   resolved "https://registry.nlark.com/cssesc/download/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha1-N3QZGZA7hoVl4cCep0dEXNGJg+4=
 
-cssnano-preset-default@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npm.taobao.org/cssnano-preset-default/download/cssnano-preset-default-5.0.0.tgz?cache=0&sync_timestamp=1618056394881&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcssnano-preset-default%2Fdownload%2Fcssnano-preset-default-5.0.0.tgz#94c03ecc1cb47ecdc23c0aea3ca05170ebbb7e33"
-  integrity sha1-lMA+zBy0fs3CPArqPKBRcOu7fjM=
+cssnano-preset-default@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-5.0.1.tgz#76adc00f7aae36ae80552b8356e21bec4b233ca2"
+  integrity sha512-cfmfThYODGqhpQKDq9H0MTAqkMvZ3dGbOUTBKw0xWZiIycMqHid22LsJXJl4r1qX4qzDeKxcSyQ/Xb5Mu3Z//Q==
   dependencies:
     css-declaration-sorter "6.0.0"
     cssnano-utils "^2.0.0"
@@ -2905,7 +2905,7 @@ cssnano-preset-default@^5.0.0:
     postcss-discard-duplicates "^5.0.0"
     postcss-discard-empty "^5.0.0"
     postcss-discard-overridden "^5.0.0"
-    postcss-merge-longhand "^5.0.0"
+    postcss-merge-longhand "^5.0.1"
     postcss-merge-rules "^5.0.0"
     postcss-minify-font-values "^5.0.0"
     postcss-minify-gradients "^5.0.0"
@@ -2931,13 +2931,13 @@ cssnano-utils@^2.0.0:
   resolved "https://registry.npm.taobao.org/cssnano-utils/download/cssnano-utils-2.0.0.tgz#b04baaa312aa3dd5a854b7f61d76b9d94be07f74"
   integrity sha1-sEuqoxKqPdWoVLf2HXa52Uvgf3Q=
 
-cssnano@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npm.taobao.org/cssnano/download/cssnano-5.0.1.tgz?cache=0&sync_timestamp=1618341543373&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcssnano%2Fdownload%2Fcssnano-5.0.1.tgz#ed4822c4a9212f22f6820717859c52a6b7f9cf5c"
-  integrity sha1-7UgixKkhLyL2ggcXhZxSprf5z1w=
+cssnano@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-5.0.2.tgz#3f6de4fd5ecb7b5fb636c1a606de5f38cd241493"
+  integrity sha512-8JK3EnPsjQsULme9/e5M2hF564f/480hwsdcHvQ7ZtAIMfQ1O3SCfs+b8Mjf5KJxhYApyRshR2QSovEJi2K72Q==
   dependencies:
     cosmiconfig "^7.0.0"
-    cssnano-preset-default "^5.0.0"
+    cssnano-preset-default "^5.0.1"
     is-resolvable "^1.1.0"
 
 csso@^4.2.0:
@@ -6654,10 +6654,10 @@ postcss-loader@^5.2.0:
     klona "^2.0.4"
     semver "^7.3.4"
 
-postcss-merge-longhand@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npm.taobao.org/postcss-merge-longhand/download/postcss-merge-longhand-5.0.0.tgz?cache=0&sync_timestamp=1618056394545&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpostcss-merge-longhand%2Fdownload%2Fpostcss-merge-longhand-5.0.0.tgz#103dee28c55491df727f17d7b8e91e93e7a472ee"
-  integrity sha1-ED3uKMVUkd9yfxfXuOkek+ekcu4=
+postcss-merge-longhand@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-merge-longhand/-/postcss-merge-longhand-5.0.1.tgz#1a008ff72d14cd3e2f3d32accc2ad37948bcabf4"
+  integrity sha512-H1RO8le5deFGumQzuhJjuL0bIXPRysa+w7xtk5KrHe38oiaSS9ksPXDo24+IOS3SETPhip0J5+1uCOW+ALs3Yw==
   dependencies:
     css-color-names "^1.0.1"
     postcss-value-parser "^4.1.0"
