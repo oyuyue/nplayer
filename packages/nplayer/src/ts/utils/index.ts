@@ -71,7 +71,7 @@ export function throttle(fn: Function, ctx?: any): any {
   };
 }
 
-export function padStart(v: string | number, len = 2, str = '0'): string {
+function padStart(v: string | number, len = 2, str = '0'): string {
   v = String(v);
   if (v.length >= 2) return v;
 
@@ -83,6 +83,8 @@ export function padStart(v: string | number, len = 2, str = '0'): string {
 }
 
 export function formatTime(seconds: number): string {
+  // eslint-disable-next-line no-restricted-globals
+  if (!isFinite(seconds)) return '-';
   if (seconds <= 0) return '0:00';
 
   seconds = Math.round(seconds);
