@@ -1,3 +1,18 @@
+## [0.2.3](https://github.com/woopen/nplayer/compare/v0.2.2...v0.2.3) (2021-05-02)
+
+
+### Bug Fixes
+
+* Infinity duration ([f0f4627](https://github.com/woopen/nplayer/commit/f0f4627084df8d5cce6567cbca9c8cdae5ccbbd7))
+
+
+### Features
+
+* change video loading & fix danmaku tooltip ([f5df26c](https://github.com/woopen/nplayer/commit/f5df26c87960d29b11d91ad8bd1d2726669154d4))
+* maximum insertion amount per time ([02fc486](https://github.com/woopen/nplayer/commit/02fc486da87af87cd696cc5431473d1765f542fb))
+
+
+
 ## [0.2.2](https://github.com/woopen/nplayer/compare/v0.2.1...v0.2.2) (2021-04-28)
 
 

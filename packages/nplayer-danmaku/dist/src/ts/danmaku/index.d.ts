@@ -16,6 +16,7 @@ export interface DanmakuOptions {
     items?: BulletOption[];
     zIndex?: number;
     persistOptions?: boolean;
+    maxPerInsert?: number;
     isDefaultColor?: (color: string) => boolean;
     discard?: (b: BulletOption) => boolean;
 }
