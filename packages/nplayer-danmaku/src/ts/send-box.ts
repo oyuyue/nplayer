@@ -17,7 +17,7 @@ class DanmakuSendBox implements ControlItem {
 
   private player!: Player
 
-   tooltip!: Tooltip;
+  tooltip!: Tooltip;
 
   private popover!: Popover;
 
@@ -45,7 +45,7 @@ class DanmakuSendBox implements ControlItem {
     const settingElement = this.element.appendChild($());
     settingElement.appendChild(createSvg('icon', 'M9.62 14L12 7.67 14.37 14M11 5L5.5 19h2.25l1.12-3h6.25l1.13 3h2.25L13 5h-2z'));
     this.tooltip = addDisposable(this, new components.Tooltip(settingElement, I18n.t(SEND_SETTINGS)));
-    this.popover = addDisposable(this, new components.Popover(settingElement, undefined, undefined, true));
+    this.popover = addDisposable(this, new components.Popover(settingElement, () => this.tooltip.show(), undefined, true));
     this.inputElement = this.element.appendChild($('input'));
     this.sendElement = this.element.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
 

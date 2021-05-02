@@ -1,7 +1,7 @@
 import { CLASS_PLAYER, EVENT } from 'src/ts/constants';
 import { Player } from 'src/ts/player';
 import {
-  addClass, addDisposable, Component, containClass, removeClass,
+  addClass, addDisposable, Component, containClass, removeClass, repeatStr,
 } from 'src/ts/utils';
 
 const classLoading = '-loading';
@@ -11,7 +11,7 @@ export class Loading extends Component {
   private startWaitingTime = 0;
 
   constructor(container: HTMLElement, private player: Player) {
-    super(container, player.opts.loadingElement || '.loading', undefined, '<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>');
+    super(container, player.opts.loadingElement || '.loading', undefined, player.opts.loadingElement ? undefined : repeatStr('<i></i>', 12));
 
     addDisposable(this, player.on(EVENT.CANPLAY, this.hide));
     addDisposable(this, player.on(EVENT.WAITING, () => {

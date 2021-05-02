@@ -1,7 +1,7 @@
 import { Player } from '../player';
 import { Disposable } from '../types';
 import { addDisposableListener, dispose, isNumber } from '../utils';
-import { CURRENT_VOLUME, I18n } from './i18n';
+import { VOLUME, I18n } from './i18n';
 
 export type ShortcutHandler = (player: Player) => void;
 
@@ -13,7 +13,7 @@ export class Shortcut implements Disposable {
   constructor(private player: Player, enable: boolean) {
     this.map = Object.create(null);
 
-    const showVolume = (p: Player) => p.toast.show(`${I18n.t(CURRENT_VOLUME)} ${Math.round(p.volume * 100)}`, 'left-bottom', 500);
+    const showVolume = (p: Player) => p.toast.show(`${I18n.t(VOLUME)} ${Math.round(p.volume * 100)}%`, 'left-bottom', 500);
 
     this.register(27, (p) => {
       if (!p.fullscreen.exit()) p.webFullscreen.exit();
@@ -21,7 +21,7 @@ export class Shortcut implements Disposable {
     this.register(32, (p) => p.toggle());
     this.register(37, (p) => {
       p.rewind();
-      p.toast.show(`-${p.opts.seekStep}s`, 'left-bottom', 500);
+      p.toast.show(`- ${p.opts.seekStep}s`, 'left-bottom', 500);
     });
     this.register(38, (p) => {
       p.incVolume();
@@ -29,7 +29,7 @@ export class Shortcut implements Disposable {
     });
     this.register(39, (p) => {
       p.forward();
-      p.toast.show(`+${p.opts.seekStep}s`, 'left-bottom', 500);
+      p.toast.show(`+ ${p.opts.seekStep}s`, 'left-bottom', 500);
     });
     this.register(40, (p) => {
       p.decVolume();

@@ -71,6 +71,14 @@ export function throttle(fn: Function, ctx?: any): any {
   };
 }
 
+export function repeatStr(str: string, t: number): string {
+  const ret = [];
+  for (let i = 0; i < t; ++i) {
+    ret.push(str);
+  }
+  return ret.join('');
+}
+
 function padStart(v: string | number, len = 2, str = '0'): string {
   v = String(v);
   if (v.length >= 2) return v;

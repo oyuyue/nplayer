@@ -15,7 +15,7 @@ export const NORMAL = 'Normal';
 export const SPEED = 'Speed';
 export const PIP = 'Picture in Picture';
 export const LOOP = 'Loop';
-export const CURRENT_VOLUME = 'Current volume';
+export const VOLUME = 'Volume';
 export const AIRPLAY = 'Airplay';
 export const LIVE = 'Live';
 
@@ -57,7 +57,7 @@ I18n.add('zh-cn', {
   [SPEED]: '播放速度',
   [PIP]: '画中画',
   [LOOP]: '循环播放',
-  [CURRENT_VOLUME]: '当前音量',
+  [VOLUME]: '音量',
   [AIRPLAY]: '隔空播放',
   [LIVE]: '直播',
 });

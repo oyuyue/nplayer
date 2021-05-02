@@ -47,7 +47,7 @@ class DanmakuSetting implements ControlItem {
     this.element = $();
     this.element.appendChild(createSvg('icon', 'M9 21v2H7v-2h2m4 0v2h-2v-2h2m4 0v2h-2v-2h2M2 19V3h20v16m-11-7H9v2h2v-2m8 0h-6v2h6v-2M7 8H5v2h2V8m12 0H9v2h10V8z'));
     this.tooltip = addDisposable(this, new components.Tooltip(this.element, I18n.t(DANMAKU_SETTINGS)));
-    this.popover = addDisposable(this, new components.Popover(this.element));
+    this.popover = addDisposable(this, new components.Popover(this.element, () => this.tooltip.show()));
 
     addDisposableListener(this, this.element, 'click', this.show);
 
