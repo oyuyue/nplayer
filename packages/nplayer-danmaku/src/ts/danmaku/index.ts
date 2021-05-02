@@ -19,6 +19,7 @@ export interface DanmakuOptions {
   items?: BulletOption[];
   zIndex?: number;
   persistOptions?: boolean;
+  maxPerInsert?: number;
   isDefaultColor?: (color: string) => boolean;
   discard?: (b: BulletOption) => boolean;
 }
@@ -39,6 +40,7 @@ export const defaultOptions = (): Required<DanmakuOptions> => ({
   zIndex: 5,
   persistOptions: false,
   isDefaultColor,
+  maxPerInsert: 20,
   discard() { return false; },
 });
 
@@ -156,14 +158,15 @@ export class Danmaku implements Disposable {
     const inc = this.opts.unlimited ? 0.5 : 1;
     const min = currentTime - inc;
     const max = currentTime + inc;
-    let item: BulletOption;
     const time = this.timer.now();
-    for (let l = this.items.length; this.pos < l; this.pos++) {
+    for (let l = this.items.length, count = 0, maxI = this.opts.maxPerInsert, item: BulletOption; this.pos < l; this.pos++) {
       item = this.items[this.pos];
       if (item.time < min) continue;
       if (item.time > max) break;
       if (this.shouldDiscard(item)) continue;
       if (!this.insert(item, time)) break;
+      count++;
+      if (count > maxI) break;
     }
   }
 
