@@ -314,6 +314,10 @@ export class Player extends EventEmitter implements Disposable {
     this.control.updateItems(items);
   }
 
+  updateTopControlItems(items: Parameters<Control['updateItems']>[0]): void {
+    this.control.updateTopItems(items);
+  }
+
   dispose(): void {
     if (!this.element) return;
     this.emit(EVENT.BEFORE_DISPOSE);

@@ -179,14 +179,11 @@ export function patchStyles(el: HTMLElement, prevStyle: CSSStyle, nextStyle: CSS
 const propMap: Record<string, boolean> = {
   checked: true, muted: true, multiple: true, selected: true,
 };
-const specialBoolMap: Record<string, boolean> = {
-  itemscope: true, allowfullscreen: true, formnovalidate: true, ismap: true, nomodule: true, novalidate: true, readonly: true,
-};
 
 function setAttr(el: HTMLElement, key: string, value: any) {
   if (propMap[key]) {
     (el as any)[key] = value;
-  } else if (value == null || (value === false && specialBoolMap[key])) {
+  } else if (value == null) {
     el.removeAttribute(key);
   } else {
     el.setAttribute(key, value);

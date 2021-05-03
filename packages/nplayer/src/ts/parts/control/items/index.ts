@@ -24,19 +24,8 @@ export class ControlBar extends Component {
           this.prevItems.push(item);
         }
       });
-      this.setTooltipPos();
+      this.updateTooltipPos();
       this.element.appendChild(frag);
-    }
-  }
-
-  private setTooltipPos() {
-    const first = this.prevItems[0];
-    const last = this.prevItems[this.prevItems.length - 1];
-    if (last && last.tooltip) {
-      last.tooltip.setRight();
-    }
-    if (first !== last && first.tooltip) {
-      first.tooltip.setLeft();
     }
   }
 
@@ -50,8 +39,17 @@ export class ControlBar extends Component {
   private initControlItem = (item: ControlItem | string): ControlItem | void => {
     item = this.getItem(item) as ControlItem;
     if (item) {
-      let tooltip: Tooltip | undefined;
       if (!item.element) item.element = $();
+      if (item.mounted) {
+        if (item.tooltip) {
+          item.tooltip.resetPos();
+          if (this.isTop) item.tooltip.setBottom();
+        }
+        if (item.update) item.update(this.isTop);
+        return;
+      }
+
+      let tooltip: Tooltip | undefined;
       if (item.tip) tooltip = new Tooltip(item.element, item.tip);
       if (item.init) {
         if (item.init.length > 2 && !tooltip) tooltip = new Tooltip(item.element);
@@ -63,7 +61,34 @@ export class ControlBar extends Component {
         tooltip.resetPos();
         if (this.isTop) tooltip.setBottom();
       }
+
+      item.mounted = true;
       return item;
+    }
+  }
+
+  updateTooltipPos() {
+    const last = this.prevItems.length - 1;
+    this.prevItems.forEach((item, i) => {
+      if (item.tooltip) {
+        item.tooltip.resetPos();
+        if (this.isTop) item.tooltip.setBottom();
+        if (i === 0) {
+          item.tooltip.setLeft();
+        } else if (i === last) {
+          item.tooltip.setRight();
+        }
+      }
+    });
+  }
+
+  getItems(): ControlItem[] {
+    return this.prevItems;
+  }
+
+  setItems(items?: ControlItem[]): void {
+    if (items) {
+      this.prevItems = items;
     }
   }
 
@@ -77,6 +102,7 @@ export class ControlBar extends Component {
 
       patch(this.prevItems, items, this.element, this.initControlItem);
       this.prevItems = items;
+      this.updateTooltipPos();
     }
   }
 }

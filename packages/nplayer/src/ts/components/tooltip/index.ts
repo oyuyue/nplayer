@@ -24,6 +24,7 @@ export class Tooltip extends Component {
   resetPos(): void {
     removeClass(this.element, classLeft);
     removeClass(this.element, classRight);
+    removeClass(this.element, classBottom);
   }
 
   setBottom(): void {
