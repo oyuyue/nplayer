@@ -7,13 +7,13 @@ import { speedSettingItem } from './setting-items/speed';
 import { playControlItem } from './parts/control/items/play';
 import { volumeControlItem } from './parts/control/items/volume';
 import { timeControlItem } from './parts/control/items/time';
-import { spacerControlItem } from './parts/control/items/spacer';
 import { webFullscreenControlItem } from './parts/control/items/web-fullscreen';
 import { fullscreenControlItem } from './parts/control/items/fullscreen';
 import { loopContextMenuItem } from './contextmenu-items/loop';
 import { pipContextMenuItem } from './contextmenu-items/pip';
 import { versionContextMenuItem } from './contextmenu-items/version';
 import { airplayControlItem } from './parts/control/items/airplay';
+import { progressControlItem } from './parts/control/progress';
 
 function trans(
   player: Player,
@@ -101,11 +101,11 @@ export function registerNamedMap(player: Player) {
   player.registerControlItem(playControlItem());
   player.registerControlItem(volumeControlItem());
   player.registerControlItem(timeControlItem());
-  player.registerControlItem(spacerControlItem());
   player.registerControlItem(settingControlItem());
   player.registerControlItem(webFullscreenControlItem());
   player.registerControlItem(fullscreenControlItem());
   player.registerControlItem(airplayControlItem());
+  player.registerControlItem(progressControlItem());
 }
 
 export function transferEvent(player: Player): void {

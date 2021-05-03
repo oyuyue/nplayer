@@ -3,7 +3,7 @@ import {
 } from 'src/ts/utils';
 
 const classActive = 'popover-active';
-
+const classBottom = 'popover_panel-bottom';
 export class Popover extends Component {
   readonly panelElement: HTMLElement;
 
@@ -28,6 +28,14 @@ export class Popover extends Component {
       if (getEventPath(ev).includes(this.panelElement)) return;
       this.hide(ev);
     });
+  }
+
+  resetPos() {
+    removeClass(this.panelElement, classBottom);
+  }
+
+  setBottom() {
+    addClass(this.panelElement, classBottom);
   }
 
   applyPanelStyle(style: Partial<CSSStyleDeclaration>): void {

@@ -310,6 +310,10 @@ export class Player extends EventEmitter implements Disposable {
     this.emit(EVENT.UPDATE_OPTIONS, this.opts);
   }
 
+  updateControlItems(items: Parameters<Control['updateItems']>[0]): void {
+    this.control.updateItems(items);
+  }
+
   dispose(): void {
     if (!this.element) return;
     this.emit(EVENT.BEFORE_DISPOSE);
