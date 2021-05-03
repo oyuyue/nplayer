@@ -1,25 +1,33 @@
 import { EVENT } from 'src/ts/constants';
 import { Player } from 'src/ts/player';
 import {
-  $, addDisposable, addDisposableListener, clamp, Component, Drag, Rect, throttle,
+  $, addClass, addDisposable, addDisposableListener, clamp, Component, Drag, Rect, throttle,
 } from 'src/ts/utils';
+import { ControlItem } from '..';
 import { Thumbnail } from './thumbnail';
 
-export class Progress extends Component {
-  private playedBar: HTMLElement;
+export class Progress extends Component implements ControlItem {
+  readonly id = 'progress'
 
-  private bufBar: HTMLElement;
+  private playedBar!: HTMLElement;
 
-  private bars: HTMLElement;
+  private bufBar!: HTMLElement;
 
-  private rect: Rect;
+  private bars!: HTMLElement;
 
-  private thumbnail: Thumbnail;
+  private rect!: Rect;
+
+  private thumbnail!: Thumbnail;
+
+  private player!: Player;
 
   private dragging = false;
 
-  constructor(container: HTMLElement, private player: Player) {
-    super(container, '.progress');
+  init(player: Player) {
+    this.player = player;
+
+    addClass(this.element, 'progress');
+
     this.bars = this.element.appendChild($('.progress_bars'));
     this.bufBar = this.bars.appendChild($('.progress_buf'));
     this.playedBar = this.bars.appendChild($('.progress_played'));
@@ -89,3 +97,5 @@ export class Progress extends Component {
     return clamp(((x - this.rect.x) / this.rect.width)) * this.player.duration;
   }
 }
+
+export const progressControlItem = () => new Progress();

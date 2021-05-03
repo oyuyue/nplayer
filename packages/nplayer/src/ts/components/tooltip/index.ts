@@ -1,9 +1,10 @@
 import {
-  addClass, Component, hide, show,
+  addClass, Component, hide, removeClass, show,
 } from 'src/ts/utils';
 
 const classLeft = 'tooltip-left';
 const classRight = 'tooltip-right';
+const classBottom = 'tooltip-bottom';
 
 export class Tooltip extends Component {
   constructor(container: HTMLElement, html?: string) {
@@ -18,6 +19,15 @@ export class Tooltip extends Component {
 
   set html(v: string) {
     this.element.innerHTML = v;
+  }
+
+  resetPos(): void {
+    removeClass(this.element, classLeft);
+    removeClass(this.element, classRight);
+  }
+
+  setBottom(): void {
+    addClass(this.element, classBottom);
   }
 
   setLeft(): void {

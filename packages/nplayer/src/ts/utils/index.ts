@@ -8,6 +8,7 @@ export * from './is';
 export * from './env';
 export * from './emitter';
 export * from './component';
+export * from './patch';
 
 export function clamp(n: number, lower = 0, upper = 1): number {
   return Math.max(Math.min(n, upper), lower);

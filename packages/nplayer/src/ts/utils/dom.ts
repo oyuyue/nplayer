@@ -55,9 +55,10 @@ export function getEl(el: HTMLElement | string | undefined | null): HTMLElement 
 }
 
 export function removeNode(node: Element): void {
+  if (!node) return;
   if (node.remove) {
     node.remove();
-  } if (node.parentNode) {
+  } else if (node.parentNode) {
     node.parentNode.removeChild(node);
   }
 }

@@ -30,6 +30,7 @@ export interface PlayerOptions {
   autoSeekTime?: number;
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[];
+  topControls?: (ControlItem | string)[];
   settings?: (SettingItem | string)[];
   contextMenus?: (ContextMenuItem | string)[];
   contextMenuToggle?: boolean;

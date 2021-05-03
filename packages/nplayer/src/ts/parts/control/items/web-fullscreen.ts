@@ -17,7 +17,7 @@ class WebFullscreen extends Component implements ControlItem {
 
   tooltip!: Tooltip;
 
-  init(player: Player, tooltip: Tooltip) {
+  init(player: Player, _: boolean, tooltip: Tooltip) {
     this.tooltip = tooltip;
     this.enterIcon = this.element.appendChild(Icon.webEnterFullscreen());
     this.exitIcon = this.element.appendChild(Icon.webExitFullscreen());

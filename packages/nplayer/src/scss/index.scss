@@ -121,6 +121,21 @@
       transform: translate(0,10px) scale(.8);
       transform-origin: 100% 100%;
     }
+
+    &-bottom {
+      top: 100%;
+      bottom: auto;
+      margin-top: 10px;
+      margin-bottom: 0;
+      transform: translate(-50%, -10px) scale(.8);
+    }
+
+    $p: &;
+    &-bottom {
+      &#{$p}-left, &#{$p}-right {
+        transform: translate(0,-10px) scale(.8);
+      }
+    }
   }
 
 
@@ -151,6 +166,14 @@
       box-shadow: 0 1px 20px 1px rgba(0,0,0,.2);
       z-index: 2;
       transition: opacity .2s ease, transform .2s ease, height .2s cubic-bezier(.4,0,.2,1), width .2s cubic-bezier(.4,0,.2,1);
+
+      &-bottom {
+        bottom: auto;
+        top: 100%;
+        margin-top: 5px;
+        margin-bottom: 0;
+        transform: translateY(-10px);
+      }
 
       &-left {
         left: 0;
@@ -429,6 +452,19 @@
       align-items: center;
       font-size: 0;
 
+      &-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        transition: opacity .2s ease;
+      }
+
+      &-hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+
       > div {
         margin: 5px 3px;
       }
@@ -625,6 +661,7 @@
   &_progress {
     position: relative;
     cursor: pointer;
+    flex: 1;
 
     &:hover &_bars {
       height: 16px;

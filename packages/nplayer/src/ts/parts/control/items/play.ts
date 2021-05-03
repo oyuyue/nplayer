@@ -17,7 +17,7 @@ class Play extends Component implements ControlItem {
 
   tooltip!: Tooltip;
 
-  init(player: Player, tooltip: Tooltip) {
+  init(player: Player, _: boolean, tooltip: Tooltip) {
     this.tooltip = tooltip;
     this.playIcon = this.element.appendChild(Icon.play());
     this.pauseIcon = this.element.appendChild(Icon.pause());

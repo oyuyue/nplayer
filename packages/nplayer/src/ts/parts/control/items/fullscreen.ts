@@ -17,7 +17,7 @@ class Fullscreen extends Component implements ControlItem {
 
   tooltip!: Tooltip;
 
-  init(player: Player, tooltip: Tooltip) {
+  init(player: Player, _: boolean, tooltip: Tooltip) {
     this.tooltip = tooltip;
     this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
     this.enterIcon = this.element.appendChild(Icon.enterFullscreen());

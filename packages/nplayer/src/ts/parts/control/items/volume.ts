@@ -23,7 +23,7 @@ class Volume extends Component implements ControlItem {
 
   tooltip!: Tooltip;
 
-  init(player: Player, tooltip: Tooltip) {
+  init(player: Player, _: boolean, tooltip: Tooltip) {
     this.player = player;
     this.tooltip = tooltip;
 
