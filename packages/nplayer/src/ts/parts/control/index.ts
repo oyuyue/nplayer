@@ -17,7 +17,9 @@ export interface ControlItem extends Partial<Disposable> {
   id?: any;
   tip?: string;
   tooltip?: Tooltip;
+  mounted?: boolean;
   init?: (player: Player, isTop: boolean, tooltip: Tooltip) => void;
+  update?: (isTop: boolean) => void;
   isSupport?: (player: Player) => boolean;
   [key: string]: any;
 }
@@ -55,8 +57,34 @@ export class Control extends Component {
     return !containClass(this.element, classHide);
   }
 
+  private filterItems(items: ControlItem[], toFilter: ControlItem[]): ControlItem[] | undefined {
+    if (items.length && toFilter.length) {
+      const map = new Map();
+      items.forEach((i) => map.set(i, true));
+      return toFilter.filter((item) => !map.get(item));
+    }
+  }
+
   updateItems(items: Parameters<ControlBar['update']>[0]): void {
     this.controlBar.update(items);
+    this.topControlBar.setItems(
+      this.filterItems(
+        this.controlBar.getItems(),
+        this.topControlBar.getItems(),
+      ),
+    );
+    this.topControlBar.updateTooltipPos();
+  }
+
+  updateTopItems(items: Parameters<ControlBar['update']>[0]): void {
+    this.topControlBar.update(items);
+    this.controlBar.setItems(
+      this.filterItems(
+        this.topControlBar.getItems(),
+        this.controlBar.getItems(),
+      ),
+    );
+    this.controlBar.updateTooltipPos();
   }
 
   require(): void {

@@ -32,10 +32,6 @@ export interface SettingItem<T = any> {
   [key: string]: any;
 }
 
-export class SettingPanelOption extends Component {}
-
-export class SettingPanelHome extends Component {}
-
 export class SettingPanel extends Component {
   constructor(container: HTMLElement) {
     super(container, '.control_setting_panel');
@@ -71,14 +67,21 @@ class Setting extends Component implements ControlItem {
     this.popover = new Popover(this.element, this.hide, { willChange: 'width, height' });
     this.homeElement = this.popover.panelElement.appendChild($());
 
-    if (isTop) {
-      this.popover.setBottom();
-    }
+    this.setPos(isTop);
 
     addDisposableListener(this, this.element, 'click', this.show);
     addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
     this.items.forEach((item) => item.init && item.init(player, item));
     this.renderHome();
+  }
+
+  update(isTop: boolean): void {
+    this.setPos(isTop);
+  }
+
+  private setPos(isTop: boolean): void {
+    this.popover.resetPos();
+    if (isTop) this.popover.setBottom();
   }
 
   private renderHome(): void {
