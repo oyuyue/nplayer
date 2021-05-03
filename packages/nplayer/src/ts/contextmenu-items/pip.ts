@@ -8,7 +8,7 @@ export const pipContextMenuItem = (): ContextMenuItem => ({
     this.invisible = !('pictureInPictureEnabled' in document);
   },
   click(player) {
-    if (player.video.readyState < 3) return;
+    if (!player.loaded) return;
     if ((document as any).pictureInPictureElement !== player.video) {
       (player.video as any).requestPictureInPicture();
     } else {

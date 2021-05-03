@@ -27,9 +27,7 @@ export class Component implements Disposable {
   }
 
   dispose() {
-    if (!this.element) return;
     removeNode(this.element);
-    this.element = null!;
     dispose(this);
   }
 }

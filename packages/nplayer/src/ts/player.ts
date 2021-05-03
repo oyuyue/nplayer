@@ -22,6 +22,7 @@ import * as _utils from './utils';
 import * as components from './components';
 import { I18n, Icon } from './features';
 import { Poster } from './parts/poster';
+import { Touch } from './features/touch';
 
 export class Player extends EventEmitter implements Disposable {
   el: HTMLElement | null;
@@ -51,6 +52,8 @@ export class Player extends EventEmitter implements Disposable {
   readonly webFullscreen: WebFullscreen;
 
   readonly shortcut: Shortcut;
+
+  readonly touch: Touch;
 
   readonly control: Control;
 
@@ -90,6 +93,7 @@ export class Player extends EventEmitter implements Disposable {
     this.fullscreen = addDisposable(this, new Fullscreen(this));
     this.webFullscreen = addDisposable(this, new WebFullscreen(this));
     this.shortcut = addDisposable(this, new Shortcut(this, this.opts.shortcut));
+    this.touch = addDisposable(this, new Touch(this));
     this.toast = addDisposable(this, new Toast(this.element));
     this.loading = addDisposable(this, new Loading(this.element, this));
     this.poster = addDisposable(this, new Poster(this.element, this));
@@ -134,6 +138,10 @@ export class Player extends EventEmitter implements Disposable {
     if (!diff) return;
     this.video.currentTime = clamp(v, 0, this.duration);
     this.emit(EVENT.TIME_UPDATE);
+  }
+
+  get loaded(): boolean {
+    return this.video.readyState >= 3;
   }
 
   get duration(): number {

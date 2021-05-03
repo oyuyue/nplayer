@@ -31,7 +31,7 @@ export class Poster extends Component {
     addDisposableListener(this, this.element, 'click', () => {
       if (this.tryToPlayed) return;
       this.tryToPlayed = true;
-      if (player.video.readyState >= 3) {
+      if (player.loaded) {
         this.hide();
       } else {
         hide(this.playElement);
@@ -43,7 +43,7 @@ export class Poster extends Component {
     addDisposable(this, player.on(EVENT.CANPLAY, this.tryHide));
     addDisposable(this, player.on(EVENT.LOADED_METADATA, this.tryHide));
     addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => {
-      if (player.opts.poster && player.opts.poster !== this.poster && player.video.readyState < 3) {
+      if (player.opts.poster && player.opts.poster !== this.poster && !player.loaded) {
         this.tryToPlayed = false;
         this.addTimeUpdateHandler();
         this.show();
