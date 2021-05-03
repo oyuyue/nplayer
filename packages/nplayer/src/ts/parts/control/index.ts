@@ -17,7 +17,9 @@ export interface ControlItem extends Partial<Disposable> {
   id?: any;
   tip?: string;
   tooltip?: Tooltip;
+  mounted?: boolean;
   init?: (player: Player, isTop: boolean, tooltip: Tooltip) => void;
+  update?: (isTop: boolean) => void;
   isSupport?: (player: Player) => boolean;
   [key: string]: any;
 }

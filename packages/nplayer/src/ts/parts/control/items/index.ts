@@ -50,8 +50,17 @@ export class ControlBar extends Component {
   private initControlItem = (item: ControlItem | string): ControlItem | void => {
     item = this.getItem(item) as ControlItem;
     if (item) {
-      let tooltip: Tooltip | undefined;
       if (!item.element) item.element = $();
+      if (item.mounted) {
+        if (item.tooltip) {
+          item.tooltip.resetPos();
+          if (this.isTop) item.tooltip.setBottom();
+        }
+        if (item.update) item.update(this.isTop);
+        return;
+      }
+
+      let tooltip: Tooltip | undefined;
       if (item.tip) tooltip = new Tooltip(item.element, item.tip);
       if (item.init) {
         if (item.init.length > 2 && !tooltip) tooltip = new Tooltip(item.element);
@@ -63,6 +72,8 @@ export class ControlBar extends Component {
         tooltip.resetPos();
         if (this.isTop) tooltip.setBottom();
       }
+
+      item.mounted = true;
       return item;
     }
   }
@@ -77,6 +88,7 @@ export class ControlBar extends Component {
 
       patch(this.prevItems, items, this.element, this.initControlItem);
       this.prevItems = items;
+      this.setTooltipPos();
     }
   }
 }
