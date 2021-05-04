@@ -40,7 +40,7 @@
     "eslint-webpack-plugin": "^2.5.4",
     "execa": "^5.0.0",
     "fibers": "^5.0.0",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "^10.0.0",
     "glob": "^7.1.6",
     "html-webpack-plugin": "^5.3.1",
     "jest": "^26.6.3",
