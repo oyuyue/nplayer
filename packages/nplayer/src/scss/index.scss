@@ -683,11 +683,22 @@
       position: absolute;
       left: 0;
       top: 50%;
-      width: 13px;
-      height: 13px;
-      background: var(--theme-color);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateY(-50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s ease;
+
+      &_inner {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--theme-color);
+        transform: translateX(-50%);
+      }
+    }
+
+    &:hover &_dot {
+      opacity: 1;
     }
 
     &_played, &_buf {

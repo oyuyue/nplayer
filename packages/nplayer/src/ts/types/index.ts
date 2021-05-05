@@ -41,6 +41,7 @@ export interface PlayerOptions {
   themeColor?: string;
   posterBgColor?: string;
   progressBg?: string;
+  progressDot?: HTMLElement;
   volumeProgressBg?: string;
   volumeBarWidth?: number | string;
   loadingElement?: HTMLElement;
