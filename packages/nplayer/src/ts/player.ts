@@ -137,7 +137,6 @@ export class Player extends EventEmitter implements Disposable {
     const diff = v - this.video.currentTime;
     if (!diff) return;
     this.video.currentTime = clamp(v, 0, this.duration);
-    this.emit(EVENT.TIME_UPDATE);
   }
 
   get loaded(): boolean {

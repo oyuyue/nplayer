@@ -68,15 +68,17 @@ window.onload = function () {
 
 
  // { src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4' }
-  player.mount('.app')
+  // player.mount('.app')
+  player.mount(document.body)
 
   const btn = document.createElement('button')
   btn.textContent = 'change'
   btn.addEventListener('click', () => {
     // ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen']
     player.updateControlItems(['volume', 'time', 'play', 'spacer', 'settings', 'progress'])
+    player.updateTopControlItems(['fullscreen'])
   })
-  document.body.insertBefore(btn, player.el)
+  document.body.insertBefore(btn, player.element)
 
   // var button = document.createElement('button')
   // button.textContent = 'next'

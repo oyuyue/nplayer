@@ -23,7 +23,9 @@
 
   * { box-sizing: content-box; }
 
-  &_control { z-index: 10; &_bg { z-index: 9; } }
+  $control-z-index: 10;
+
+  &_control { z-index: $control-z-index; &_bg { z-index: 9; } }
   &_poster { z-index: 20; }
   &_loading { z-index: 30; }
   &_contextmenu { z-index: 40; }
@@ -460,6 +462,7 @@
         left: 0;
         right: 0;
         transition: opacity .2s ease;
+        z-index: $control-z-index;
       }
 
       &-hide {
@@ -663,28 +666,28 @@
   &_progress {
     position: relative;
     cursor: pointer;
+    padding: 5px 0;
     flex: 1;
-
-    &:hover &_bars {
-      height: 16px;
-    }
 
     &_bars {
       position: relative;
       height: 4px;
       background: rgba(255, 255, 255, .3);
+      
       touch-action: none;
       transition: height .12s ease;
       overflow: hidden;
+    }
 
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 16px;
-      }
+    &_dot {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 13px;
+      height: 13px;
+      background: var(--theme-color);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
     }
 
     &_played, &_buf {

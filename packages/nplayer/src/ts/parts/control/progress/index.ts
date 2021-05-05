@@ -15,6 +15,8 @@ export class Progress extends Component implements ControlItem {
 
   private bars!: HTMLElement;
 
+  private dot!: HTMLElement;
+
   private rect!: Rect;
 
   private thumbnail!: Thumbnail;
@@ -31,19 +33,21 @@ export class Progress extends Component implements ControlItem {
     this.bars = this.element.appendChild($('.progress_bars'));
     this.bufBar = this.bars.appendChild($('.progress_buf'));
     this.playedBar = this.bars.appendChild($('.progress_played'));
+    this.dot = this.element.appendChild($('.progress_dot'));
 
     this.rect = addDisposable(this, new Rect(this.bars, player));
     this.thumbnail = addDisposable(this, new Thumbnail(this.element, player.opts.thumbnail));
 
-    addDisposable(this, new Drag(this.bars, this.onDragStart, this.onDragging, this.onDragEnd));
+    addDisposable(this, new Drag(this.element, this.onDragStart, this.onDragging, this.onDragEnd));
     addDisposable(this, player.on(EVENT.TIME_UPDATE, this.updatePlayedBar));
     addDisposable(this, player.on(EVENT.PROGRESS, this.updateBufBar));
     addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => this.thumbnail.updateOptions(player.opts.thumbnail)));
-    addDisposableListener(this, this.bars, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
+    addDisposableListener(this, this.element, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
   }
 
   private setPlayedBarLength(percentage: number): void {
     this.playedBar.style.transform = `scaleX(${clamp(percentage)})`;
+    this.dot.style.left = `${clamp(percentage * this.rect.width, 0, this.rect.width)}px`;
   }
 
   private setBufBarLength(percentage: number): void {
