@@ -44,11 +44,17 @@ export class Progress extends Component implements ControlItem {
     addDisposable(this, player.on(EVENT.PROGRESS, this.updateBufBar));
     addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => this.thumbnail.updateOptions(player.opts.thumbnail)));
     addDisposable(this, player.on(EVENT.UPDATE_SIZE, () => {
-      if (!player.playing) {
-        this.setPlayedBarLength(this.player.currentTime / this.player.duration);
-      }
+      if (!player.playing) this.resetPlayedBar();
+    }));
+    addDisposable(this, player.on(EVENT.CONTROL_ITEM_UPDATE, () => {
+      this.rect.update();
+      this.resetPlayedBar();
     }));
     addDisposableListener(this, this.element, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
+  }
+
+  private resetPlayedBar() {
+    this.setPlayedBarLength(this.player.currentTime / this.player.duration);
   }
 
   private setPlayedBarLength(percentage: number): void {

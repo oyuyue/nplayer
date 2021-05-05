@@ -33,4 +33,5 @@ export const EVENT = {
   OPEN_EDGE: 'OpenEdge',
   CONTROL_SHOW: 'ControlShow',
   CONTROL_HIDE: 'ControlHide',
+  CONTROL_ITEM_UPDATE: 'ControlItemUpdate',
 } as const;

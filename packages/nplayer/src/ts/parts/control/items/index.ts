@@ -4,6 +4,7 @@ import {
 } from 'src/ts/utils';
 import { Tooltip } from 'src/ts/components/tooltip';
 import { Disposable } from 'src/ts/types';
+import { EVENT } from 'src/ts/constants';
 import { ControlItem } from '..';
 import { spacerControlItem } from './spacer';
 
@@ -103,6 +104,7 @@ export class ControlBar extends Component {
       patch(this.prevItems, items, this.element, this.initControlItem);
       this.prevItems = items;
       this.updateTooltipPos();
+      this.player.emit(EVENT.CONTROL_ITEM_UPDATE);
     }
   }
 }

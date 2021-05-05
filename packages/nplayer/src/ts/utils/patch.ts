@@ -11,8 +11,8 @@ function isSameNode(a: Node, b: Node): boolean {
 }
 
 function unmount(node: Node, unmountNode?: (n: Node) => void) {
-  if (unmountNode) unmountNode(node);
   removeNode(node.element);
+  if (unmountNode) unmountNode(node);
 }
 
 function move(node: Node, container: HTMLElement, anchor?: Node) {
@@ -20,8 +20,8 @@ function move(node: Node, container: HTMLElement, anchor?: Node) {
 }
 
 function mount(node: Node, container: HTMLElement, anchor?: Node, mountNode?:(n: Node) => void) {
-  if (mountNode) mountNode(node);
   move(node, container, anchor);
+  if (mountNode) mountNode(node);
 }
 
 function lis(arr: number[]): number[] {
