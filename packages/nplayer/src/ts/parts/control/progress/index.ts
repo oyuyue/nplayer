@@ -34,6 +34,7 @@ export class Progress extends Component implements ControlItem {
     this.bufBar = this.bars.appendChild($('.progress_buf'));
     this.playedBar = this.bars.appendChild($('.progress_played'));
     this.dot = this.element.appendChild($('.progress_dot'));
+    this.dot.appendChild(player.opts.progressDot || $('.progress_dot_inner'));
 
     this.rect = addDisposable(this, new Rect(this.bars, player));
     this.thumbnail = addDisposable(this, new Thumbnail(this.element, player.opts.thumbnail));
@@ -47,7 +48,7 @@ export class Progress extends Component implements ControlItem {
 
   private setPlayedBarLength(percentage: number): void {
     this.playedBar.style.transform = `scaleX(${clamp(percentage)})`;
-    this.dot.style.left = `${clamp(percentage * this.rect.width, 0, this.rect.width)}px`;
+    this.dot.style.transform = `translate(${clamp(percentage * this.rect.width, 0, this.rect.width)}px, -50%)`;
   }
 
   private setBufBarLength(percentage: number): void {
