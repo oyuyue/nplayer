@@ -26,15 +26,16 @@ export class Fullscreen implements Disposable {
       this.player.emit(EVENT.UPDATE_SIZE);
     });
 
-    if (player.opts.dblclickFullscreen) this.enableDblclick();
-
     addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => {
       this.disableDblclick();
-      if (player.opts.dblclickFullscreen) this.enableDblclick();
     }));
 
     this.setTarget();
     if (this.isActive) this.addClass();
+
+    if (!player.opts.isTouch) {
+      this.enableDblclick();
+    }
   }
 
   private getPrefix(): string {

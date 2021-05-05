@@ -26,8 +26,14 @@ export class Touch implements Disposable {
 
   private drag!: Drag;
 
+  private showControlTimer!: any;
+
+  private videoTouched = false;
+
   constructor(private player: Player) {
-    this.enable();
+    if (player.opts.isTouch) {
+      this.enable();
+    }
   }
 
   private dragStart = (ev: PointerEvent) => {
@@ -69,9 +75,29 @@ export class Touch implements Disposable {
     }
   }
 
+  private videoTouchHandler = () => {
+    if (this.videoTouched) {
+      clearTimeout(this.showControlTimer);
+      this.videoTouched = false;
+      this.player.toggle();
+    } else {
+      this.videoTouched = true;
+      this.showControlTimer = setTimeout(() => {
+        this.videoTouched = false;
+        const control = this.player.control;
+        if (control.isActive) {
+          control.hide();
+        } else {
+          control.showTransient();
+        }
+      }, 200);
+    }
+  }
+
   enable(): void {
     if (this.drag) return;
     this.drag = new Drag(this.player.video, this.dragStart, this.dragMove, this.dragEnd);
+    this.player.video.addEventListener('touchstart', this.videoTouchHandler);
   }
 
   disable(): void {
@@ -79,6 +105,7 @@ export class Touch implements Disposable {
       this.drag.dispose();
       this.drag = null!;
     }
+    this.player.video.removeEventListener('touchstart', this.videoTouchHandler);
   }
 
   dispose() {
