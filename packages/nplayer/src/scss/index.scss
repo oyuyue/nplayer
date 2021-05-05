@@ -79,21 +79,23 @@
     transition: background .2s ease;
     cursor: pointer;
 
-    &:hover {
-      background: var(--theme-color);
-    }
-
-    &:hover &_content {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    &:hover &-left {
-      transform: translate(0, 0);
-    }
-
-    &:hover &-right {
-      transform: translate(0, 0);
+    @include hover {
+      &:hover {
+        background: var(--theme-color);
+      }
+  
+      &:hover &_content {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+  
+      &:hover &-left {
+        transform: translate(0, 0);
+      }
+  
+      &:hover &-right {
+        transform: translate(0, 0);
+      }
     }
 
     &_content {
@@ -685,7 +687,6 @@
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      opacity: 0;
       transition: opacity .2s ease;
 
       &_inner {
@@ -697,8 +698,13 @@
       }
     }
 
-    &:hover &_dot {
-      opacity: 1;
+    @include hover {
+      &_dot {
+        opacity: 0;
+      }
+      &:hover &_dot {
+        opacity: 1;
+      }
     }
 
     &_played, &_buf {

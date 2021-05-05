@@ -84,7 +84,6 @@ export class Player extends EventEmitter implements Disposable {
     setVideoSources(this.video, this.opts.videoSources);
     setVideoVolumeFromLocal(this.video);
     transferEvent(this);
-    if (this.opts.clickPause) this.enableClickPause();
     this.element.appendChild(this.video);
 
     registerNamedMap(this);
@@ -124,6 +123,10 @@ export class Player extends EventEmitter implements Disposable {
       if (this.currentTime < time) this.currentTime = time;
       this.opts.autoSeekTime = 0;
     }));
+
+    if (!this.opts.isTouch) {
+      this.enableClickPause();
+    }
 
     this.emit(EVENT.AFTER_INIT);
   }
@@ -313,7 +316,6 @@ export class Player extends EventEmitter implements Disposable {
       this.shortcut.disable();
     }
     this.disableClickPause();
-    if (this.opts.clickPause) this.enableClickPause();
     this.emit(EVENT.UPDATE_OPTIONS, this.opts);
   }
 

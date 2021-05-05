@@ -6,3 +6,9 @@
   border-bottom: $borderWidth solid $color;
   border-right: $borderWidth solid $color;
 }
+
+@mixin hover {
+  @media not all and (hover: none) {
+    @content;
+  }
+}

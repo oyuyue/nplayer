@@ -45,8 +45,12 @@ export class Control extends Component {
     this.controlBar = addDisposable(this, new ControlBar(this.element, player, player.opts.controls));
     this.topControlBar = addDisposable(this, new ControlBar(container, player, player.opts.topControls, true));
 
-    addDisposable(this, player.on(EVENT.PAUSE, this.show));
-    addDisposable(this, player.on(EVENT.PLAY, this.showTransient));
+    addDisposable(this, player.on(EVENT.PAUSE, () => {
+      if (!player.opts.isTouch) this.show();
+    }));
+    addDisposable(this, player.on(EVENT.PLAY, () => {
+      if (!player.opts.isTouch) this.showTransient();
+    }));
     addDisposableListener(this, player.element, 'mousemove', this.showTransient);
     addDisposableListener(this, player.element, 'mouseleave', this.tryHide);
 

@@ -49,7 +49,6 @@ export interface PlayerOptions {
   poster?: string;
   posterEnable?: boolean;
   posterPlayElement?: HTMLElement;
-  dblclickFullscreen?: boolean;
-  clickPause?: boolean;
+  isTouch?: boolean;
   [key: string]: any;
 }
