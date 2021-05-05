@@ -1,7 +1,6 @@
-import { Disposable } from '../types';
 import { removeNode } from './dom';
 
-export interface Node extends Partial<Disposable> {
+export interface Node {
   id?: any;
   element: HTMLElement;
 }
@@ -11,8 +10,8 @@ function isSameNode(a: Node, b: Node): boolean {
   return a === b || a.id === b.id;
 }
 
-function unmount(node: Node) {
-  if (node.dispose) node.dispose();
+function unmount(node: Node, unmountNode?: (n: Node) => void) {
+  if (unmountNode) unmountNode(node);
   removeNode(node.element);
 }
 
@@ -20,8 +19,8 @@ function move(node: Node, container: HTMLElement, anchor?: Node) {
   container.insertBefore(node.element, anchor?.element || null);
 }
 
-function mount(node: Node, container: HTMLElement, anchor?: Node, initNode?:(n: Node) => void) {
-  if (initNode) initNode(node);
+function mount(node: Node, container: HTMLElement, anchor?: Node, mountNode?:(n: Node) => void) {
+  if (mountNode) mountNode(node);
   move(node, container, anchor);
 }
 
@@ -71,7 +70,8 @@ export function patch(
   prevNodes: Node[],
   nextNodes: Node[],
   container: HTMLElement,
-  initNode?: (node: Node) => void,
+  mountNode?: (node: Node) => void,
+  unmountNode?: (node: Node) => void,
 ) {
   let prevEnd = prevNodes.length - 1;
   let nextEnd = nextNodes.length - 1;
@@ -102,11 +102,11 @@ export function patch(
 
   if (startIndex > prevEnd) {
     for (let i = startIndex; i <= nextEnd; i++) {
-      mount(nextNodes[i], container, undefined, initNode);
+      mount(nextNodes[i], container, undefined, mountNode);
     }
   } else if (startIndex > nextEnd) {
     for (let i = startIndex; i <= prevEnd; i++) {
-      unmount(prevNodes[i]);
+      unmount(prevNodes[i], unmountNode);
     }
   } else {
     const toPatch = [];
@@ -125,7 +125,7 @@ export function patch(
 
       if (nextIndex == null) {
         console.log(`unmount ${prevNode.id}`);
-        unmount(prevNode);
+        unmount(prevNode, unmountNode);
       } else {
         toPatch[nextIndex - startIndex] = i;
 
@@ -145,7 +145,7 @@ export function patch(
       anchor = nextNodes[nextIndex + 1];
       if (item === -1) {
         console.log(`mount ${nextNodes[nextIndex].id}`);
-        mount(nextNodes[nextIndex], container, anchor, initNode);
+        mount(nextNodes[nextIndex], container, anchor, mountNode);
       } else if (moved) {
         if (i === incSeq[j]) {
           j--;
