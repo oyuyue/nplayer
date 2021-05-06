@@ -420,7 +420,7 @@
     right: 0;
     bottom: 0;
     user-select: none;
-    padding: 0 5px;
+    padding: 0 5px 8px;
     transition: opacity .2s ease;
 
     &-hide {
@@ -464,6 +464,7 @@
         left: 0;
         right: 0;
         transition: opacity .2s ease;
+        padding-top: 5px;
         z-index: $control-z-index;
       }
 
@@ -473,7 +474,7 @@
       }
 
       > div {
-        margin: 5px 3px;
+        margin: 0 3px;
       }
     }
 
