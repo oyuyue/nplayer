@@ -48,6 +48,16 @@ export class Control extends Component {
     addDisposable(this, player.on(EVENT.PLAY, () => {
       if (!player.opts.isTouch) this.showTransient();
     }));
+    addDisposable(this, player.on(EVENT.ENTER_MOBILE, () => {
+      this.updateItems(player.opts.mobileControls[0], 0);
+      this.updateItems(player.opts.mobileControls[1], 1);
+      this.updateItems(player.opts.mobileControls[2], 2);
+    }));
+    addDisposable(this, player.on(EVENT.EXIT_MOBILE, () => {
+      this.updateItems(player.opts.controls[0], 0);
+      this.updateItems(player.opts.controls[1], 1);
+      this.updateItems(player.opts.controls[2], 2);
+    }));
     addDisposableListener(this, player.element, 'mousemove', this.showTransient);
     addDisposableListener(this, player.element, 'mouseleave', this.tryHide);
     this.showTransient();
@@ -72,7 +82,7 @@ export class Control extends Component {
     const barItems = curBar.getItems();
     this.controlBars.forEach((bar, i) => {
       if (i === index) return;
-      this.filterItems(barItems, bar.getItems());
+      bar.setItems(this.filterItems(barItems, bar.getItems()));
       bar.updateTooltipPos();
     });
   }

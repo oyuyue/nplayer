@@ -15,6 +15,7 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
     preload: 'auto',
     playsinline: 'true',
   },
+  mobileBreakPoint: 600,
 });
 
 function processControls(origin: Required<PlayerOptions>['controls'], def: Required<PlayerOptions>['controls']) {
@@ -36,9 +37,8 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   } as Required<PlayerOptions>;
 
   res.controls = processControls(res.controls || [], [
-    ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen'],
+    ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
     (res.live ? undefined : ['progress']) as any,
-    ['fullscreen'],
   ]);
 
   const mobileControl = ['play', 'time', 'web-fullscreen', 'fullscreen'];

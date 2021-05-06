@@ -23,6 +23,7 @@ import * as components from './components';
 import { I18n, Icon } from './features';
 import { Poster } from './parts/poster';
 import { Touch } from './features/touch';
+import { Respond } from './features/respond';
 
 export class Player extends EventEmitter implements Disposable {
   el: HTMLElement | null;
@@ -65,6 +66,8 @@ export class Player extends EventEmitter implements Disposable {
 
   readonly toast: Toast;
 
+  readonly respond: Respond;
+
   constructor(opts?: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
@@ -93,6 +96,7 @@ export class Player extends EventEmitter implements Disposable {
     this.webFullscreen = addDisposable(this, new WebFullscreen(this));
     this.shortcut = addDisposable(this, new Shortcut(this, this.opts.shortcut));
     this.touch = addDisposable(this, new Touch(this));
+    this.respond = addDisposable(this, new Respond(this));
     this.toast = addDisposable(this, new Toast(this.element));
     this.loading = addDisposable(this, new Loading(this.element, this));
     this.poster = addDisposable(this, new Poster(this.element, this));
