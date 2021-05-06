@@ -34,4 +34,6 @@ export const EVENT = {
   CONTROL_SHOW: 'ControlShow',
   CONTROL_HIDE: 'ControlHide',
   CONTROL_ITEM_UPDATE: 'ControlItemUpdate',
+  ENTER_MOBILE: 'EnterMobile',
+  EXIT_MOBILE: 'ExitMobile',
 } as const;
