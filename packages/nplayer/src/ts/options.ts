@@ -5,8 +5,6 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   seekStep: 10,
   volumeStep: 0.1,
   volumeBarWidth: 100,
-  controls: ['play', 'time', 'progress', 'airplay', 'web-fullscreen', 'fullscreen'],
-  topControls: ['spacer', 'settings'],
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,
@@ -19,9 +17,13 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   },
 });
 
+function processControls(origin: Required<PlayerOptions>['controls'], def: Required<PlayerOptions>['controls']) {
+  return [origin[0] || def[0], origin[1] || def[1], origin[2] || def[2]];
+}
+
 export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   const dOpts = defaultOptions();
-  return {
+  const res = {
     ...dOpts,
     ...opts,
     videoAttrs: {
@@ -32,4 +34,20 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
     || (navigator.maxTouchPoints > 0)
     || (navigator.msMaxTouchPoints > 0)),
   } as Required<PlayerOptions>;
+
+  res.controls = processControls(res.controls || [], [
+    ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen'],
+    (res.live ? undefined : ['progress']) as any,
+    ['fullscreen'],
+  ]);
+
+  const mobileControl = ['play', 'time', 'web-fullscreen', 'fullscreen'];
+  if (!res.live) mobileControl.splice(1, 0, 'progress');
+  res.mobileControls = processControls(res.mobileControls || [], [
+    mobileControl,
+    [],
+    ['spacer', 'airplay', 'settings'],
+  ]);
+
+  return res;
 }

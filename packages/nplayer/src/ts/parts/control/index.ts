@@ -6,7 +6,6 @@ import {
   $, addClass, addDisposable, addDisposableListener, Component, containClass, removeClass,
 } from 'src/ts/utils';
 import { ControlBar } from './items';
-// import { Progress } from './progress';
 
 const classHide = 'control-hide';
 const classBgHide = 'control_bg-hide';
@@ -33,17 +32,15 @@ export class Control extends Component {
 
   private latch = 0;
 
-  private controlBar: ControlBar;
-
-  private topControlBar: ControlBar;
+  private controlBars: ControlBar[] = [];
 
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
 
-    // if (!player.opts.live) addDisposable(this, new Progress(this.element, player));
-    this.controlBar = addDisposable(this, new ControlBar(this.element, player, player.opts.controls));
-    this.topControlBar = addDisposable(this, new ControlBar(container, player, player.opts.topControls, true));
+    this.controlBars[1] = addDisposable(this, new ControlBar(this.element, player, player.opts.controls[1]));
+    this.controlBars[0] = addDisposable(this, new ControlBar(this.element, player, player.opts.controls[0]));
+    this.controlBars[2] = addDisposable(this, new ControlBar(container, player, player.opts.controls[2], true));
 
     addDisposable(this, player.on(EVENT.PAUSE, () => {
       if (!player.opts.isTouch) this.show();
@@ -53,7 +50,6 @@ export class Control extends Component {
     }));
     addDisposableListener(this, player.element, 'mousemove', this.showTransient);
     addDisposableListener(this, player.element, 'mouseleave', this.tryHide);
-
     this.showTransient();
   }
 
@@ -69,26 +65,16 @@ export class Control extends Component {
     }
   }
 
-  updateItems(items: Parameters<ControlBar['update']>[0]): void {
-    this.controlBar.update(items);
-    this.topControlBar.setItems(
-      this.filterItems(
-        this.controlBar.getItems(),
-        this.topControlBar.getItems(),
-      ),
-    );
-    this.topControlBar.updateTooltipPos();
-  }
-
-  updateTopItems(items: Parameters<ControlBar['update']>[0]): void {
-    this.topControlBar.update(items);
-    this.controlBar.setItems(
-      this.filterItems(
-        this.topControlBar.getItems(),
-        this.controlBar.getItems(),
-      ),
-    );
-    this.controlBar.updateTooltipPos();
+  updateItems(items: Parameters<ControlBar['update']>[0], index = 0): void {
+    const curBar = this.controlBars[index];
+    if (!curBar) return;
+    curBar.update(items);
+    const barItems = curBar.getItems();
+    this.controlBars.forEach((bar, i) => {
+      if (i === index) return;
+      this.filterItems(barItems, bar.getItems());
+      bar.updateTooltipPos();
+    });
   }
 
   require(): void {
@@ -105,7 +91,7 @@ export class Control extends Component {
   show = (): void => {
     removeClass(this.element, classHide);
     removeClass(this.bgElement, classBgHide);
-    removeClass(this.topControlBar.element, classBarHide);
+    removeClass(this.controlBars[2].element, classBarHide);
     this.player.element.style.cursor = '';
     this.player.emit(EVENT.CONTROL_SHOW);
   }
@@ -113,7 +99,7 @@ export class Control extends Component {
   hide = (): void => {
     addClass(this.element, classHide);
     addClass(this.bgElement, classBgHide);
-    addClass(this.topControlBar.element, classBarHide);
+    addClass(this.controlBars[2].element, classBarHide);
     this.player.element.style.cursor = 'none';
     this.player.emit(EVENT.CONTROL_HIDE);
   }

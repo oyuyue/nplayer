@@ -29,8 +29,8 @@ export interface PlayerOptions {
   videoSources?: VideoSource[];
   autoSeekTime?: number;
   thumbnail?: ThumbnailOptions;
-  controls?: (ControlItem | string)[];
-  topControls?: (ControlItem | string)[];
+  controls?: (ControlItem | string)[][];
+  mobileControls?: (ControlItem | string)[][];
   settings?: (SettingItem | string)[];
   contextMenus?: (ContextMenuItem | string)[];
   contextMenuToggle?: boolean;
@@ -50,5 +50,6 @@ export interface PlayerOptions {
   posterEnable?: boolean;
   posterPlayElement?: HTMLElement;
   isTouch?: boolean;
+  mobileBreakPoint?: number;
   [key: string]: any;
 }

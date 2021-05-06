@@ -51,6 +51,13 @@ export class Progress extends Component implements ControlItem {
       this.resetPlayedBar();
     }));
     addDisposableListener(this, this.element, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
+
+    if (player.opts.isTouch) {
+      addDisposableListener(this, this.element, 'touchstart', (ev: Event) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+      });
+    }
   }
 
   private resetPlayedBar() {
