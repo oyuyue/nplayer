@@ -79,9 +79,6 @@ export function patch(
   let prevNode = prevNodes[startIndex];
   let nextNode = nextNodes[startIndex];
 
-  console.log(prevNodes);
-  console.log(nextNodes);
-
   while (isSameNode(prevNode, nextNode)) {
     startIndex++;
     prevNode = prevNodes[startIndex];
@@ -124,7 +121,6 @@ export function patch(
       nextIndex = idMap.get(prevNode.id || prevNode) as any;
 
       if (nextIndex == null) {
-        console.log(`unmount ${prevNode.id}`);
         unmount(prevNode, unmountNode);
       } else {
         toPatch[nextIndex - startIndex] = i;
@@ -144,13 +140,11 @@ export function patch(
       nextIndex = startIndex + i;
       anchor = nextNodes[nextIndex + 1];
       if (item === -1) {
-        console.log(`mount ${nextNodes[nextIndex].id}`);
         mount(nextNodes[nextIndex], container, anchor, mountNode);
       } else if (moved) {
         if (i === incSeq[j]) {
           j--;
         } else {
-          console.log(`move ${nextNodes[nextIndex].id}`);
           move(nextNodes[nextIndex], container, anchor);
         }
       }
