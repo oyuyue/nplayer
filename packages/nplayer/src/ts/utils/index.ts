@@ -1,5 +1,7 @@
 import { Disposable } from '../types';
-import { DomListener } from './dom';
+import {
+  DomListener, $, createSvg, getEventPath, removeNode, addClass,
+} from './dom';
 
 export * from './drag';
 export * from './rect';
@@ -106,3 +108,7 @@ export function formatTime(seconds: number): string {
     Math.floor((seconds % 3600) / 60),
   )}:${padStart(seconds % 60)}`;
 }
+
+export const internalUtils = {
+  $, clamp, addDisposableListener, addDisposable, createSvg, dispose, getEventPath, removeNode, addClass,
+};

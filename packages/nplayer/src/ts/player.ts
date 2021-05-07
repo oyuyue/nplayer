@@ -2,7 +2,7 @@ import { Disposable, PlayerOptions, Plugin } from './types';
 import { processOptions } from './options';
 import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
-  dispose, removeNode, addDisposable, isBrowser, patchProps,
+  dispose, removeNode, addDisposable, isBrowser, patchProps, internalUtils,
 } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
@@ -18,7 +18,6 @@ import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
 import { SettingItem } from './parts/control/items/setting';
 
-import * as _utils from './utils';
 import * as components from './components';
 import { I18n, Icon } from './features';
 import { Poster } from './parts/poster';
@@ -41,7 +40,7 @@ export class Player extends EventEmitter implements Disposable {
 
   private readonly controlNamedMap: Record<string, ControlItem> = Object.create(null);
 
-  readonly _settingItems: SettingItem[];
+  readonly __settingItems: SettingItem[];
 
   readonly video: HTMLVideoElement;
 
@@ -104,7 +103,7 @@ export class Player extends EventEmitter implements Disposable {
       return item;
     }).filter(Boolean)));
 
-    this._settingItems = this.opts.settings.map((item) => {
+    this.__settingItems = this.opts.settings.map((item) => {
       if (isString(item)) return this.settingNamedMap[item];
       return item;
     }).filter(Boolean);
@@ -340,7 +339,7 @@ export class Player extends EventEmitter implements Disposable {
     this.container = null;
   }
 
-  static _utils = _utils;
+  static __utils = internalUtils;
 
   static EVENT = EVENT;
 

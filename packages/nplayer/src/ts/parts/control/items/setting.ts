@@ -62,7 +62,7 @@ class Setting extends Component implements ControlItem {
     this.player = player;
     this.tooltip = tooltip;
     addClass(this.el, 'control_setting');
-    this.items = player._settingItems;
+    this.items = player.__settingItems;
     this.el.appendChild(Icon.cog());
     this.popover = new Popover(this.el, this.hide, { willChange: 'width, height' });
     this.homeElement = this.popover.panelElement.appendChild($());
