@@ -1,4 +1,4 @@
-import { Disposable, PlayerOptions } from './types';
+import { Disposable, PlayerOptions, Plugin } from './types';
 import { processOptions } from './options';
 import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
@@ -65,6 +65,8 @@ export class Player extends EventEmitter implements Disposable {
 
   readonly toast: Toast;
 
+  private readonly plugins: Set<Plugin> = new Set();
+
   constructor(opts?: PlayerOptions) {
     super();
     this.opts = processOptions(opts);
@@ -97,15 +99,6 @@ export class Player extends EventEmitter implements Disposable {
     this.loading = addDisposable(this, new Loading(this.el, this));
     this.poster = addDisposable(this, new Poster(this.el, this));
 
-    if (this.opts.plugins) {
-      this.opts.plugins.forEach((plugin) => {
-        if (plugin.dispose) {
-          addDisposable(this, plugin as Disposable);
-        }
-        plugin.apply(this);
-      });
-    }
-
     this.contextmenu = addDisposable(this, new ContextMenu(this.el, this, this.opts.contextMenus.map((item) => {
       if (isString(item)) return this.contextmenuNamedMap[item];
       return item;
@@ -126,6 +119,10 @@ export class Player extends EventEmitter implements Disposable {
 
     if (!this.opts.isTouch) {
       this.enableClickPause();
+    }
+
+    if (this.opts.plugins) {
+      this.opts.plugins.forEach((plugin) => this.use(plugin));
     }
 
     this.emit(EVENT.AFTER_INIT);
@@ -206,6 +203,15 @@ export class Player extends EventEmitter implements Disposable {
 
   disableClickPause() {
     this.video.removeEventListener('click', this.toggle);
+  }
+
+  use(plugin: Plugin): this {
+    if (!plugin || this.plugins.has(plugin)) return this;
+    if (plugin.dispose) {
+      addDisposable(this, plugin as Disposable);
+    }
+    plugin.apply(this);
+    return this;
   }
 
   mount(el?: PlayerOptions['container']): void {
