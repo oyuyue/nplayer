@@ -23,6 +23,8 @@ export interface ControlItem extends Partial<Disposable> {
   [key: string]: any;
 }
 
+type BpControl = { bp: number, controls: (ControlItem| string)[][] }
+
 export class Control extends Component {
   private readonly bgElement: HTMLElement;
 
@@ -34,6 +36,10 @@ export class Control extends Component {
 
   private controlBars: ControlBar[] = [];
 
+  private controls: BpControl[]
+
+  currentBp: number | undefined;
+
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
@@ -42,21 +48,23 @@ export class Control extends Component {
     this.controlBars[0] = addDisposable(this, new ControlBar(this.element, player, player.opts.controls[0]));
     this.controlBars[2] = addDisposable(this, new ControlBar(container, player, player.opts.controls[2], true));
 
+    const bpControls = player.opts.bpControls;
+    this.controls = Object.keys(bpControls)
+    // eslint-disable-next-line no-restricted-globals
+      .filter((k) => !isNaN(Number(k)) && bpControls[k])
+      .map((bp) => ({ bp: Number(bp), controls: bpControls[bp] }))
+      .sort((a, b) => a.bp - b.bp);
+
+    if (this.controls.length) {
+      addDisposable(this, player.on(EVENT.UPDATE_SIZE, this.emitAndUpdateBp));
+      addDisposable(this, player.on(EVENT.MOUNTED, this.emitAndUpdateBp));
+    }
+
     addDisposable(this, player.on(EVENT.PAUSE, () => {
       if (!player.opts.isTouch) this.show();
     }));
     addDisposable(this, player.on(EVENT.PLAY, () => {
       if (!player.opts.isTouch) this.showTransient();
-    }));
-    addDisposable(this, player.on(EVENT.ENTER_MOBILE, () => {
-      this.updateItems(player.opts.mobileControls[0], 0);
-      this.updateItems(player.opts.mobileControls[1], 1);
-      this.updateItems(player.opts.mobileControls[2], 2);
-    }));
-    addDisposable(this, player.on(EVENT.EXIT_MOBILE, () => {
-      this.updateItems(player.opts.controls[0], 0);
-      this.updateItems(player.opts.controls[1], 1);
-      this.updateItems(player.opts.controls[2], 2);
     }));
     addDisposableListener(this, player.element, 'mousemove', this.showTransient);
     addDisposableListener(this, player.element, 'mouseleave', this.tryHide);
@@ -73,6 +81,21 @@ export class Control extends Component {
       items.forEach((i) => map.set(i, true));
       return toFilter.filter((item) => !map.get(item));
     }
+  }
+
+  private emitAndUpdateBp = (): BpControl | undefined => {
+    const width = this.player.rect.width;
+    const matched = this.controls.find((c) => width <= c.bp);
+    // eslint-disable-next-line eqeqeq
+    if (this.currentBp != matched?.bp) {
+      this.currentBp = matched?.bp;
+      const controls = matched?.controls || this.player.opts.controls;
+      this.updateItems(controls[0], 0);
+      this.updateItems(controls[1], 1);
+      this.updateItems(controls[2], 2);
+      this.player.emit(EVENT.BP_CHANGE, this.currentBp);
+    }
+    return matched;
   }
 
   updateItems(items: Parameters<ControlBar['update']>[0], index = 0): void {

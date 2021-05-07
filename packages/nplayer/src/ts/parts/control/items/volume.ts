@@ -45,6 +45,12 @@ class Volume extends Component implements ControlItem {
       if (getEventPath(ev).includes(bars)) return;
       player.toggleVolume();
     });
+    if (player.opts.isTouch) {
+      addDisposableListener(this, bars, 'touchstart', (ev: Event) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+      });
+    }
     this.onVolumeChange();
   }
 
