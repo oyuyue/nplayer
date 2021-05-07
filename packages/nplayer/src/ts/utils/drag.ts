@@ -3,7 +3,7 @@ import { Disposable } from '../types';
 type Fn = (ev: PointerEvent) => any;
 
 export class Drag implements Disposable {
-  private element: HTMLElement;
+  private el: HTMLElement;
 
   private start: Fn;
 
@@ -16,7 +16,7 @@ export class Drag implements Disposable {
   private lastEv!: PointerEvent;
 
   constructor(dom: HTMLElement, start: Fn, move: Fn, end?: Fn) {
-    this.element = dom;
+    this.el = dom;
     this.start = start;
     this.move = move;
     this.end = end;
@@ -28,8 +28,8 @@ export class Drag implements Disposable {
 
   private downHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
-    this.element.setPointerCapture(ev.pointerId);
-    this.element.addEventListener('pointermove', this.moveHandler, true);
+    this.el.setPointerCapture(ev.pointerId);
+    this.el.addEventListener('pointermove', this.moveHandler, true);
     this.start(ev);
   };
 
@@ -48,22 +48,22 @@ export class Drag implements Disposable {
 
   private upHandler = (ev: PointerEvent): void => {
     ev.preventDefault();
-    this.element.releasePointerCapture(ev.pointerId);
-    this.element.removeEventListener('pointermove', this.moveHandler, true);
+    this.el.releasePointerCapture(ev.pointerId);
+    this.el.removeEventListener('pointermove', this.moveHandler, true);
 
     if (this.end) this.end(ev);
   };
 
   dispose(): void {
-    if (!this.element) return;
-    this.element.removeEventListener('pointerdown', this.downHandler, true);
-    this.element.removeEventListener('pointerup', this.upHandler, true);
-    this.element.removeEventListener('pointercancel', this.upHandler, true);
-    this.element.removeEventListener('pointermove', this.moveHandler, true);
+    if (!this.el) return;
+    this.el.removeEventListener('pointerdown', this.downHandler, true);
+    this.el.removeEventListener('pointerup', this.upHandler, true);
+    this.el.removeEventListener('pointercancel', this.upHandler, true);
+    this.el.removeEventListener('pointermove', this.moveHandler, true);
     this.start = null!;
     this.move = null!;
     this.end = null!;
     this.lastEv = null!;
-    this.element = null!;
+    this.el = null!;
   }
 }

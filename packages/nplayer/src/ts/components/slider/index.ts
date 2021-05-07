@@ -23,20 +23,20 @@ export class Slider extends Component {
   constructor(container: HTMLElement, private opts: SliderOption, player?: Player) {
     super(container, '.slider');
 
-    this.rect = new Rect(this.element);
+    this.rect = new Rect(this.el);
 
-    this.trackElement = this.element.appendChild($('.slider_track')).appendChild($('.slider_track_inner'));
+    this.trackElement = this.el.appendChild($('.slider_track')).appendChild($('.slider_track_inner'));
     if (opts.stops) {
       let stop;
       opts.stops.forEach((s) => {
         stop = $('.slider_stop', undefined, s.html ? `<span>${s.html}</span>` : '');
         stop.style.left = `${s.value * 100}%`;
-        this.element.appendChild(stop);
+        this.el.appendChild(stop);
       });
     }
-    this.dotElement = this.element.appendChild($('.slider_dot'));
+    this.dotElement = this.el.appendChild($('.slider_dot'));
 
-    addDisposable(this, new Drag(this.element, this.onDrag, this.onDrag));
+    addDisposable(this, new Drag(this.el, this.onDrag, this.onDrag));
 
     this.step = opts.stops && opts.step;
 

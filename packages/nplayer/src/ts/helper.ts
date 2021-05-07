@@ -132,7 +132,7 @@ export function transferEvent(player: Player): void {
   dis(transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window));
   if ((window as any).ResizeObserver) {
     const ro = new ResizeObserver(throttle(() => player.emit(EVENT.UPDATE_SIZE)));
-    ro.observe(player.element);
+    ro.observe(player.el);
     dis({ dispose: () => ro.disconnect() });
   }
 

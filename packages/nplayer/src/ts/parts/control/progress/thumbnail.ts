@@ -44,10 +44,10 @@ export class Thumbnail extends Component {
 
     this.updateOptions(opts);
 
-    this.timeElement = this.element.appendChild($('.thumb_time'));
+    this.timeElement = this.el.appendChild($('.thumb_time'));
     this.timeElement.textContent = '0:00';
 
-    this.rect = addDisposable(this, new Rect(this.element));
+    this.rect = addDisposable(this, new Rect(this.el));
   }
 
   private getCurrentThumb(seconds: number): ThumbImg | void {
@@ -67,7 +67,7 @@ export class Thumbnail extends Component {
 
     if (this.opts.images.length) {
       if (!this.imgElement) {
-        this.imgElement = this.element.appendChild($('.thumb_img'));
+        this.imgElement = this.el.appendChild($('.thumb_img'));
       }
       this.imgElement.style.width = `${this.opts.width}px`;
       this.imgElement.style.height = `${this.opts.height}px`;

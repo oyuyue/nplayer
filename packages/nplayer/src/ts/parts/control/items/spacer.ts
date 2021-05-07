@@ -3,5 +3,5 @@ import { ControlItem } from '..';
 
 export const spacerControlItem = (): ControlItem => ({
   id: 'spacer',
-  element: $('.spacer'),
+  el: $('.spacer'),
 });

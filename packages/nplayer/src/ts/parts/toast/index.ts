@@ -12,8 +12,8 @@ export class ToastItem extends Component {
     readonly position: Position = 'center',
   ) {
     super(container, '.toast');
-    addClass(this.element, `toast-${position}`);
-    this.element.innerHTML = html;
+    addClass(this.el, `toast-${position}`);
+    this.el.innerHTML = html;
   }
 
   dispose(): void {
@@ -36,7 +36,7 @@ export class Toast implements Disposable {
 
     if (toastItem) {
       clearTimeout(toastItem.timer);
-      toastItem.element.innerHTML = html;
+      toastItem.el.innerHTML = html;
     } else {
       toastItem = new ToastItem(this.container, html, position);
       this.toasts.push(toastItem);

@@ -84,7 +84,7 @@ export class Shortcut implements Disposable {
 
   enable(): void {
     this.disable();
-    addDisposableListener(this, this.player.element, 'keydown', this.onKeyDown);
+    addDisposableListener(this, this.player.el, 'keydown', this.onKeyDown);
   }
 
   disable(): void {

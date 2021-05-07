@@ -5,7 +5,7 @@ import { Disposable } from '../types';
 export class Rect implements Disposable {
   private rect!: DOMRect;
 
-  constructor(private element: HTMLElement, private player?: Player) {
+  constructor(private el: HTMLElement, private player?: Player) {
     this.rect = {} as DOMRect;
     if (player) {
       player.on(EVENT.UPDATE_SIZE, this.update);
@@ -37,12 +37,12 @@ export class Rect implements Disposable {
   }
 
   update = (): void => {
-    this.rect = this.element.getBoundingClientRect();
+    this.rect = this.el.getBoundingClientRect();
   }
 
   dispose(): void {
     if (this.player) this.player.off(EVENT.UPDATE_SIZE, this.update);
-    this.element = null!;
+    this.el = null!;
     this.rect = null!;
   }
 }

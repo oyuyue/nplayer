@@ -16,8 +16,8 @@ export class Popover extends Component {
     left?: boolean,
   ) {
     super(container, '.popover');
-    this.maskElement = this.element.appendChild($('.popover_mask'));
-    this.panelElement = this.element.appendChild($('.popover_panel'));
+    this.maskElement = this.el.appendChild($('.popover_mask'));
+    this.panelElement = this.el.appendChild($('.popover_panel'));
 
     if (style) this.applyPanelStyle(style);
 
@@ -43,11 +43,11 @@ export class Popover extends Component {
   }
 
   show() {
-    addClass(this.element, classActive);
+    addClass(this.el, classActive);
   }
 
   hide(ev?: MouseEvent) {
-    removeClass(this.element, classActive);
+    removeClass(this.el, classActive);
     if (this.onHide) this.onHide(ev);
   }
 }

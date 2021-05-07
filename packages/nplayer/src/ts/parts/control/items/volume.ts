@@ -27,11 +27,11 @@ class Volume extends Component implements ControlItem {
     this.player = player;
     this.tooltip = tooltip;
 
-    addClass(this.element, 'control_volume');
-    this.volumeIcon = this.element.appendChild(Icon.volume());
-    this.mutedIcon = this.element.appendChild(Icon.muted());
+    addClass(this.el, 'control_volume');
+    this.volumeIcon = this.el.appendChild(Icon.volume());
+    this.mutedIcon = this.el.appendChild(Icon.muted());
 
-    const bars = this.element.appendChild($('.control_volume_bars'));
+    const bars = this.el.appendChild($('.control_volume_bars'));
     const barWidth = player.opts.volumeBarWidth;
     bars.style.width = isString(barWidth) ? barWidth : `${barWidth}px`;
 
@@ -41,7 +41,7 @@ class Volume extends Component implements ControlItem {
 
     addDisposable(this, player.on(EVENT.VOLUME_CHANGE, this.onVolumeChange));
     addDisposable(this, new Drag(bars, this.onDragStart, this.onDragging));
-    addDisposableListener(this, this.element, 'click', (ev:MouseEvent) => {
+    addDisposableListener(this, this.el, 'click', (ev:MouseEvent) => {
       if (getEventPath(ev).includes(bars)) return;
       player.toggleVolume();
     });

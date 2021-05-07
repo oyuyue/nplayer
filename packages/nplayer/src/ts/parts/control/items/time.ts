@@ -14,14 +14,14 @@ class Time extends Component implements ControlItem {
   private totalElement!: HTMLElement;
 
   init(player: Player) {
-    addClass(this.element, 'control_time');
+    addClass(this.el, 'control_time');
 
     if (player.opts.live) {
-      addClass(this.element, 'control_time-live');
-      this.element.textContent = I18n.t(LIVE);
+      addClass(this.el, 'control_time-live');
+      this.el.textContent = I18n.t(LIVE);
     } else {
-      this.playedElement = this.element.appendChild($('span'));
-      this.totalElement = this.element.appendChild($('span'));
+      this.playedElement = this.el.appendChild($('span'));
+      this.totalElement = this.el.appendChild($('span'));
 
       this.played = player.currentTime;
       this.total = player.duration;

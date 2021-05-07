@@ -15,18 +15,18 @@ export class ControlBar extends Component {
 
   constructor(container: HTMLElement, private player: Player, items?: (ControlItem | string)[], private isTop = false) {
     super(container, '.control_bar');
-    if (isTop) addClass(this.element, 'control_bar-top');
+    if (isTop) addClass(this.el, 'control_bar-top');
     if (items) {
       const frag = document.createDocumentFragment();
       items.forEach((item) => {
         item = this.initControlItem(item) as ControlItem;
         if (item) {
-          frag.appendChild(item.element);
+          frag.appendChild(item.el);
           this.prevItems.push(item);
         }
       });
       this.updateTooltipPos();
-      this.element.appendChild(frag);
+      this.el.appendChild(frag);
     }
   }
 
@@ -40,7 +40,7 @@ export class ControlBar extends Component {
   private initControlItem = (item: ControlItem | string): ControlItem | void => {
     item = this.getItem(item) as ControlItem;
     if (item) {
-      if (!item.element) item.element = $();
+      if (!item.el) item.el = $();
       if (item.mounted) {
         if (item.tooltip) {
           item.tooltip.resetPos();
@@ -51,9 +51,9 @@ export class ControlBar extends Component {
       }
 
       let tooltip: Tooltip | undefined;
-      if (item.tip) tooltip = new Tooltip(item.element, item.tip);
+      if (item.tip) tooltip = new Tooltip(item.el, item.tip);
       if (item.init) {
-        if (item.init.length > 2 && !tooltip) tooltip = new Tooltip(item.element);
+        if (item.init.length > 2 && !tooltip) tooltip = new Tooltip(item.el);
         item.init(this.player, this.isTop, tooltip as Tooltip);
       }
       if (item.dispose) addDisposable(this, item as Disposable);
@@ -101,7 +101,7 @@ export class ControlBar extends Component {
         if (item) items.push(item);
       });
 
-      patch(this.prevItems, items, this.element, this.initControlItem);
+      patch(this.prevItems, items, this.el, this.initControlItem);
       this.prevItems = items;
       this.updateTooltipPos();
       this.player.emit(EVENT.CONTROL_ITEM_UPDATE);
