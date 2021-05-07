@@ -10,7 +10,7 @@ declare class Volume extends Component implements ControlItem {
     private bar;
     private rect;
     tooltip: Tooltip;
-    init(player: Player, tooltip: Tooltip): void;
+    init(player: Player, _: boolean, tooltip: Tooltip): void;
     private onDragStart;
     private onDragging;
     private onVolumeChange;

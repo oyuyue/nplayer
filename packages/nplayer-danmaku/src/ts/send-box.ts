@@ -8,12 +8,12 @@ import {
   BOTTOM, COLOR, isDefaultColor, MODE, SCROLL, SEND, SEND_SETTINGS, TOP,
 } from './utils';
 
-let utils: Player['Player']['_utils'];
+let utils: Player['Player']['__utils'];
 
 class DanmakuSendBox implements ControlItem {
   readonly id = 'danmaku-send';
 
-  element!: HTMLElement;
+  el!: HTMLElement;
 
   private player!: Player
 
@@ -35,19 +35,19 @@ class DanmakuSendBox implements ControlItem {
 
   init(player: Player) {
     this.player = player;
-    const { _utils, components, I18n } = player.Player;
-    utils = _utils;
+    const { __utils, components, I18n } = player.Player;
+    utils = __utils;
     const {
       $, addDisposableListener, addDisposable, createSvg,
     } = utils;
 
-    this.element = $('.danmaku_send');
-    const settingElement = this.element.appendChild($());
+    this.el = $('.danmaku_send');
+    const settingElement = this.el.appendChild($());
     settingElement.appendChild(createSvg('icon', 'M9.62 14L12 7.67 14.37 14M11 5L5.5 19h2.25l1.12-3h6.25l1.13 3h2.25L13 5h-2z'));
     this.tooltip = addDisposable(this, new components.Tooltip(settingElement, I18n.t(SEND_SETTINGS)));
     this.popover = addDisposable(this, new components.Popover(settingElement, () => this.tooltip.show(), undefined, true));
-    this.inputElement = this.element.appendChild($('input'));
-    this.sendElement = this.element.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
+    this.inputElement = this.el.appendChild($('input'));
+    this.sendElement = this.el.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
 
     const row = () => $('.flex.align-center.danmaku_row');
     const panelElement = this.popover.panelElement;
@@ -113,7 +113,7 @@ class DanmakuSendBox implements ControlItem {
   }
 
   show = (ev?: MouseEvent) => {
-    if (ev && utils.getEventPath(ev).includes(this.popover.element)) return;
+    if (ev && utils.getEventPath(ev).includes(this.popover.el)) return;
     this.tooltip.hide();
     this.popover.show();
   }
@@ -134,9 +134,9 @@ class DanmakuSendBox implements ControlItem {
   dispose() {
     if (!this.player) return;
     utils.dispose(this);
-    utils.removeNode(this.element);
+    utils.removeNode(this.el);
     this.player = null!;
-    this.element = null!;
+    this.el = null!;
   }
 }
 

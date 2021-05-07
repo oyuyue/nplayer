@@ -1,5 +1,5 @@
-import { Disposable, PlayerOptions } from './types';
-import { Rect, EventEmitter } from './utils';
+import { Disposable, PlayerOptions, Plugin } from './types';
+import { $, addClass, Rect, EventEmitter, clamp, dispose, removeNode, addDisposable } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
 import { ContextMenu, ContextMenuItem } from './parts/contextmenu';
@@ -9,32 +9,35 @@ import { WebFullscreen } from './features/web-fullscreen';
 import { EVENT } from './constants';
 import { Shortcut } from './features/shortcut';
 import { SettingItem } from './parts/control/items/setting';
-import * as _utils from './utils';
 import * as components from './components';
 import { Poster } from './parts/poster';
+import { Touch } from './features/touch';
 export declare class Player extends EventEmitter implements Disposable {
-    el: HTMLElement | null;
-    element: HTMLElement;
+    container: HTMLElement | null;
+    el: HTMLElement;
     opts: Required<PlayerOptions>;
     mounted: boolean;
     private prevVolume;
     private readonly settingNamedMap;
     private readonly contextmenuNamedMap;
     private readonly controlNamedMap;
-    readonly _settingItems: SettingItem[];
+    readonly __settingItems: SettingItem[];
     readonly video: HTMLVideoElement;
     readonly rect: Rect;
     readonly fullscreen: Fullscreen;
     readonly webFullscreen: WebFullscreen;
     readonly shortcut: Shortcut;
+    readonly touch: Touch;
     readonly control: Control;
     readonly loading: Loading;
     readonly poster: Poster;
     readonly contextmenu: ContextMenu;
     readonly toast: Toast;
+    private readonly plugins;
     constructor(opts?: PlayerOptions);
     get currentTime(): number;
     set currentTime(v: number);
+    get loaded(): boolean;
     get duration(): number;
     get buffered(): TimeRanges;
     get volume(): number;
@@ -50,7 +53,8 @@ export declare class Player extends EventEmitter implements Disposable {
     set loop(v: boolean);
     enableClickPause(): void;
     disableClickPause(): void;
-    mount(el?: PlayerOptions['el']): void;
+    use(plugin: Plugin): this;
+    mount(el?: PlayerOptions['container']): void;
     incVolume(v?: number): void;
     decVolume(v?: number): void;
     forward(v?: number): void;
@@ -68,8 +72,19 @@ export declare class Player extends EventEmitter implements Disposable {
     getContextMenuItem(id: string): ContextMenuItem | undefined;
     getControlItem(id: string): ControlItem | undefined;
     updateOptions(opts: PlayerOptions): void;
+    updateControlItems(items: Parameters<Control['updateItems']>[0], index?: number): void;
     dispose(): void;
-    static _utils: typeof _utils;
+    static __utils: {
+        $: typeof $;
+        clamp: typeof clamp;
+        addDisposableListener: typeof import("./utils").addDisposableListener;
+        addDisposable: typeof addDisposable;
+        createSvg: typeof import("./utils").createSvg;
+        dispose: typeof dispose;
+        getEventPath: typeof import("./utils").getEventPath;
+        removeNode: typeof removeNode;
+        addClass: typeof addClass;
+    };
     static EVENT: {
         readonly ENTER_FULLSCREEN: "EnterFullscreen";
         readonly EXIT_FULLSCREEN: "ExitFullscreen";
@@ -101,6 +116,8 @@ export declare class Player extends EventEmitter implements Disposable {
         readonly OPEN_EDGE: "OpenEdge";
         readonly CONTROL_SHOW: "ControlShow";
         readonly CONTROL_HIDE: "ControlHide";
+        readonly CONTROL_ITEM_UPDATE: "ControlItemUpdate";
+        readonly BP_CHANGE: "BpChange";
     };
     static I18n: {
         defaultLang: string;

@@ -7,7 +7,7 @@ declare class Play extends Component implements ControlItem {
     private playIcon;
     private pauseIcon;
     tooltip: Tooltip;
-    init(player: Player, tooltip: Tooltip): void;
+    init(player: Player, _: boolean, tooltip: Tooltip): void;
     private onPlay;
     private onPause;
 }

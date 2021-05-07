@@ -17,15 +17,18 @@ export interface VideoSource {
     type?: string;
 }
 export interface PlayerOptions {
-    el?: HTMLElement | string;
+    container?: HTMLElement | string;
     video?: HTMLVideoElement;
     src?: string;
-    live?: boolean;
-    videoAttrs?: Record<string, any>;
+    videoProps?: Record<string, any>;
     videoSources?: VideoSource[];
+    live?: boolean;
     autoSeekTime?: number;
     thumbnail?: ThumbnailOptions;
-    controls?: (ControlItem | string)[];
+    controls?: (ControlItem | string)[][];
+    bpControls?: {
+        [key: string]: (ControlItem | string)[][];
+    };
     settings?: (SettingItem | string)[];
     contextMenus?: (ContextMenuItem | string)[];
     contextMenuToggle?: boolean;
@@ -36,6 +39,7 @@ export interface PlayerOptions {
     themeColor?: string;
     posterBgColor?: string;
     progressBg?: string;
+    progressDot?: HTMLElement;
     volumeProgressBg?: string;
     volumeBarWidth?: number | string;
     loadingElement?: HTMLElement;
@@ -43,7 +47,6 @@ export interface PlayerOptions {
     poster?: string;
     posterEnable?: boolean;
     posterPlayElement?: HTMLElement;
-    dblclickFullscreen?: boolean;
-    clickPause?: boolean;
+    isTouch?: boolean;
     [key: string]: any;
 }

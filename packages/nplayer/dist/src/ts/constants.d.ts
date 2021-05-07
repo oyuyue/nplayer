@@ -31,4 +31,6 @@ export declare const EVENT: {
     readonly OPEN_EDGE: "OpenEdge";
     readonly CONTROL_SHOW: "ControlShow";
     readonly CONTROL_HIDE: "ControlHide";
+    readonly CONTROL_ITEM_UPDATE: "ControlItemUpdate";
+    readonly BP_CHANGE: "BpChange";
 };
