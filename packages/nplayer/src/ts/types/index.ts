@@ -21,12 +21,12 @@ export interface VideoSource {
 }
 
 export interface PlayerOptions {
-  el?: HTMLElement | string;
+  container?: HTMLElement | string;
   video?: HTMLVideoElement;
   src?: string;
-  live?: boolean;
-  videoAttrs?: Record<string, any>;
+  videoProps?: Record<string, any>;
   videoSources?: VideoSource[];
+  live?: boolean;
   autoSeekTime?: number;
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[][];
