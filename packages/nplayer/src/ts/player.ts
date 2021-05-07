@@ -2,7 +2,7 @@ import { Disposable, PlayerOptions } from './types';
 import { processOptions } from './options';
 import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
-  dispose, removeNode, addDisposable, isBrowser,
+  dispose, removeNode, addDisposable, isBrowser, patchProps,
 } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
@@ -25,7 +25,7 @@ import { Poster } from './parts/poster';
 import { Touch } from './features/touch';
 
 export class Player extends EventEmitter implements Disposable {
-  el: HTMLElement | null;
+  container: HTMLElement | null;
 
   element: HTMLElement;
 
@@ -69,7 +69,7 @@ export class Player extends EventEmitter implements Disposable {
     super();
     this.opts = processOptions(opts);
     tryOpenEdge(this);
-    this.el = getEl(this.opts.el);
+    this.container = getEl(this.opts.container);
     this.element = $('.nplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {
       this.video = this.opts.video;
@@ -78,9 +78,9 @@ export class Player extends EventEmitter implements Disposable {
       this.video = $('video.video');
     }
 
-    if (this.opts.src) this.opts.videoAttrs.src = this.opts.src;
+    if (this.opts.src) this.opts.videoProps.src = this.opts.src;
     setCssVariables(this.element, this.opts);
-    setVideoAttrs(this.video, this.opts.videoAttrs);
+    setVideoAttrs(this.video, this.opts.videoProps);
     setVideoSources(this.video, this.opts.videoSources);
     setVideoVolumeFromLocal(this.video);
     transferEvent(this);
@@ -208,20 +208,20 @@ export class Player extends EventEmitter implements Disposable {
     this.video.removeEventListener('click', this.toggle);
   }
 
-  mount(el?: PlayerOptions['el']): void {
+  mount(el?: PlayerOptions['container']): void {
     if (this.mounted) {
       el = getEl(el) as any;
-      if (el && el !== this.el) {
-        if (this.el) this.el.removeChild(this.element);
-        this.el = el as HTMLElement;
-        this.el.appendChild(this.element);
+      if (el && el !== this.container) {
+        if (this.container) this.container.removeChild(this.element);
+        this.container = el as HTMLElement;
+        this.container.appendChild(this.element);
         this.emit(EVENT.UPDATE_SIZE);
       }
       return;
     }
-    if (el) this.el = getEl(el) || this.el;
-    if (!this.el) return;
-    this.el.appendChild(this.element);
+    if (el) this.container = getEl(el) || this.container;
+    if (!this.container) return;
+    this.container.appendChild(this.element);
     this.emit(EVENT.MOUNTED);
     this.mounted = true;
   }
@@ -305,9 +305,9 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   updateOptions(opts: PlayerOptions): void {
-    if (opts.videoAttrs !== this.opts.videoAttrs) setVideoAttrs(this.video, opts.videoAttrs);
+    if (opts.videoProps !== this.opts.videoProps) patchProps(this.video, this.opts.videoProps, opts.videoProps);
     if (opts.src && opts.src !== this.opts.src) this.video.src = opts.src;
-    if (opts.videoSources !== this.opts.videoSources) setVideoAttrs(this.video, opts.videoAttrs);
+    if (opts.videoSources !== this.opts.videoSources) setVideoSources(this.video, opts.videoSources);
     this.opts = { ...this.opts, ...opts };
     setCssVariables(this.element, this.opts);
     if (this.opts.shortcut) {
@@ -315,7 +315,6 @@ export class Player extends EventEmitter implements Disposable {
     } else {
       this.shortcut.disable();
     }
-    this.disableClickPause();
     this.emit(EVENT.UPDATE_OPTIONS, this.opts);
   }
 
@@ -332,7 +331,7 @@ export class Player extends EventEmitter implements Disposable {
     this.removeAllListeners();
     removeNode(this.element);
     this.element = null!;
-    this.el = null;
+    this.container = null;
   }
 
   static _utils = _utils;

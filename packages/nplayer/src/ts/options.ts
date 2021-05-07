@@ -10,7 +10,7 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   contextMenuToggle: true,
   openEdgeInIE: true,
   posterEnable: true,
-  videoAttrs: {
+  videoProps: {
     crossorigin: 'anonymous',
     preload: 'auto',
     playsinline: 'true',
@@ -26,9 +26,9 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   const res = {
     ...dOpts,
     ...opts,
-    videoAttrs: {
-      ...dOpts.videoAttrs,
-      ...opts?.videoAttrs,
+    videoProps: {
+      ...dOpts.videoProps,
+      ...opts?.videoProps,
     },
     isTouch: (('ontouchstart' in window)
     || (navigator.maxTouchPoints > 0)

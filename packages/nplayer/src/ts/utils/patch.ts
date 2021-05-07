@@ -155,7 +155,8 @@ export function patch(
 type CSSStyle = Partial<CSSStyleDeclaration>
 type Data = Record<string, any>
 
-export function patchStyles(el: HTMLElement, prevStyle: CSSStyle, nextStyle: CSSStyle): void {
+export function patchStyles(el: HTMLElement, prevStyle: CSSStyle, nextStyle?: CSSStyle): void {
+  if (nextStyle === undefined) return;
   if (!nextStyle) {
     el.removeAttribute('style');
   } else {
@@ -184,7 +185,8 @@ function setAttr(el: HTMLElement, key: string, value: any) {
   }
 }
 
-export function patchProps(el: HTMLElement, prevProps: Data, nextProps: Data): void {
+export function patchProps(el: HTMLElement, prevProps: Data, nextProps?: Data): void {
+  if (nextProps === undefined) return;
   let prev;
   let next;
   Object.keys(nextProps).forEach((k) => {
