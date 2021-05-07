@@ -30,7 +30,7 @@ export interface PlayerOptions {
   autoSeekTime?: number;
   thumbnail?: ThumbnailOptions;
   controls?: (ControlItem | string)[][];
-  mobileControls?: (ControlItem | string)[][];
+  bpControls?: { [key: string]: (ControlItem | string)[][] }
   settings?: (SettingItem | string)[];
   contextMenus?: (ContextMenuItem | string)[];
   contextMenuToggle?: boolean;
@@ -50,6 +50,5 @@ export interface PlayerOptions {
   posterEnable?: boolean;
   posterPlayElement?: HTMLElement;
   isTouch?: boolean;
-  mobileBreakPoint?: number;
   [key: string]: any;
 }
