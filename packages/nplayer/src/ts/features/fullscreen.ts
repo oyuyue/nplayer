@@ -87,11 +87,11 @@ export class Fullscreen implements Disposable {
   }
 
   private addClass(): void {
-    addClass(this.player.element, CLASS_FULL, CLASS_PLAYER);
+    addClass(this.player.el, CLASS_FULL, CLASS_PLAYER);
   }
 
   private removeClass(): void {
-    removeClass(this.player.element, CLASS_FULL, CLASS_PLAYER);
+    removeClass(this.player.el, CLASS_FULL, CLASS_PLAYER);
   }
 
   enableDblclick(): void {
@@ -103,7 +103,7 @@ export class Fullscreen implements Disposable {
   }
 
   setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void {
-    this.target = (dom && isIOS ? video : dom) || (isIOS ? this.player.video : this.player.element);
+    this.target = (dom && isIOS ? video : dom) || (isIOS ? this.player.video : this.player.el);
     if (this.isActive) this.enter();
   }
 

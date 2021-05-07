@@ -27,7 +27,7 @@ import { Touch } from './features/touch';
 export class Player extends EventEmitter implements Disposable {
   container: HTMLElement | null;
 
-  element: HTMLElement;
+  el: HTMLElement;
 
   opts: Required<PlayerOptions>;
 
@@ -70,7 +70,7 @@ export class Player extends EventEmitter implements Disposable {
     this.opts = processOptions(opts);
     tryOpenEdge(this);
     this.container = getEl(this.opts.container);
-    this.element = $('.nplayer', { tabindex: '0' }, undefined, '');
+    this.el = $('.nplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {
       this.video = this.opts.video;
       addClass(this.video, 'video');
@@ -79,23 +79,23 @@ export class Player extends EventEmitter implements Disposable {
     }
 
     if (this.opts.src) this.opts.videoProps.src = this.opts.src;
-    setCssVariables(this.element, this.opts);
+    setCssVariables(this.el, this.opts);
     setVideoAttrs(this.video, this.opts.videoProps);
     setVideoSources(this.video, this.opts.videoSources);
     setVideoVolumeFromLocal(this.video);
     transferEvent(this);
-    this.element.appendChild(this.video);
+    this.el.appendChild(this.video);
 
     registerNamedMap(this);
 
-    this.rect = addDisposable(this, new Rect(this.element, this));
+    this.rect = addDisposable(this, new Rect(this.el, this));
     this.fullscreen = addDisposable(this, new Fullscreen(this));
     this.webFullscreen = addDisposable(this, new WebFullscreen(this));
     this.shortcut = addDisposable(this, new Shortcut(this, this.opts.shortcut));
     this.touch = addDisposable(this, new Touch(this));
-    this.toast = addDisposable(this, new Toast(this.element));
-    this.loading = addDisposable(this, new Loading(this.element, this));
-    this.poster = addDisposable(this, new Poster(this.element, this));
+    this.toast = addDisposable(this, new Toast(this.el));
+    this.loading = addDisposable(this, new Loading(this.el, this));
+    this.poster = addDisposable(this, new Poster(this.el, this));
 
     if (this.opts.plugins) {
       this.opts.plugins.forEach((plugin) => {
@@ -106,7 +106,7 @@ export class Player extends EventEmitter implements Disposable {
       });
     }
 
-    this.contextmenu = addDisposable(this, new ContextMenu(this.element, this, this.opts.contextMenus.map((item) => {
+    this.contextmenu = addDisposable(this, new ContextMenu(this.el, this, this.opts.contextMenus.map((item) => {
       if (isString(item)) return this.contextmenuNamedMap[item];
       return item;
     }).filter(Boolean)));
@@ -116,7 +116,7 @@ export class Player extends EventEmitter implements Disposable {
       return item;
     }).filter(Boolean);
 
-    this.control = addDisposable(this, new Control(this.element, this));
+    this.control = addDisposable(this, new Control(this.el, this));
 
     addDisposable(this, this.on(EVENT.LOADED_METADATA, () => {
       const time = this.opts.autoSeekTime || 0.3;
@@ -212,16 +212,16 @@ export class Player extends EventEmitter implements Disposable {
     if (this.mounted) {
       el = getEl(el) as any;
       if (el && el !== this.container) {
-        if (this.container) this.container.removeChild(this.element);
+        if (this.container) this.container.removeChild(this.el);
         this.container = el as HTMLElement;
-        this.container.appendChild(this.element);
+        this.container.appendChild(this.el);
         this.emit(EVENT.UPDATE_SIZE);
       }
       return;
     }
     if (el) this.container = getEl(el) || this.container;
     if (!this.container) return;
-    this.container.appendChild(this.element);
+    this.container.appendChild(this.el);
     this.emit(EVENT.MOUNTED);
     this.mounted = true;
   }
@@ -309,7 +309,7 @@ export class Player extends EventEmitter implements Disposable {
     if (opts.src && opts.src !== this.opts.src) this.video.src = opts.src;
     if (opts.videoSources !== this.opts.videoSources) setVideoSources(this.video, opts.videoSources);
     this.opts = { ...this.opts, ...opts };
-    setCssVariables(this.element, this.opts);
+    setCssVariables(this.el, this.opts);
     if (this.opts.shortcut) {
       this.shortcut.enable();
     } else {
@@ -323,14 +323,14 @@ export class Player extends EventEmitter implements Disposable {
   }
 
   dispose(): void {
-    if (!this.element) return;
+    if (!this.el) return;
     this.emit(EVENT.BEFORE_DISPOSE);
     dispose(this);
     const plugins = this.opts.plugins;
     if (plugins) plugins.forEach((p) => p.dispose && p.dispose());
     this.removeAllListeners();
-    removeNode(this.element);
-    this.element = null!;
+    removeNode(this.el);
+    this.el = null!;
     this.container = null;
   }
 

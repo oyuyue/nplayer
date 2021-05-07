@@ -16,7 +16,7 @@ export class Poster extends Component {
     super(container, '.poster');
     this.poster = player.opts.poster;
     this.playElement = player.opts.posterPlayElement || Icon.play('poster_play');
-    this.element.appendChild(this.playElement);
+    this.el.appendChild(this.playElement);
     this.hide();
 
     if (!player.opts.posterEnable) return;
@@ -28,7 +28,7 @@ export class Poster extends Component {
       });
     }
 
-    addDisposableListener(this, this.element, 'click', () => {
+    addDisposableListener(this, this.el, 'click', () => {
       if (this.tryToPlayed) return;
       this.tryToPlayed = true;
       if (player.loaded) {
@@ -72,15 +72,15 @@ export class Poster extends Component {
   }
 
   get isActive(): boolean {
-    return this.element.style.display !== 'none';
+    return this.el.style.display !== 'none';
   }
 
   show() {
-    show(this.element);
+    show(this.el);
     show(this.playElement);
   }
 
   hide() {
-    hide(this.element);
+    hide(this.el);
   }
 }

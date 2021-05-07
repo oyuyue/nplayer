@@ -35,7 +35,7 @@ export class Loading extends Component {
   }
 
   get isActive(): boolean {
-    return containClass(this.player.element, classLoading, CLASS_PLAYER);
+    return containClass(this.player.el, classLoading, CLASS_PLAYER);
   }
 
   private _checkCanplay = (): void => {
@@ -59,12 +59,12 @@ export class Loading extends Component {
   }
 
   show = (): void => {
-    addClass(this.player.element, classLoading, CLASS_PLAYER);
+    addClass(this.player.el, classLoading, CLASS_PLAYER);
     this.player.emit(EVENT.LOADING_SHOW);
   }
 
   hide = () => {
-    removeClass(this.player.element, classLoading, CLASS_PLAYER);
+    removeClass(this.player.el, classLoading, CLASS_PLAYER);
     this.player.emit(EVENT.LOADING_HIDE);
   }
 }

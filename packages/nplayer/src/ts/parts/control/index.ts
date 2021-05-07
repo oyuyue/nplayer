@@ -12,7 +12,7 @@ const classBgHide = 'control_bg-hide';
 const classBarHide = 'control_bar-hide';
 
 export interface ControlItem extends Partial<Disposable> {
-  element: HTMLElement;
+  el: HTMLElement;
   id?: any;
   tip?: string;
   tooltip?: Tooltip;
@@ -44,8 +44,8 @@ export class Control extends Component {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
 
-    this.controlBars[1] = addDisposable(this, new ControlBar(this.element, player, player.opts.controls[1]));
-    this.controlBars[0] = addDisposable(this, new ControlBar(this.element, player, player.opts.controls[0]));
+    this.controlBars[1] = addDisposable(this, new ControlBar(this.el, player, player.opts.controls[1]));
+    this.controlBars[0] = addDisposable(this, new ControlBar(this.el, player, player.opts.controls[0]));
     this.controlBars[2] = addDisposable(this, new ControlBar(container, player, player.opts.controls[2], true));
 
     const bpControls = player.opts.bpControls;
@@ -66,13 +66,13 @@ export class Control extends Component {
     addDisposable(this, player.on(EVENT.PLAY, () => {
       if (!player.opts.isTouch) this.showTransient();
     }));
-    addDisposableListener(this, player.element, 'mousemove', this.showTransient);
-    addDisposableListener(this, player.element, 'mouseleave', this.tryHide);
+    addDisposableListener(this, player.el, 'mousemove', this.showTransient);
+    addDisposableListener(this, player.el, 'mouseleave', this.tryHide);
     this.showTransient();
   }
 
   get isActive(): boolean {
-    return !containClass(this.element, classHide);
+    return !containClass(this.el, classHide);
   }
 
   private filterItems(items: ControlItem[], toFilter: ControlItem[]): ControlItem[] | undefined {
@@ -122,18 +122,18 @@ export class Control extends Component {
   }
 
   show = (): void => {
-    removeClass(this.element, classHide);
+    removeClass(this.el, classHide);
     removeClass(this.bgElement, classBgHide);
-    removeClass(this.controlBars[2].element, classBarHide);
-    this.player.element.style.cursor = '';
+    removeClass(this.controlBars[2].el, classBarHide);
+    this.player.el.style.cursor = '';
     this.player.emit(EVENT.CONTROL_SHOW);
   }
 
   hide = (): void => {
-    addClass(this.element, classHide);
+    addClass(this.el, classHide);
     addClass(this.bgElement, classBgHide);
-    addClass(this.controlBars[2].element, classBarHide);
-    this.player.element.style.cursor = 'none';
+    addClass(this.controlBars[2].el, classBarHide);
+    this.player.el.style.cursor = 'none';
     this.player.emit(EVENT.CONTROL_HIDE);
   }
 

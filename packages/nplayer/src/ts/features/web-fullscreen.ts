@@ -13,18 +13,18 @@ export class WebFullscreen implements Disposable {
   }
 
   get isActive(): boolean {
-    return containClass(this.player.element, classFull, CLASS_PLAYER);
+    return containClass(this.player.el, classFull, CLASS_PLAYER);
   }
 
   enter(): void {
-    addClass(this.player.element, classFull, CLASS_PLAYER);
+    addClass(this.player.el, classFull, CLASS_PLAYER);
     this.player.emit(EVENT.WEB_ENTER_FULLSCREEN);
     this.player.emit(EVENT.UPDATE_SIZE);
   }
 
   exit(): boolean {
     if (!this.isActive) return false;
-    removeClass(this.player.element, classFull, CLASS_PLAYER);
+    removeClass(this.player.el, classFull, CLASS_PLAYER);
     this.player.emit(EVENT.WEB_EXIT_FULLSCREEN);
     this.player.emit(EVENT.UPDATE_SIZE);
     return true;

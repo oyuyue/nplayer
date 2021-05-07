@@ -2,7 +2,7 @@ import { removeNode } from './dom';
 
 export interface Node {
   id?: any;
-  element: HTMLElement;
+  el: HTMLElement;
 }
 
 function isSameNode(a: Node, b: Node): boolean {
@@ -11,12 +11,12 @@ function isSameNode(a: Node, b: Node): boolean {
 }
 
 function unmount(node: Node, unmountNode?: (n: Node) => void) {
-  removeNode(node.element);
+  removeNode(node.el);
   if (unmountNode) unmountNode(node);
 }
 
 function move(node: Node, container: HTMLElement, anchor?: Node) {
-  container.insertBefore(node.element, anchor?.element || null);
+  container.insertBefore(node.el, anchor?.el || null);
 }
 
 function mount(node: Node, container: HTMLElement, anchor?: Node, mountNode?:(n: Node) => void) {

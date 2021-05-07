@@ -13,20 +13,20 @@ class Airplay extends Component implements ControlItem {
 
   init(player: Player) {
     if (!this.isSupport()) {
-      hide(this.element);
+      hide(this.el);
       return;
     }
 
-    this.element.appendChild(Icon.airplay());
+    this.el.appendChild(Icon.airplay());
 
     addDisposableListener(this, player.video, 'webkitplaybacktargetavailabilitychanged' as any, (ev) => {
       if (ev.availability === 'available') {
-        show(this.element);
+        show(this.el);
       } else {
-        hide(this.element);
+        hide(this.el);
       }
     });
-    addDisposableListener(this, this.element, 'click', () => {
+    addDisposableListener(this, this.el, 'click', () => {
       const video = player.video as any;
       if (video && video.webkitShowPlaybackTargetPicker) {
         video.webkitShowPlaybackTargetPicker();

@@ -61,15 +61,15 @@ class Setting extends Component implements ControlItem {
   init(player: Player, isTop:boolean, tooltip: Tooltip) {
     this.player = player;
     this.tooltip = tooltip;
-    addClass(this.element, 'control_setting');
+    addClass(this.el, 'control_setting');
     this.items = player._settingItems;
-    this.element.appendChild(Icon.cog());
-    this.popover = new Popover(this.element, this.hide, { willChange: 'width, height' });
+    this.el.appendChild(Icon.cog());
+    this.popover = new Popover(this.el, this.hide, { willChange: 'width, height' });
     this.homeElement = this.popover.panelElement.appendChild($());
 
     this.setPos(isTop);
 
-    addDisposableListener(this, this.element, 'click', this.show);
+    addDisposableListener(this, this.el, 'click', this.show);
     addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
     this.items.forEach((item) => item.init && item.init(player, item));
     this.renderHome();
@@ -202,19 +202,19 @@ class Setting extends Component implements ControlItem {
   }
 
   show = (ev?: MouseEvent) => {
-    if (ev && getEventPath(ev).includes(this.popover.element)) return;
+    if (ev && getEventPath(ev).includes(this.popover.el)) return;
     this.tooltip.hide();
     this.renderHome();
     this.popover.show();
     this.homeElement.style.display = '';
-    addClass(this.element, classActive);
+    addClass(this.el, classActive);
   }
 
   hide = (ev?: MouseEvent) => {
     if (ev) ev.stopPropagation();
 
     this.tooltip.show();
-    removeClass(this.element, classActive);
+    removeClass(this.el, classActive);
 
     if (this.currentOptionElement) {
       setTimeout(() => this.showHomePage(this.currentOptionElement), 200);

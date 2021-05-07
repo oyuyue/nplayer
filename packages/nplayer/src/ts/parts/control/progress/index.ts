@@ -28,18 +28,18 @@ export class Progress extends Component implements ControlItem {
   init(player: Player) {
     this.player = player;
 
-    addClass(this.element, 'progress');
+    addClass(this.el, 'progress');
 
-    this.bars = this.element.appendChild($('.progress_bars'));
+    this.bars = this.el.appendChild($('.progress_bars'));
     this.bufBar = this.bars.appendChild($('.progress_buf'));
     this.playedBar = this.bars.appendChild($('.progress_played'));
-    this.dot = this.element.appendChild($('.progress_dot'));
+    this.dot = this.el.appendChild($('.progress_dot'));
     this.dot.appendChild(player.opts.progressDot || $('.progress_dot_inner'));
 
     this.rect = addDisposable(this, new Rect(this.bars, player));
-    this.thumbnail = addDisposable(this, new Thumbnail(this.element, player.opts.thumbnail));
+    this.thumbnail = addDisposable(this, new Thumbnail(this.el, player.opts.thumbnail));
 
-    addDisposable(this, new Drag(this.element, this.onDragStart, this.onDragging, this.onDragEnd));
+    addDisposable(this, new Drag(this.el, this.onDragStart, this.onDragging, this.onDragEnd));
     addDisposable(this, player.on(EVENT.TIME_UPDATE, this.updatePlayedBar));
     addDisposable(this, player.on(EVENT.PROGRESS, this.updateBufBar));
     addDisposable(this, player.on(EVENT.UPDATE_OPTIONS, () => this.thumbnail.updateOptions(player.opts.thumbnail)));
@@ -50,10 +50,10 @@ export class Progress extends Component implements ControlItem {
       this.rect.update();
       this.resetPlayedBar();
     }));
-    addDisposableListener(this, this.element, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
+    addDisposableListener(this, this.el, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
 
     if (player.opts.isTouch) {
-      addDisposableListener(this, this.element, 'touchstart', (ev: Event) => {
+      addDisposableListener(this, this.el, 'touchstart', (ev: Event) => {
         ev.preventDefault();
         ev.stopPropagation();
       });

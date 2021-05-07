@@ -5,7 +5,7 @@ import {
 import { isString } from './is';
 
 export class Component implements Disposable {
-  element: HTMLElement;
+  el: HTMLElement;
 
   constructor(
     container?: HTMLElement,
@@ -15,19 +15,19 @@ export class Component implements Disposable {
     classPrefix?: string,
   ) {
     if (desc && !isString(desc)) {
-      this.element = desc;
+      this.el = desc;
     } else {
-      this.element = $(desc, attrs, children, classPrefix);
+      this.el = $(desc, attrs, children, classPrefix);
     }
-    if (container) container.appendChild(this.element);
+    if (container) container.appendChild(this.el);
   }
 
   applyStyle(style: Partial<CSSStyleDeclaration>): void {
-    Object.assign(this.element.style, style);
+    Object.assign(this.el.style, style);
   }
 
   dispose() {
-    removeNode(this.element);
+    removeNode(this.el);
     dispose(this);
   }
 }

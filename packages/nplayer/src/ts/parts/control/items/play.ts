@@ -19,8 +19,8 @@ class Play extends Component implements ControlItem {
 
   init(player: Player, _: boolean, tooltip: Tooltip) {
     this.tooltip = tooltip;
-    this.playIcon = this.element.appendChild(Icon.play());
-    this.pauseIcon = this.element.appendChild(Icon.pause());
+    this.playIcon = this.el.appendChild(Icon.play());
+    this.pauseIcon = this.el.appendChild(Icon.pause());
 
     if (player.paused) {
       this.onPause();
@@ -29,7 +29,7 @@ class Play extends Component implements ControlItem {
     }
     addDisposable(this, player.on(EVENT.PLAY, this.onPlay));
     addDisposable(this, player.on(EVENT.PAUSE, this.onPause));
-    addDisposableListener(this, this.element, 'click', player.toggle);
+    addDisposableListener(this, this.el, 'click', player.toggle);
   }
 
   private onPlay = () => {

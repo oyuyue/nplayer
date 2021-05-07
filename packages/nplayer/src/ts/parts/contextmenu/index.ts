@@ -25,20 +25,20 @@ export class ContextMenu extends Component {
     private items: ContextMenuItem[],
   ) {
     super(container, '.contextmenu');
-    hide(this.element);
+    hide(this.el);
 
-    this.rect = new Rect(this.element, player);
+    this.rect = new Rect(this.el, player);
 
     this.items.forEach((item) => item.init && item.init(player, item));
 
-    addDisposableListener(this, player.element, 'contextmenu', (ev: MouseEvent) => {
+    addDisposableListener(this, player.el, 'contextmenu', (ev: MouseEvent) => {
       this.hide();
       if (!player.opts.contextMenuToggle || !this.showed) {
         if (this.renderItems()) {
           ev.preventDefault();
           ev.stopPropagation();
 
-          show(this.element);
+          show(this.el);
           this.rect.update();
           this.player.rect.update();
 
@@ -83,18 +83,18 @@ export class ContextMenu extends Component {
   private renderItems(): boolean {
     const items = this.getDomNodes();
     if (!items.length) return false;
-    this.element.textContent = '';
+    this.el.textContent = '';
     const frag = document.createDocumentFragment();
     items.forEach((item) => frag.appendChild(item));
-    this.element.appendChild(frag);
+    this.el.appendChild(frag);
     return true;
   }
 
   get isActive(): boolean {
-    return this.element.style.display !== 'none';
+    return this.el.style.display !== 'none';
   }
 
   hide = () => {
-    hide(this.element);
+    hide(this.el);
   }
 }

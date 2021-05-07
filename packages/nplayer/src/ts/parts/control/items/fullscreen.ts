@@ -19,8 +19,8 @@ class Fullscreen extends Component implements ControlItem {
 
   init(player: Player, _: boolean, tooltip: Tooltip) {
     this.tooltip = tooltip;
-    this.exitIcon = this.element.appendChild(Icon.exitFullscreen());
-    this.enterIcon = this.element.appendChild(Icon.enterFullscreen());
+    this.exitIcon = this.el.appendChild(Icon.exitFullscreen());
+    this.enterIcon = this.el.appendChild(Icon.enterFullscreen());
     if (player.fullscreen.isActive) {
       this.enter();
     } else {
@@ -29,7 +29,7 @@ class Fullscreen extends Component implements ControlItem {
 
     addDisposable(this, player.on(EVENT.ENTER_FULLSCREEN, this.enter));
     addDisposable(this, player.on(EVENT.EXIT_FULLSCREEN, this.exit));
-    addDisposableListener(this, this.element, 'click', player.fullscreen.toggle);
+    addDisposableListener(this, this.el, 'click', player.fullscreen.toggle);
   }
 
   private enter = (): void => {

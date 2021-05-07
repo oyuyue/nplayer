@@ -14,36 +14,36 @@ export class Tooltip extends Component {
   }
 
   get html(): string {
-    return this.element.innerHTML;
+    return this.el.innerHTML;
   }
 
   set html(v: string) {
-    this.element.innerHTML = v;
+    this.el.innerHTML = v;
   }
 
   resetPos(): void {
-    removeClass(this.element, classLeft);
-    removeClass(this.element, classRight);
-    removeClass(this.element, classBottom);
+    removeClass(this.el, classLeft);
+    removeClass(this.el, classRight);
+    removeClass(this.el, classBottom);
   }
 
   setBottom(): void {
-    addClass(this.element, classBottom);
+    addClass(this.el, classBottom);
   }
 
   setLeft(): void {
-    addClass(this.element, classLeft);
+    addClass(this.el, classLeft);
   }
 
   setRight(): void {
-    addClass(this.element, classRight);
+    addClass(this.el, classRight);
   }
 
   hide(): void {
-    hide(this.element);
+    hide(this.el);
   }
 
   show(): void {
-    show(this.element);
+    show(this.el);
   }
 }

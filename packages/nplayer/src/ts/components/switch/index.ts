@@ -9,14 +9,14 @@ export class Switch extends Component {
     this.toggle(value || false);
 
     if (change) {
-      addDisposableListener(this, this.element, 'click', () => {
+      addDisposableListener(this, this.el, 'click', () => {
         this.toggle();
-        change(containClass(this.element, activeClass));
+        change(containClass(this.el, activeClass));
       });
     }
   }
 
   toggle(value?: boolean): void {
-    toggleClass(this.element, activeClass, value);
+    toggleClass(this.el, activeClass, value);
   }
 }

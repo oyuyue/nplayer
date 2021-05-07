@@ -19,8 +19,8 @@ class WebFullscreen extends Component implements ControlItem {
 
   init(player: Player, _: boolean, tooltip: Tooltip) {
     this.tooltip = tooltip;
-    this.enterIcon = this.element.appendChild(Icon.webEnterFullscreen());
-    this.exitIcon = this.element.appendChild(Icon.webExitFullscreen());
+    this.enterIcon = this.el.appendChild(Icon.webEnterFullscreen());
+    this.exitIcon = this.el.appendChild(Icon.webExitFullscreen());
     if (player.webFullscreen.isActive) {
       this.enter();
     } else {
@@ -28,7 +28,7 @@ class WebFullscreen extends Component implements ControlItem {
     }
     addDisposable(this, player.on(EVENT.WEB_ENTER_FULLSCREEN, this.enter));
     addDisposable(this, player.on(EVENT.WEB_EXIT_FULLSCREEN, this.exit));
-    addDisposableListener(this, this.element, 'click', player.webFullscreen.toggle);
+    addDisposableListener(this, this.el, 'click', player.webFullscreen.toggle);
   }
 
   private enter = (): void => {
