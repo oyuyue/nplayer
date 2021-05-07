@@ -1,6 +1,6 @@
 import { Disposable } from '../types';
 export declare class Component implements Disposable {
-    element: HTMLElement;
+    el: HTMLElement;
     constructor(container?: HTMLElement, desc?: string | HTMLElement, attrs?: {
         [key: string]: any;
     }, children?: string | Array<Node>, classPrefix?: string);

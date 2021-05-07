@@ -2,12 +2,15 @@ import { Player } from '../../player';
 import { Disposable } from '../../types';
 import { Tooltip } from '../../components/tooltip';
 import { Component } from '../../utils';
+import { ControlBar } from './items';
 export interface ControlItem extends Partial<Disposable> {
-    element: HTMLElement;
-    id?: string;
+    el: HTMLElement;
+    id?: any;
     tip?: string;
     tooltip?: Tooltip;
-    init?: (player: Player, tooltip: Tooltip) => void;
+    mounted?: boolean;
+    init?: (player: Player, isTop: boolean, tooltip: Tooltip) => void;
+    update?: (isTop: boolean) => void;
     isSupport?: (player: Player) => boolean;
     [key: string]: any;
 }
@@ -17,8 +20,14 @@ export declare class Control extends Component {
     private showTimer;
     private delayHidTime;
     private latch;
+    private controlBars;
+    private controls;
+    currentBp: number | undefined;
     constructor(container: HTMLElement, player: Player);
     get isActive(): boolean;
+    private filterItems;
+    private emitAndUpdateBp;
+    updateItems(items: Parameters<ControlBar['update']>[0], index?: number): void;
     require(): void;
     release(): void;
     show: () => void;

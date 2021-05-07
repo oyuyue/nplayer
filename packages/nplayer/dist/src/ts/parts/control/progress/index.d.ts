@@ -1,14 +1,18 @@
 import { Player } from '../../../player';
 import { Component } from '../../../utils';
-export declare class Progress extends Component {
-    private player;
+import { ControlItem } from '..';
+export declare class Progress extends Component implements ControlItem {
+    readonly id = "progress";
     private playedBar;
     private bufBar;
     private bars;
+    private dot;
     private rect;
     private thumbnail;
+    private player;
     private dragging;
-    constructor(container: HTMLElement, player: Player);
+    init(player: Player): void;
+    private resetPlayedBar;
     private setPlayedBarLength;
     private setBufBarLength;
     private onDragStart;
@@ -19,3 +23,4 @@ export declare class Progress extends Component {
     private updatePlayedBar;
     private getCurrentTime;
 }
+export declare const progressControlItem: () => Progress;

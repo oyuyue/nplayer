@@ -1,7 +1,7 @@
 import { Disposable } from '../types';
 declare type Fn = (ev: PointerEvent) => any;
 export declare class Drag implements Disposable {
-    private element;
+    private el;
     private start;
     private move;
     private end;

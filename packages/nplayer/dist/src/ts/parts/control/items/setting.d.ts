@@ -23,10 +23,6 @@ export interface SettingItem<T = any> {
     _optionElement?: HTMLElement;
     [key: string]: any;
 }
-export declare class SettingPanelOption extends Component {
-}
-export declare class SettingPanelHome extends Component {
-}
 export declare class SettingPanel extends Component {
     constructor(container: HTMLElement);
 }
@@ -39,7 +35,9 @@ declare class Setting extends Component implements ControlItem {
     private currentOptionElement;
     tooltip: Tooltip;
     tip: string;
-    init(player: Player, tooltip: Tooltip): void;
+    init(player: Player, isTop: boolean, tooltip: Tooltip): void;
+    update(isTop: boolean): void;
+    private setPos;
     private renderHome;
     private renderOptions;
     private onItemClick;

@@ -17,11 +17,11 @@ const plugin = {
         set: Function,
       },
       mounted() {
-        if (!this.$refs.element || typeof document === 'undefined') return;
+        if (!this.$refs.el || typeof document === 'undefined') return;
         if (!this.player) {
           this.player = new Player.Player(this.options);
         }
-        this.player.mount(this.$refs.element);
+        this.player.mount(this.$refs.el);
         if (this.set) this.set(this.player);
       },
       [isVue3 ? 'beforeUnmount' : 'beforeDestroy']() {
@@ -31,7 +31,7 @@ const plugin = {
       },
       render(e: any) {
         e = isVue3 ? h : e;
-        return e('div', { style: { width: '100%', height: '100%' }, ref: 'element' });
+        return e('div', { style: { width: '100%', height: '100%' }, ref: 'el' });
       },
     } as any;
 

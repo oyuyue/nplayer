@@ -45,7 +45,7 @@ export const defaultOptions = (): Required<DanmakuOptions> => ({
 });
 
 export class Danmaku implements Disposable {
-  element: HTMLElement;
+  el: HTMLElement;
 
   opts: Required<DanmakuOptions>;
 
@@ -78,9 +78,9 @@ export class Danmaku implements Disposable {
   constructor(private player: Player, private _opts?: DanmakuOptions) {
     this.opts = { ...defaultOptions(), ...getStorageOptions(), ..._opts };
 
-    const { $, addDisposable } = player.Player._utils;
-    this.element = player.element.appendChild($('.danmaku_screen'));
-    this.element.style.zIndex = String(this.opts.zIndex);
+    const { $, addDisposable } = player.Player.__utils;
+    this.el = player.el.appendChild($('.danmaku_screen'));
+    this.el.style.zIndex = String(this.opts.zIndex);
 
     this.items = this.opts.items;
 
@@ -120,7 +120,7 @@ export class Danmaku implements Disposable {
     if (bullet) {
       bullet.init(item, setting);
     } else {
-      bullet = new Bullet(this.element, this, item, setting);
+      bullet = new Bullet(this.el, this, item, setting);
     }
     this.aliveBullets.add(bullet);
     return bullet;
@@ -276,7 +276,7 @@ export class Danmaku implements Disposable {
   }
 
   updateOpacity(opacity = this.opts.opacity): void {
-    this.element.style.opacity = String(opacity);
+    this.el.style.opacity = String(opacity);
     this.storeOptions();
   }
 
@@ -376,8 +376,8 @@ export class Danmaku implements Disposable {
   dispose(): void {
     if (!this.player) return;
     this.disable();
-    this.player.Player._utils.removeNode(this.element);
-    this.player.Player._utils.dispose(this);
+    this.player.Player.__utils.removeNode(this.el);
+    this.player.Player.__utils.dispose(this);
     this.player = null!;
     this.bulletPool = null!;
     this.aliveBullets = null!;
@@ -385,7 +385,7 @@ export class Danmaku implements Disposable {
     this.topBullets = null!;
     this.bottomBullets = null!;
     this.items = null!;
-    this.element = null!;
+    this.el = null!;
     this.opts = null!;
   }
 

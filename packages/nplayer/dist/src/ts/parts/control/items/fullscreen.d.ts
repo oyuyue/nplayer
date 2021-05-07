@@ -7,7 +7,7 @@ declare class Fullscreen extends Component implements ControlItem {
     private exitIcon;
     private enterIcon;
     tooltip: Tooltip;
-    init(player: Player, tooltip: Tooltip): void;
+    init(player: Player, _: boolean, tooltip: Tooltip): void;
     private enter;
     private exit;
 }
