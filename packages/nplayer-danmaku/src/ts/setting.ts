@@ -37,7 +37,7 @@ class DanmakuSetting implements ControlItem {
 
   private fontsizeSlider!: Slider;
 
-  init(player: Player) {
+  init(player: Player, isTop: boolean) {
     this.player = player;
     const { __utils, components, I18n } = player.Player;
     const {
@@ -54,6 +54,8 @@ class DanmakuSetting implements ControlItem {
     const panelElement = this.popover.panelElement;
     __utils.addClass(panelElement, 'danmaku_setting');
 
+    this.setPos(isTop);
+
     player.on('Mounted', () => {
       const row = () => $('.flex.align-center.danmaku_row');
 
@@ -63,7 +65,7 @@ class DanmakuSetting implements ControlItem {
       const resetBtn = rowElement.appendChild($('.danmaku_reset', undefined, I18n.t(RESTORE)));
       addDisposableListener(this, resetBtn, 'click', () => {
         player.danmaku.resetOptions();
-        this.update();
+        this.updateSettings();
       });
       panelElement.appendChild(rowElement);
       rowElement = $('.danmaku_row');
@@ -141,11 +143,20 @@ class DanmakuSetting implements ControlItem {
       }));
       panelElement.appendChild(rowElement);
 
-      this.update();
+      this.updateSettings();
     });
   }
 
-  update() {
+  update(isTop: boolean): void {
+    this.setPos(isTop);
+  }
+
+  private setPos(isTop: boolean): void {
+    this.popover.resetPos();
+    if (isTop) this.popover.setBottom();
+  }
+
+  updateSettings() {
     const opts = this.player.danmaku.opts;
     this.scrollCB.update(opts.blocked.includes('scroll'));
     this.topCB.update(opts.blocked.includes('top'));
