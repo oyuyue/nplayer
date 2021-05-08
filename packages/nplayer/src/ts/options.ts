@@ -25,18 +25,18 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   const dOpts = defaultOptions();
   const res = {
     ...dOpts,
+    isTouch: (('ontouchstart' in window)
+    || (navigator.maxTouchPoints > 0)
+    || (navigator.msMaxTouchPoints > 0)),
     ...opts,
     videoProps: {
       ...dOpts.videoProps,
       ...opts?.videoProps,
     },
-    isTouch: (('ontouchstart' in window)
-    || (navigator.maxTouchPoints > 0)
-    || (navigator.msMaxTouchPoints > 0)),
   } as Required<PlayerOptions>;
 
   res.controls = processControls(res.controls || [], [
-    ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    ['play', res.isTouch ? '' : 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'].filter(Boolean),
     (res.live ? undefined : ['progress']) as any,
   ]);
 

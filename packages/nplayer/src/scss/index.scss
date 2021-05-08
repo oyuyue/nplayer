@@ -7,6 +7,18 @@
   --progress-bg: #007aff;
   --volume-progress-bg: #007aff;
 
+  $control_bottom: 8px;
+
+  --safe-area-inset-bottom: $control_bottom;
+  @supports (padding-bottom: constant(safe-area-inset-bottom)) {
+    --safe-area-inset-bottom: max(#{$control_bottom}, constant(safe-area-inset-bottom));
+  }
+
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    --safe-area-inset-bottom: max(#{$control_bottom}, env(safe-area-inset-bottom));
+  }
+  
+
   position: relative;
   width: 100%;
   height: 100%;
@@ -52,13 +64,17 @@
     z-index: 99999;
   }
 
+  &-web-full &_control {
+    padding-bottom: var(--safe-area-inset-bottom);
+  }
+
   &-loading &_loading {
     display: block;
   }
 
   &_icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     fill: #fff;
   }
 
@@ -163,7 +179,7 @@
       right: 0;
       margin-bottom: 5px;
       padding: 3px 0;
-      font-size: 13px;
+      font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
       transform: translateY(10px);
@@ -259,7 +275,7 @@
   &_toast {
     position: absolute;
     padding: 3px 5px;
-    font-size: 13px;
+    font-size: 16px;
     white-space: nowrap;
     background: rgba(0, 0, 0, .7);
 
@@ -502,7 +518,7 @@
         content: '/';
         display: inline-block;
         font-size: 12px;
-        margin: 0 3px;
+        margin: 0 5px;
         transform: translateY(-0.5px);
       }
     }
@@ -627,7 +643,7 @@
     top: 0;
     left: 0;
     padding: 3px 0;
-    font-size: 13px;
+    font-size: 14px;
     background: rgba(0, 0, 0, .7);
 
     &_item {
@@ -752,7 +768,7 @@
     &_time {
       display: inline-block;
       margin-top: 5px;
-      padding: 2px 5px 1px;
+      padding: 2px 5px 3px;
       border-radius: 3px;
       background: rgba(0, 0, 0, .7);
     }

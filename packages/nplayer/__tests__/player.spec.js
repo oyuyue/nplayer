@@ -31,11 +31,11 @@ describe('Player', () => {
       playsinline: 'true',
     });
 
-    const player2 = new Player({ live: true })
+    const player2 = new Player({ live: true, isTouch: true })
     const opts2 = player2.opts;
 
     expect(opts2.controls).toEqual([
-      ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+      ['play', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
       undefined, undefined
     ]);
     expect(opts2.bpControls).toEqual({
