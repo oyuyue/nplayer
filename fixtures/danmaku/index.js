@@ -557,6 +557,8 @@ window.onload = function () {
   })
   var player = new NPlayer.Player({
     src: 'https://v-cdn.zjol.com.cn/280443.mp4',
+    controls: [['play', 'volume', 'time', 'spacer' , 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    ['progress'], ['danmaku-send', 'danmaku-setting']],
     plugins: [danmaku]
   })
 

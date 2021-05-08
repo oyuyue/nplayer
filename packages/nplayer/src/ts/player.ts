@@ -98,6 +98,10 @@ export class Player extends EventEmitter implements Disposable {
     this.loading = addDisposable(this, new Loading(this.el, this));
     this.poster = addDisposable(this, new Poster(this.el, this));
 
+    if (this.opts.plugins) {
+      this.opts.plugins.forEach((plugin) => this.use(plugin));
+    }
+
     this.contextmenu = addDisposable(this, new ContextMenu(this.el, this, this.opts.contextMenus.map((item) => {
       if (isString(item)) return this.contextmenuNamedMap[item];
       return item;
@@ -118,10 +122,6 @@ export class Player extends EventEmitter implements Disposable {
 
     if (!this.opts.isTouch) {
       this.enableClickPause();
-    }
-
-    if (this.opts.plugins) {
-      this.opts.plugins.forEach((plugin) => this.use(plugin));
     }
 
     this.emit(EVENT.AFTER_INIT);
