@@ -50,8 +50,6 @@ export class Control extends Component {
 
     const bpControls = player.opts.bpControls;
     this.controls = Object.keys(bpControls)
-    // eslint-disable-next-line no-restricted-globals
-      .filter((k) => !isNaN(Number(k)) && bpControls[k])
       .map((bp) => ({ bp: Number(bp), controls: bpControls[bp] }))
       .sort((a, b) => a.bp - b.bp);
 
