@@ -36,19 +36,27 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   } as Required<PlayerOptions>;
 
   res.controls = processControls(res.controls || [], [
-    ['play', res.isTouch ? '' : 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'].filter(Boolean),
-    (res.live ? undefined : ['progress']) as any,
+    ['play', res.isTouch ? '' : 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    [res.live ? '' : 'progress'],
   ]);
 
-  const mobileControl = ['play', 'time', 'web-fullscreen', 'fullscreen'];
-  if (!res.live) mobileControl.splice(1, 0, 'progress');
   res.bpControls = res.bpControls || {
     650: [
-      mobileControl,
+      ['play', res.live ? '' : 'progress', 'time', 'web-fullscreen', 'fullscreen'],
       [],
       ['spacer', 'airplay', 'settings'],
     ],
   };
+
+  res.controls = res.controls.filter(Boolean).map((x) => x.filter(Boolean));
+
+  const newBpControls: PlayerOptions['bpControls'] = {};
+  // eslint-disable-next-line no-restricted-globals
+  Object.keys(res.bpControls).filter((x) => x && !isNaN(Number(x)) && Array.isArray(res.bpControls[x])).forEach((k) => {
+    newBpControls[k] = res.bpControls[k].filter(Boolean).map((x) => x.filter(Boolean));
+  });
+
+  res.bpControls = newBpControls;
 
   return res;
 }
