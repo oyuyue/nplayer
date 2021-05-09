@@ -7,7 +7,7 @@ title: 弹幕插件
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
 [![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-该插件可以给 NPlayer 添加弹幕功能。它可以保持大量弹幕而不卡顿，该弹幕系统体验和性能与 B 站弹幕十分相似，支持非常多的设置，弹幕防碰撞、弹幕速度、字体、速度、透明度、显示区域、无限弹幕等。
+该插件可以给 NPlayer 添加弹幕功能。它可以保持大量弹幕而不卡顿，它支持非常多的设置，弹幕防碰撞、弹幕速度、字体、速度、透明度、显示区域等。
 
 ![nplayer danmaku](/img/preview.jpg)
 
@@ -25,19 +25,17 @@ npm i -S @nplayer/danmaku
 <script src="https://unpkg.com/@nplayer/danmaku@latest/dist/index.min.js"></script>
 ```
 
-:::caution 注意
+:::caution
 
-与 NPlayer 不同，在使用 CDN 方式引入的时候，直接用 `NPlayerDanmaku` 即可，而不是 `NPlayerDanmaku.Plugin`。
+与 NPlayer 不同，在使用 CDN 方式引入的时候，直接用 `NPlayerDanmaku` 即可。
 
 :::
 
 ## 快速上手
 
-安装好后我们就可以使用弹幕插件啦。
-
 ```js
 import Player from 'nplayer'
-import Danmuku from '@nplayer/danmaku'
+import Danmaku from '@nplayer/danmaku'
 
 const danmakuOptions = {
   items: [
@@ -54,22 +52,22 @@ player.mount(document.body)
 
 ## 控制条
 
-弹幕插件会注册 `danmaku-send` 和 `danmaku-setting` 这两项。默认情况会自动加入到控制条中。
+弹幕插件会注册 `danmaku-send` 和 `danmaku-settings` 这两项。默认情况会自动加入到控制条中。
 
-通过 `autoInsertControl` 参数可以控制是否自动插入，自动插入逻辑是，找到 `spacer` 项，并将它 `flex` 设置为 0 加入到它后面。如果没有找到 `spacer`，则会直接加入控制条最后面。
+通过 `autoInsert` 参数可以控制是否自动插入，自动插入逻辑是，找到 `spacer` 项，将它替换成 `danmaku-send` 和 `danmaku-settings`，**如果找不到 `spacer` 则不会插入**。
 
 ```js
 new Player({
-  controls: ['play', 'spacer', 'danmaku-setting'],
+  controls: [['play', 'spacer', 'danmaku-settings'], ['progress']],
   plugins: [
     new Danmaku({
-      autoInsertControl: false,
+      autoInsert: false,
     })
   ]
 })
 ```
 
-你可以将 `autoInsertControl` 设置为 `false`，然后手动设置控制条项，如上代码，手动加入了弹幕设置项，移除了弹幕发送项。
+你可以将 `autoInsert` 设置为 `false`，然后手动设置控制条项，如上代码，手动加入了弹幕设置项，移除了弹幕发送项。
 
 ## 弹幕对象
 
@@ -133,7 +131,7 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 
 ```js
 {
-  autoInsertControl: true,
+  autoInsert: true,
   disable: false,
   blocked: [],
   fontsize: 24,
@@ -143,7 +141,7 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
   area: 0.5,
   unlimited: false,
   bottomUp: false,
-  colors: ['#FE0302', '#FF7204', '#FFAA02', '#FFD302', '#FFFF00', '#A0EE00', '#00CD00', '#019899', '#4266BE', '#89D5FF', '#CC0273', '#222222', '#9B9B9B', '#FFFFFF'],
+  colors: ['#FE0302', '#FF7204', '#FFAA02', '#FFD302', '#FFFF00', '#A0EE00', '#00CD00', '#019899', '#4266BE', '#CC0273', '#222222', '#FFFFFF'],
   duration: 5,
   items: [],
   zIndex: 5,
@@ -153,11 +151,12 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
     color = color.toLowerCase();
     return color === '#fff' || color === '#ffffff';
   },
+  maxPerInsert: 20,
   discard() { return false; },
 }
 ```
 
-### autoInsertControl: boolean
+### autoInsert: boolean
 
 是否自动插入控制条项。
 
@@ -233,7 +232,7 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 
 ### 属性
 
-#### element: HTMLElement
+#### el: HTMLElement
 
 弹幕容器 DOM 元素。
 
