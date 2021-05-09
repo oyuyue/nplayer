@@ -37,7 +37,7 @@ class DanmakuSetting implements ControlItem {
 
   private fontsizeSlider!: Slider;
 
-  init(player: Player, isTop: boolean) {
+  init(player: Player, positoin: number) {
     this.player = player;
     const { __utils, components, I18n } = player.Player;
     const {
@@ -54,7 +54,7 @@ class DanmakuSetting implements ControlItem {
     const panelElement = this.popover.panelElement;
     __utils.addClass(panelElement, 'danmaku_setting');
 
-    this.setPos(isTop);
+    this.setPos(positoin);
 
     player.on('Mounted', () => {
       const row = () => $('.flex.align-center.danmaku_row');
@@ -147,13 +147,13 @@ class DanmakuSetting implements ControlItem {
     });
   }
 
-  update(isTop: boolean): void {
-    this.setPos(isTop);
+  update(positoin: number): void {
+    this.setPos(positoin);
   }
 
-  private setPos(isTop: boolean): void {
+  private setPos(positoin: number): void {
     this.popover.resetPos();
-    if (isTop) this.popover.setBottom();
+    if (positoin === 2) this.popover.setBottom();
   }
 
   updateSettings() {

@@ -34,7 +34,7 @@ export const defaultOptions = (): Required<DanmakuOptions> => ({
   area: 0.5,
   unlimited: false,
   bottomUp: false,
-  colors: ['#FE0302', '#FF7204', '#FFAA02', '#FFD302', '#FFFF00', '#A0EE00', '#00CD00', '#019899', '#4266BE', '#89D5FF', '#CC0273', '#222222', '#9B9B9B', '#FFFFFF'],
+  colors: ['#FE0302', '#FF7204', '#FFAA02', '#FFD302', '#FFFF00', '#A0EE00', '#00CD00', '#019899', '#4266BE', '#CC0273', '#222222', '#FFFFFF'],
   duration: 5,
   items: [],
   zIndex: 5,

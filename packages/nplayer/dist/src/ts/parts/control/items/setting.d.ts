@@ -35,8 +35,8 @@ declare class Setting extends Component implements ControlItem {
     private currentOptionElement;
     tooltip: Tooltip;
     tip: string;
-    init(player: Player, isTop: boolean, tooltip: Tooltip): void;
-    update(isTop: boolean): void;
+    init(player: Player, position: number, tooltip: Tooltip): void;
+    update(position: number): void;
     private setPos;
     private renderHome;
     private renderOptions;

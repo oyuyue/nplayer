@@ -553,12 +553,10 @@ window.onload = function () {
       { text: 'Primate灵长类动物 ', time: 169, color: '' },
       { text: '啊啊啊啊啊疯了 ', time: 61, color: '' },
       { text: 'stalking 跟踪 hare野兔', time: 25, color: '#2196F3' },
-    ].sort(function (a, b) { return a.time - b.time })
+    ].sort(function (a, b) { return a.time - b.time }),
   })
   var player = new NPlayer.Player({
     src: 'https://v-cdn.zjol.com.cn/280443.mp4',
-    controls: [['play', 'volume', 'time', 'spacer' , 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
-    ['progress'], ['danmaku-send', 'danmaku-setting']],
     plugins: [danmaku]
   })
 

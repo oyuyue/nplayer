@@ -17,8 +17,9 @@ export interface ControlItem extends Partial<Disposable> {
   tip?: string;
   tooltip?: Tooltip;
   mounted?: boolean;
-  init?: (player: Player, isTop: boolean, tooltip: Tooltip) => void;
-  update?: (isTop: boolean) => void;
+  init?: (player: Player, position: number, tooltip: Tooltip) => void;
+  update?: (position: number) => void;
+  hide?: () => void;
   isSupport?: (player: Player) => boolean;
   [key: string]: any;
 }
@@ -44,9 +45,9 @@ export class Control extends Component {
     super(container, '.control');
     this.bgElement = container.appendChild($('.control_bg'));
 
-    this.controlBars[1] = addDisposable(this, new ControlBar(this.el, player, player.opts.controls[1]));
-    this.controlBars[0] = addDisposable(this, new ControlBar(this.el, player, player.opts.controls[0]));
-    this.controlBars[2] = addDisposable(this, new ControlBar(container, player, player.opts.controls[2], true));
+    this.controlBars[1] = addDisposable(this, new ControlBar(this.el, player, player.opts.controls[1], 1));
+    this.controlBars[0] = addDisposable(this, new ControlBar(this.el, player, player.opts.controls[0], 0));
+    this.controlBars[2] = addDisposable(this, new ControlBar(container, player, player.opts.controls[2], 2));
 
     const bpControls = player.opts.bpControls;
     this.controls = Object.keys(bpControls)
