@@ -32,6 +32,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
   z-index: 0;
+  user-select: none;
 
   * { box-sizing: content-box; }
 

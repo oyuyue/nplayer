@@ -114,9 +114,17 @@ export class Player extends EventEmitter implements Disposable {
 
     this.control = addDisposable(this, new Control(this.el, this));
 
-    addDisposable(this, this.on(EVENT.LOADED_METADATA, () => {
+    addDisposable(this, this.on(EVENT.CANPLAY, () => {
       const time = this.opts.autoSeekTime || 0.3;
-      if (this.currentTime < time) this.currentTime = time;
+      if (this.currentTime < time) {
+        this.currentTime = time;
+
+        // compat iPad
+        if (this.currentTime < time) {
+          this.video.load();
+          this.video.pause();
+        }
+      }
       this.opts.autoSeekTime = 0;
     }));
 
