@@ -13,9 +13,9 @@ export class ControlBar extends Component {
 
   private spacer = spacerControlItem();
 
-  constructor(container: HTMLElement, private player: Player, items?: (ControlItem | string)[], private isTop = false) {
+  constructor(container: HTMLElement, private player: Player, items?: (ControlItem | string)[], private position = 0) {
     super(container, '.control_bar');
-    if (isTop) addClass(this.el, 'control_bar-top');
+    if (position === 2) addClass(this.el, 'control_bar-top');
     if (items) {
       const frag = document.createDocumentFragment();
       items.forEach((item) => {
@@ -44,9 +44,9 @@ export class ControlBar extends Component {
       if (item.mounted) {
         if (item.tooltip) {
           item.tooltip.resetPos();
-          if (this.isTop) item.tooltip.setBottom();
+          if (this.position === 2) item.tooltip.setBottom();
         }
-        if (item.update) item.update(this.isTop);
+        if (item.update) item.update(this.position);
         return;
       }
 
@@ -54,13 +54,13 @@ export class ControlBar extends Component {
       if (item.tip) tooltip = new Tooltip(item.el, item.tip);
       if (item.init) {
         if (item.init.length > 2 && !tooltip) tooltip = new Tooltip(item.el);
-        item.init(this.player, this.isTop, tooltip as Tooltip);
+        item.init(this.player, this.position, tooltip as Tooltip);
       }
       if (item.dispose) addDisposable(this, item as Disposable);
       if (!tooltip) tooltip = item.tooltip;
       if (tooltip) {
         tooltip.resetPos();
-        if (this.isTop) tooltip.setBottom();
+        if (this.position === 2) tooltip.setBottom();
       }
 
       item.mounted = true;
@@ -68,12 +68,16 @@ export class ControlBar extends Component {
     }
   }
 
+  private onHideControlItem = (item: ControlItem) => {
+    if (item.hide) item.hide();
+  }
+
   updateTooltipPos() {
     const last = this.prevItems.length - 1;
     this.prevItems.forEach((item, i) => {
       if (item.tooltip) {
         item.tooltip.resetPos();
-        if (this.isTop) item.tooltip.setBottom();
+        if (this.position === 2) item.tooltip.setBottom();
         if (i === 0) {
           item.tooltip.setLeft();
         } else if (i === last) {
@@ -101,7 +105,10 @@ export class ControlBar extends Component {
         if (item) items.push(item);
       });
 
-      patch(this.prevItems, items, this.el, this.initControlItem);
+      patch(this.prevItems, items, this.el, {
+        mount: this.initControlItem,
+        unmount: this.onHideControlItem,
+      });
       this.prevItems = items;
       this.updateTooltipPos();
       this.player.emit(EVENT.CONTROL_ITEM_UPDATE);

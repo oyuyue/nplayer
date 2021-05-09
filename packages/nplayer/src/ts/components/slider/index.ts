@@ -1,7 +1,7 @@
 import { EVENT } from 'src/ts/constants';
 import { Player } from 'src/ts/player';
 import {
-  $, addDisposable, clamp, Component, Drag, Rect,
+  $, addDisposable, addDisposableListener, clamp, Component, Drag, Rect,
 } from 'src/ts/utils';
 
 export interface SliderOption {
@@ -37,6 +37,7 @@ export class Slider extends Component {
     this.dotElement = this.el.appendChild($('.slider_dot'));
 
     addDisposable(this, new Drag(this.el, this.onDrag, this.onDrag));
+    addDisposableListener(this, this.el, 'touchstart', (ev: Event) => ev.preventDefault());
 
     this.step = opts.stops && opts.step;
 

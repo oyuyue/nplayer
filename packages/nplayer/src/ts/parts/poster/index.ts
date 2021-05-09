@@ -29,7 +29,12 @@ export class Poster extends Component {
     }
 
     addDisposableListener(this, this.el, 'click', () => {
-      if (this.tryToPlayed) return;
+      if (this.tryToPlayed) {
+        show(this.playElement);
+        player.pause();
+        this.tryToPlayed = false;
+        return;
+      }
       this.tryToPlayed = true;
       if (player.loaded) {
         this.hide();

@@ -53,10 +53,7 @@ export class Progress extends Component implements ControlItem {
     addDisposableListener(this, this.el, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
 
     if (player.opts.isTouch) {
-      addDisposableListener(this, this.el, 'touchstart', (ev: Event) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-      });
+      addDisposableListener(this, this.el, 'touchstart', (ev: Event) => ev.preventDefault());
     }
   }
 

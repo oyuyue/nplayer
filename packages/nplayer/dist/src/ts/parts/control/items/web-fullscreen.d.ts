@@ -7,7 +7,7 @@ declare class WebFullscreen extends Component implements ControlItem {
     private exitIcon;
     private enterIcon;
     tooltip: Tooltip;
-    init(player: Player, _: boolean, tooltip: Tooltip): void;
+    init(player: Player, _: any, tooltip: Tooltip): void;
     private enter;
     private exit;
 }

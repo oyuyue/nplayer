@@ -76,7 +76,6 @@ window.onload = function () {
   btn.addEventListener('click', () => {
     // ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen']
     player.updateControlItems(['volume', 'time', 'play', 'spacer', 'settings', 'progress'])
-    player.updateTopControlItems(['fullscreen'])
   })
   document.body.insertBefore(btn, player.element)
 

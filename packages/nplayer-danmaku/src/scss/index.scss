@@ -40,7 +40,8 @@
     }
 
     .nplayer_popover_panel {
-      padding: 0 10px;
+      padding: 0 12px;
+      font-size: 13px;
     }
 
     .nplayer_checkbox {
@@ -59,8 +60,8 @@
   }
 
   &_color {
-    width: 15px;
-    height: 15px;
+    width: 19px;
+    height: 19px;
     margin-right: 5px;
     margin-bottom: 5px;
     translate: transform .2s ease;
@@ -91,7 +92,7 @@
   }
 
   &_row {
-    margin: 8px 0;
+    margin: 10px 0;
     justify-content: space-between;
   }
 
@@ -112,7 +113,7 @@
   }
 
   &_setting {
-    padding: 6px 8px;
+    padding: 10px;
     font-size: 13px;
 
     .nplayer_slider {

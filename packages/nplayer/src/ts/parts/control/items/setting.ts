@@ -58,7 +58,7 @@ class Setting extends Component implements ControlItem {
 
   tip = I18n.t(SETTINGS);
 
-  init(player: Player, isTop:boolean, tooltip: Tooltip) {
+  init(player: Player, position: number, tooltip: Tooltip) {
     this.player = player;
     this.tooltip = tooltip;
     addClass(this.el, 'control_setting');
@@ -67,7 +67,7 @@ class Setting extends Component implements ControlItem {
     this.popover = new Popover(this.el, this.hide, { willChange: 'width, height' });
     this.homeElement = this.popover.panelElement.appendChild($());
 
-    this.setPos(isTop);
+    this.setPos(position);
 
     addDisposableListener(this, this.el, 'click', this.show);
     addDisposable(this, player.on(EVENT.MOUNTED, () => this.showHomePage()));
@@ -75,13 +75,13 @@ class Setting extends Component implements ControlItem {
     this.renderHome();
   }
 
-  update(isTop: boolean): void {
-    this.setPos(isTop);
+  update(position: number): void {
+    this.setPos(position);
   }
 
-  private setPos(isTop: boolean): void {
+  private setPos(position: number): void {
     this.popover.resetPos();
-    if (isTop) this.popover.setBottom();
+    if (position === 2) this.popover.setBottom();
   }
 
   private renderHome(): void {

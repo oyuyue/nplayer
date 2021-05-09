@@ -15,13 +15,9 @@ function unmount(node: Node, unmountNode?: (n: Node) => void) {
   if (unmountNode) unmountNode(node);
 }
 
-function move(node: Node, container: HTMLElement, anchor?: Node) {
+function mountOrMove(node: Node, container: HTMLElement, anchor?: Node, op?:(n: Node) => void) {
   container.insertBefore(node.el, anchor?.el || null);
-}
-
-function mount(node: Node, container: HTMLElement, anchor?: Node, mountNode?:(n: Node) => void) {
-  move(node, container, anchor);
-  if (mountNode) mountNode(node);
+  if (op) op(node);
 }
 
 function lis(arr: number[]): number[] {
@@ -70,8 +66,11 @@ export function patch(
   prevNodes: Node[],
   nextNodes: Node[],
   container: HTMLElement,
-  mountNode?: (node: Node) => void,
-  unmountNode?: (node: Node) => void,
+  op: {
+    mount?: (node: Node) => void;
+    update?: (node: Node) => void;
+    unmount?: (node: Node) => void;
+  } = {},
 ) {
   let prevEnd = prevNodes.length - 1;
   let nextEnd = nextNodes.length - 1;
@@ -99,11 +98,11 @@ export function patch(
 
   if (startIndex > prevEnd) {
     for (let i = startIndex; i <= nextEnd; i++) {
-      mount(nextNodes[i], container, undefined, mountNode);
+      mountOrMove(nextNodes[i], container, undefined, op.mount);
     }
   } else if (startIndex > nextEnd) {
     for (let i = startIndex; i <= prevEnd; i++) {
-      unmount(prevNodes[i], unmountNode);
+      unmount(prevNodes[i], op.unmount);
     }
   } else {
     const toPatch = [];
@@ -121,7 +120,7 @@ export function patch(
       nextIndex = idMap.get(prevNode.id || prevNode) as any;
 
       if (nextIndex == null) {
-        unmount(prevNode, unmountNode);
+        unmount(prevNode, op.unmount);
       } else {
         toPatch[nextIndex - startIndex] = i;
 
@@ -140,12 +139,12 @@ export function patch(
       nextIndex = startIndex + i;
       anchor = nextNodes[nextIndex + 1];
       if (item === -1) {
-        mount(nextNodes[nextIndex], container, anchor, mountNode);
+        mountOrMove(nextNodes[nextIndex], container, anchor, op.mount);
       } else if (moved) {
         if (i === incSeq[j]) {
           j--;
         } else {
-          move(nextNodes[nextIndex], container, anchor);
+          mountOrMove(nextNodes[nextIndex], container, anchor, op.update);
         }
       }
     }

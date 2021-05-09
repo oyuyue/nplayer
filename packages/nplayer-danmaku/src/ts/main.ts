@@ -4,10 +4,14 @@ import { danmakuSendBoxControlItem } from './send-box';
 import { danmakuSettingControlItem } from './setting';
 import { trans } from './utils';
 
-export class Plugin implements P {
-  private opts: DanmakuOptions;
+export interface DanmakuPluginOption extends DanmakuOptions {
+  autoInsert: boolean;
+}
 
-  constructor(opts: DanmakuOptions) {
+export class Plugin implements P {
+  private opts: DanmakuPluginOption;
+
+  constructor(opts: DanmakuPluginOption) {
     this.opts = opts;
   }
 
@@ -17,6 +21,13 @@ export class Plugin implements P {
 
     player.Player.I18n.add('zh-cn', trans);
     player.danmaku = new Danmaku(player, this.opts);
+
+    if (this.opts && this.opts.autoInsert !== false) {
+      const i = player.opts.controls[0].findIndex((c) => c === 'spacer');
+      if (i !== -1) {
+        player.opts.controls[0].splice(i, 1, 'danmaku-send', 'danmaku-setting');
+      }
+    }
   }
 
   static Plugin = Plugin;
