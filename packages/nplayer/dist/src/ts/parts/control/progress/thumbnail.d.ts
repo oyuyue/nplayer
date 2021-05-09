@@ -15,8 +15,8 @@ export interface ThumbImg {
 }
 export declare class Thumbnail extends Component {
     private opts;
-    private imgElement?;
-    private timeElement;
+    private imgEl?;
+    private timeEl;
     private thumbImgPrePic?;
     private ssGapRatio?;
     private rect;

@@ -55,7 +55,7 @@ const player = new NPlayer.Player()
 player.mount('#app')
 ```
 
-:::caution 注意
+:::caution
 
 在通过 CDN 的方式使用时，Player 类是在 NPlayer 对象的 `Player` 属性上。需要 `new NPlayer.Player()` 而不是 `new NPlayer()`。
 

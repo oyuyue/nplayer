@@ -29,9 +29,9 @@ export class Thumbnail extends Component {
     images: [],
   };
 
-  private imgElement?: HTMLElement;
+  private imgEl?: HTMLElement;
 
-  private timeElement: HTMLElement;
+  private timeEl: HTMLElement;
 
   private thumbImgPrePic?: number;
 
@@ -44,8 +44,8 @@ export class Thumbnail extends Component {
 
     this.updateOptions(opts);
 
-    this.timeElement = this.el.appendChild($('.thumb_time'));
-    this.timeElement.textContent = '0:00';
+    this.timeEl = this.el.appendChild($('.thumb_time'));
+    this.timeEl.textContent = '0:00';
 
     this.rect = addDisposable(this, new Rect(this.el));
   }
@@ -66,24 +66,24 @@ export class Thumbnail extends Component {
     Object.assign(this.opts, opts);
 
     if (this.opts.images.length) {
-      if (!this.imgElement) {
-        this.imgElement = this.el.appendChild($('.thumb_img'));
+      if (!this.imgEl) {
+        this.imgEl = this.el.appendChild($('.thumb_img'));
       }
-      this.imgElement.style.width = `${this.opts.width}px`;
-      this.imgElement.style.height = `${this.opts.height}px`;
+      this.imgEl.style.width = `${this.opts.width}px`;
+      this.imgEl.style.height = `${this.opts.height}px`;
       this.thumbImgPrePic = this.opts.col * this.opts.row;
       this.ssGapRatio = this.opts.startSecond / this.opts.gapSecond;
     }
   }
 
   update(seconds: number, x: number, maxX: number): void {
-    this.timeElement.textContent = formatTime(seconds);
+    this.timeEl.textContent = formatTime(seconds);
 
-    if (this.imgElement) {
+    if (this.imgEl) {
       const thumb = this.getCurrentThumb(seconds);
       if (thumb) {
-        this.imgElement.style.backgroundImage = `url(${thumb.url})`;
-        this.imgElement.style.backgroundPosition = `-${thumb.x}px -${thumb.y}px`;
+        this.imgEl.style.backgroundImage = `url(${thumb.url})`;
+        this.imgEl.style.backgroundPosition = `-${thumb.x}px -${thumb.y}px`;
       }
     } else {
       this.rect.update();

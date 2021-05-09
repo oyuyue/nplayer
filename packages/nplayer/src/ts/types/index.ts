@@ -44,11 +44,11 @@ export interface PlayerOptions {
   progressDot?: HTMLElement;
   volumeProgressBg?: string;
   volumeBarWidth?: number | string;
-  loadingElement?: HTMLElement;
+  loadingEl?: HTMLElement;
   openEdgeInIE?: boolean;
   poster?: string;
   posterEnable?: boolean;
-  posterPlayElement?: HTMLElement;
+  posterPlayEl?: HTMLElement;
   isTouch?: boolean;
   [key: string]: any;
 }

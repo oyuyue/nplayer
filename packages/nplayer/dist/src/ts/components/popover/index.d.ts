@@ -1,8 +1,8 @@
 import { Component } from '../../utils';
 export declare class Popover extends Component {
     private readonly onHide?;
-    readonly panelElement: HTMLElement;
-    readonly maskElement: HTMLElement;
+    readonly panelEl: HTMLElement;
+    readonly maskEl: HTMLElement;
     constructor(container: HTMLElement, onHide?: ((ev?: MouseEvent | undefined) => void) | undefined, style?: Partial<CSSStyleDeclaration>, left?: boolean);
     resetPos(): void;
     setBottom(): void;

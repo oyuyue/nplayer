@@ -6,7 +6,7 @@ import {
 } from 'src/ts/utils';
 
 export class Poster extends Component {
-  private playElement: HTMLElement;
+  private playEl: HTMLElement;
 
   private poster: string;
 
@@ -15,8 +15,8 @@ export class Poster extends Component {
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.poster');
     this.poster = player.opts.poster;
-    this.playElement = player.opts.posterPlayElement || Icon.play('poster_play');
-    this.el.appendChild(this.playElement);
+    this.playEl = player.opts.posterPlayEl || Icon.play('poster_play');
+    this.el.appendChild(this.playEl);
     this.hide();
 
     if (!player.opts.posterEnable) return;
@@ -30,7 +30,7 @@ export class Poster extends Component {
 
     addDisposableListener(this, this.el, 'click', () => {
       if (this.tryToPlayed) {
-        show(this.playElement);
+        show(this.playEl);
         player.pause();
         this.tryToPlayed = false;
         return;
@@ -39,7 +39,7 @@ export class Poster extends Component {
       if (player.loaded) {
         this.hide();
       } else {
-        hide(this.playElement);
+        hide(this.playEl);
         player.loading.show();
       }
       player.play();
@@ -82,7 +82,7 @@ export class Poster extends Component {
 
   show() {
     show(this.el);
-    show(this.playElement);
+    show(this.playEl);
   }
 
   hide() {

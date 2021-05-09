@@ -26,9 +26,9 @@ export interface SettingItem<T = any> {
   init?: (player: Player, item: SettingItem) => void;
   change?: (value: T, player: Player, item: SettingItem) => void;
   _switch?: Switch;
-  _selectedElement?: HTMLElement;
-  _optionElements?: HTMLElement[];
-  _optionElement?: HTMLElement;
+  _selectedEl?: HTMLElement;
+  _optionEls?: HTMLElement[];
+  _optionEl?: HTMLElement;
   [key: string]: any;
 }
 
@@ -48,11 +48,11 @@ class Setting extends Component implements ControlItem {
 
   private items!: SettingItem[];
 
-  private homeElement!: HTMLElement;
+  private homeEl!: HTMLElement;
 
   private popover!: Popover;
 
-  private currentOptionElement!: HTMLElement;
+  private currentOptionEl!: HTMLElement;
 
   tooltip!: Tooltip;
 
@@ -65,7 +65,7 @@ class Setting extends Component implements ControlItem {
     this.items = player.__settingItems;
     this.el.appendChild(Icon.cog());
     this.popover = new Popover(this.el, this.hide, { willChange: 'width, height' });
-    this.homeElement = this.popover.panelElement.appendChild($());
+    this.homeEl = this.popover.panelEl.appendChild($());
 
     this.setPos(position);
 
@@ -86,7 +86,7 @@ class Setting extends Component implements ControlItem {
 
   private renderHome(): void {
     this.items.forEach((item) => {
-      const el = (!item._switch && !item._selectedElement && !item._optionElement) ? $('.control_setting_item') : null;
+      const el = (!item._switch && !item._selectedEl && !item._optionEl) ? $('.control_setting_item') : null;
 
       if (el) {
         el.appendChild($(undefined, undefined, item.html));
@@ -97,23 +97,23 @@ class Setting extends Component implements ControlItem {
         if (!item._switch) item._switch = new Switch(el!, item.checked);
       } else {
         if (!item.options || !item.options.length) return;
-        if (!item._selectedElement) {
+        if (!item._selectedEl) {
           addClass(el!, 'control_setting_item-select');
-          item._selectedElement = el!.appendChild($());
+          item._selectedEl = el!.appendChild($());
         }
 
         const opt = item.options.find((x) => x.value === item.value);
         if (!opt) return;
-        item._selectedElement.innerHTML = opt.selectedHtml || opt.html || '';
+        item._selectedEl.innerHTML = opt.selectedHtml || opt.html || '';
       }
 
-      if (item._optionElement) {
-        item._optionElement.style.display = 'none';
+      if (item._optionEl) {
+        item._optionEl.style.display = 'none';
       }
 
       if (el) {
         el.addEventListener('click', this.onItemClick(item));
-        this.homeElement.appendChild(el);
+        this.homeEl.appendChild(el);
       }
     });
   }
@@ -122,23 +122,23 @@ class Setting extends Component implements ControlItem {
     this.items.forEach((item) => {
       if (item.type === 'switch') return;
 
-      if (!item._optionElement) {
-        item._optionElement = this.popover.panelElement.appendChild($());
-        const back = item._optionElement.appendChild($('.control_setting_item.control_setting_back'));
+      if (!item._optionEl) {
+        item._optionEl = this.popover.panelEl.appendChild($());
+        const back = item._optionEl.appendChild($('.control_setting_item.control_setting_back'));
         back.innerHTML = item.html || '';
         back.addEventListener('click', this.back(item));
       }
 
-      if (!item._optionElements && item.options) {
-        item._optionElements = item.options.map((opt) => {
-          const el = item._optionElement!.appendChild($('.control_setting_option', undefined, opt.html));
+      if (!item._optionEls && item.options) {
+        item._optionEls = item.options.map((opt) => {
+          const el = item._optionEl!.appendChild($('.control_setting_option', undefined, opt.html));
           el.addEventListener('click', this.onOptionClick(item, opt));
           return el;
         });
       }
 
-      if (item._optionElements) {
-        item._optionElements.forEach((el, i) => {
+      if (item._optionEls) {
+        item._optionEls.forEach((el, i) => {
           removeClass(el, classOptionActive);
           if (item.value === item.options![i].value) {
             addClass(el, classOptionActive);
@@ -146,7 +146,7 @@ class Setting extends Component implements ControlItem {
         });
       }
 
-      item._optionElement.style.display = 'none';
+      item._optionEl.style.display = 'none';
     });
   }
 
@@ -157,7 +157,7 @@ class Setting extends Component implements ControlItem {
       if (item.change) item.change(item.checked, this.player, item);
     } else {
       this.renderOptions();
-      this.showOptionPage(item._optionElement as HTMLElement);
+      this.showOptionPage(item._optionEl as HTMLElement);
     }
   }
 
@@ -167,15 +167,15 @@ class Setting extends Component implements ControlItem {
       if (item.change) item.change(option.value, this.player, item);
     }
     this.renderHome();
-    this.showHomePage(item._optionElement as HTMLElement);
+    this.showHomePage(item._optionEl as HTMLElement);
   }
 
   private back = (item: SettingItem) => () => {
-    this.showHomePage(item._optionElement as HTMLElement);
+    this.showHomePage(item._optionEl as HTMLElement);
   }
 
   private showOptionPage(opt: HTMLElement): void {
-    this.homeElement.style.display = 'none';
+    this.homeEl.style.display = 'none';
     opt.style.display = '';
 
     const { width, height } = measureElementSize(opt);
@@ -185,15 +185,15 @@ class Setting extends Component implements ControlItem {
       height: `${height}px`,
     });
 
-    this.currentOptionElement = opt;
+    this.currentOptionEl = opt;
   }
 
   private showHomePage(opt?: HTMLElement): void {
     if (opt) opt.style.display = 'none';
 
-    this.homeElement.style.display = '';
+    this.homeEl.style.display = '';
 
-    const { width, height } = measureElementSize(this.homeElement);
+    const { width, height } = measureElementSize(this.homeEl);
 
     this.popover.applyPanelStyle({
       width: `${width}px`,
@@ -206,7 +206,7 @@ class Setting extends Component implements ControlItem {
     this.tooltip.hide();
     this.renderHome();
     this.popover.show();
-    this.homeElement.style.display = '';
+    this.homeEl.style.display = '';
     addClass(this.el, classActive);
   }
 
@@ -216,8 +216,8 @@ class Setting extends Component implements ControlItem {
     this.tooltip.show();
     removeClass(this.el, classActive);
 
-    if (this.currentOptionElement) {
-      setTimeout(() => this.showHomePage(this.currentOptionElement), 200);
+    if (this.currentOptionEl) {
+      setTimeout(() => this.showHomePage(this.currentOptionEl), 200);
     }
   }
 }

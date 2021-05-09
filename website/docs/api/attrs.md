@@ -13,7 +13,11 @@ console.log(player)
 
 你可以通过 `player` 对象来访问这些属性。
 
-### element: HTMLElement
+### container: HTMLElement
+
+播放器容器元素（`container` 或 `mount()` 参数）。
+
+### el: HTMLElement
 
 播放器 DOM 元素。
 
@@ -21,13 +25,13 @@ console.log(player)
 
 播放器参数。
 
-### video: HTMLVideoElement
-
-播放器视频元素。
-
 ### mounted: boolean
 
 播放器是否已挂载。
+
+### video: HTMLVideoElement
+
+播放器视频元素。
 
 ### rect: Rect
 
@@ -45,7 +49,7 @@ console.log(player)
 
 播放器 loading 对象。
 
-- loading.element loading DOM 元素
+- loading.el loading DOM 元素
 - loading.isActive 当前是否显示
 - loading.show() 显示 loading
 - loading.hide() 隐藏 loading
@@ -54,7 +58,7 @@ console.log(player)
 
 播放器海报对象。
 
-- poster.element poster DOM 元素
+- poster.el poster DOM 元素
 - poster.isActive 当前是否显示
 - poster.show() 显示 poster
 - poster.hide() 隐藏 poster
@@ -68,7 +72,7 @@ console.log(player)
 ```typescript
 type Position = 'center' | 'left-top' | 'right-top' | 'left-bottom' | 'right-bottom'
 interface ToastItem {
-  element: HTMLElement;
+  el: HTMLElement;
   dispose: () => void;
 }
 ```
@@ -108,6 +112,7 @@ interface ToastItem {
 
 播放器进度条对象。
 
+- currentBp 当前断点值
 - isActive 当前是否显示控制条
 - show() 显示控制条
 - hide() 隐藏控制条
@@ -115,6 +120,7 @@ interface ToastItem {
 - tryHide() 尝试隐藏控制条，比如当前视频暂停状态，调用该方法就不会隐藏
 - require() 添加一个控制条显示请求，`tryHide` 会判断是否有请求，如果则也不会隐藏
 - release() 释放一个请求，如果调用 `require`，没有调用该方法，则可能导致控制条不会自动隐藏。
+- updateItems() 更新控制条项，同 `player.updateControlItems()`。
 
 ### contextmenu: ContextMenu
 
@@ -122,6 +128,13 @@ interface ToastItem {
 
 - isActive 当前是否显示
 - hide() 隐藏右键菜单
+
+### touch: Touch
+
+触屏交互，如果 `isTouch` 参数是 `true` 时会启用。请查看[播放器参数](api/attrs.md)。
+
+- enable() 启用触屏交互
+- disable() 禁用触屏交互
 
 ### currentTime: number [get/set]
 

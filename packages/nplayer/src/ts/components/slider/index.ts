@@ -12,9 +12,9 @@ export interface SliderOption {
 }
 
 export class Slider extends Component {
-  private readonly trackElement: HTMLElement;
+  private readonly trackEl: HTMLElement;
 
-  private readonly dotElement: HTMLElement;
+  private readonly dotEl: HTMLElement;
 
   private readonly step: boolean | undefined;
 
@@ -25,7 +25,7 @@ export class Slider extends Component {
 
     this.rect = new Rect(this.el);
 
-    this.trackElement = this.el.appendChild($('.slider_track')).appendChild($('.slider_track_inner'));
+    this.trackEl = this.el.appendChild($('.slider_track')).appendChild($('.slider_track_inner'));
     if (opts.stops) {
       let stop;
       opts.stops.forEach((s) => {
@@ -34,7 +34,7 @@ export class Slider extends Component {
         this.el.appendChild(stop);
       });
     }
-    this.dotElement = this.el.appendChild($('.slider_dot'));
+    this.dotEl = this.el.appendChild($('.slider_dot'));
 
     addDisposable(this, new Drag(this.el, this.onDrag, this.onDrag));
     addDisposableListener(this, this.el, 'touchstart', (ev: Event) => ev.preventDefault());
@@ -67,8 +67,8 @@ export class Slider extends Component {
     }
 
     x = x != null ? x : value * this.rect.width;
-    this.trackElement.style.transform = `scaleX(${clamp(value)})`;
-    this.dotElement.style.transform = `translateX(${clamp(x, 0, this.rect.width)}px)`;
+    this.trackEl.style.transform = `scaleX(${clamp(value)})`;
+    this.dotEl.style.transform = `translateX(${clamp(x, 0, this.rect.width)}px)`;
 
     if (trigger && this.opts.change) this.opts.change(value);
   }

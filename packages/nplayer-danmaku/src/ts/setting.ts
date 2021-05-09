@@ -51,7 +51,7 @@ class DanmakuSetting implements ControlItem {
 
     addDisposableListener(this, this.el, 'click', this.show);
 
-    const panelElement = this.popover.panelElement;
+    const panelElement = this.popover.panelEl;
     __utils.addClass(panelElement, 'danmaku_setting');
 
     this.setPos(positoin);

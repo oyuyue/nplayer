@@ -9,9 +9,9 @@ import { ControlItem } from '..';
 class Time extends Component implements ControlItem {
   readonly id = 'time';
 
-  private playedElement!: HTMLElement;
+  private playedEl!: HTMLElement;
 
-  private totalElement!: HTMLElement;
+  private totalEl!: HTMLElement;
 
   init(player: Player) {
     addClass(this.el, 'control_time');
@@ -20,8 +20,8 @@ class Time extends Component implements ControlItem {
       addClass(this.el, 'control_time-live');
       this.el.textContent = I18n.t(LIVE);
     } else {
-      this.playedElement = this.el.appendChild($('span'));
-      this.totalElement = this.el.appendChild($('span'));
+      this.playedEl = this.el.appendChild($('span'));
+      this.totalEl = this.el.appendChild($('span'));
 
       this.played = player.currentTime;
       this.total = player.duration;
@@ -36,11 +36,11 @@ class Time extends Component implements ControlItem {
   }
 
   private set played(v: number) {
-    this.playedElement.textContent = formatTime(v);
+    this.playedEl.textContent = formatTime(v);
   }
 
   private set total(v: number) {
-    this.totalElement.textContent = formatTime(v);
+    this.totalEl.textContent = formatTime(v);
   }
 }
 

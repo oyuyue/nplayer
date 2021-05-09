@@ -39,7 +39,7 @@ new Vue({ render: (h) => h(App) }).$mount("#app");
 
 首先安装 NPlayer 插件。
 
-```vue
+```html
 <template>
   <div>
     <NPlayer
@@ -75,7 +75,7 @@ createApp(App).use(NPlayer).mount("#app");
 
 首先安装 NPlayer 插件。
 
-```vue
+```html
 <template>
   <div>
     <NPlayer

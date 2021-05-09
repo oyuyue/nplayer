@@ -21,13 +21,13 @@ class DanmakuSendBox implements ControlItem {
 
   private popover!: Popover;
 
-  private inputElement!: HTMLInputElement;
+  private inputEl!: HTMLInputElement;
 
-  private sendElement!: HTMLElement;
+  private sendEl!: HTMLElement;
 
-  private colorInputElement!: HTMLInputElement;
+  private colorInputEl!: HTMLInputElement;
 
-  private colorElement!: HTMLElement;
+  private colorEl!: HTMLElement;
 
   private typeCBs: Record<Required<BulletOption>['type'], Checkbox> = {} as any;
 
@@ -46,13 +46,13 @@ class DanmakuSendBox implements ControlItem {
     settingElement.appendChild(createSvg('icon', 'M9.62 14L12 7.67 14.37 14M11 5L5.5 19h2.25l1.12-3h6.25l1.13 3h2.25L13 5h-2z'));
     this.tooltip = addDisposable(this, new components.Tooltip(settingElement, I18n.t(SEND_SETTINGS)));
     this.popover = addDisposable(this, new components.Popover(settingElement, () => this.tooltip.show(), undefined, true));
-    this.inputElement = this.el.appendChild($('input'));
-    this.sendElement = this.el.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
+    this.inputEl = this.el.appendChild($('input'));
+    this.sendEl = this.el.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
 
     this.setPos(positoin);
 
     const row = () => $('.flex.align-center.danmaku_row');
-    const panelElement = this.popover.panelElement;
+    const panelElement = this.popover.panelEl;
     let rowElement = $('.danmaku_row');
     panelElement.appendChild(rowElement);
     rowElement.appendChild($(undefined, undefined, I18n.t(MODE)));
@@ -65,11 +65,11 @@ class DanmakuSendBox implements ControlItem {
     panelElement.appendChild(rowElement);
     rowElement.appendChild($(undefined, undefined, I18n.t(COLOR)));
     rowElement = rowElement.appendChild($('.danmaku_color_row'));
-    this.colorInputElement = rowElement.appendChild($('input'));
-    addDisposableListener(this, this.colorInputElement, 'input', () => {
-      this.updateColor(this.colorInputElement.value);
+    this.colorInputEl = rowElement.appendChild($('input'));
+    addDisposableListener(this, this.colorInputEl, 'input', () => {
+      this.updateColor(this.colorInputEl.value);
     });
-    this.colorElement = rowElement.appendChild($('.danmaku_color_preview'));
+    this.colorEl = rowElement.appendChild($('.danmaku_color_preview'));
     rowElement = $('.danmaku_colors');
     addDisposableListener(this, rowElement, 'click', ({ target }: MouseEvent) => {
       const el = target as HTMLElement;
@@ -87,15 +87,15 @@ class DanmakuSendBox implements ControlItem {
     panelElement.appendChild(rowElement);
 
     addDisposableListener(this, settingElement, 'click', this.show);
-    addDisposableListener(this, this.inputElement, 'keypress', (ev: KeyboardEvent) => {
+    addDisposableListener(this, this.inputEl, 'keypress', (ev: KeyboardEvent) => {
       if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
       const code = ev.keyCode || ev.which;
       if (code !== 13) return;
       this.send();
     });
-    addDisposableListener(this, this.inputElement, 'focus', () => player.control.require());
-    addDisposableListener(this, this.inputElement, 'blur', () => player.control.release());
-    addDisposableListener(this, this.sendElement, 'click', this.send);
+    addDisposableListener(this, this.inputEl, 'focus', () => player.control.require());
+    addDisposableListener(this, this.inputEl, 'blur', () => player.control.release());
+    addDisposableListener(this, this.sendEl, 'click', this.send);
 
     this.updateColor('#FFFFFF');
   }
@@ -118,9 +118,9 @@ class DanmakuSendBox implements ControlItem {
   }
 
   updateColor(v: string) {
-    this.colorInputElement.value = v;
-    this.colorElement.style.background = v;
-    this.inputElement.style.color = v;
+    this.colorInputEl.value = v;
+    this.colorEl.style.background = v;
+    this.inputEl.style.color = v;
   }
 
   show = (ev?: MouseEvent) => {
@@ -130,14 +130,14 @@ class DanmakuSendBox implements ControlItem {
   }
 
   send = () => {
-    const value = this.inputElement.value;
+    const value = this.inputEl.value;
     if (!value) return;
-    this.inputElement.value = '';
+    this.inputEl.value = '';
     const bullet: BulletOption = {
       text: value,
       time: this.player.currentTime,
       type: this.currentType as any,
-      color: isDefaultColor(value) ? undefined : this.colorInputElement.value,
+      color: isDefaultColor(value) ? undefined : this.colorInputEl.value,
     };
     this.player.danmaku.send(bullet);
   }

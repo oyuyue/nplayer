@@ -18,9 +18,9 @@ export interface SettingItem<T = any> {
     init?: (player: Player, item: SettingItem) => void;
     change?: (value: T, player: Player, item: SettingItem) => void;
     _switch?: Switch;
-    _selectedElement?: HTMLElement;
-    _optionElements?: HTMLElement[];
-    _optionElement?: HTMLElement;
+    _selectedEl?: HTMLElement;
+    _optionEls?: HTMLElement[];
+    _optionEl?: HTMLElement;
     [key: string]: any;
 }
 export declare class SettingPanel extends Component {
@@ -30,9 +30,9 @@ declare class Setting extends Component implements ControlItem {
     readonly id = "settings";
     private player;
     private items;
-    private homeElement;
+    private homeEl;
     private popover;
-    private currentOptionElement;
+    private currentOptionEl;
     tooltip: Tooltip;
     tip: string;
     init(player: Player, position: number, tooltip: Tooltip): void;

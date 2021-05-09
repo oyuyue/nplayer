@@ -11,8 +11,8 @@ export interface SliderOption {
 }
 export declare class Slider extends Component {
     private opts;
-    private readonly trackElement;
-    private readonly dotElement;
+    private readonly trackEl;
+    private readonly dotEl;
     private readonly step;
     readonly rect: Rect;
     constructor(container: HTMLElement, opts: SliderOption, player?: Player);

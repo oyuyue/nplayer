@@ -26,7 +26,7 @@ npm i -S nplayer @nplayer/react
 
 ## 快速上手
 
-```js
+```jsx
 import { useEffect, useRef } from "react";
 import NPlayer from "@nplayer/react";
 

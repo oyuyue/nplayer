@@ -15,7 +15,7 @@ console.log(Tooltip === Player.components.Tooltip) // true
 这些组件都有如下相同点。
 
 - 构造函数第一个参数是该组件的容器元素。
-- 都有 `element` 属性，表示自己 DOM。
+- 都有 `el` 属性，表示自己 DOM。
 - 都有 `dispose` 方法，调用该方法将销毁组件。
 
 ## Tooltip 文字提示
@@ -48,6 +48,14 @@ console.log(Tooltip === Player.components.Tooltip) // true
 
 与容器右对齐。
 
+#### setBottom()
+
+向下弹出。
+
+#### resetPos()
+
+重置弹出位置。
+
 ### 例子
 
 ```js
@@ -55,7 +63,7 @@ const tooltip = new Tooltip(document.body, '提示~')
 tooltip.html = '修改提示'
 tooltip.show() // 显示
 tooltip.hide() // 隐藏
-console.log(tooltip.element)
+console.log(tooltip.el)
 tooltip.dispose() // 销毁
 ```
 
@@ -93,11 +101,11 @@ const switch = new Switch(document.body, false, (v) => {
 - `style` 弹出框的样式。
 - `left` 是否和容器左对齐，默认是右对齐。
 
-#### panelElement: HTMLElement
+#### panelEl: HTMLElement
 
 弹出框元素。
 
-#### maskElement: HTMLElement
+#### maskEl: HTMLElement
 
 遮罩元素。
 
@@ -113,14 +121,22 @@ const switch = new Switch(document.body, false, (v) => {
 
 隐藏弹出框，你无需手动调用该函数，当用户点击弹出框外面时，会自动隐藏。
 
+#### setBottom()
+
+弹出框将向下弹出。
+
+#### resetPos()
+
+重置弹出框位置（向上弹出）。
+
 ### 例子
 
 ```js
-const popover = new Popover(player.element)
+const popover = new Popover(player.el)
 const div = document.createElement('div')
 div.textContent = '开/关'
-popover.panelElement.appendChild(div)
-new Switch(popover.panelElement)
+popover.panelEl.appendChild(div)
+new Switch(popover.panelEl)
 ```
 
 ## Slider 滑块

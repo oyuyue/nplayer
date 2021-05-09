@@ -4,55 +4,20 @@ title: 参数
 
 播放器构造函数参数。
 
-## 参数签名
-
-```typescript
-interface PlayerOptions {
-  el?: HTMLElement | string;
-  src?: string;
-  video?: HTMLVideoElement;
-  videoAttrs?: Record<string, any>;
-  videoSources?: VideoSource[];
-  autoSeekTime?: number;
-  live?: boolean;
-  thumbnail?: ThumbnailOptions;
-  controls?: (ControlItem | string)[];
-  settings?: (SettingItem | string)[];
-  contextMenus?: (ContextMenuItem | string)[];
-  contextMenuToggle?: boolean;
-  plugins?: Plugin[];
-  shortcut?: boolean;
-  seekStep?: number;
-  volumeStep?: number;
-  themeColor?: string;
-  posterBgColor?: string;
-  progressBg?: string;
-  volumeProgressBg?: string;
-  volumeBarWidth?: number | string;
-  loadingElement?: HTMLElement;
-  openEdgeInIE?: boolean;
-  poster?: string;
-  posterEnable?: boolean;
-  posterPlayElement?: HTMLElement;
-  dblclickFullscreen?: boolean;
-  clickPause?: boolean;
-  [key: string]: any;
-}
-```
-
 ## 描述
 
 | 参数 | 描述 |
 | --- | --- |
-| el | 播放器挂载容器元素，同 `mount` 方法参数，如果 `mount` 没有传入参数时，将使用该参数 |
-| src | 视频地址 |
+| container | 播放器挂载容器元素，同 `mount` 方法参数，如果 `mount` 没有传入参数时，将使用该参数，当该参数为字符串时，将会自动查找对应元素 |
+| src | 视频地址，同 `video` 元素的 `src` 属性 |
 | video | 自己提供 video 元素 |
-| videoAttrs | video 元素的属性 |
+| videoProps | video 元素的属性 |
 | videoSources| video source 子元素数组，请查看 [快速开始](getting-started.md) |
-| autoSeekTime| 视频加载成功时自动跳转到的时间点（跳转后该参数会自动设为 0），你可以用这个参数实现记忆上次用户观看时间 |
 | live| 是否是直播模式 |
+| autoSeekTime| 视频加载成功时自动跳转到的时间点（跳转后该参数会自动设为 0），你可以用这个参数实现记忆上次用户观看时间 |
 | thumbnail | 请查看 [预览缩略图](thumbnail.md) |
 | controls | 请查看 [控制条](control.md) |
+| bpControls | 设置不同断点下的控制条项布局，请查看 [控制条](control.md) |
 | settings | 请查看 [设置菜单](settings.md) |
 | contextMenus | 请查看 [右键菜单](contextmenu.md) |
 | contextMenuToggle | 是否偶数次单击右键时显示浏览器默认右键菜单 |
@@ -70,8 +35,7 @@ interface PlayerOptions {
 | poster | 海报图片地址，请查看 [海报](poster.md) |
 | posterEnable | 是否启用海报功能 |
 | posterPlayElement | 自定义海报播放按钮，请查看 [定制主题](theme.md) |
-| dblclickFullscreen | 是否双击进入全屏 |
-| clickPause | 是否单击播放、暂停视频 |
+| isTouch | 是否是触摸屏（默认会自动检测），如果是则会启用触摸屏交互 |
 
 ## 默认参数
 
@@ -81,19 +45,63 @@ interface PlayerOptions {
   seekStep: 10,
   volumeStep: 0.1,
   volumeBarWidth: 100,
-  controls: ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,
   openEdgeInIE: true,
   posterEnable: true,
-  clickPause: true,
-  dblclickFullscreen: true,
-  videoAttrs: {
+  videoProps: {
     crossorigin: 'anonymous',
     preload: 'auto',
     playsinline: 'true',
   },
+  controls: [
+    ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    ['progress'],
+  ],
+  bpControls: {
+    650: [
+      ['play', 'progress', 'time', 'web-fullscreen', 'fullscreen'],
+      [],
+      ['spacer', 'airplay', 'settings'],
+    ],
+  }
 }
 ```
-自定义参数会覆盖默认参数，但是 `videoAttrs` 不会被覆盖，而是被合并。
+
+## 参数签名
+
+```typescript
+interface PlayerOptions {
+  container?: HTMLElement | string;
+  video?: HTMLVideoElement;
+  src?: string;
+  videoProps?: Record<string, any>;
+  videoSources?: VideoSource[];
+  live?: boolean;
+  autoSeekTime?: number;
+  thumbnail?: ThumbnailOptions;
+  controls?: (ControlItem | string)[][];
+  bpControls?: { [key: string]: (ControlItem | string)[][] }
+  settings?: (SettingItem | string)[];
+  contextMenus?: (ContextMenuItem | string)[];
+  contextMenuToggle?: boolean;
+  plugins?: Plugin[];
+  shortcut?: boolean;
+  seekStep?: number;
+  volumeStep?: number;
+  themeColor?: string;
+  posterBgColor?: string;
+  progressBg?: string;
+  progressDot?: HTMLElement;
+  volumeProgressBg?: string;
+  volumeBarWidth?: number | string;
+  loadingElement?: HTMLElement;
+  openEdgeInIE?: boolean;
+  poster?: string;
+  posterEnable?: boolean;
+  posterPlayElement?: HTMLElement;
+  isTouch?: boolean;
+  [key: string]: any;
+}
+```

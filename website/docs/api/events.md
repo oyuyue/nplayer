@@ -12,6 +12,7 @@ import Player from 'nplayer'
 console.log(Player.EVENT.LOADING_SHOW)
 console.log((new Player()).EVENT.LOADING_SHOW)
 console.log('LoadingShow')
+
 // 都是输出相同的字符串
 ```
 
@@ -27,6 +28,7 @@ console.log('LoadingShow')
 | LoadingHide  | 视频 loading 隐藏 |
 | ControlShow  | 控制条显示 |
 | ControlHide  | 控制条隐藏 |
+| ControlItemUpdate  | 更新控制条项目位置时触发， `player.updateControlItems()` |
 | EnterPip  | 进入画中画 |
 | ExitPip  | 退出画中画 |
 | UpdateSize  | 更新播放器尺寸，比如 window resize 会触发，当外部将播放器元素大小变化时，可以手动触发该事件，防止播放器组件错位 |
@@ -49,3 +51,4 @@ console.log('LoadingShow')
 | RateChange  | 同 video ratechange 事件 |
 | DurationChange  | 同 video durationchange 事件 |
 | Progress | 同 video progress 事件 |
+| BP_CHANGE | 当播放器大小变换到特定断点时触发，`bpControls` 参数中设置的断点 |

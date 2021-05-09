@@ -5,9 +5,9 @@ import {
 const classActive = 'popover-active';
 const classBottom = 'popover_panel-bottom';
 export class Popover extends Component {
-  readonly panelElement: HTMLElement;
+  readonly panelEl: HTMLElement;
 
-  readonly maskElement: HTMLElement;
+  readonly maskEl: HTMLElement;
 
   constructor(
     container: HTMLElement,
@@ -16,30 +16,30 @@ export class Popover extends Component {
     left?: boolean,
   ) {
     super(container, '.popover');
-    this.maskElement = this.el.appendChild($('.popover_mask'));
-    this.panelElement = this.el.appendChild($('.popover_panel'));
+    this.maskEl = this.el.appendChild($('.popover_mask'));
+    this.panelEl = this.el.appendChild($('.popover_panel'));
 
     if (style) this.applyPanelStyle(style);
 
-    if (left) addClass(this.panelElement, 'popover_panel-left');
+    if (left) addClass(this.panelEl, 'popover_panel-left');
 
-    addDisposableListener(this, this.maskElement, 'click', (ev: MouseEvent) => {
+    addDisposableListener(this, this.maskEl, 'click', (ev: MouseEvent) => {
       ev.stopPropagation();
-      if (getEventPath(ev).includes(this.panelElement)) return;
+      if (getEventPath(ev).includes(this.panelEl)) return;
       this.hide(ev);
     });
   }
 
   resetPos() {
-    removeClass(this.panelElement, classBottom);
+    removeClass(this.panelEl, classBottom);
   }
 
   setBottom() {
-    addClass(this.panelElement, classBottom);
+    addClass(this.panelEl, classBottom);
   }
 
   applyPanelStyle(style: Partial<CSSStyleDeclaration>): void {
-    Object.assign(this.panelElement.style, style);
+    Object.assign(this.panelEl.style, style);
   }
 
   show() {
