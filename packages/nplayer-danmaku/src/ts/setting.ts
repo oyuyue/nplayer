@@ -7,7 +7,7 @@ import {
 } from './utils';
 
 class DanmakuSetting implements ControlItem {
-  readonly id = 'danmaku-setting';
+  readonly id = 'danmaku-settings';
 
   private player!: Player
 
