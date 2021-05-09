@@ -71,9 +71,9 @@ window.onload = function () {
   // player.mount('.app')
   player.mount(document.body)
 
-  const btn = document.createElement('button')
+  var btn = document.createElement('button')
   btn.textContent = 'change'
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', function() {
     // ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen']
     player.updateControlItems(['volume', 'time', 'play', 'spacer', 'settings', 'progress'])
   })
