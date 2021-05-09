@@ -4,9 +4,9 @@ title: 方法
 
 NPlayer 实例方法如下。
 
-### mount(el?: HTMLElement | string): void
+### mount(container?: HTMLElement | string): void
 
-挂载 player 到 DOM 中。如果初始化时没有传入 `el` 参数，那么调用该函数时的参数为必传。
+挂载 player 到 DOM 中。如果初始化时没有传入 `container` 参数，那么调用该函数时的参数为必传。
 
 ### incVolume(v = this.opts.volumeStep): void
 
@@ -43,6 +43,14 @@ NPlayer 实例方法如下。
 ### seek(seconds: number): void
 
 视频跳转到指定事件。
+
+### use(plugin: Plugin): this
+
+安装插件。
+
+### updateControlItems(items: (string | ControlItem)[], index?: number): void
+
+更新控制条项，默认 `index` 是 `0`，也就是最下面一行。
 
 ### registerSettingItem(item: SettingItem, id?: string): void
 

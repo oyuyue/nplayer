@@ -30,11 +30,11 @@ title: 参数
 | progressBg | 进度条背景，请查看 [定制主题](theme.md) |
 | volumeProgressBg | 音量条背景，请查看 [定制主题](theme.md) |
 | volumeBarWidth | 音量条宽度，请查看 [定制主题](theme.md) |
-| loadingElement | 自定义视频 loading 元素，请查看 [定制主题](theme.md) |
+| loadingEl | 自定义视频 loading 元素，请查看 [定制主题](theme.md) |
 | openEdgeInIE | 是否在 Win10 的 IE 中自动打开 Edge，请查看 [IE 11 兼容](ie11.md) |
 | poster | 海报图片地址，请查看 [海报](poster.md) |
 | posterEnable | 是否启用海报功能 |
-| posterPlayElement | 自定义海报播放按钮，请查看 [定制主题](theme.md) |
+| posterPlayEl | 自定义海报播放按钮，请查看 [定制主题](theme.md) |
 | isTouch | 是否是触摸屏（默认会自动检测），如果是则会启用触摸屏交互 |
 
 ## 默认参数
@@ -96,11 +96,11 @@ interface PlayerOptions {
   progressDot?: HTMLElement;
   volumeProgressBg?: string;
   volumeBarWidth?: number | string;
-  loadingElement?: HTMLElement;
+  loadingEl?: HTMLElement;
   openEdgeInIE?: boolean;
   poster?: string;
   posterEnable?: boolean;
-  posterPlayElement?: HTMLElement;
+  posterPlayEl?: HTMLElement;
   isTouch?: boolean;
   [key: string]: any;
 }
