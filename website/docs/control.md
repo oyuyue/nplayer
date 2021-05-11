@@ -2,17 +2,20 @@
 title: 控制条
 ---
 
-控制条指的是播放器下方的控制组件集合，它包含播放、暂停、音量调节等按钮。
+控制条指的是播放器下方的控制组件集合，它包含播放、暂停、音量调节等按钮。NPlayer 一共有 3 个控制条，底部两个，顶部一个。
 
 ## 配置
 
-可以通过 `controls` 参数来配置控制条组件的位置，显示隐藏等。
+可以通过 `controls` 参数来配置控制条组件的位置，显示隐藏等，它是一个二维数组，顺序是从下到上，一共三个。
 
 它的默认参数如下。
 
 ```js
 {
-  controls:  ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen']
+  controls:  [
+    ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+    ['progress']
+  ]
 }
 ```
 
@@ -26,20 +29,23 @@ title: 控制条
 
 ```typescript
 interface ControlItem {
-  element: HTMLElement; // 控制项的 DOM 元素
+  el: HTMLElement; // 控制项的 DOM 元素
   id?: string; // 一般只有在自定义插件中才会设置
   tip?: string; // 提示字符串
   tooltip?: Tooltip; // 提示组件对象
-  init?: (player: Player, tooltip: Tooltip) => void; // 初始化时会调用
+  mounted?: boolean; // 是否已经初始化，内部使用字段
+  init?: (player: Player, position: number, tooltip: Tooltip) => void; // 初始化时会调用
+  update?: (position: number) => void; // 挂载时，如果 `mounted` 等于 `true`，则会调用
+  hide?: () => void; // 隐藏时会调用
   isSupport?: (player: Player) => boolean; // 是否支持
   dispose?: () => void; // 调用将销毁该项目
   [key: string]: any;
 }
 ```
 
-播放器初始化时，会调用 `isSupport` 判断当前是否支持该控制项，如果不支持则会中断，处理下一个。接下来会执行 `init` 方法，并传入两个参数，最后会将 `element` 添加到控制条中。
+播放器初始化时，会调用 `isSupport` 判断当前是否支持该控制项，如果不支持则会中断，处理下一个。接下来会执行 `init` 方法，并传入两个参数，最后会将 `el` 添加到控制条中。
 
-`tip` 参数是一个字符串，用户鼠标放到对应控制项上时会显示这个提示字符串。如果想自己控制这个提示字符串时，可以接收在 `init` 方法中的第二个参数。
+`tip` 参数是一个字符串，用户鼠标放到对应控制项上时会显示这个提示字符串。如果想自己控制这个提示字符串时，可以接收在 `init` 方法中的第 3 个参数。
 
 ```js
 const MyControl = {
@@ -61,7 +67,7 @@ Tooltip 是内置组件，Tooltip 的使用方法请查看 [内置组件章节](
 
 :::
 
-如果你不需要控制 `tooltip` 时，可以不接收第二参数。
+如果你不需要控制 `tooltip` 时，可以不接收第 3 参数。
 
 ```js
 const myControl = {
@@ -71,6 +77,38 @@ const myControl = {
   }
 }
 ```
+
+## 多控制条
+
+NPlayer 一共有 3 个控制条，底部两个，顶部一个。，你可以将任何一个控制项放入，这 3 个控制条中的任何一个位置。`controls` 参数是一个二维数组，顺序是从下到上。
+
+你可以任意组合这些控制项。
+
+```js
+new Player({
+  controls: [
+    ['play', 'progress', 'time', 'web-fullscreen', 'fullscreen'],
+    [],
+    ['spacer', 'settings'],
+  ]
+}).mount(document.body)
+```
+
+上方把第 2 个控制条中的 `progress`，放入第一个中，并将设置放入第 3 个（顶部）中，效果如下图。
+
+![NPlayer Control](/img/phone.png)
+
+## 动态更新控制项
+
+你可以使用 `updateControls()` 方法来动态更新控制条项。
+
+```js
+const player = new Player().mount(document.body)
+
+player.updateControlItems(['spacer', 'settings'], 2)
+```
+
+第 1 个参数是控制条数组，第 2 参数是控制条的位置，这里的 `2` （数组下标从 0 开始）就是第 3 个也就是顶部控制条，第二个参数默认是 `0` 也就是最下面的控制条。
 
 ## 注册和获取控制项
 

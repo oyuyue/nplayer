@@ -48,7 +48,7 @@ Player 接收一个 `plugins` 参数，它是应用在当前播放器的插件�
 ```js
 const myPlugin = {
   apply(player) {
-    player.registerControlItem({ id: 'my-control', element: document.createElement('input') })
+    player.registerControlItem({ id: 'my-control', el: document.createElement('input') })
   }
 }
 

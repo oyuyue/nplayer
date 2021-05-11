@@ -89,9 +89,9 @@ console.log(speed)
 interface SettingItem<T = any> {
   // ...
   _switch?: Switch;
-  _selectedElement?: HTMLElement;
-  _optionElements?: HTMLElement[];
-  _optionElement?: HTMLElement;
+  _selectedEl?: HTMLElement;
+  _optionEls?: HTMLElement[];
+  _optionEl?: HTMLElement;
 }
 ```
 

@@ -46,12 +46,12 @@ import Player from 'nplayer'
 
 const video = document.createElement('video')
 video.src = 'https://v-cdn.zjol.com.cn/280443.mp4'
-const player = new Player({ video, videoAttrs: { autoplay: 'true' } })
+const player = new Player({ video, videoProps: { autoplay: 'true' } })
 
 player.mount(document.body)
 ```
 
-你还可以使用 `videoAttrs` 参数，将视频元素的属性添加到这个 `video` 元素上，`videoAttrs` 有一些默认值，它会和你传入的合并再设置到视频元素上，详情请查看 [参数](api/config.md) 。
+你还可以使用 `videoProps` 参数，将视频元素的属性添加到这个 `video` 元素上，`videoProps` 有一些默认值，它会和你传入的合并再设置到视频元素上，详情请查看 [参数](api/config.md) 。
 
 `player.mount` 方法可以将播放器挂载到页面上，它接收一个参数，可以是一个字符串或一个 dom 元素。当是字符串时，将会自动查找该 dom 元素。
 
@@ -162,7 +162,7 @@ const Plugin = {
 }
 ```
 
-:::caution 注意
+:::caution
 
 NPlayer 监听自身尺寸变化使用了 `ResizeObserver` api。如果你的目标浏览器不支持 `ResizeObserver`。当时播放器尺寸变化时，请手动触发 `UpdateSize`，`player.emit('UpdateSize')` 或者在 NPlayer 之前引入 `ResizeObserver` 的 polyfill。
 
@@ -229,15 +229,11 @@ const Plugin = {
 
 但并不是所有配置项都会做出对应修改，`settings`、`contextMenus` 和 `controls` 变化并不会做出对应修改。
 
-如果你想隐藏控制条项目时，调用 `player.updateOptions({ control: ['play', 'fullscreen'] })`，将控制条只保留播放和全屏按钮。会没有任何效果，控制条项目还是和之前一样。
-
-但是你可以使用如下方法隐藏一个菜单项。
+如果你想更新控制条，可以使用 `updateControlItems` 方法。
 
 ```js
-player.getControlItem('play').element.style.display = 'none'
+player.updateControlItems(['spacer', 'settings'], 2)
 ```
-
-对于右键菜单和设置菜单都是差不多的操作，详情请查看对应章节。
 
 ## Toast
 

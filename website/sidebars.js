@@ -5,6 +5,7 @@ module.exports = {
     'shortcut',
     'contextmenu',
     'control',
+    'responsive',
     'settings',
     'poster',
     'thumbnail',

@@ -28,6 +28,7 @@ title: 参数
 | themeColor | 主题色，请查看 [定制主题](theme.md) |
 | posterBgColor | 海报背景色，请查看 [定制主题](theme.md) |
 | progressBg | 进度条背景，请查看 [定制主题](theme.md) |
+| progressDot | 进度条上的点，请查看 [定制主题](theme.md) |
 | volumeProgressBg | 音量条背景，请查看 [定制主题](theme.md) |
 | volumeBarWidth | 音量条宽度，请查看 [定制主题](theme.md) |
 | loadingEl | 自定义视频 loading 元素，请查看 [定制主题](theme.md) |

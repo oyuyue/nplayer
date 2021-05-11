@@ -49,7 +49,7 @@ Icon 对象提供一个 `register` 方法，它接收两个参数，icon 名和�
 
 你可以通过覆盖上面 icon 名，从而修改播放器对应 icon。
 
-:::caution 注意
+:::caution
 
 需要在构造 player 对象之前替换 icon，否则 player 对象构造出来后还是使用的老 icon。
 
