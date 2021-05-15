@@ -11,7 +11,7 @@ title: 右键菜单
 ```js
 {
   contextMenus: ['loop', 'pip', 'version'],
-  contextMenuToggle: true,
+  contextMenuToggle: true
 }
 ```
 
@@ -21,7 +21,7 @@ title: 右键菜单
 
 ## 自定义菜单项
 
-菜单项对象签名如下：
+菜单项对象签名如下。
 
 ```typescript
 interface ContextMenuItem {
@@ -54,15 +54,15 @@ const MyPIP = {
   click(player) {
     if (player.video.readyState < 3) return; // 视频还没加载成功
     if ((document as any).pictureInPictureElement !== player.video) {
-      (player.video as any).requestPictureInPicture();
+      (player.video as any).requestPictureInPicture()
     } else {
-      (document as any).exitPictureInPicture();
+      (document as any).exitPictureInPicture()
     }
-  },
+  }
 }
 
 new Player({
-  contextMenus: ['loop', 'pip', MyPIP, 'version'],
+  contextMenus: ['loop', 'pip', MyPIP, 'version']
 })
 ```
 
@@ -72,13 +72,13 @@ new Player({
 
 `player` 提供了两个方法来注册和获取菜单项对象。
 
-### registerContextMenuItem(item: ContextMenuItem, id?: string)
+### `registerContextMenuItem(item: ContextMenuItem, id?: string)`
 
 你可以使用该方法注册菜单项目，一般只会在自定义插件中会使用。详情请查看 [插件章节](plugin.md)。
 
-### getContextMenuItem(id: string): ContextMenuItem | null
+### `getContextMenuItem(id: string): ContextMenuItem | null`
 
-你可以用该方法获取指定 id 的菜单项。
+你可以用该方法获取指定 `id` 的菜单项。
 
 ```js
 const player = new Player()

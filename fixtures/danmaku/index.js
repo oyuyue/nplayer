@@ -556,13 +556,13 @@ window.onload = function () {
     ].sort(function (a, b) { return a.time - b.time }),
   })
   var player = new NPlayer.Player({
-    src: 'https://v-cdn.zjol.com.cn/280443.mp4',
+    // src: 'https://v-cdn.zjol.com.cn/280443.mp4',
     plugins: [danmaku]
   })
 
-  // var hls = new Hls();
-  // hls.attachMedia(player.video)
-  // hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
+  var hls = new Hls();
+  hls.attachMedia(player.video)
+  hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
 
   player.mount(document.body)
 }

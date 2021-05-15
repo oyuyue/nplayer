@@ -4,6 +4,14 @@ title: 参数
 
 播放器构造函数参数。
 
+```js
+import Player from 'nplayer'
+
+new Player({
+  // 参数
+})
+```
+
 ## 描述
 
 | 参数 | 描述 |
@@ -36,7 +44,7 @@ title: 参数
 | poster | 海报图片地址，请查看 [海报](poster.md) |
 | posterEnable | 是否启用海报功能 |
 | posterPlayEl | 自定义海报播放按钮，请查看 [定制主题](theme.md) |
-| isTouch | 是否是触摸屏（默认会自动检测），如果是则会启用触摸屏交互 |
+| isTouch | 是否是触摸屏（默认会自动检测），如果是则会启用触摸屏交互，请查看 [响应式/多设备](responsive.md) |
 
 ## 默认参数
 
@@ -69,6 +77,12 @@ title: 参数
   }
 }
 ```
+
+:::caution
+
+需要注意，控制条参数会根据其他参数不同而不同。如果 `isTouch` 是 `true`，则不会包括 `volume`，如果 `live` 参数是 `true`，则不会包括 `progress` 控制项。
+
+:::
 
 ## 参数签名
 

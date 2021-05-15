@@ -11,63 +11,63 @@ const player = new Player()
 console.log(player)
 ```
 
-你可以通过 `player` 对象来访问这些属性。
+你可以通过 `player` 实例对象来访问这些属性。
 
-### container: HTMLElement
+### `container: HTMLElement`
 
-播放器容器元素（`container` 或 `mount()` 参数）。
+播放器容器元素（`container` 参数 或 `mount()` 参数）。
 
-### el: HTMLElement
+### `el: HTMLElement`
 
 播放器 DOM 元素。
 
-### opts: PlayerOptions
+### `opts: PlayerOptions`
 
 播放器参数。
 
-### mounted: boolean
+### `mounted: boolean`
 
 播放器是否已挂载。
 
-### video: HTMLVideoElement
+### `video: HTMLVideoElement`
 
 播放器视频元素。
 
-### rect: Rect
+### `rect: Rect`
 
 播放器尺寸。
 
-- rect.width 播放器宽度
-- rect.height 播放器高度
-- rect.x 播放器 x
-- rect.y 播放器 y
-- rect.update() 更新播放器尺寸
+- `rect.width` 播放器宽度
+- `rect.height` 播放器高度
+- `rect.x` 播放器 `x`
+- `rect.y` 播放器 `y`
+- `rect.update()` 更新播放器尺寸
 
 一般情况不要调用 `player.rect.update()` 方法，而是触发 `UpdateSize` 事件， `player.emit('UpdateSize')` 。
 
-### loading: Loading
+### `loading: Loading`
 
 播放器 loading 对象。
 
-- loading.el loading DOM 元素
-- loading.isActive 当前是否显示
-- loading.show() 显示 loading
-- loading.hide() 隐藏 loading
+- `loading.el` loading DOM 元素
+- `loading.isActive` 当前是否显示
+- `loading.show()` 显示 loading
+- `loading.hide()` 隐藏 loading
 
-### poster: Poster
+### `poster: Poster`
 
 播放器海报对象。
 
-- poster.el poster DOM 元素
-- poster.isActive 当前是否显示
-- poster.show() 显示 poster
-- poster.hide() 隐藏 poster
+- `poster.el` poster DOM 元素
+- `poster.isActive` 当前是否显示
+- `poster.show()` 显示 poster
+- `poster.hide()` 隐藏 poster
 
-### toast: Toast
+### `toast: Toast`
 
 播放器提示对象。
 
-- show(html: string, position?: Position, timeout = 3000): ToastItem 显示一个提示，返回提示对象
+- `show(html: string, position?: Position, timeout = 3000): ToastItem` 显示一个提示，返回提示对象
 
 ```typescript
 type Position = 'center' | 'left-top' | 'right-top' | 'left-bottom' | 'right-bottom'
@@ -77,102 +77,102 @@ interface ToastItem {
 }
 ```
 
-- close(toastItem?: ToastItem): void 手动关闭一个提示，或者全部提示
+- `close(toastItem?: ToastItem): void` 手动关闭一个提示，或者全部提示
 
-### fullscreen: Fullscreen
+### `fullscreen: Fullscreen`
 
 播放器全屏对象。
 
-- isActive 当前是否是全屏状态
-- enableDblclick() 启用双击进入全屏
-- disableDblclick() 禁用双击进入全屏
-- enter() 进入全屏
-- exit() 退出全屏
-- toggle() 进入或退出全屏
+- `isActive` 当前是否是全屏状态
+- `enableDblclick()` 启用双击进入全屏
+- `disableDblclick()` 禁用双击进入全屏
+- `enter()` 进入全屏
+- `exit()` 退出全屏
+- `toggle()` 进入或退出全屏
 
-### webFullscreen: WebFullscreen
+### `webFullscreen: WebFullscreen`
 
 播放器网页全屏对象。
 
-- isActive 当前是否是全屏状态
-- enter() 进入全屏
-- exit() 退出全屏
-- toggle() 进入或退出全屏
+- `isActive` 当前是否是全屏状态
+- `enter()` 进入全屏
+- `exit()` 退出全屏
+- `toggle()` 进入或退出全屏
 
-### shortcut: Shortcut
+### `shortcut: Shortcut`
 
 播放器快捷键对象。
 
-- register(keyCode: number, handler: (player: Player) => void) 注册自定义快捷键处理器
-- unregister(keyCode: number) 取消注册
-- enable() 启用快捷键
-- disable() 禁用快捷键
+- `register(keyCode: number, handler: (player: Player) => void)` 注册自定义快捷键处理器
+- `unregister(keyCode: number)` 取消注册
+- `enable()` 启用快捷键
+- `disable()` 禁用快捷键
 
-### control: Control
+### `control: Control`
 
 播放器进度条对象。
 
-- currentBp 当前断点值
-- isActive 当前是否显示控制条
-- show() 显示控制条
-- hide() 隐藏控制条
-- showTransient() 显示控制条，但是到一定时间会尝试自动隐藏
-- tryHide() 尝试隐藏控制条，比如当前视频暂停状态，调用该方法就不会隐藏
-- require() 添加一个控制条显示请求，`tryHide` 会判断是否有请求，如果则也不会隐藏
-- release() 释放一个请求，如果调用 `require`，没有调用该方法，则可能导致控制条不会自动隐藏。
-- updateItems() 更新控制条项，同 `player.updateControlItems()`。
+- `currentBp` 当前断点值
+- `isActive` 当前是否显示控制条
+- `show()` 显示控制条
+- `hide()` 隐藏控制条
+- `showTransient()` 显示控制条，但是到一定时间会尝试自动隐藏
+- `tryHide()` 尝试隐藏控制条，比如当前视频暂停状态，调用该方法就不会隐藏
+- `require()` 添加一个控制条显示请求，`tryHide` 会判断是否有请求，如果则也不会隐藏
+- `release()` 释放一个请求，如果调用 `require`，没有调用该方法，则可能导致控制条不会自动隐藏。
+- `updateItems()` 更新控制条项，同 `player.updateControlItems()`
 
-### contextmenu: ContextMenu
+### `contextmenu: ContextMenu`
 
 播放器右键菜单。
 
-- isActive 当前是否显示
-- hide() 隐藏右键菜单
+- `isActive` 当前是否显示
+- `hide()` 隐藏右键菜单
 
-### touch: Touch
+### `touch: Touch`
 
 触屏交互，如果 `isTouch` 参数是 `true` 时会启用。请查看[播放器参数](api/attrs.md)。
 
-- enable() 启用触屏交互
-- disable() 禁用触屏交互
+- `enable()` 启用触屏交互
+- `disable()` 禁用触屏交互
 
-### currentTime: number [get/set]
+### `currentTime: number` [get/set]
 
-获取和设置当前视频时间。
+获取和设置当前视频时间。`[get/set]` 表示该属性可以同时被获取和设置新的值。
 
-### duration: number [get]
+### `duration: number` [get]
 
 获取当前视频长度。
 
-### buffered: TimeRanges [get]
+### `buffered: TimeRanges` [get]
 
 通 video 元素的 [buffered](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/buffered)。
 
-### volume: number [get/set]
+### `volume: number` [get/set]
 
 获取和设置视频音量，音量会被持久化。
 
-### muted: boolean [get/set]
+### `muted: boolean` [get/set]
 
 获取和设置视频是否静音。
 
-### playbackRate: number [get/set]
+### `playbackRate: number` [get/set]
 
 获取和设置视频播放速率。
 
-### ended: boolean [get]
+### `ended: boolean` [get]
 
 当前视频是否播放结束。
 
-### paused: boolean [get]
+### `paused: boolean` [get]
 
 当前视频是否暂停。
 
-### playing: boolean [get]
+### `playing: boolean` [get]
 
 当前视频是否在播放中。
 
-### loop: boolean [get/set]
+### `loop: boolean` [get/set]
 
 获取和设置视频是否循环播放。
 
@@ -199,10 +199,10 @@ console.log(Player)
 
 国际化对象。
 
-- t(key: string, lang?: string): string 返回翻译语言文字
-- add(lang: string, transData: Record<string, string>) 添加翻译
-- setCurrentLang(lang?: string) 设置当前语言
-- setDefaultLang(lang?: string) 设置默认语言
+- `t(key: string, lang?: string)`: string 返回翻译语言文字
+- `add(lang: string, transData: Record<string, string>)` 添加翻译
+- `setCurrentLang(lang?: string)` 设置当前语言
+- `setDefaultLang(lang?: string)` 设置默认语言
 
 ```js
 const key = 'Web fullscreen'

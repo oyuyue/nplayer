@@ -10,19 +10,17 @@ slug: /
 
 ## 介绍
 
-NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，Gzip 大小只有 21KB，[兼容 IE11](ie11.md)，支持 SSR，支持直播。该播放器高度可定制，所有图标、按钮、色彩等都可以替换，并且提供了 [内置组件](api/components.md) 方便二次开发。它还拥有插件系统，[弹幕功能](ecosystem/danmaku.md) 就是使用插件形式提供。该播放器可以接入任何 [流媒体](streaming.md)，如 hls、dash 和 flv 等。
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，[兼容 IE11](ie11.md)，支持移动端、支持 SSR、支持直播。高度可定制，所有图标、主题色等都可以替换，并且提供了[内置组件](api/components.md)方便二次开发。你可以自定义任意多个断点，不仅仅是兼容移动端，只要愿意，你可以非常轻松的兼容手机竖屏、手机横屏、平板等设备。它还拥有插件系统，[弹幕功能](ecosystem/danmaku.md)就是使用插件形式提供，使用时按需引入即可。该播放器还可以接入任何[流媒体](streaming.md)，如 hls、dash 和 flv 等。
 
 ![NPlayer](/img/preview.jpg)
 
 ## 安装
 
-使用如下命令快速安装 NPlayer。
-
 ```bash
 npm i -S nplayer
 ```
 
-更多请查看 [安装章节](installation.md)。
+详细内容请查看[安装章节](installation.md)。
 
 ## 开始使用
 
@@ -33,13 +31,11 @@ const player = new NPlayer({
   src: 'https://v-cdn.zjol.com.cn/280443.mp4'
 })
 
-// player.mount('#app')
+// player.mount('#app') 还可以通过选择字符串自动找到相应的 DOM 元素
 player.mount(document.body)
 ```
 
-上面是创建一个播放器最简单的方法，创建一个 `player` 对象，设置视频元素的 `src`，然后将它挂载到 `document.body` 中。
-
-当然你也可以自己提供 `video` 元素。
+首先我们导入 `Player`，然后创建一个播放器实例，并传入视频的地址，然后调用 `mount` 方法将它挂载到 `body` 元素中。
 
 ```js
 import Player from 'nplayer'
@@ -51,19 +47,29 @@ const player = new Player({ video, videoProps: { autoplay: 'true' } })
 player.mount(document.body)
 ```
 
-你还可以使用 `videoProps` 参数，将视频元素的属性添加到这个 `video` 元素上，`videoProps` 有一些默认值，它会和你传入的合并再设置到视频元素上，详情请查看 [参数](api/config.md) 。
+我们还可以通过 `video` 参数，自己提供 `video` 元素，而不是让 `NPlayer` 自己创建。还可以通过 `videoProps` 给 `video` 元素设置属性。更多参数请查看[参数章节](api/config.md) 
 
-`player.mount` 方法可以将播放器挂载到页面上，它接收一个参数，可以是一个字符串或一个 dom 元素。当是字符串时，将会自动查找该 dom 元素。
+`mount` 方法可以将播放器挂载到指定 DOM 元素中，它接收一个参数，可以是一个字符串或一个 DOM 元素。当是字符串时，将会自动查找相应的 DOM 元素。
 
-## video source
+## Video Source
 
-除了设置 video 的 `src` 参数，还可以添加 [Source DOM 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/source)。
+除了设置 video 元素的 `src` 参数，还可以添加 [Source DOM 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/source)。
 
 ```js
 new Player({ video, videoSources: [{ src: 'video.webm', type: 'video/webm' }] })
 ```
 
-参数签名如下。
+最终生成 DOM 结构如下。
+
+```html
+<video class="nplayer_video" crossorigin="anonymous" preload="auto" playsinline="true">
+  <source src="video.webm" type="video/webm">
+</video>
+```
+
+其中 `crossorigin`、`preload` 和 `playsinline` 是默认的 `videoProps`。
+
+一个 Source 参数签名如下。
 
 ```typescript
 interface VideoSource {
@@ -100,11 +106,11 @@ const Plugin = {
 }
 ```
 
-自定义插件中只能访问到 Player 实例，这时你就可以通过 `Player` 属性访问静态属性。具体属性，请参考 [属性章节](api/attrs.md)。
+自定义插件中只能访问到 Player 实例，这时你就可以通过 `Player` 属性访问静态属性。具体属性，请参考[属性章节](api/attrs.md)。
 
 Player 实例上有很多属性和方法，比如 `player.fullscreen` 是 `Fullscreen` 对象，通过它你可以手动进入和退出全屏，`player.playing` 属性来判断当前时候在播放等等。
 
-你可以通过查看 [API 部分](api/attrs.md) 了解全部属性和方法。
+你可以通过查看[API 部分](api/attrs.md) 了解全部属性和方法。
 
 ## 事件
 
@@ -135,16 +141,17 @@ console.log('ControlShow')
 
 上面打印都是相同的字符串。
 
-详情请查看 [事件章节](api/events.md)。
+详情请查看[事件章节](api/events.md)。
 
 ## 播放器尺寸变化
 
 默认情况下当浏览器尺寸变化或者播放器容器尺寸变化时，播放器及其内部组件会自动调节自身尺寸。
 
-你可以通过 player 对象上的 `rect` 属性获取播放器的宽高和坐标（内部是使用的 `getBoundingClientRect` api）。
+你可以通过 `player` 对象上的 `rect` 属性获取播放器的宽高和坐标（内部是使用 `getBoundingClientRect` API）。
 
 ```js
 import Player from 'player'
+
 const player = new Player()
 console.log(player.rect.width)
 console.log(player.rect.height)
@@ -152,15 +159,7 @@ console.log(player.rect.x)
 console.log(player.rect.y)
 ```
 
-你可以监听 `UpdateSize` 事件来进行相关操作，防止自己添加的组件由于用了老的数据，而导致变形或者位置出错。
-
-```js
-const Plugin = {
-  apply(player) {
-    player.on('UpdateSize', () => this.updatePositionAndSize())
-  }
-}
-```
+你可以监听 `UpdateSize` 事件来响应播放器尺寸变化。
 
 :::caution
 
@@ -194,6 +193,30 @@ NPlayer 由 6 个不同功能的层级组成，每个层级有自己的 `z-index
 
 `z-index` 高的组件会覆盖低的组件。当要实现自己组件时可以参考上表中的 `z-index`，将它放入合适层级。如，弹幕插件默认层级 `z-index` 是 5，那它将出现在 control 下方，video 元素上方。
 
+## 响应式布局
+
+NPlayer 一共有三个控制条，底部两个，顶部一个。
+
+![NPlayer control](/img/control.jpg)
+
+为了看清 3 个控制条，这里再给每个控制条加了个背景色，默认是没有的。
+
+```js
+new Player({
+  controls: [
+    ['play', 'volume', 'time', 'spacer', 'web-fullscreen', 'fullscreen'],
+    ['progress'],
+    ['spacer', 'settings']
+  ]
+}).mount(document.body)
+```
+
+这个布局是通过 `controls` 参数配置的。它是一个二维数组，下标 `0` 和 `1` 是下方的两个控制条，`2` 是顶部的控制条。
+
+详情请查看[控制条章节](control.md)。
+
+NPlayer 还提供了两套交互，触屏交互和键鼠交互，详情请查看[响应式/多设备章节](responsive.md)。
+
 ## 更新配置
 
 NPlayer 几乎所有部分都可以配置。
@@ -204,7 +227,7 @@ NPlayer 几乎所有部分都可以配置。
 - 添加、移除右键菜单项目或改变顺序，请参考 [右键章节](contextmenu.md)。
 - 更多请直接的点击侧边栏对应章节。
 
-当你实例一个 player 对象后，想修改它的配置，可以使用 `updateOptions(新的配置)` 方法。
+当你实例一个 `player` 对象后，想修改它的配置，可以使用 `updateOptions(新的配置)` 方法。
 
 ```js
 player.updateOptions({
@@ -229,7 +252,7 @@ const Plugin = {
 
 但并不是所有配置项都会做出对应修改，`settings`、`contextMenus` 和 `controls` 变化并不会做出对应修改。
 
-如果你想更新控制条，可以使用 `updateControlItems` 方法。
+如果你想更新控制条，可以使用 `updateControlItems` 方法。详情请查看[控制条章节](control.md)。
 
 ```js
 player.updateControlItems(['spacer', 'settings'], 2)
@@ -250,7 +273,7 @@ player.toast.show('提示~', 'left-top', 1000)
 
 Player 提供了一些内置组件来方便二次开发和统一交互。比如控制条项目的 `Tooltip` 组件，进度条 `Slider` 组件，`Checkout` 选择框组件等等。
 
-请查看 [内置组件章节](api/components.md) 了解更多。
+请查看[内置组件章节](api/components.md) 了解更多。
 
 ## 问题 & 新功能
 

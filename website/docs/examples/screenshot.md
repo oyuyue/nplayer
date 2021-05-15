@@ -30,7 +30,7 @@ const Screenshot = {
 }
 
 const player = new Player({
-  contextMenus: [Screenshot, 'loop', 'pip', 'version'],
+  contextMenus: [Screenshot, 'loop', 'pip', 'version']
 })
 player.mount(document.body)
 ```

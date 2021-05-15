@@ -156,73 +156,77 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 }
 ```
 
-### autoInsert: boolean
+### `autoInsert: boolean`
 
 是否自动插入控制条项。
 
-### disable: boolean
+### `disable: boolean`
 
 是否禁用弹幕
 
-### blocked: Array<'scroll' | 'top' | 'bottom' | 'color'>
+### `blocked: Array<'scroll' | 'top' | 'bottom' | 'color'>`
 
 禁用的弹幕类型数组。
 
-### fontsize: number
+### `fontsize: number`
 
 字体大小。
 
-### fontsizeScale: number
+### `fontsizeScale: number`
 
-默认字体的放大比例，0.5 到 1.5。
+默认字体的放大比例，`0.5` 到 `1.5`。
 
-### opacity: number
+### `opacity: number`
 
-弹幕不透明度，0.1 到 1。
+弹幕不透明度，`0.1` 到 `1`。
 
-### speed: number
+### `speed: number`
 
-弹幕速度倍数，0.5 到 1.5。
+弹幕速度倍数，`0.5` 到 `1.5`。
 
-### area: 0.25 | 0.5 | 0.75 | 1
+### `area: 0.25 | 0.5 | 0.75 | 1`
 
 弹幕显示区域。
 
-### unlimited: boolean
+### `unlimited: boolean`
 
 是否开启无限弹幕模式。
 
-### bottomUp: boolean
+### `bottomUp: boolean`
 
 滚动类型弹幕是否从下到上。
 
-### colors: string[]
+### `colors: string[]`
 
 发送弹幕时可选的颜色数组。
 
-### duration: number
+### `duration: number`
 
 一条弹幕展示的时间。
 
-### items: BulletOption[]
+### `items: BulletOption[]`
 
 弹幕数组。**弹幕数组必须要按时间从小到大**。
 
-### zIndex: number
+### `zIndex: number`
 
 弹幕的层级。
 
-### persistOptions: boolean
+### `persistOptions: boolean`
 
 是否持久化，用户弹幕设置。
 
-### isDefaultColor?: (color: string) => boolean
+### `isDefaultColor?: (color: string) => boolean`
 
 用于判断是否是默认颜色，当用户屏蔽才彩色类型弹幕时，会调用该方法，把这个方法返回 `false` 的弹幕全部屏蔽。
 
 默认只对 `#fff`、 `#ffffff` 或空返回 `true`。
 
-### discard: (b: BulletOption) => boolean
+### `maxPerInsert: number`
+
+单次插入多少弹幕，默认是 `20` 个。
+
+### `discard: (b: BulletOption) => boolean`
 
 发送弹幕之前会调用该回调，用来判断是否丢弃当前弹幕。
 
@@ -232,27 +236,27 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 
 ### 属性
 
-#### el: HTMLElement
+#### `el: HTMLElement`
 
 弹幕容器 DOM 元素。
 
-#### opts: DanmakuOptions
+#### `opts: DanmakuOptions`
 
 弹幕参数。
 
-#### enabled: boolean
+#### `enabled: boolean`
 
 是否启用。
 
-#### paused: boolean
+#### `paused: boolean`
 
 是否暂停。
 
-#### fontsize: number
+#### `fontsize: number`
 
 最终字体大小，`fontsize * fontsizeScale`。
 
-#### speedScale: number
+#### `speedScale: number`
 
 最终弹幕速度倍速，`playbackRate * speed`。
 
@@ -262,31 +266,31 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 
 ### 方法
 
-#### send(opts: BulletOption): void
+#### `send(opts: BulletOption): void`
 
 发送一个弹幕。
 
-#### pause()
+#### `pause()`
 
 暂停弹幕。
 
-#### resume()
+#### `resume()`
 
 恢复弹幕。
 
-#### getItems(): BulletOption[]
+#### `getItems(): BulletOption[]`
 
 获取弹幕列表。
 
-#### addItem(opts: BulletOption): number
+#### `addItem(opts: BulletOption): number`
 
 添加一个弹幕到弹幕列表，并返回该弹幕插入下标。（大量弹幕请不要循环调用该方法，请使用其他批量方法）
 
-#### appendItems(items: BulletOption[]): void
+#### `appendItems(items: BulletOption[]): void`
 
 在现有弹幕列表末尾添加弹幕列表。**需要保证添加的弹幕列表是有序的，而且其第一个弹幕的时间比现有的最后一个时间大**。
 
-#### resetItems(items: BulletOption[]): void
+#### `resetItems(items: BulletOption[]): void`
 
 重置弹幕列表。如果你又有一堆无序弹幕列表需要加入。可以通过 `getItems()` 获取现有弹幕，然后拼接两个列表，做排序，再调用该方法。
 
@@ -297,14 +301,14 @@ const sortedItems = oldItems.concat(newUnsortItems).sort((a, b) => a.time - b.ti
 player.danmaku.resetItems(sortedItems)
 ```
 
-#### clearScreen()
+#### `clearScreen()`
 
 清屏。
 
-#### enable()
+#### `enable()`
 
 启用。
 
-#### disable()
+#### `disable()`
 
 禁用。

@@ -8,7 +8,7 @@ title: 安装
 npm i -S nplayer
 ```
 
-或
+或者使用 `yarn`。
 
 ```bash
 yarn add nplayer
