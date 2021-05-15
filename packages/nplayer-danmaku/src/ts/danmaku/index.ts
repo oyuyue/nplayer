@@ -88,9 +88,8 @@ export class Danmaku implements Disposable {
 
     if (!this.opts.disable) this.enable();
 
-    addDisposable(this, player.on(player.EVENT.MOUNTED, () => {
-      this.updateTrack();
-    }));
+    addDisposable(this, player.on(player.EVENT.MOUNTED, this.updateTrack));
+    addDisposable(this, player.on(player.EVENT.UPDATE_SIZE, this.updateTrack));
 
     addDisposable(player, this);
   }
@@ -170,7 +169,7 @@ export class Danmaku implements Disposable {
     }
   }
 
-  private updateTrack(): void {
+  private updateTrack = (): void => {
     this.trackHeight = this.fontsize + 5;
     this.track = Math.floor(this.player.rect.height * this.opts.area / this.trackHeight);
   }
