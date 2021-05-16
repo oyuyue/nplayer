@@ -128,7 +128,7 @@ export class Bullet {
   }
 
   show() {
-    this.el.style.visibility = 'visible';
+    this.el.style.visibility = '';
   }
 
   hide() {

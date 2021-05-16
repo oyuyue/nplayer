@@ -20,6 +20,7 @@ export interface DanmakuOptions {
   zIndex?: number;
   persistOptions?: boolean;
   maxPerInsert?: number;
+  poolSize?: number;
   isDefaultColor?: (color: string) => boolean;
   discard?: (b: BulletOption) => boolean;
 }
@@ -41,6 +42,7 @@ export const defaultOptions = (): Required<DanmakuOptions> => ({
   persistOptions: false,
   isDefaultColor,
   maxPerInsert: 20,
+  poolSize: 50,
   discard() { return false; },
 });
 
@@ -125,6 +127,12 @@ export class Danmaku implements Disposable {
     return bullet;
   }
 
+  private unmountBullet(bullet: Bullet) {
+    if (bullet.el && bullet.el.parentNode) {
+      bullet.el.parentNode.removeChild(bullet.el);
+    }
+  }
+
   private getShortestTrack(): [number, Bullet | undefined] {
     let shortest = this.scrollBullets[0];
     if (!shortest || shortest.ended) return [0] as any;
@@ -196,7 +204,11 @@ export class Danmaku implements Disposable {
   }
 
   recycleBullet(bullet: Bullet): void {
-    this.bulletPool.push(bullet);
+    if (this.bulletPool.length > this.opts.poolSize) {
+      this.unmountBullet(bullet);
+    } else {
+      this.bulletPool.push(bullet);
+    }
     this.aliveBullets.delete(bullet);
     if (bullet.type === 'scroll' && this.scrollBullets[bullet.track] === bullet) this.scrollBullets[bullet.track] = undefined;
   }
