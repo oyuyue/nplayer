@@ -189,6 +189,199 @@ window.onload = function () {
       { text: '这小眼神很忧伤 哈哈哈 ', time: 62, color: '' },
       { text: '哇哇哇好梦幻 ', time: 161, color: '#673AB7' },
       { text: '猞猁！ ', time: 50, color: '' },
+      {
+        text: '毛茸茸的可爱 ',
+        time: 12,
+        color: '#673AB7',
+      },
+      {
+        text: '巨木森林的根得扎得多深呐… ',
+        time: 12,
+      },
+      {
+        text: '谢谢你们拍摄这么好的作品 ',
+        time: 12,
+      },
+      {
+        text: '你知道高中好不容易午休一次还有蝉鸣的痛苦吗 ',
+        time: 12,
+      },
+      {
+        text: '好高啊 ',
+        time: 12,
+      },
+      {
+        text: '2019-8-31 ',
+        time: 12,
+        color: '#673AB7',
+      },
+      {
+        text: '呃，开之前像香蕉，开之后里边像豆芽 ',
+        time: 13,
+        color: '#673AB7',
+      },
+      {
+        text: '哇哇哇好梦幻 ',
+        time: 13,
+        color: '#673AB7',
+      },
+      {
+        text: '动物界以繁殖为目的的 ',
+        time: 13,
+        color: '#E91E63',
+      },
+      {
+        text: '爬树还好者？ ',
+        time: 13,
+        color: '#E91E63',
+      },
+      {
+        text: '狐猴:你是什么东西？ ',
+        time: 14,
+      },
+      {
+        text: '大王好帅！ ',
+        time: 14,
+        color: '#673AB7',
+      },
+      {
+        text: '…… ',
+        time: 14,
+      },
+      {
+        text: '那棵树肯定很痒 ',
+        time: 15,
+      },
+      {
+        text: '流口水了卧槽。 ',
+        time: 15,
+        color: '#2196F3',
+      },
+      {
+        text: '密恐福利…… ',
+        time: 15,
+      },
+      {
+        text: '这小眼神很忧伤 哈哈哈 ',
+        time: 15,
+      },
+      {
+        text: '野鸭子都会飞的 ',
+        time: 15,
+        color: '#E91E63',
+      },
+      {
+        text: '有些是三年的 ',
+        time: 15,
+        color: '#673AB7',
+      },
+      {
+        text: '因为要好好表现 才能吸引雌性阿 ',
+        time: 15,
+      },
+      {
+        text: '炸着吃嘎嘣脆！ ',
+        time: 15,
+      },
+      {
+        text: '你们不要再打啦！ ',
+        time: 15,
+        color: '#673AB7',
+      },
+      {
+        text: '30厘米 ',
+        time: 16,
+        color: '#2196F3',
+      },
+      {
+        text: '30厘米 ',
+        time: 16,
+        color: '#2196F3',
+      },
+      {
+        text: '流口水了卧槽 ',
+        time: 16,
+        color: '#E91E63',
+      },
+      {
+        text: 'OMG???? ',
+        time: 16,
+        color: '#2196F3',
+      },
+      {
+        text: '猞猁！ ',
+        time: 16,
+      },
+      {
+        text: '嘎嘣脆 ',
+        time: 16,
+      },
+      {
+        text: '黄水仙 ',
+        time: 16,
+      },
+      {
+        text: 'and edible… ',
+        time: 16,
+        color: '#E91E63',
+      },
+      {
+        text: '好想一口吃掉 ',
+        time: 16,
+      },
+      {
+        text: '层林尽染 ',
+        time: 16,
+        color: '#2196F3',
+      },
+      {
+        text: '好想吃哦 ',
+        time: 16,
+      },
+      {
+        text: '这么可爱 ',
+        time: 17,
+        color: '#E91E63',
+      },
+      {
+        text: '哈哈哈哈哈哈哈 嗷 ',
+        time: 17,
+        color: '#673AB7',
+      },
+      {
+        text: '又白又嫩 ',
+        time: 17,
+      },
+      {
+        text: '蝉都是质数出现的避免其他生物吃光 ',
+        time: 17,
+      },
+      {
+        text: '猴面包树:哈哈哈劳资早就料到了 ',
+        time: 17,
+      },
+      {
+        text: '突然觉得蝉好伟大 ',
+        time: 17,
+      },
+      {
+        text: '呆萌 ',
+        time: 17,
+      },
+      {
+        text: '花都被你给抖没了 ',
+        time: 18,
+        color: '#2196F3',
+      },
+      {
+        text: '你追女朋友不表现阿。自己送上门的？ ',
+        time: 18,
+        color: '#2196F3',
+      },
+      {
+        text: '哇，猴面包树！ ',
+        time: 18,
+      },
       { text: '嗷一声奶奶的可爱猫奴一脸满足 ', time: 129, color: '#673AB7' },
       { text: '因为雌的要带孩子花花的吸引猎人 ', time: 42, color: '#E91E63' },
       { text: '动物界以繁殖为目的的 ', time: 190, color: '#E91E63' },
@@ -557,6 +750,23 @@ window.onload = function () {
   })
   var player = new NPlayer.Player({
     // src: 'https://v-cdn.zjol.com.cn/280443.mp4',
+    bpControls: {
+      600: [
+        ['play', 'progress', 'time', 'fullscreen'],
+        [],
+        ['spacer', 'danmaku-settings', 'airplay', 'settings']
+      ],
+      700: [
+        ['play', 'progress', 'time', 'fullscreen'],
+        [],
+        ['danmaku-send', 'danmaku-settings', 'airplay', 'settings']
+      ],
+      800: [
+        ['play', 'danmaku-send', 'danmaku-settings', 'airplay', 'settings', 'fullscreen'],
+        ['progress', 'time'],
+        []
+      ]
+    },
     plugins: [danmaku]
   })
 

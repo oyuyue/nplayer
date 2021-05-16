@@ -5,11 +5,11 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: '多格式',
+    title: '响应式',
     imageUrl: 'img/undraw_video_upload_3d4u.svg',
     description: (
       <>
-        支持 HLS、FLV、DASH、WebTorrent 等其他格式流媒体播放。
+        支持手机、平板、桌面电脑，并且可以自定义任意多个断点，不仅仅是兼容移动端。
       </>
     ),
   },
@@ -18,7 +18,7 @@ const features = [
     imageUrl: 'img/undraw_design_components_9vy6.svg',
     description: (
       <>
-        可轻松配置控制条、上下文菜单、设置和定制主题，并可以使用插件扩充播放器功能，提供了 内置组件 方便二次开发。
+        可轻松配置控制条、上下文菜单、设置和定制主题，并提供了内置组件方便二次开发。
       </>
     ),
   },
