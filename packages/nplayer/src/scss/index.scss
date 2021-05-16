@@ -702,12 +702,15 @@
       pointer-events: none;
       transition: opacity .2s ease;
 
+      > :first-child {
+        transform: translateX(-50%);
+      }
+
       &_inner {
         width: 13px;
         height: 13px;
         border-radius: 50%;
         background: var(--theme-color);
-        transform: translateX(-50%);
       }
     }
 

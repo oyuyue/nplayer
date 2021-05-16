@@ -2,6 +2,7 @@ import { EVENT } from 'src/ts/constants';
 import { Icon } from 'src/ts/features';
 import { Player } from 'src/ts/player';
 import {
+  addClass,
   addDisposable, addDisposableListener, Component, hide, show,
 } from 'src/ts/utils';
 
@@ -15,7 +16,8 @@ export class Poster extends Component {
   constructor(container: HTMLElement, private player: Player) {
     super(container, '.poster');
     this.poster = player.opts.poster;
-    this.playEl = player.opts.posterPlayEl || Icon.play('poster_play');
+    this.playEl = player.opts.posterPlayEl || Icon.play();
+    addClass(this.playEl, 'poster_play');
     this.el.appendChild(this.playEl);
     this.hide();
 
