@@ -703,7 +703,7 @@
       transition: opacity .2s ease;
 
       > :first-child {
-        transform: translateX(-50%);
+        transform: translate(-50%);
       }
 
       &_inner {
