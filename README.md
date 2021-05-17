@@ -5,7 +5,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
 [![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持移动端、支持 SSR、支持直播。高度可定制，所有图标、主题色等都可以替换，并且提供了内置组件方便二次开发。你可以自定义任意多个断点，不仅仅是兼容移动端，只要愿意，你可以非常轻松的兼容手机竖屏、手机横屏、平板等设备。它还拥有插件系统，弹幕功能就是使用插件形式提供，使用时按需引入即可。该播放器还可以接入任何流媒体，如 hls、dash 和 flv 等。。欢迎 Star~
+NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，兼容 IE11，支持移动端、支持 SSR、支持直播。高度可定制，所有图标、主题色等都可以替换，并且提供了内置组件方便二次开发。你可以自定义任意多个断点，不仅仅是兼容移动端，只要愿意，你可以非常轻松的兼容手机竖屏、手机横屏、平板等设备。它还拥有插件系统，弹幕功能就是使用插件形式提供，使用时按需引入即可。该播放器还可以接入任何流媒体，如 hls、dash 和 flv 等。欢迎 Star~
 
 ![](website/static/img/preview.jpg)
 

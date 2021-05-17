@@ -27,15 +27,18 @@ const Quantity = {
 // 2. 我们把它放到 spacer 后面
 window.player = new Player({
   controls: [
-    "play",
-    "volume",
-    "time",
-    "spacer",
-    Quantity,
-    "airplay",
-    "settings",
-    "web-fullscreen",
-    "fullscreen"
+    [
+      "play",
+      "volume",
+      "time",
+      "spacer",
+      Quantity,
+      "airplay",
+      "settings",
+      "web-fullscreen",
+      "fullscreen"
+    ],
+    ["progress"]
   ]
 })
 
