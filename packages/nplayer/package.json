@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "powerful danmaku video player",
   "main": "dist/index.min.js",
-  "module": "./src/index.ts",
   "typings": "dist/src/index.d.ts",
   "license": "MIT",
   "authors": "wopen <nepow@foxmail.com>",

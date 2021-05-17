@@ -11,7 +11,7 @@ import { danmakuItems } from '../../../utils'
 const Playground = () => {
 
   const container = useRef()
-  const mini = useRef()
+  // const mini = useRef()
 
   useEffect(() => {
 
@@ -36,7 +36,10 @@ const Playground = () => {
         startSecond: 1,
         images: [M1, M2, M3]
       },
-      controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+      controls: [
+        ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
+        ['progress']
+      ],
     })
 
     player.on(EVENT.WEB_ENTER_FULLSCREEN, () => { document.body.style.overflow = 'hidden' })
@@ -91,30 +94,19 @@ const Playground = () => {
     hls.attachMedia(player.video)
     player.mount(container.current);
 
-    if (player.rect.width < 575) {
-      const danmaku = player.getControlItem('danmaku')
-      const spacer = player.getControlItem('spacer')
-      if (danmaku && danmaku.element) {
-        danmaku.element.style.display = 'none';
-      }
-      if (spacer) {
-        spacer.flex(1)
-      }
-    }
+    // const interObserver = new IntersectionObserver((entries) => {
+    //   player.mount(entries[0].isIntersecting ? container.current : mini.current)
+    // }, {
+    //   root: null,
+    //   threshold: 0
+    // })
 
-    const interObserver = new IntersectionObserver((entries) => {
-      player.mount(entries[0].isIntersecting ? container.current : mini.current)
-    }, {
-      root: null,
-      threshold: 0
-    })
-
-    interObserver.observe(player.el);
+    // interObserver.observe(player.el);
 
     return () => {
       hls.destroy()
       player.dispose()
-      interObserver.disconnect()
+      // interObserver.disconnect()
     }
   }, [])
 
@@ -129,10 +121,10 @@ const Playground = () => {
         <a href="https://codesandbox.io/s/nplayer-demo-ujtms" target="_blank"><img src="img/csb.png" /></a>
         <a href="https://codesandbox.io/s/nplayer-demo-ujtms" target="_blank"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" /></a>
       </div>
-      <div className={styles.Mini}>
+      {/* <div className={styles.Mini}>
         <div className={styles.MiniHeader}></div>
         <div ref={mini}></div>
-      </div>
+      </div> */}
     </div>
   );
 };
