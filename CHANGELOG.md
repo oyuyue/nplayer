@@ -1,3 +1,49 @@
+# [1.0.0](https://github.com/woopen/nplayer/compare/v0.2.3...v1.0.0) (2021-05-17)
+
+
+### Bug Fixes
+
+* control item init multiple times ([c34d5be](https://github.com/woopen/nplayer/commit/c34d5be4be1712651320023d58a8d73409015636))
+* control item init multiple times ([6c322c5](https://github.com/woopen/nplayer/commit/6c322c5337a1582947326d36de7359391082cd8e))
+* control item init multiple times ([a870a96](https://github.com/woopen/nplayer/commit/a870a968f4c4e79342598ace8bbde4b0f9b2749a))
+* control item init multiple times ([e56a4fb](https://github.com/woopen/nplayer/commit/e56a4fb842f34533e85404b19e2ff9733c6ceead))
+* progress dot position when size changed ([51b1107](https://github.com/woopen/nplayer/commit/51b1107008b58af55cd9f9a6ffc37148e389c35c))
+* progress dot position when size changed ([feffdb5](https://github.com/woopen/nplayer/commit/feffdb52bfda987058b9e4f3c2078a42f7479a1a))
+* progress size when patch control items ([ae140a1](https://github.com/woopen/nplayer/commit/ae140a171cd269269e31a3210a0e449f48bcf410))
+* progress size when patch control items ([4d8e2b3](https://github.com/woopen/nplayer/commit/4d8e2b382cb18e0f12a6f694504af1ef3d5cc482))
+* sort controls, from big to small ([a175e86](https://github.com/woopen/nplayer/commit/a175e866291c173c6560d4a03761980468b545dc))
+* update track height when player size changed ([6e30f4f](https://github.com/woopen/nplayer/commit/6e30f4fb81010ecef18c9eebdf3f72a12120d347))
+* **test:** default options ([d2c3f42](https://github.com/woopen/nplayer/commit/d2c3f4220f703c7da3a107805c105e51f0ff3b84))
+* **test:** default options ([8d83c8e](https://github.com/woopen/nplayer/commit/8d83c8ee510f2ef5a2316fc1f32a82a7507fc476))
+
+
+### Features
+
+* custom the poster button to add class ([a42ad52](https://github.com/woopen/nplayer/commit/a42ad52a949979be138a75d45c97bed356651adf))
+* **danmaku:** compact to new API ([04bdf9c](https://github.com/woopen/nplayer/commit/04bdf9cb49e46c48ab2e6f8ecbf446c70dcdc628))
+* **danmaku:** max pool size ([cae2112](https://github.com/woopen/nplayer/commit/cae2112763a3aee01b18623971de1a1f6ffc9169))
+* auto adjust control bar items when player size change ([d2c4b57](https://github.com/woopen/nplayer/commit/d2c4b575d3eecb1e78d3532900f44bdf89e8a1b8))
+* auto adjust control bar items when player size change ([225fc04](https://github.com/woopen/nplayer/commit/225fc042228dd3f7b1d51a4d89d2032b0f8a4a8d))
+* configurable 3 layer control bar ([4b3baf9](https://github.com/woopen/nplayer/commit/4b3baf9305ca018ed3b3ad665424eda627246e1e))
+* configurable 3 layer control bar ([9224d96](https://github.com/woopen/nplayer/commit/9224d96c2b04e9275328c9e26bdc09344615d667))
+* configurable break points ([25da52b](https://github.com/woopen/nplayer/commit/25da52b53d5a8183beefea2d039773f5fff23aa9))
+* configurable break points ([7c809d0](https://github.com/woopen/nplayer/commit/7c809d06ca813179048afdb18ad81d4fff1be1be))
+* patch control items & top control bar ([f2a5dc0](https://github.com/woopen/nplayer/commit/f2a5dc04ac14c80289f045c6f89fbf9406d6c507))
+* patch control items & top control bar ([a7ddcff](https://github.com/woopen/nplayer/commit/a7ddcff1b6697506e51d8bac01d42b1edfb46a3a))
+* progress bar dot ([b1cea05](https://github.com/woopen/nplayer/commit/b1cea05065f19d2813de238e27df268118eced35))
+* progress bar dot ([9ff528a](https://github.com/woopen/nplayer/commit/9ff528a082eb3a7aba186e6e98f14f5bc5cd83c2))
+* progress dot configable ([1ad6313](https://github.com/woopen/nplayer/commit/1ad63138ae4113632e2826ae7cb54a4783beda99))
+* progress dot configable ([e9e4a2a](https://github.com/woopen/nplayer/commit/e9e4a2aea3e822480908a9ceb69b3a1b5f893e6c))
+* remove logs ([178802c](https://github.com/woopen/nplayer/commit/178802cb5dd1248b9d902c2220a9409b5697febe))
+* remove logs ([0dc2899](https://github.com/woopen/nplayer/commit/0dc2899f45d1c7b241f01381b306ea8bafcae340))
+* touch actions ([a77f084](https://github.com/woopen/nplayer/commit/a77f084060171de0bec79454bcc7e44252411fbf))
+* touch actions ([19e6873](https://github.com/woopen/nplayer/commit/19e6873c3e8837be12c62ec6d0d810a9fde25539))
+* **danmaku:** compact to new API ([0dd54f1](https://github.com/woopen/nplayer/commit/0dd54f14f7f83c5952fd1c6a6383c57e02db4517))
+* touch actions ([c339bcb](https://github.com/woopen/nplayer/commit/c339bcb6c76e41145ab4f70559602e043f445119))
+* touch actions ([91cf14a](https://github.com/woopen/nplayer/commit/91cf14aaf7c6f86e5ffbd44180d52f76035bc35d))
+
+
+
 ## [0.2.3](https://github.com/woopen/nplayer/compare/v0.2.2...v0.2.3) (2021-05-02)
 
 

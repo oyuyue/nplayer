@@ -13,7 +13,7 @@ export interface BulletSetting {
 }
 export declare class Bullet {
     private danmaku;
-    readonly element: HTMLElement;
+    readonly el: HTMLElement;
     width: number;
     left: number;
     length: number;

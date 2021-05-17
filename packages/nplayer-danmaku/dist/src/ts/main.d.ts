@@ -1,7 +1,7 @@
 import type { Plugin as P, Player } from 'nplayer';
 import { DanmakuOptions } from './danmaku';
 export interface DanmakuPluginOption extends DanmakuOptions {
-    autoInsertControl: boolean;
+    autoInsert: boolean;
 }
 export declare class Plugin implements P {
     private opts;

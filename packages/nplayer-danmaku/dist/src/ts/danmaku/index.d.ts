@@ -17,6 +17,7 @@ export interface DanmakuOptions {
     zIndex?: number;
     persistOptions?: boolean;
     maxPerInsert?: number;
+    poolSize?: number;
     isDefaultColor?: (color: string) => boolean;
     discard?: (b: BulletOption) => boolean;
 }
@@ -24,7 +25,7 @@ export declare const defaultOptions: () => Required<DanmakuOptions>;
 export declare class Danmaku implements Disposable {
     private player;
     private _opts?;
-    element: HTMLElement;
+    el: HTMLElement;
     opts: Required<DanmakuOptions>;
     enabled: boolean;
     paused: boolean;
@@ -46,6 +47,7 @@ export declare class Danmaku implements Disposable {
     get fontsize(): number;
     get speedScale(): number;
     private createBullet;
+    private unmountBullet;
     private getShortestTrack;
     private getEmptyTrack;
     private shouldDiscard;

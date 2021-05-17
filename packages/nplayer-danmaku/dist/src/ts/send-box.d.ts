@@ -1,17 +1,19 @@
 import type { ControlItem, Player, Tooltip } from 'nplayer';
 declare class DanmakuSendBox implements ControlItem {
     readonly id = "danmaku-send";
-    element: HTMLElement;
+    el: HTMLElement;
     private player;
     tooltip: Tooltip;
     private popover;
-    private inputElement;
-    private sendElement;
-    private colorInputElement;
-    private colorElement;
+    private inputEl;
+    private sendEl;
+    private colorInputEl;
+    private colorEl;
     private typeCBs;
     private currentType;
-    init(player: Player): void;
+    init(player: Player, positoin: number): void;
+    update(positoin: number): void;
+    private setPos;
     private onTypeChange;
     updateColor(v: string): void;
     show: (ev?: MouseEvent | undefined) => void;

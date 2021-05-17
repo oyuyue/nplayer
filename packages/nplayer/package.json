@@ -1,6 +1,6 @@
 {
   "name": "nplayer",
-  "version": "0.2.3",
+  "version": "1.0.0",
   "description": "powerful danmaku video player",
   "main": "dist/index.min.js",
   "module": "./src/index.ts",

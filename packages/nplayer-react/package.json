@@ -1,6 +1,6 @@
 {
   "name": "@nplayer/react",
-  "version": "0.2.3",
+  "version": "1.0.0",
   "description": "powerful danmaku video player",
   "main": "dist/index.min.js",
   "typings": "dist/src/index.d.ts",
@@ -29,7 +29,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "nplayer": "0.2.3"
+    "nplayer": "1.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.5"
