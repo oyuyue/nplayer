@@ -53,6 +53,19 @@
   margin-bottom: 20px;
 }
 
+.Mini {
+  position: fixed;
+  right:50px;
+  bottom: 5vh;
+  width: 400px;
+  height: 225px;
+  z-index: 100;
+}
+
+.MiniHeader {
+  height: 20px;
+}
+
 @media (max-height: 800px) and (max-width: 768px) {
   .Container {
     padding: 4em 0 !important;

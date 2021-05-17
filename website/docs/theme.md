@@ -4,6 +4,8 @@ title: 定制主题
 
 NPlayer 所有的 icon、主题色、进度条等都可以替换。可以从两个方向来配置主题，分为 Player 构造函数参数、方法和 CSS 变量。
 
+![nplayer bilibili](/img/custom.jpg)
+
 ## 内置 icon
 
 修改内置 icon 可以通过 NPlayer 的 Icon 对象修改。
@@ -77,6 +79,14 @@ NPlayer 可以使用构造参数和 CSS 变量修改颜色。
 --volume-progress-bg: #007aff;
 ```
 
+## 进度条锚点
+
+通过 `progressDot` 参数修改播放器进度条上的拖动点，它是一个 HTML 元素。
+
+```js
+new Player({ progressDot: document.createElement('div') })
+```
+
 ## loading
 
 可以通过 `loadingElement` 参数修改播放器加载中的元素，它是一个 HTML 元素。
@@ -95,3 +105,7 @@ new Player({ loadingElement: loading })
 ## 音量进度条宽度
 
 音量按钮的宽度可以通过 `volumeBarWidth` 修改，它是一个 `number` 或 `string` 类型。默认是 `100px`。
+
+## 例子
+
+- [自定义 Bilibili 主题](examples/bilibili-theme.md)

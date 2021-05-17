@@ -5,13 +5,28 @@
   width: 100%;
 }
 
-.featureImgContainer {
-  height: 200px;
-  text-align: center;
+.feature {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap-reverse;
+  margin-bottom: 30px;
 }
 
-.featureImage {
-  max-height: 200px;
+.featureText {
+  min-width: 300px;
+  margin: 0 20px;
+  flex: 1;
+}
+
+.featureTitle {
+  font-size: 26px;
+  margin: 20px 0;
+  color: var(--ifm-color-primary-lightest);
+}
+
+.featureImgContainer {
+  min-width: 300px;
+  flex: 1;
 }
 
 .Container {

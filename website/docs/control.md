@@ -4,6 +4,8 @@ title: 控制条
 
 控制条指的是播放器下方的控制组件集合，它包含播放、暂停、音量调节等按钮。NPlayer 一共有 3 个控制条，底部两个，顶部一个。
 
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+
 ## 配置
 
 可以通过 `controls` 参数来配置控制条组件的位置，显示隐藏等，它是一个二维数组，顺序是从下到上，一共三个。

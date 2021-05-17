@@ -31,6 +31,8 @@ module.exports = {
         'examples/quantity-switch',
         'examples/screenshot',
         'examples/mirroring',
+        'examples/mini',
+        'examples/bilibili-theme',
       ],
     },
   ],

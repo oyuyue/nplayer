@@ -20,6 +20,8 @@ const player = new Player({
 
 ## 自定义断点布局
 
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+
 通过 `bpControls` 参数可以自定义任意多个控制条布局。它的默认值如下。
 
 ```js
@@ -35,6 +37,8 @@ const player = new Player({
   }
 })
 ```
+
+![NPlayer control](/img/phone.png)
 
 这个默认参数的意思是，当播放器的尺寸小于等于 `650px` 使用这套控制条布局。（如果你不知道为什么是一个二维数组请查看 [控制条章节](control.md)）
 

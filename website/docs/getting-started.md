@@ -14,6 +14,8 @@ NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，
 
 ![NPlayer](/img/preview.jpg)
 
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+
 ## 安装
 
 ```bash

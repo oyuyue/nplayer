@@ -50,6 +50,8 @@ const player = new Player({
 player.mount(document.body)
 ```
 
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+
 ## 控制条
 
 弹幕插件会注册 `danmaku-send` 和 `danmaku-settings` 这两项。默认情况会自动加入到控制条中。
