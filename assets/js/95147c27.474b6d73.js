@@ -1,0 +1,1 @@
+(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[834],{7566:function(e,s,t){"use strict";t.r(s),t.d(s,{default:function(){return r}});var n=t(7294),a="MouseContainer_2vek",u="Mouse_2QOm",c="MouseWheel_1OOW",r=function(){return n.createElement("div",{className:a},n.createElement("div",{className:u},n.createElement("span",{className:c})))}}}]);
