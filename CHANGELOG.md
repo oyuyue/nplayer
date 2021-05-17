@@ -1,3 +1,7 @@
+## [1.0.1](https://github.com/woopen/nplayer/compare/v1.0.0...v1.0.1) (2021-05-17)
+
+
+
 # [1.0.0](https://github.com/woopen/nplayer/compare/v0.2.3...v1.0.0) (2021-05-17)
 
 
