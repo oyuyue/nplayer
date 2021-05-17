@@ -10,17 +10,17 @@ import Hls from "hls.js"
 
 // 1. 首先创建一个控制条项
 const Quantity = {
-  element: document.createElement("div"),
+  el: document.createElement("div"),
   init() {
     this.btn = document.createElement("div")
     this.btn.textContent = "画质";
-    this.element.appendChild(this.btn)
-    this.popover = new Popover(this.element)
+    this.el.appendChild(this.btn)
+    this.popover = new Popover(this.el)
     this.btn.addEventListener("click", () => this.popover.show())
     // 点击按钮的时候展示 popover
-    this.element.style.display = "none"
+    this.el.style.display = "none"
     // 默认隐藏
-    this.element.classList.add("quantity")
+    this.el.classList.add("quantity")
   }
 }
 
@@ -81,8 +81,8 @@ hls.on(Hls.Events.MEDIA_ATTACHED, function () {
     Quantity.itemElements.push(el)
     // 这里再添加一个 `自动` 选项，HLS 默认是根据网速自动切换清晰度
 
-    Quantity.popover.panelElement.appendChild(frag)
-    Quantity.element.style.display = "block"
+    Quantity.popover.panelEl.appendChild(frag)
+    Quantity.el.style.display = "block"
 
     listener(hls.currentLevel)(true)
     // 初始化当前清晰度

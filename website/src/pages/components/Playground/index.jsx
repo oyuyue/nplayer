@@ -18,15 +18,15 @@ const Playground = () => {
     if (typeof document === 'undefined') return;
 
     const Quantity = {
-      element: document.createElement('div'),
+      el: document.createElement('div'),
       init(player) {
         this.btn = document.createElement('div')
         this.btn.textContent = '画质'
-        this.element.appendChild(this.btn)
-        this.popover = new player.Player.components.Popover(this.element)
+        this.el.appendChild(this.btn)
+        this.popover = new player.Player.components.Popover(this.el)
         this.btn.addEventListener('click', () =>  this.popover.show())
-        this.element.style.display = 'none'
-        this.element.classList.add(styles.Quantity)
+        this.el.style.display = 'none'
+        this.el.classList.add(styles.Quantity)
       }
     }
 
@@ -83,8 +83,8 @@ const Playground = () => {
         frag.appendChild(el)
         Quantity.itemElements.push(el)
 
-        Quantity.popover.panelElement.appendChild(frag);
-        Quantity.element.style.display = 'block';
+        Quantity.popover.panelEl.appendChild(frag);
+        Quantity.el.style.display = 'block';
 
         listener(hls.currentLevel)(true)
       })
