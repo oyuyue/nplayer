@@ -36,7 +36,7 @@
     "enquirer": "^2.3.6",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.2",
     "eslint-webpack-plugin": "^2.5.4",
     "execa": "^5.0.0",
     "fibers": "^5.0.0",
