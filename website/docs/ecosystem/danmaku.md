@@ -152,6 +152,7 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
     return color === '#fff' || color === '#ffffff';
   },
   maxPerInsert: 20,
+  poolSize: 50,
   discard() { return false; },
 }
 ```
@@ -225,6 +226,10 @@ const danmakuPlugin = new Danmaku({ // 配置参数 })
 ### `maxPerInsert: number`
 
 单次插入多少弹幕，默认是 `20` 个。
+
+### `poolSize: number`
+
+为了避免重复创建弹幕对象，弹幕内部有个弹幕池，这个参数用于设置弹幕池大小，默认为 `50`。
 
 ### `discard: (b: BulletOption) => boolean`
 
