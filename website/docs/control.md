@@ -80,7 +80,7 @@ const myControl = {
 
 ## 多控制条
 
-NPlayer 一共有 3 个控制条，底部两个，顶部一个。，你可以将任何一个控制项放入，这 3 个控制条中的任何一个位置。`controls` 参数是一个二维数组，顺序是从下到上。
+NPlayer 一共有 3 个控制条，底部两个，顶部一个。`controls` 参数是一个二维数组，顺序是从下到上。
 
 你可以任意组合这些控制项。
 
@@ -94,11 +94,11 @@ new Player({
 }).mount(document.body)
 ```
 
-上方把第 2 个控制条中的 `progress`，放入第一个中，并将设置放入第 3 个（顶部）中，效果如下图。
+上方把第 2 个控制条中的 `progress`，放入第一个中，并将 `settings` 放入第 3 个（顶部）中，效果如下图。
 
 ![NPlayer Control](/img/phone.png)
 
-为了看清 3 个控制条，这里再给每个控制条加个背景色。
+为了看清 3 个控制条，这里再给每个控制条加个背景色。（默认控制条是没有背景色的）
 
 ![NPlayer control](/img/control.jpg)
 
@@ -112,25 +112,40 @@ const player = new Player().mount(document.body)
 player.updateControlItems(['spacer', 'settings'], 2)
 ```
 
-第 1 个参数是控制条数组，第 2 参数是控制条的位置，这里的 `2` （数组下标从 0 开始）就是第 3 个也就是顶部控制条，第二个参数默认是 `0` 也就是最下面的控制条。
+第一个参数是新的控制条数组，第二个参数是控制条的位置，这里的 `2` （数组下标从 0 开始）就是第 3 个控制条，默认是 `0` 也就是最下面的控制条。
+
+:::caution
+
+控制项是单例，也就是整个布局中每个控制项只能出现一次。比如上方将底部控制条的 `settings` 放入顶部控制条，最终不会有两个 `settings` 控制项，而是 `settings` 从底部控制台移动到了顶部控制条。
+
+其中比较特殊的是 `spacer`，它可以同时在多个控制条中，但是每个控制条中最多只能有一个 `spacer`。
+
+:::
+
+当然你可以通过 `bpControls` 参数来设置断点布局，而不是手动调用 `updateControlItems`。详情请查看[响应式布局章节](responsive.md)。
 
 ## 注册和获取控制项
 
-你可以使用 `player.registerControlItem(item: ControlItem, id?: string): void` 注册一个控制项，一般只会在插件中使用，详情请查看 [插件章节](plugin.md)。
+你可以使用 `player.registerControlItem(item: ControlItem, id?: string): void` 注册一个控制项，一般只会在插件中使用，详情请查看[插件章节](plugin.md)。
 
 `player.getControlItem(id: string): ControlItem | null` 可以获取对应对象。
 
 ```js
 const player = new Player()
 
-const spacer = player.getControlItem('spacer')
-if (spacer) {
-  console.log(spacer)
-  spacer.flex(0)
+const play = player.getControlItem('play')
+if (play) {
+  console.log(play) // 播放项
 }
 ```
 
-上面获取内置 `spacer` 控制项，并使用它的 `flex` 方法将 `flex` 设置为 `0`（`flex` 方法是 `spacer` 特有的方法）。你也可以通过 `spacer.element.style.flex` 设置。
+上面获取内置 `play` 控制项。
+
+:::caution
+
+其中 `spacer` 控制项比较特殊，通过 `getControlItem('spacer')` 并不能获取到它的实例。
+
+:::
 
 ## 例子
 
