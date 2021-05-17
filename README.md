@@ -9,7 +9,7 @@ NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，
 
 ![](website/static/img/preview.jpg)
 
-https://user-images.githubusercontent.com/25923128/118523270-8e34a600-b76f-11eb-9a56-dcfa441ba75f.mp4
+https://user-images.githubusercontent.com/25923128/118526973-5def0680-b773-11eb-9aa4-364dca7d5eaa.mov
 
 ## 安装
 
