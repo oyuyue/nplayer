@@ -27,12 +27,10 @@ npm i -S nplayer
 
 ```js
 import Player from "nplayer";
-import Danmaku from "@nplayer/danmaku";
-import items from "./items";
-
-const danmaku = new Danmaku({ items });
 
 /**
+ * Danmaku DEMO:
+ *    https://codesandbox.io/s/nplayer-demo-ujtms?file=/src/index.js
  * React DEMO:
  *    https://codesandbox.io/s/nplayer-react-demo-p558g?file=/src/App.js
  * Vue2 DEMO:
@@ -41,8 +39,7 @@ const danmaku = new Danmaku({ items });
  *    https://codesandbox.io/s/nplayer-vue3-demo-mt8s4?file=/src/main.js
  */
 const player = new Player({
-  src: "https://v-cdn.zjol.com.cn/280443.mp4",
-  plugins: [danmaku]
+  src: "https://v-cdn.zjol.com.cn/280443.mp4"
 });
 
 player.mount(document.body);
