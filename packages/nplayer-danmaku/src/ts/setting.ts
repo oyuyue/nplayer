@@ -37,7 +37,7 @@ class DanmakuSetting implements ControlItem {
 
   private fontsizeSlider!: Slider;
 
-  init(player: Player, positoin: number) {
+  init(player: Player, position: number) {
     this.player = player;
     const { __utils, components, I18n } = player.Player;
     const {
@@ -54,7 +54,7 @@ class DanmakuSetting implements ControlItem {
     const panelElement = this.popover.panelEl;
     __utils.addClass(panelElement, 'danmaku_setting');
 
-    this.setPos(positoin);
+    this.setPos(position);
 
     player.on('Mounted', () => {
       const row = () => $('.flex.align-center.danmaku_row');
@@ -103,7 +103,7 @@ class DanmakuSetting implements ControlItem {
         change(value) {
           player.danmaku.updateOpacity(clamp(value + 0.1, 0.1, 1));
         },
-      }, player));
+      }));
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(DISPLAY_A)));
@@ -114,7 +114,7 @@ class DanmakuSetting implements ControlItem {
           v = v === 0 ? 0.25 : v === 0.33 ? 0.5 : v === 0.66 ? 0.75 : 1;
           player.danmaku.updateArea(v as any);
         },
-      }, player));
+      }));
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(DANMAKU_S)));
@@ -123,7 +123,7 @@ class DanmakuSetting implements ControlItem {
         change(v) {
           player.danmaku.updateSpeed(clamp(v + 0.5, 0.5, 1.5));
         },
-      }, player));
+      }));
       panelElement.appendChild(rowElement);
       rowElement = row();
       rowElement.appendChild($(undefined, undefined, I18n.t(FONTSIZE)));
@@ -132,7 +132,7 @@ class DanmakuSetting implements ControlItem {
         change(v) {
           player.danmaku.updateFontsize(clamp(v + 0.5, 0.5, 1.5));
         },
-      }, player));
+      }));
       panelElement.appendChild(rowElement);
       rowElement = row();
       this.unlimitedCB = addDisposable(this, new components.Checkbox(rowElement, {
@@ -147,13 +147,13 @@ class DanmakuSetting implements ControlItem {
     });
   }
 
-  update(positoin: number): void {
-    this.setPos(positoin);
+  update(position: number): void {
+    this.setPos(position);
   }
 
-  private setPos(positoin: number): void {
+  private setPos(position: number): void {
     this.popover.resetPos();
-    if (positoin === 2) this.popover.setBottom();
+    if (position === 2) this.popover.setBottom();
   }
 
   updateSettings() {

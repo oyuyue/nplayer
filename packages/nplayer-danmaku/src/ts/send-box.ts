@@ -33,7 +33,7 @@ class DanmakuSendBox implements ControlItem {
 
   private currentType = 'scroll';
 
-  init(player: Player, positoin: number) {
+  init(player: Player, position: number) {
     this.player = player;
     const { __utils, components, I18n } = player.Player;
     utils = __utils;
@@ -49,7 +49,7 @@ class DanmakuSendBox implements ControlItem {
     this.inputEl = this.el.appendChild($('input'));
     this.sendEl = this.el.appendChild($('.danmaku_send_btn', undefined, I18n.t(SEND)));
 
-    this.setPos(positoin);
+    this.setPos(position);
 
     const row = () => $('.flex.align-center.danmaku_row');
     const panelElement = this.popover.panelEl;
@@ -100,13 +100,13 @@ class DanmakuSendBox implements ControlItem {
     this.updateColor('#FFFFFF');
   }
 
-  update(positoin: number): void {
-    this.setPos(positoin);
+  update(position: number): void {
+    this.setPos(position);
   }
 
-  private setPos(positoin: number): void {
+  private setPos(position: number): void {
     this.popover.resetPos();
-    if (positoin === 2) this.popover.setBottom();
+    if (position === 2) this.popover.setBottom();
   }
 
   private onTypeChange = (type: Required<BulletOption>['type']) => () => {

@@ -17,10 +17,6 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   },
 });
 
-function processControls(origin: Required<PlayerOptions>['controls'], def: Required<PlayerOptions>['controls']) {
-  return [origin[0] || def[0], origin[1] || def[1], origin[2] || def[2]];
-}
-
 export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
   const dOpts = defaultOptions();
   const res = {
@@ -35,10 +31,10 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
     },
   } as Required<PlayerOptions>;
 
-  res.controls = processControls(res.controls || [], [
+  res.controls = res.controls || [
     ['play', res.isTouch ? '' : 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
     [res.live ? '' : 'progress'],
-  ]);
+  ];
 
   res.bpControls = res.bpControls || {
     650: [

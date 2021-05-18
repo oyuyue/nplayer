@@ -1,4 +1,3 @@
-import { Player } from '../../player';
 import { Component, Rect } from '../../utils';
 export interface SliderOption {
     value?: number;
@@ -15,7 +14,7 @@ export declare class Slider extends Component {
     private readonly dotEl;
     private readonly step;
     readonly rect: Rect;
-    constructor(container: HTMLElement, opts: SliderOption, player?: Player);
+    constructor(container: HTMLElement, opts: SliderOption);
     private onDrag;
     update(value: number, x?: number, trigger?: boolean): void;
 }

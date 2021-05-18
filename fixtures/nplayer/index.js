@@ -42,16 +42,16 @@ window.onload = function () {
     // videoAttrs: { src: 'http://vjs.zencdn.net/v/oceans.mp4' },
     // poster: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1625100497,827999043&fm=26&gp=0.jpg',
     // controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
-    // src: 'https://v-cdn.zjol.com.cn/280443.mp4',
+    src: 'https://v-cdn.zjol.com.cn/280443.mp4',
     themeColor: 'rgba(35,173,229, 1)',
     progressBg: 'rgba(35,173,229, 1)',
     progressDot: createIcon(dot, true)(),
     posterPlayEl: createIcon(playBig)(),
     settings: [{ html: '切换', type: 'switch'}, 'speed'],
   })
-  var hls = new Hls();
-  hls.attachMedia(player.video)
-  hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
+  // var hls = new Hls();
+  // hls.attachMedia(player.video)
+  // hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')
 
   // hls.on(Hls.Events.MEDIA_ATTACHED, function () {
   //   hls.loadSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')

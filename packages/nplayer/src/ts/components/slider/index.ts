@@ -1,5 +1,3 @@
-import { EVENT } from 'src/ts/constants';
-import { Player } from 'src/ts/player';
 import {
   $, addDisposable, addDisposableListener, clamp, Component, Drag, Rect,
 } from 'src/ts/utils';
@@ -20,7 +18,7 @@ export class Slider extends Component {
 
   readonly rect: Rect;
 
-  constructor(container: HTMLElement, private opts: SliderOption, player?: Player) {
+  constructor(container: HTMLElement, private opts: SliderOption) {
     super(container, '.slider');
 
     this.rect = new Rect(this.el);
@@ -36,14 +34,15 @@ export class Slider extends Component {
     }
     this.dotEl = this.el.appendChild($('.slider_dot'));
 
-    addDisposable(this, new Drag(this.el, this.onDrag, this.onDrag));
+    addDisposable(this, new Drag(this.el, (ev: PointerEvent) => {
+      this.rect.update();
+      this.onDrag(ev);
+    }, this.onDrag));
     addDisposableListener(this, this.el, 'touchstart', (ev: Event) => ev.preventDefault());
 
     this.step = opts.stops && opts.step;
 
     this.update(opts.value || 0, undefined, false);
-
-    if (player) addDisposable(this, player.on(EVENT.UPDATE_SIZE, () => this.rect.update()));
   }
 
   private onDrag = (ev: PointerEvent) => {

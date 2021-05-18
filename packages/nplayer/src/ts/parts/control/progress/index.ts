@@ -72,6 +72,7 @@ export class Progress extends Component implements ControlItem {
 
   private onDragStart = (ev: PointerEvent) => {
     this.dragging = true;
+    this.rect.update();
     this.onDragging(ev);
   }
 
