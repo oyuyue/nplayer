@@ -83,6 +83,27 @@ interface VideoSource {
 }
 ```
 
+## 获取 DOM 元素
+
+```js
+import Player from 'nplayer'
+
+const player = new Player()
+player.mount(document.body)
+
+console.log(player.container) // document.body
+console.log(player.el) // DIV Element
+console.log(player.video) // VIDEO Element
+```
+
+你可以通过 `container` 获取到播放器容器元素，也就是 `mount` 方法参数对应的 DOM 元素，`video` 属性可以获取到播放器使用的 `video` 元素。`el` 可以获取播放器的 DOM 元素。
+
+:::info
+
+很多组件对象都有 `el` 属性，它表示改组件对应的 DOM 元素。
+
+:::
+
 ## 属性和方法
 
 Player 上有很多方式访问到自己。
