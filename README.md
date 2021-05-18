@@ -63,6 +63,14 @@ player.mount(document.body);
 | [React](https://nplayer.js.org/docs/ecosystem/react) | [![npm](https://img.shields.io/npm/v/@nplayer/react?logo=npm)](https://nplayer.js.org/docs/ecosystem/react) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-react/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/react/dist/index.min.js)
 | [Vue2 / Vue3](https://nplayer.js.org/docs/ecosystem/vue) | [![npm](https://img.shields.io/npm/v/@nplayer/vue?logo=npm)](https://nplayer.js.org/docs/ecosystem/vue) | [![gzip size](https://badge-size.herokuapp.com/woopen/nplayer/main/packages/nplayer-vue/dist/index.min.js?compression=gzip)](https:/unpkg.com/@nplayer/vue/dist/index.min.js)
 
+## 例子
+
+- [视频清晰度切换](https://nplayer.js.org/docs/examples/quantity-switch)
+- [视频截图](https://nplayer.js.org/docs/examples/screenshot)
+- [视频镜像](https://nplayer.js.org/docs/examples/mirroring)
+- [迷你播放器](https://nplayer.js.org/docs/examples/mini)
+- [自定义 Bilibili 主题](https://nplayer.js.org/docs/examples/bilibili-theme)
+
 ## 推荐文章
 
 - [NPlayer 支持任何流媒体和 B 站弹幕体验的视频播放器](https://juejin.cn/post/6953803485636722702)
