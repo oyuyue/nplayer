@@ -89,18 +89,18 @@ new Player({ progressDot: document.createElement('div') })
 
 ## loading
 
-可以通过 `loadingElement` 参数修改播放器加载中的元素，它是一个 HTML 元素。
+可以通过 `loadingEl` 参数修改播放器加载中的元素，它是一个 HTML 元素。
 
 ```js
 const loading = new Image()
 loading.src = 'loading.gif'
 
-new Player({ loadingElement: loading })
+new Player({ loadingEl: loading })
 ```
 
 ## 海报播放按钮
 
-可以通过 `posterPlayElement` 参数修改播放器海报真中间的播放按钮，它是一个 HTML 元素。
+可以通过 `posterPlayEl` 参数修改播放器海报真中间的播放按钮，它是一个 HTML 元素。
 
 ## 音量进度条宽度
 
