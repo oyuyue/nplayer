@@ -15,8 +15,8 @@ declare class DanmakuSetting implements ControlItem {
     private areaSlider;
     private speedSlider;
     private fontsizeSlider;
-    init(player: Player, positoin: number): void;
-    update(positoin: number): void;
+    init(player: Player, position: number): void;
+    update(position: number): void;
     private setPos;
     updateSettings(): void;
     show: () => void;

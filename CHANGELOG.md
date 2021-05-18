@@ -1,3 +1,17 @@
+## [1.0.2](https://github.com/woopen/nplayer/compare/v1.0.1...v1.0.2) (2021-05-18)
+
+
+### Bug Fixes
+
+* update slider rect when drag start & typo ([0b7fe32](https://github.com/woopen/nplayer/commit/0b7fe32f59342c6cb1050327cecbfdb4371fe3d1))
+
+
+### Features
+
+* upgrade nplayer ([dbb52d9](https://github.com/woopen/nplayer/commit/dbb52d9d082f08db39162b441c6ee181a30ead2f))
+
+
+
 ## [1.0.1](https://github.com/woopen/nplayer/compare/v1.0.0...v1.0.1) (2021-05-17)
 
 

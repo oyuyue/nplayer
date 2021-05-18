@@ -11,8 +11,8 @@ declare class DanmakuSendBox implements ControlItem {
     private colorEl;
     private typeCBs;
     private currentType;
-    init(player: Player, positoin: number): void;
-    update(positoin: number): void;
+    init(player: Player, position: number): void;
+    update(position: number): void;
     private setPos;
     private onTypeChange;
     updateColor(v: string): void;
