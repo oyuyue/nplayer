@@ -100,7 +100,7 @@ export class Control extends Component {
   updateItems(items: Parameters<ControlBar['update']>[0], index = 0): void {
     const curBar = this.controlBars[index];
     if (!curBar) return;
-    curBar.update(items);
+    curBar.update(items || []);
     const barItems = curBar.getItems();
     this.controlBars.forEach((bar, i) => {
       if (i === index) return;
