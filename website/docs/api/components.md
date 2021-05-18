@@ -145,7 +145,7 @@ new Switch(popover.panelEl)
 
 ### API
 
-#### `constructor(container: HTMLElement, opts: SliderOption, player?: Player)`
+#### `constructor(container: HTMLElement, opts: SliderOption)`
 
 ```typescript
 interface SliderOption {
