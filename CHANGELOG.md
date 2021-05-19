@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/woopen/nplayer/compare/v1.0.3...v1.0.4) (2021-05-19)
+
+
+### Features
+
+* **danmaku:** optimize style ([d8cb34d](https://github.com/woopen/nplayer/commit/d8cb34da14cfc4cf12692d0b655f4c24dfd0981a))
+
+
+
 ## [1.0.3](https://github.com/woopen/nplayer/compare/v1.0.2...v1.0.3) (2021-05-18)
 
 
