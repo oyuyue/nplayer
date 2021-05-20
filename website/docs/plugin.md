@@ -116,7 +116,7 @@ class MyPlugin {
 }
 
 new Player({
-  plugins: [createMyPlugin({ // 参数 }), new MyPlugin({ // 参数 })]
+  plugins: [createMyPlugin({ /* 参数 */ }), new MyPlugin({ /* 参数 */ })]
 })
 ```
 

@@ -17,7 +17,15 @@ title: 右键菜单
 
 `contextMenus` 默认有三个菜单项，分别是循环播放、画中画和播放器版本。可以更改它的顺序来更改 UI 的顺序，也可以移除字符串，来移除菜单项，当传入一个空数组时，单击右键将不会出现右键菜单。
 
-`contextMenuToggle` 是用于配置是否显示原生右键菜单，为 `true` 时，将在偶数次单击时显示浏览器的右键菜单，而不是播放器右键菜单。为 `false` 时，将始终不显示浏览器右键菜单。
+`contextMenuToggle` 是用于配置是否显示原生右键菜单，为 `true` 时，将在第二次单击时显示浏览器的原生右键菜单，而不是播放器右键菜单。为 `false` 时，将始终不显示浏览器右键菜单。
+
+## 内置右键菜单项
+
+| 菜单项 ID | 描述 |
+| --- | --- |
+| loop | 是否循环播放视频 |
+| pip | 视频画中画，如果不支持则会隐藏 |
+| version | NPlayer 版本号 |
 
 ## 自定义菜单项
 
@@ -53,10 +61,10 @@ const MyPIP = {
   },
   click(player) {
     if (player.video.readyState < 3) return; // 视频还没加载成功
-    if ((document as any).pictureInPictureElement !== player.video) {
-      (player.video as any).requestPictureInPicture()
+    if (document.pictureInPictureElement !== player.video) {
+      player.video.requestPictureInPicture()
     } else {
-      (document as any).exitPictureInPicture()
+      document.exitPictureInPicture()
     }
   }
 }
@@ -90,7 +98,7 @@ if (pip) {
 }
 ```
 
-对于 `contenxtmenu` 的配置项，你可以随便修改它的字段，在下一次展示右键菜单时，会使用最新的值。
+对于 `contextmenu` 的配置项，你可以随便修改它的字段，在下一次展示右键菜单时，会使用最新的值。
 
 ## 例子
 
