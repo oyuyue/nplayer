@@ -9,6 +9,10 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'woopen', // Usually your GitHub org/user name.
   projectName: 'nplayer', // Usually your repo name.
+  i18n: {
+    defaultLocale: 'zh-CN',
+    locales: ['zh-CN', 'en'],
+  },
   themeConfig: {
     colorMode: {
       defaultMode: 'dark',
@@ -42,7 +46,11 @@ module.exports = {
           href: 'https://github.com/woopen/nplayer/issues/new/choose',
           label: '问题反馈',
           position: 'left'
-        }
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
+        },
       ],
     },
     footer: {

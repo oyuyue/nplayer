@@ -1108,6 +1108,13 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@crowdin/cli@3":
+  version "3.6.1"
+  resolved "https://registry.npmjs.org/@crowdin/cli/-/cli-3.6.1.tgz#3422536781be49808ab6abda8bb17cb29df01dbb"
+  integrity sha512-RUKFrPCX3R1MJPyRpBSqWFwmjbDlVWLHtXAzx2FPeyjnyMXrXLPJ8YEl4t8YU+96q/0t46qTdmMLeQmYyDEvGQ==
+  dependencies:
+    shelljs "^0.8.4"
+
 "@docsearch/css@3.0.0-alpha.34":
   version "3.0.0-alpha.34"
   resolved "https://registry.npm.taobao.org/@docsearch/css/download/@docsearch/css-3.0.0-alpha.34.tgz#5d5c39955956e237884a9997eb29e28c8adc99fa"
