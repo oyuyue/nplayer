@@ -34,10 +34,10 @@ export class ContextMenu extends Component {
     addDisposableListener(this, player.el, 'contextmenu', (ev: MouseEvent) => {
       this.hide();
       if (!player.opts.contextMenuToggle || !this.showed) {
-        if (this.renderItems()) {
-          ev.preventDefault();
-          ev.stopPropagation();
+        ev.preventDefault();
+        ev.stopPropagation();
 
+        if (this.renderItems()) {
           show(this.el);
           this.rect.update();
           this.player.rect.update();
