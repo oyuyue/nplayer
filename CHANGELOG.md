@@ -1,3 +1,12 @@
+## [1.0.5](https://github.com/woopen/nplayer/compare/v1.0.4...v1.0.5) (2021-05-21)
+
+
+### Bug Fixes
+
+* contextmenu toggle ([c24d9dd](https://github.com/woopen/nplayer/commit/c24d9dd9eb452c5ed81916a334d5c53c4cca64af))
+
+
+
 ## [1.0.4](https://github.com/woopen/nplayer/compare/v1.0.3...v1.0.4) (2021-05-19)
 
 
