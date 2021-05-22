@@ -2,6 +2,7 @@ import { DanmakuOptions } from './danmaku';
 
 export function isDefaultColor(color: string): boolean {
   if (!color) return true;
+  if (typeof color !== 'string') return false;
   color = color.toLowerCase();
   return color === '#fff' || color === '#ffffff';
 }

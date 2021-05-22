@@ -38,7 +38,7 @@ function transThrottle(
 
 export function tryOpenEdge(player: Player): void {
   if (player.opts.openEdgeInIE && isWin10IE) {
-    window.location.href = `microsoft-edge:${document.URL}`;
+    window.location.assign(`microsoft-edge:${document.URL}`);
     player.emit(EVENT.OPEN_EDGE);
   }
 }
