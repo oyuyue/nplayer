@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://woopen.github.io/blog</id>
+    <title>NPlayer Blog</title>
+    <updated>2015-10-25T23:29:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://woopen.github.io/blog"/>
+    <subtitle>NPlayer Blog</subtitle>
+    <icon>https://woopen.github.io/img/favicon.ico</icon>
+</feed>
