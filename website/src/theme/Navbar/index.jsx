@@ -64,7 +64,8 @@ function Navbar() {
   const { leftItems, rightItems } = splitNavItemsByPosition(items);
 
   let innerClass = ''
-  if (useLocation().pathname === '/') {
+  const pathname = useLocation().pathname
+  if (pathname === '/' || pathname === '/en/') {
     innerClass = styles.InnerContainer
   }
 
