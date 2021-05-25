@@ -1,6 +1,8 @@
 import { Disposable } from '../types';
 
 /**
+ * @see https://github.com/primus/eventemitter3
+ *
  * Representation of a single event listener.
  *
  * @param {Function} fn The listener function.

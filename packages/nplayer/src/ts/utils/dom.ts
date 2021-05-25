@@ -168,9 +168,6 @@ export function measureElementSize(
 
   parent.appendChild(clone);
 
-  // const width = clone.scrollWidth;
-  // const height = clone.scrollHeight;
-
   const rect = clone.getBoundingClientRect();
 
   parent.removeChild(clone);

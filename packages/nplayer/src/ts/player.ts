@@ -119,7 +119,9 @@ export class Player extends EventEmitter implements Disposable {
       if (this.currentTime < time) {
         this.currentTime = time;
 
-        // compat iPad
+        /**
+         * @see https://stackoverflow.com/questions/18266437/html5-video-currenttime-not-setting-properly-on-iphone
+         */
         if (this.currentTime < time) {
           this.video.load();
           this.video.pause();

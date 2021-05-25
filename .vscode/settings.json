@@ -5,15 +5,20 @@
     "Mixins",
     "bilibili",
     "contextmenu",
+    "crossorigin",
+    "enterpictureinpicture",
+    "eqeqeq",
     "execa",
     "fullscreen",
     "iife",
+    "leavepictureinpicture",
     "nonliner",
     "nplayer",
     "playsinline",
     "srcset",
     "unmount",
     "untick",
+    "webkitplaybacktargetavailabilitychanged",
     "wopen"
   ]
 }
