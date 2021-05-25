@@ -8,7 +8,7 @@ title: 参数
 import Player from 'nplayer'
 
 new Player({
-  // 参数
+  // 这里
 })
 ```
 
@@ -43,8 +43,7 @@ new Player({
 | openEdgeInIE | 是否在 Win10 的 IE 中自动打开 Edge，请查看 [IE 11 兼容](ie11.md) |
 | poster | 海报图片地址，请查看 [海报](poster.md) |
 | posterEnable | 是否启用海报功能 |
-| posterPlayEl | 自定义海报播放按钮，请查看 [定制主题](theme.md) |
-| isTouch | 是否是触摸屏（默认会自动检测），如果是则会启用触摸屏交互，请查看 [响应式/多设备](responsive.md) |
+| posterPlayEl | 自定义海报播放按钮，请查看 [定制主题](theme.md) |响应式布局](responsive.md) |
 
 ## 默认参数
 
@@ -118,5 +117,69 @@ interface PlayerOptions {
   posterPlayEl?: HTMLElement;
   isTouch?: boolean;
   [key: string]: any;
+}
+
+interface VideoSource {
+  media?: string;
+  sizes?: string;
+  src?: string;
+  srcset?: string;
+  type?: string;
+}
+
+interface ThumbnailOptions {
+  startSecond?: number;
+  gapSecond?: number;
+  row?: number;
+  col?: number;
+  width?: number;
+  height?: number;
+  images?: string[];
+}
+
+interface ControlItem {
+  el: HTMLElement;
+  id?: any;
+  tip?: string;
+  tooltip?: Tooltip;
+  mounted?: boolean;
+  init?: (player: Player, position: number, tooltip: Tooltip) => void;
+  update?: (position: number) => void;
+  hide?: () => void;
+  isSupport?: (player: Player) => boolean;
+  dispose?: () => void;
+  [key: string]: any;
+}
+
+interface SettingItem<T = any> {
+  id?: string;
+  html?: string;
+  type?: 'switch' | 'select';
+  checked?: boolean;
+  options?: SettingItemOption<T>[];
+  value?: T;
+  init?: (player: Player, item: SettingItem) => void;
+  change?: (value: T, player: Player, item: SettingItem) => void;
+  _switch?: Switch;
+  _selectedEl?: HTMLElement;
+  _optionEls?: HTMLElement[];
+  _optionEl?: HTMLElement;
+  [key: string]: any;
+}
+
+interface ContextMenuItem {
+  id?: string;
+  html?: string;
+  disabled?: boolean;
+  invisible?: boolean;
+  checked?: boolean;
+  init?: (player: Player, item: ContextMenuItem) => void;
+  show?: (player: Player, item: ContextMenuItem) => void;
+  click?: (player: Player, item: ContextMenuItem) => void;
+}
+
+interface Plugin {
+  apply: (player: Player) => void;
+  dispose?: () => void;
 }
 ```

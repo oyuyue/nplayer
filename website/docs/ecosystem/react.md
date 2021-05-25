@@ -7,7 +7,7 @@ title: React
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
 [![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-如果你想在 React 项目中使用 NPlayer，可以使用该 React 组件。
+如果你想在 React 项目中使用 NPlayer，可以使用 React 组件。
 
 ## 安装
 
@@ -54,6 +54,6 @@ NPlayer 组件接收一个 `options` prop。它是 NPlayer 构造函数参数，
 
 NPlayer 内部把播放器包裹在一个 `width` 和 `height` 都是 `100%` 的 div 中，你可以通过 `className` 和 `style` prop，设置它的 css 类名和样式。
 
-## 在线预览 & 编辑
+## 在线预览
 
 React DEMO: [https://codesandbox.io/s/nplayer-react-demo-p558g](https://codesandbox.io/s/nplayer-react-demo-p558g)

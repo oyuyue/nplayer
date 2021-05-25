@@ -2,9 +2,9 @@
 title: 内置组件
 ---
 
-NPlayer 提供了一些内置组件，可以方便二次开发和统一交互。
+NPlayer 提供了一些内置组件，方便二次开发和统一交互。
 
-你可以在 Player 类的 `components` 属性上访问到这些组件，或者直接导入。
+可以在 Player 类的 `components` 属性上访问到这些组件，或者直接导入。
 
 ```js
 import Player, { Tooltip } from 'nplayer'
@@ -15,8 +15,8 @@ console.log(Tooltip === Player.components.Tooltip) // true
 这些组件都有如下相同点。
 
 - 构造函数第一个参数是该组件的容器元素
-- 都有 `el` 属性，表示自己 DOM
-- 都有 `dispose` 方法，调用该方法将销毁组件
+- 都有 `el` 属性，表示自己 DOM 元素
+- 都有 `dispose` 方法，调用将销毁组件
 
 ## Tooltip 文字提示
 

@@ -55,7 +55,7 @@ console.log(player)
 
 ### `updateControlItems(items: (string | ControlItem)[], index?: number): void`
 
-更新控制条项，默认 `index` 是 `0`，也就是最下面一行。详情请查看 [控制条章节](control.md)。
+更新控制条项，默认 `index` 是 `0`，也就是最下面一行。详情请查看 [控制条](control.md)。
 
 ### `registerSettingItem(item: SettingItem, id?: string): void`
 

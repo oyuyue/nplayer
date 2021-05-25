@@ -2,7 +2,7 @@
 title: 清晰度切换
 ---
 
-这个例子是使用 `ControlItem` 来实现视频的清晰度切换功能，我们这里使用 HLS，来切换视频清晰度。
+这个例子是使用 [ControlItem](control.md) 来实现视频的清晰度切换功能，这里使用 HLS，来切换视频清晰度。
 
 ```js
 import Player, { Popover } from "nplayer"
@@ -124,6 +124,6 @@ window.player.mount("#app")
 }
 ```
 
-## 在线调试 & 编辑
+## 在线调试
 
 - [https://codesandbox.io/s/nplayer-quantity-switch-3gzyv?file=/src/index.js](https://codesandbox.io/s/nplayer-quantity-switch-3gzyv?file=/src/index.js)

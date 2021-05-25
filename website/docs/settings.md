@@ -2,15 +2,13 @@
 title: 设置菜单
 ---
 
-设置菜单是控制条中的设置组件，也就是 [控制条章节](control.md) 中的 `settings` 项。
+设置菜单是控制条中的设置组件，也就是 [控制条](control.md) 中的 `settings` 项。
 
-你可以通过 `settings` 参数自由的添加和移除设置项。`settings` 的默认参数是 `['speed']`，也就是默认只有一个调节视频播放速度的设置项目。
+你可以通过 `settings` 参数自由的添加和移除设置项。`settings` 的默认参数是 `['speed']`，也就是默认只有一个调节视频播放速度的设置项。
 
 `settings` 数组中，除了字符串还可以是 `SettingItem` 对象，它可以实现自定义设置项。
 
 ## SettingItem
-
-它的接口定义如下。
 
 ```typescript
 interface SettingItemOption<T = any> {
@@ -38,7 +36,7 @@ interface SettingItem<T = any> {
 
 `html` 就是在菜单项显示的 label 提示，如， `speed` 中的 `html` 是"播放速度"。
 
-设置菜单项分为两种类型，`switch` 和 `select`，不同类型的菜单项，它们的必填参数并不一样。
+设置菜单项分为两种类型，`switch` 和 `select`，不同类型的菜单项，它们的参数并不一样。
 
 ## switch
 
@@ -73,7 +71,7 @@ const speedSettingItem = {
 
 ## 注册和获取设置项
 
-- `registerSettingItem(item: SettingItem, id?: string): void` 用来注册设置项，一般只在插件中使用，详情请查看 [插件章节](plugin.md)。
+- `registerSettingItem(item: SettingItem, id?: string): void` 用来注册设置项，一般只在插件中使用，详情请查看 [插件](plugin.md)。
 
 - `getSettingItem(id: string): SettingItem | null` 可以获取相关设置项。
 
@@ -83,7 +81,7 @@ const speed = player.getSettingItem('speed')
 console.log(speed)
 ```
 
-上面代码获取并打印内置 `speed` 项，你无法修改，如 `html` 项目来修改对应 label。因为设置只会在初始化中初始化一次，就会被缓存起来。如果你查看上面的打印结构你会发现一些额外的字段。
+如果你查看上面的打印结构你会发现一些额外的字段。
 
 ```js
 interface SettingItem<T = any> {
@@ -95,4 +93,8 @@ interface SettingItem<T = any> {
 }
 ```
 
-内部会使用上面这 4 字段缓存，`switch` 和 `select` 类型的 DOM 元素。从而避免每次创建对应 DOM 元素。所以自定义字段不要与这些字段重名。
+内部会使用上面这 4 字段缓存，`switch` 和 `select`的 DOM 元素。从而避免每次创建对应 DOM 元素。所以自定义字段不要与这些字段重名。
+
+## 例子
+
+- [视频镜像](examples/mirroring.md)

@@ -6,18 +6,17 @@ title: 右键菜单
 
 ## 配置
 
-可以通过 `contextMenus` 和 `contextMenuToggle` 来控制右键菜单，它们的默认值如下。
+可以通过 `contextMenus` 和 `contextMenuToggle` 来设置右键菜单，它们的默认值如下。
 
 ```js
-{
+new Player({
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true
-}
+})
 ```
 
-`contextMenus` 默认有三个菜单项，分别是循环播放、画中画和播放器版本。可以更改它的顺序来更改 UI 的顺序，也可以移除字符串，来移除菜单项，当传入一个空数组时，单击右键将不会出现右键菜单。
-
-`contextMenuToggle` 是用于配置是否显示原生右键菜单，为 `true` 时，将在第二次单击时显示浏览器的原生右键菜单，而不是播放器右键菜单。为 `false` 时，将始终不显示浏览器右键菜单。
+- `contextMenus` 默认有三个菜单项，分别是循环播放、画中画和播放器版本。当为空数组时，单击右键将不会出现右键菜单。
+- `contextMenuToggle` 是用于配置是否显示原生右键菜单，为 `true` 时，将在第二次单击时显示浏览器的原生右键菜单，而不是播放器右键菜单。为 `false` 时，将始终不显示浏览器右键菜单。
 
 ## 内置右键菜单项
 
@@ -28,8 +27,6 @@ title: 右键菜单
 | version | NPlayer 版本号 |
 
 ## 自定义菜单项
-
-菜单项对象签名如下。
 
 ```typescript
 interface ContextMenuItem {
@@ -44,13 +41,13 @@ interface ContextMenuItem {
 }
 ```
 
-:::caution 
+:::caution
 
-`html` 属性，会直接使用 `innerHTML` 设置到 DOM，不会经过安全处理。需要自己保障它不会包含恶意代码。 
+`html` 属性，会直接使用 `innerHTML` 设置到 DOM，不会经过安全处理。需要自己保障字符串安全。 
 
 :::
 
-我们可以自己实现一个画中画菜单项。
+可以自己实现一个画中画菜单项。
 
 ```js
 const MyPIP = {
@@ -74,7 +71,7 @@ new Player({
 })
 ```
 
-我们新建了一个自己的画中画项，然后把它加入到自带的画中画菜单项下方。
+新建了一个自己的画中画项，然后把它加入到内置的画中画菜单项下方。
 
 ## 获取和注册菜单项
 
@@ -82,11 +79,11 @@ new Player({
 
 ### `registerContextMenuItem(item: ContextMenuItem, id?: string)`
 
-你可以使用该方法注册菜单项目，一般只会在自定义插件中会使用。详情请查看 [插件章节](plugin.md)。
+可以使用该方法注册菜单项目，然后使用 `id` 字符串访问，一般只会在自定义插件中会使用。详情请查看 [插件](plugin.md)。
 
 ### `getContextMenuItem(id: string): ContextMenuItem | null`
 
-你可以用该方法获取指定 `id` 的菜单项。
+可以用该方法获取指定 `id` 的菜单项。
 
 ```js
 const player = new Player()
@@ -98,7 +95,11 @@ if (pip) {
 }
 ```
 
+:::info
+
 对于 `contextmenu` 的配置项，你可以随便修改它的字段，在下一次展示右键菜单时，会使用最新的值。
+
+:::
 
 ## 例子
 

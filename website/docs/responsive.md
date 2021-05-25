@@ -2,13 +2,13 @@
 title: 响应式布局
 ---
 
-NPlayer 支持移动、平板和桌面。还可以自定义任意多个不同的断点。NPlayer 中的交互和布局是分离的。
+NPlayer 支持移动、平板和桌面。还可以自定义任意多个的断点。NPlayer 中的交互和布局是分离的。
 
 ## 触屏交互
 
 一般我们在手机上看视频，单击视频会显示控制条，双击是播放暂停视频，左右滑动可以快进或快退视频。而在电脑上单击视频是播放暂停，双击是全屏，键盘上的左右快捷键可以快进快退视频。
 
-NPlayer 支持上面提到的两套交互，可以通过 `isTouch` 参数来设置播放器是使用哪一套交互，默认情况下会自动检测是否是触屏，如果是将使用触屏交互逻辑否则使用鼠标键盘形式的交互。
+NPlayer 支持这两套交互，可以通过 `isTouch` 参数来设置播放器是使用哪一套交互，默认情况下会自动检测是否是触屏。
 
 ```js
 import Player from 'nplayer'
@@ -20,9 +20,9 @@ const player = new Player({
 
 ## 自定义断点布局
 
-<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop></video>
 
-通过 `bpControls` 参数可以自定义任意多个控制条布局。它的默认值如下。
+通过 `bpControls` 参数可以自定义任意多个控制条布局，默认值如下。
 
 ```js
 import Player from 'nplayer'
@@ -65,4 +65,4 @@ const player = new Player({
 
 当每次布局变化时，播放器还会触发 `BpChange` 事件，你可以监听该事件做一些布局切换时的操作。
 
-当然也可以通过调用 API 方法来自己手动更新布局，更多控制条布局请查看[控制条章节](control.md)。
+当然也可以通过调用 API 方法来自己手动更新布局，更多控制条布局请查看[控制条](control.md)。

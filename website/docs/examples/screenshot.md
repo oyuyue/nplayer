@@ -2,8 +2,7 @@
 title: 视频截图
 ---
 
-我们使用右键菜单的形式实现视频截图功能。
-
+这里使用右键菜单的形式实现视频截图功能。
 
 ```js
 import Player from 'nplayer'

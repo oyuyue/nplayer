@@ -14,8 +14,7 @@ console.log(EVENT.LOADING_SHOW)
 console.log(Player.EVENT.LOADING_SHOW)
 console.log(player.EVENT.LOADING_SHOW)
 console.log('LoadingShow')
-
-// 都是输出相同的字符串
+// 都是相同的字符串
 
 const noop = () => {}
 player.on(EVENT.LOADING_SHOW, noop)

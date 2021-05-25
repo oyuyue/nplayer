@@ -2,9 +2,9 @@
 title: 预览缩略图
 ---
 
-当鼠标放到进度条上时就会出现，一个小缩略图来预览这个时间点的截图，现在很多视频网站都有这个功能。NPlayer 也提供了这个功能。
+当鼠标放到进度条上时就会出现缩略图来预览这个时间点的截图，现在很多视频网站都有这个功能。
 
-NPlayer 的缩略图有 `thumbnail` 参数设置，它是一个缩略图配置对象，具体接口如下：
+NPlayer 的缩略图使用 `thumbnail` 参数设置，它是一个缩略图配置对象。
 
 ```typescript
 interface ThumbnailOptions {
@@ -18,7 +18,7 @@ interface ThumbnailOptions {
 }
 ```
 
-它个各个属性默认值如下：
+默认值如下：
 
 ```js
 {
@@ -32,13 +32,11 @@ interface ThumbnailOptions {
 }
 ```
 
-这个预览缩略图其实是由一堆分辨率较小的截图组成的一张图片，如下所示。
+预览缩略图其实是由一堆分辨率较小的截图组成的图片。
 
 ![Docusaurus](/img/M1.jpg)
 
-我们可以看到这个雪碧图由 `5 x 5` 的小缩略图组成，当然一个视频可能有一堆上面这种雪碧图，这就是上面 `images` 是一个数组字符串的原因。
-
-了解了雪碧图，下面来详细了解各个参数分别是什么意思吧。
+我们可以看到这个雪碧图由 `5 x 5` 的小缩略图组成，当然一个视频可能有一堆这种雪碧图。
 
 | 参数 | 描述 |
 | --- | --- |
@@ -58,13 +56,13 @@ interface ThumbnailOptions {
 
 :::info
 
-ffmpeg 是非常强大音视频工具，很多播放器都是它作为内核，更多详情请查看 [官方文档](https://www.ffmpeg.org/)。
+ffmpeg 是非常强大音视频工具，很多播放器都是它作为内核，详情请查看[ffmpeg 官方文档](https://www.ffmpeg.org/)。
 
 :::
 
-首先需要去 [ffmpeg 官网](https://www.ffmpeg.org/)下载并安装好 ffmpeg 。
+首先去 [ffmpeg 官网](https://www.ffmpeg.org/)下载并安装。
 
-安装好后可以在命令行执行下面命令。
+然后执行下面命令。
 
 ```bash
 ffmpeg -i ./test.webm -vf 'fps=1/10:round=zero:start_time=-9,scale=160x90,tile=5x5' M%d.jpg

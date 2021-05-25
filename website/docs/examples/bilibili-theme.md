@@ -2,11 +2,15 @@
 title: 自定义 Bilibili 主题
 ---
 
-通过一些参数，我们可以非常轻松的定制播放器的主题，下面就让自定义一个 B 站主题吧。
+通过一些参数，可以非常轻松的定制播放器的主题，下面就来自定义 B 站主题吧。
 
 ![nplayer bilibili](/img/custom.jpg)
 
-B 站图标是 SVG 格式，这里是直接去复制粘贴 SVG 代码，没有优化。仅做参考。
+:::info
+
+B 站图标是 SVG 格式，这里是直接去复制粘贴 SVG 代码，没有优化。下面代码仅供参考。
+
+:::
 
 ```js
 function createIcon(html, noCls) {

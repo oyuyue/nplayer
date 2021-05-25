@@ -2,7 +2,7 @@
 title: 流媒体
 ---
 
-NPlayer 可以非常方便的接入其他流媒体协议，如果想使用 HLS 可以去引入 [hls.js](https://github.com/video-dev/hls.js)。
+NPlayer 可以非常方便的接入流媒体协议，如果想使用 HLS 可以引入 [hls.js](https://github.com/video-dev/hls.js)。
 
 ```js
 import Hls from 'hls'
@@ -66,8 +66,6 @@ hls.on(Hls.Events.MEDIA_ATTACHED, function () {
 
 player.mount(document.body)
 ```
-
-只需提供 `video` 参数，`player.video` 就是你提供的 `video` 元素了。
 
 ## 推荐文章
 

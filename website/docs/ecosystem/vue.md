@@ -7,7 +7,7 @@ title: Vue2 / Vue3
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
 [![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-如果你想在 Vue2 或 Vue3 项目中使用 NPlayer，可以使用该 Vue 插件。
+如果你想在 Vue2 或 Vue3 项目中使用 NPlayer，可以使用 Vue 插件。
 
 ## 安装
 
@@ -116,7 +116,7 @@ NPlayer 内部把播放器包裹在一个 `width` 和 `height` 都是 `100%` 的
 
 你还可以通过 `set` prop，来获取播放器实例，它是一个函数第一个参数就是播放器实例。`(player: Player) => void`
 
-## 在线预览 & 编辑
+## 在线预览
 
 Vue2 DEMO: [https://codesandbox.io/s/nplayer-vue2-demo-9lps9?file=/src/main.js](https://codesandbox.io/s/nplayer-vue2-demo-9lps9?file=/src/main.js)
 

@@ -2,7 +2,7 @@
 title: 视频镜像
 ---
 
-这个功能我们使用 `switch` 类型的 `SettingItem` 来编写。
+这个功能我们使用 `switch` 类型的 [SettingItem](settings.md) 来编写。
 
 ```js
 const Mirroring = {
@@ -24,8 +24,6 @@ const player = new Player({
 })
 player.mount(document.body)
 ```
-
-CSS 代码如下。
 
 ```css
 .nplayer_video-mirroring {

@@ -2,32 +2,30 @@
 title: 控制条
 ---
 
-控制条指的是播放器下方的控制组件集合，它包含播放、暂停、音量调节等按钮。NPlayer 一共有 3 个控制条，底部两个，顶部一个。
+控制条指的是播放器下方的控制项的集合，它包含播放、暂停、音量调节等按钮。NPlayer 一共有 3 个控制条，底部两个，顶部一个。
 
-<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop></video>
 
 ## 配置
 
 可以通过 `controls` 参数来配置控制条组件的位置，显示隐藏等，它是一个二维数组，顺序是从下到上，一共三个。
 
-它的默认参数如下。
+默认参数如下。
 
 ```js
-{
+new NPlayer({
   controls:  [
     ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
     ['progress']
   ]
-}
+})
 ```
 
-每个控制条组件都有一个 `id`，通过它可以配置控制条的顺序，让组件根据顺序从左到右排序。也可以去除其中某一项移除该功能，比如去掉 `volume`，会使控制条移除音量控制组件，让播放器无法调节音量。
+每个控制项都有一个 `id`，通过它可以配置控制项的位置。
 
-其中比较特别的是 `spacer` 组件，可以将控制条分为左半区和右半区。在它左边的组件将在控制条左边，右边的组件将在右边。想把播放按钮放到右侧，只需将 `play` 字符串放到 `spacer` 右侧即可。
+其中比较特别的是 `spacer` 控制项，可以将控制条分为两部分。比如想把播放按钮放到右侧，只需将 `play` 字符串放到 `spacer` 右侧即可。
 
 ## 内置控制项
-
-NPlayer 提供了很多默认的控制项，如下所示。
 
 | 控制项 ID | 描述 |
 | --- | --- |
@@ -40,9 +38,9 @@ NPlayer 提供了很多默认的控制项，如下所示。
 | progress | 视频进度条 |
 | spacer | 用来分离控制项，将控制项分成两半 |
 
-## 自定义控制组件
+## 自定义控制项
 
-除了使用内置控制项，还可以添加自己的控制项。控制项是符合下方这个签名的对象。
+可以添加自己的控制项。控制项的签名如下。
 
 ```typescript
 interface ControlItem {
@@ -60,13 +58,14 @@ interface ControlItem {
 }
 ```
 
-播放器初始化时，会调用 `isSupport` 判断当前是否支持该控制项，如果不支持则会中断，处理下一个。接下来会执行 `init` 方法，并传入两个参数，最后会将 `el` 添加到控制条中。
+1. 播放器初始化时，会调用 `isSupport` 判断当前是否支持该控制项，如果不支持则会中断丢弃，处理下一个。
+2. 接下来会执行 `init` 方法，并传入两个参数，最后会将 `el` 添加到控制条中。
 
 `tip` 参数是一个字符串，用户鼠标放到对应控制项上时会显示这个提示字符串。如果想自己控制这个提示字符串时，可以接收在 `init` 方法中的第 3 个参数。
 
 ```js
 const MyControl = {
-  init(player, tooltip) {
+  init(player, position, tooltip) {
     this.tooltip = tooltip // 按照约定需要设置到自己 tooltip 属性上
   }
 }
@@ -76,15 +75,15 @@ new Player({
 })
 ```
 
-如果你需要使用 `tooltip` 参数时，按照约定需要将将这个 `tooltip` 设置到自己 `tooltip` 属性上。不需要时可以不用设置。 
+如果需要使用 `tooltip` 参数时，按照约定需要将这个 `tooltip` 设置到自己 `tooltip` 属性上，不需要时可以不用设置。 
 
 :::info
 
-Tooltip 是内置组件，Tooltip 的使用方法请查看 [内置组件章节](api/components.md)
+Tooltip 是内置组件，Tooltip 的使用方法请查看 [内置组件](api/components.md)
 
 :::
 
-如果你不需要控制 `tooltip` 时，可以不接收第 3 参数。
+如果不需要 `tooltip` 时，可以不接收第 3 参数。
 
 ```js
 const myControl = {
@@ -99,8 +98,6 @@ const myControl = {
 
 NPlayer 一共有 3 个控制条，底部两个，顶部一个。`controls` 参数是一个二维数组，顺序是从下到上。
 
-你可以任意组合这些控制项。
-
 ```js
 new Player({
   controls: [
@@ -111,7 +108,7 @@ new Player({
 }).mount(document.body)
 ```
 
-上方把第 2 个控制条中的 `progress`，放入第一个中，并将 `settings` 放入第 3 个（顶部）中，效果如下图。
+上方把第 2 个控制条中的 `progress`，放入第一个中，并将 `settings` 放入第 3 个（顶部）中。
 
 ![NPlayer Control](/img/phone.png)
 
@@ -133,17 +130,17 @@ player.updateControlItems(['spacer', 'settings'], 2)
 
 :::caution
 
-控制项是单例，也就是整个布局中每个控制项只能出现一次。比如上方将底部控制条的 `settings` 放入顶部控制条，最终不会有两个 `settings` 控制项，而是 `settings` 从底部控制台移动到了顶部控制条。
+控制项是单例的，也就是整个布局中每个控制项只能出现一次。比如上方将底部控制条的 `settings` 放入顶部控制条，最终不会有两个 `settings` 控制项，而是 `settings` 从底部控制台移动到了顶部控制条。
 
 其中比较特殊的是 `spacer`，它可以同时在多个控制条中，但是每个控制条中最多只能有一个 `spacer`。
 
 :::
 
-当然你可以通过 `bpControls` 参数来设置断点布局，而不是手动调用 `updateControlItems`。详情请查看[响应式布局章节](responsive.md)。
+当然你可以通过 `bpControls` 参数来设置断点布局，而不是手动调用 `updateControlItems`。详情请查看[响应式布局](responsive.md)。
 
 ## 注册和获取控制项
 
-你可以使用 `player.registerControlItem(item: ControlItem, id?: string): void` 注册一个控制项，一般只会在插件中使用，详情请查看[插件章节](plugin.md)。
+你可以使用 `player.registerControlItem(item: ControlItem, id?: string): void` 注册一个控制项，一般只会在插件中使用，详情请查看[插件](plugin.md)。
 
 `player.getControlItem(id: string): ControlItem | null` 可以获取对应对象。
 
@@ -152,7 +149,7 @@ const player = new Player()
 
 const play = player.getControlItem('play')
 if (play) {
-  console.log(play) // 播放项
+  console.log(play)
 }
 ```
 

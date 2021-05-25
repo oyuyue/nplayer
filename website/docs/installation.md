@@ -27,13 +27,13 @@ player.mount('#app')
 
 ### CDN 
 
-除了使用 npm 包的形式，还可以通过 CDN 来安装，只需要要一个链接就可以将 NPlayer 引入。
+还可以通过 CDN 来安装，只需要要一个链接就可以将 NPlayer 引入。
 
 ```js
 <script src="https://unpkg.com/nplayer@latest/dist/index.min.js"></script>
 ```
 
-或者可以选择使用 [jsDELIVR CDN](https://www.jsdelivr.com/package/npm/nplayer)。
+或者选择使用 [jsDELIVR CDN](https://www.jsdelivr.com/package/npm/nplayer)。
 
 ```js
 <script src="https://cdn.jsdelivr.net/npm/nplayer@latest/dist/index.min.js"></script>

@@ -13,7 +13,7 @@ interface Plugin {
 }
 ```
 
-插件其实就是一个接收 `player` 对象的一个函数。其中 `dispose` 可选的卸载方法，当播放器卸载时会调用该方法。应用插件时播放器会调用 `apply` 方法并传入 `player` 对象作为参数。
+插件其实就是一个接收 `player` 对象的一个函数。其中 `dispose` 可选的卸载方法，当播放器卸载时会调用该方法。初始化插件时播放器会调用 `apply` 方法并传入 `player` 对象作为参数。
 
 ## 例子
 
@@ -33,7 +33,7 @@ new Player({
 })
 ```
 
-Player 接收一个 `plugins` 参数，它是应用在当前播放器的插件。
+Player 接收一个 `plugins` 参数。
 
 ## 注册右键菜单、控制、设置项
 
@@ -58,9 +58,9 @@ new Player({
 })
 ```
 
-我们通过 `registerControlItem` 注册一个控制项，然后在播放器的 `controls` 参数中就可以直接使用 `my-control` 字符串了。
+我们通过 `registerControlItem` 注册一个控制项，然后在播放器的 `controls` 参数中就可以直接使用 `my-control` 字符串啦。
 
-对应右键菜单和设置项都是相同的使用方法。
+右键菜单和设置项都是相同的使用方法。
 
 ## control 和 contextmenu
 
@@ -132,7 +132,7 @@ new Player({
 }
 ```
 
-请查看 [内置插件](api/components.md)。
+详情请查看[内置组件](api/components.md)。
 
 ## 主题
 
@@ -144,7 +144,7 @@ new Player({
 }
 ```
 
-插件的 CSS 应该使用 `.nplayer_` 作为开头，统一命名，更多 CSS 变量可以查看 [定制主题](theme.md)。
+插件的 CSS 应该使用 `.nplayer_` 作为开头，统一命名，更多 CSS 变量请查看[定制主题](theme.md)。
 
 ## 弹幕插件
 
@@ -157,4 +157,4 @@ import Danmaku from '@nplayer/danmaku'
 new Player(plugins: [new Danmaku()])
 ```
 
-更多插件详情可以查看 [弹幕插件章节](ecosystem/danmaku.md)。
+更多请查看[弹幕插件](ecosystem/danmaku.md)。

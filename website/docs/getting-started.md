@@ -14,7 +14,7 @@ NPlayer 是由 Typescript 加 Sass 编写，无任何第三方运行时依赖，
 
 ![NPlayer](/img/preview.jpg)
 
-<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop></video>
 
 ## 安装
 
@@ -33,7 +33,7 @@ const player = new NPlayer({
   src: 'https://v-cdn.zjol.com.cn/280443.mp4'
 })
 
-// player.mount('#app') 还可以通过选择字符串自动找到相应的 DOM 元素
+// player.mount('#app')
 player.mount(document.body)
 ```
 
@@ -49,19 +49,21 @@ const player = new Player({ video, videoProps: { autoplay: 'true' } })
 player.mount(document.body)
 ```
 
-我们还可以通过 `video` 参数，自己提供 `video` 元素，而不是让 `NPlayer` 自己创建。还可以通过 `videoProps` 给 `video` 元素设置属性。更多参数请查看[参数章节](api/config.md) 
+还可以通过 `video` 参数，自己提供 `video` 元素，而不是让 `NPlayer` 自己创建。
+
+`videoProps` 给 `video` 元素[设置属性]((api/config.md)。
 
 `mount` 方法可以将播放器挂载到指定 DOM 元素中，它接收一个参数，可以是一个字符串或一个 DOM 元素。当是字符串时，将会自动查找相应的 DOM 元素。
 
 ## Video Source
 
-除了设置 video 元素的 `src` 参数，还可以添加 [Source DOM 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/source)。
+除了设置 video 元素的 `src` 参数，还可以添加 [Source DOM 元素](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source)。
 
 ```js
 new Player({ video, videoSources: [{ src: 'video.webm', type: 'video/webm' }] })
 ```
 
-最终生成 DOM 结构如下。
+相当于下面代码。
 
 ```html
 <video class="nplayer_video" crossorigin="anonymous" preload="auto" playsinline="true">
@@ -71,7 +73,7 @@ new Player({ video, videoSources: [{ src: 'video.webm', type: 'video/webm' }] })
 
 其中 `crossorigin`、`preload` 和 `playsinline` 是默认的 `videoProps`。
 
-一个 Source 参数签名如下。
+一个 Source [参数签名](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source)如下。
 
 ```typescript
 interface VideoSource {
@@ -96,11 +98,11 @@ console.log(player.el) // DIV Element
 console.log(player.video) // VIDEO Element
 ```
 
-你可以通过 `container` 获取到播放器容器元素，也就是 `mount` 方法参数对应的 DOM 元素，`video` 属性可以获取到播放器使用的 `video` 元素。`el` 可以获取播放器的 DOM 元素。
+你可以通过 `container` 获取到播放器容器元素，也就是 `mount` 方法参数对应的 DOM 元素，`video` 属性可以获取到播放器使用的 `video` 元素， `el` 可以获取播放器的 DOM 元素。
 
 :::info
 
-很多组件对象都有 `el` 属性，它表示改组件对应的 DOM 元素。
+NPlayer 中很多对象都有 `el` 属性，它表示组件对应的 DOM 元素。
 
 :::
 
@@ -123,21 +125,21 @@ const Plugin = {
   apply(player) {
     console.log(player.Player.components) 
     console.log(player.Player.EVENT)
-    console.log(player.EVENT) // EVENT 也在原型上
+    console.log(player.EVENT)
     // ...
   }
 }
 ```
 
-自定义插件中只能访问到 Player 实例，这时你就可以通过 `Player` 属性访问静态属性。具体属性，请参考[属性章节](api/attrs.md)。
+自定义插件中只能访问到 Player 实例，这时你就可以通过 `Player` 属性访问[静态属性](api/attrs.md)。
 
 Player 实例上有很多属性和方法，比如 `player.fullscreen` 是 `Fullscreen` 对象，通过它你可以手动进入和退出全屏，`player.playing` 属性来判断当前时候在播放等等。
 
-你可以通过查看[API 部分](api/attrs.md) 了解全部属性和方法。
+更多请查看 [API](api/attrs.md)。
 
 ## 事件
 
-`player` 对象有下面 5 个事件相关的方法。
+`player` 有下面 5 个事件相关的方法。
 
 | 方法 | 描述 |
 | --- | --- |
@@ -164,7 +166,7 @@ console.log('ControlShow')
 
 上面打印都是相同的字符串。
 
-详情请查看[事件章节](api/events.md)。
+更多请查看[事件](api/events.md)。
 
 ## 播放器尺寸变化
 

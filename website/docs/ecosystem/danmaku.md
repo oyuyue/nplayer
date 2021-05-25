@@ -7,7 +7,7 @@ title: 弹幕插件
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/08e3f1086b5748aaa745ca655ecd1c6a)](https://www.codacy.com/gh/woopen/nplayer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=woopen/nplayer&amp;utm_campaign=Badge_Grade) 
 [![Test](https://github.com/woopen/nplayer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/woopen/nplayer/actions/workflows/test.yml) 
 
-该插件可以给 NPlayer 添加弹幕功能。它可以保持大量弹幕而不卡顿，它支持非常多的设置，弹幕防碰撞、弹幕速度、字体、速度、透明度、显示区域等。
+该插件可以给 NPlayer 添加弹幕功能。它可以保持大量弹幕而不卡顿，并且支持非常多的设置，比如弹幕防碰撞、弹幕速度、字体、速度、透明度、显示区域等。
 
 ![nplayer danmaku](/img/preview.jpg)
 
@@ -44,19 +44,19 @@ const danmakuOptions = {
 }
 
 const player = new Player({
-  plugins: [new Danmuku(danmakuOptions)]
+  plugins: [new Danmaku(danmakuOptions)]
 })
 
 player.mount(document.body)
 ```
 
-<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop />
+<video src="/img/nplayer.mp4" muted autoPlay preload="auto" loop></video>
 
 ## 控制条
 
-弹幕插件会注册 `danmaku-send` 和 `danmaku-settings` 这两项。默认情况会自动加入到控制条中。
+弹幕插件会注册 `danmaku-send` 和 `danmaku-settings` 这两项。
 
-通过 `autoInsert` 参数可以控制是否自动插入，自动插入逻辑是，找到 `spacer` 项，将它替换成 `danmaku-send` 和 `danmaku-settings`，**如果找不到 `spacer` 则不会插入**。
+通过 `autoInsert` 参数可以控制是否自动插入，自动插入逻辑是，找到 `spacer` 项，将它替换成 `danmaku-send` 和 `danmaku-settings`，**如果找不到 `spacer` 则不会自动插入**。
 
 ```js
 new Player({
@@ -96,7 +96,7 @@ interface BulletOption {
 
 弹幕列表必须按照 `time` 从小到大排序。如果获取的弹幕是无序的，那么在传入之前需要自己 `.sort((a, b) => a.time - b.time)` 一下。
 
-你还可以通过 `danmaku` 对象的 `appendItems` 和 `resetItems` 等方法，添加和重置弹幕，请查看下方对应描述。
+你还可以通过 `danmaku` 对象的 `appendItems` 和 `resetItems` 等方法，添加和重置弹幕。
 
 ## 弹幕事件
 
@@ -111,22 +111,24 @@ player.on(player.danmaku.DANMAKU_UPDATE_OPTIONS, () => {
 })
 ```
 
-### DANMAKU_SEND / DanmakuSend
+### DANMAKU_SEND (DanmakuSend)
 
 用户发送弹幕之前触发。
 
-### DANMAKU_UPDATE_OPTIONS / DanmakuUpdateOptions
+### DANMAKU_UPDATE_OPTIONS (DanmakuUpdateOptions)
 
 用户更新弹幕设置后触发。
 
 ## 配置参数
 
-配置参数是初始化弹幕插件时传入的参数。配置参数都不是必填参数。
+配置参数是初始化弹幕插件时传入的参数。
 
 ```js
 import Danmaku from '@nplayer/danmaku'
 
-const danmakuPlugin = new Danmaku({ // 配置参数 })
+const danmakuPlugin = new Danmaku({
+  // options
+})
 ```
 
 默认参数如下：
