@@ -20,8 +20,6 @@ console.log(Tooltip === Player.components.Tooltip) // true
 
 ## Tooltip 文字提示
 
-控制条项的提示了该组件。
-
 ### API
 
 #### `constructor(container: HTMLElement, html?: string)`
@@ -69,8 +67,6 @@ tooltip.dispose() // 销毁
 
 ## Switch 开关
 
-switch 类型的设置菜单项使用了该组件。
-
 ### API
 
 #### `constructor(container: HTMLElement, value?: boolean, change?: (v: boolean) => void)`
@@ -90,8 +86,6 @@ const switch = new Switch(document.body, false, (v) => {
 ```
 
 ## Popover 弹出框
-
-控制条条上的设置弹框和弹幕设置的弹框，都使用了该组件。
 
 ### API
 
@@ -141,8 +135,6 @@ new Switch(popover.panelEl)
 
 ## Slider 滑块
 
-弹幕插件的弹幕设置使用了该组件，它的值的范围是 `0` 到 `1`。
-
 ### API
 
 #### `constructor(container: HTMLElement, opts: SliderOption)`
@@ -156,7 +148,7 @@ interface SliderOption {
 }
 ```
 
-- `opts.value` 当前的值
+- `opts.value` 当前的值，0 到 1 之间
 - `opts.stops` 滑块上的断点
 - `opts.change` 当用户修改滑块值是会调用
 - `opts.step` 滑动滑块时，是否自动吸附到最近的断点上
@@ -184,8 +176,6 @@ new Slider(div, {
 ```
 
 ## Checkbox 复选框
-
-弹幕插件的弹幕设置使用了该组件。
 
 ### API
 
