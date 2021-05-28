@@ -22,7 +22,7 @@ export class Plugin implements P {
     player.Player.I18n.add('zh-cn', trans);
     player.danmaku = new Danmaku(player, this.opts);
 
-    if (this.opts && this.opts.autoInsert !== false) {
+    if (!player.mounted && this.opts && this.opts.autoInsert !== false) {
       const i = player.opts.controls[0].findIndex((c) => c === 'spacer');
       if (i !== -1) {
         player.opts.controls[0].splice(i, 1, 'danmaku-send', 'danmaku-settings');
