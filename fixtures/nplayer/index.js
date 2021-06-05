@@ -45,6 +45,7 @@ window.onload = function () {
     src: 'https://v-cdn.zjol.com.cn/280443.mp4',
     themeColor: 'rgba(35,173,229, 1)',
     progressBg: 'rgba(35,173,229, 1)',
+    volumeProgressBg: 'rgba(35,173,229, 1)',
     // progressDot: createIcon(dot, true)(),
     // posterPlayEl: createIcon(playBig)(),
     settings: [{ html: '切换', type: 'switch'}, 'speed'],

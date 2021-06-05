@@ -37,6 +37,7 @@ export interface PlayerOptions {
   plugins?: Plugin[];
   shortcut?: boolean;
   seekStep?: number;
+  i18n?: string;
   volumeStep?: number;
   themeColor?: string;
   posterBgColor?: string;

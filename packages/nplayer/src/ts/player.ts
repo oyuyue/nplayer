@@ -70,6 +70,7 @@ export class Player extends EventEmitter implements Disposable {
     super();
     this.opts = processOptions(opts);
     tryOpenEdge(this);
+    I18n.setCurrentLang(this.opts.i18n);
     this.container = getEl(this.opts.container);
     this.el = $('.nplayer', { tabindex: '0' }, undefined, '');
     if (this.opts.video) {

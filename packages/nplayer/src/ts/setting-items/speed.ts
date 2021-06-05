@@ -13,7 +13,16 @@ export const speedSettingItem = (): SettingItem => ({
     { value: 1.5, html: '1.5' },
     { value: 2, html: '2' },
   ],
-  init(p) {
+  init(p, item) {
+    if (item.options) {
+      const rate = p.playbackRate;
+      for (let i = 0, l = item.options.length; i < l; i++) {
+        if (item.options[i].value === rate) {
+          item.value = rate;
+          return;
+        }
+      }
+    }
     p.playbackRate = 1;
   },
   change(value, player) {

@@ -30,10 +30,10 @@ function transThrottle(
   from: string,
   to: string,
   dom: HTMLElement | Window = player.video,
+  fn = (ev: Event) => { player.emit(to, ev); },
 ): Disposable {
-  const fn = (ev: Event) => player.emit(to, ev);
   dom.addEventListener(from, throttle(fn));
-  return { dispose: () => dom.removeEventListener('from', fn) };
+  return { dispose: () => dom.removeEventListener(from, fn) };
 }
 
 export function tryOpenEdge(player: Player): void {
@@ -108,6 +108,12 @@ export function registerNamedMap(player: Player) {
   player.registerControlItem(progressControlItem());
 }
 
+export function tryEmitUpdateSize(player: Player, ev?: Event): void {
+  if (player && player.rect.changed) {
+    player.emit(EVENT.UPDATE_SIZE, ev);
+  }
+}
+
 export function transferEvent(player: Player): void {
   const dis = (d: Disposable) => addDisposable(player, d);
 
@@ -129,7 +135,7 @@ export function transferEvent(player: Player): void {
   dis(transThrottle(player, 'volumechange', EVENT.VOLUME_CHANGE));
   dis(transThrottle(player, 'progress', EVENT.PROGRESS));
 
-  dis(transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window));
+  dis(transThrottle(player, 'resize', EVENT.UPDATE_SIZE, window, (ev) => tryEmitUpdateSize(player, ev)));
   if ((window as any).ResizeObserver) {
     const ro = new ResizeObserver(throttle(() => player.emit(EVENT.UPDATE_SIZE)));
     ro.observe(player.el);
