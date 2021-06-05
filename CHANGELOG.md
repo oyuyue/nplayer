@@ -1,3 +1,17 @@
+## [1.0.6](https://github.com/woopen/nplayer/compare/v1.0.5...v1.0.6) (2021-06-05)
+
+
+### Bug Fixes
+
+* **danmaku:** don't insert when player is mounted ([fa29380](https://github.com/woopen/nplayer/commit/fa29380a69e53567dfba103cd911e49aac4e095a))
+
+
+### Features
+
+* i18n option ([7a1ef46](https://github.com/woopen/nplayer/commit/7a1ef46e7b8fefadd7d1dd2563c2828f3a214446))
+
+
+
 ## [1.0.5](https://github.com/woopen/nplayer/compare/v1.0.4...v1.0.5) (2021-05-21)
 
 

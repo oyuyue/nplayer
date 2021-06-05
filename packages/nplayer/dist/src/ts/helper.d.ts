@@ -7,4 +7,5 @@ export declare function setVideoSources(video: HTMLVideoElement, opts: PlayerOpt
 export declare function setVideoVolumeFromLocal(video: HTMLVideoElement): void;
 export declare function saveVideoVolume(volume: number): void;
 export declare function registerNamedMap(player: Player): void;
+export declare function tryEmitUpdateSize(player: Player, ev?: Event): void;
 export declare function transferEvent(player: Player): void;

@@ -9,6 +9,7 @@ export declare class Rect implements Disposable {
     get height(): number;
     get x(): number;
     get y(): number;
+    get changed(): boolean;
     private tryUpdate;
     update: () => void;
     dispose(): void;
