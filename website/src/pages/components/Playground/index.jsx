@@ -3,6 +3,7 @@ import Player, { EVENT } from 'nplayer'
 import Danmaku from '@nplayer/danmaku'
 import Hls from 'hls.js'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Translate from '@docusaurus/Translate';
 import M1 from '@site/static/img/M1.jpg';
 import M2 from '@site/static/img/M2.jpg';
 import M3 from '@site/static/img/M3.jpg';
@@ -114,10 +115,10 @@ const Playground = () => {
 
   return (
     <div className={styles.Container} id="demo">
-      <div className={styles.Title}>演示</div>
+      <div className={styles.Title}><Translate id="nplayer.demo">演示</Translate></div>
       <div>
         <div className={styles.VideoContainer} ref={container}></div>
-        <div className={styles.Tip}>* 外网视频可能需要翻墙才能访问，拖动播放器👉右下角可以改变播放器尺寸。</div>
+        <div className={styles.Tip}><Translate id="nplayer.demoTip">* 外网视频可能需要翻墙才能访问，拖动播放器👉右下角可以改变播放器尺寸。</Translate></div>
       </div>
       <div>
         <a href="https://codesandbox.io/s/nplayer-demo-ujtms" target="_blank"><img src="img/csb.png" /></a>

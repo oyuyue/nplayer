@@ -1,5 +1,6 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Translate from '@docusaurus/Translate';
 import CodeBlock from '../../../components/CodeBlock'
 import PrimaryButton from '../../../components/PrimaryButton';
 import styles from './styles.module.css';
@@ -17,19 +18,19 @@ const StartCoding = () => {
   return (
     <div className={styles.Container}>
       <div className={styles.Content}>
-        <div className={styles.Title}>快速上手</div>
+        <div className={styles.Title}><Translate id="nplayer.quick">快速上手</Translate></div>
         <div>
-          <div className={styles.Tagline}>第一步：安装 NPlayer</div>
+          <div className={styles.Tagline}><Translate id="nplayer.quick1nd">第一步：安装 NPlayer</Translate></div>
           <CodeBlock code="npm i -S nplayer" />
         </div>
         <div>
-          <div className={styles.Tagline}>第二步：使用 NPlayer</div>
+          <div className={styles.Tagline}><Translate id="nplayer.quick2nd">第二步：使用 NPlayer</Translate></div>
           <CodeBlock code={code} />
         </div>
         <PrimaryButton
           className={styles.LearnMoreBtn}
           to={useBaseUrl('/docs/')}>
-          了解更多
+          <Translate id="nplayer.learnMore">了解更多</Translate>
         </PrimaryButton>
       </div>
     </div>

@@ -51,7 +51,7 @@ player.mount(document.body)
 
 还可以通过 `video` 参数，自己提供 `video` 元素，而不是让 `NPlayer` 自己创建。
 
-`videoProps` 给 `video` 元素[设置属性]((api/config.md)。
+`videoProps` 给 `video` 元素[设置属性](api/config.md)。
 
 `mount` 方法可以将播放器挂载到指定 DOM 元素中，它接收一个参数，可以是一个字符串或一个 DOM 元素。当是字符串时，将会自动查找相应的 DOM 元素。
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Translate from '@docusaurus/Translate';
 import PrimaryButton from '../../../components/PrimaryButton';
 import GithubButton from '../../../components/GithubButton';
 import styles from './styles.module.css';
@@ -16,12 +17,16 @@ const HeaderView = () => {
       style={{ height: windowHeight > 800 ? windowHeight : undefined }}>
       <div className={styles.ContainerLeft}>
         <div className={styles.HeaderTitle}>NPlayer</div>
-        <div className={styles.DescriptionText}>可定制、插件化、响应式（支持移动、平板等多种设备）的弹幕视频播放器</div>
+        <div className={styles.DescriptionText}>
+          <Translate id="nplayer.desc">
+            可定制、插件化、响应式（支持移动、平板等多种设备）的弹幕视频播放器
+          </Translate>
+        </div>
         <div className={styles.ButtonContainer}>
           <PrimaryButton
             className={styles.GetStartedButton}
             to={useBaseUrl('/docs/')}>
-            快速开始
+            <Translate id="nplayer.gettingStarted">快速开始</Translate>
           </PrimaryButton>
           <GithubButton
             className={styles.GithubButton}
