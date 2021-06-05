@@ -30,6 +30,7 @@ new Player({
 | contextMenus | 请查看 [右键菜单](contextmenu.md) |
 | contextMenuToggle | 是否偶数次单击右键时显示浏览器默认右键菜单 |
 | plugins | 插件列表，详情请查看 [插件](plugin.md) |
+| i18n | 当前播放器语言，如 `en`、`zh` |
 | shortcut | 是否开启快捷键功能 |
 | seekStep | 单次快进、快退的步长，快捷键中会使用到 |
 | volumeStep | 单次增加、降低音量的步长，快捷键中会使用到 |
@@ -101,6 +102,7 @@ interface PlayerOptions {
   contextMenus?: (ContextMenuItem | string)[];
   contextMenuToggle?: boolean;
   plugins?: Plugin[];
+  i18n?: string;
   shortcut?: boolean;
   seekStep?: number;
   volumeStep?: number;

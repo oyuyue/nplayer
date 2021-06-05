@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Player, { EVENT } from 'nplayer'
 import Danmaku from '@nplayer/danmaku'
 import Hls from 'hls.js'
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import M1 from '@site/static/img/M1.jpg';
 import M2 from '@site/static/img/M2.jpg';
 import M3 from '@site/static/img/M3.jpg';
@@ -13,6 +14,9 @@ const Playground = () => {
   const container = useRef()
   // const mini = useRef()
 
+  const locale = useDocusaurusContext()?.i18n?.currentLocale || ''
+  const isEN = locale.includes('en')
+
   useEffect(() => {
 
     if (typeof document === 'undefined') return;
@@ -21,7 +25,7 @@ const Playground = () => {
       el: document.createElement('div'),
       init(player) {
         this.btn = document.createElement('div')
-        this.btn.textContent = '画质'
+        this.btn.textContent = isEN ? 'Quantity': '画质'
         this.el.appendChild(this.btn)
         this.popover = new player.Player.components.Popover(this.el)
         this.btn.addEventListener('click', () =>  this.popover.show())
@@ -36,6 +40,7 @@ const Playground = () => {
         startSecond: 1,
         images: [M1, M2, M3]
       },
+      i18n: locale,
       controls: [
         ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
         ['progress']
@@ -68,16 +73,13 @@ const Playground = () => {
         Quantity.itemElements = hls.levels.map((l, i) => {
           const el = document.createElement('div')
           el.textContent = l.name + 'P'
-          if (l.height === 1080) el.textContent += ' 超清'
-          if (l.height === 720) el.textContent += ' 高清'
-          if (l.height === 480) el.textContent += ' 清晰'
           el.classList.add(styles.QuantityItem)
           el.addEventListener('click', listener(i))
           frag.appendChild(el)
           return el;
         })
         const el = document.createElement('div')
-        el.textContent = '自动'
+        el.textContent = isEN ? 'Auto' : '自动'
         el.addEventListener('click', listener(-1))
         el.classList.add(styles.QuantityItem)
         frag.appendChild(el)
