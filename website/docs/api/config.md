@@ -7,9 +7,11 @@ title: 参数
 ```js
 import Player from 'nplayer'
 
-new Player({
+const player = new Player({
   // 这里
 })
+
+console.log(player.opts)
 ```
 
 ## 描述

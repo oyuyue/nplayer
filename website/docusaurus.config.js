@@ -86,6 +86,10 @@ module.exports = {
               href: 'https://stackoverflow.com/questions/tagged/nplayer',
             },
             {
+              label: 'Discord',
+              href: 'https://discord.gg/kTDVGhV3tP',
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/woopen/nplayer/issues',
             },
