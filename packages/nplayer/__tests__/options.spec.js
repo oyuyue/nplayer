@@ -14,7 +14,6 @@ describe('Player Options', () => {
     expect(opts.openEdgeInIE).toBe(true)
     expect(opts.posterEnable).toBe(true)
     expect(opts.videoProps).toEqual({
-      crossorigin: 'anonymous',
       preload: 'auto',
       playsinline: 'true',
     })
@@ -48,9 +47,6 @@ describe('Player Options', () => {
     expect(opts.settings).toEqual([])
     expect(opts.contextMenus).toEqual([])
     expect(opts.videoProps).toEqual({
-      crossorigin: 'anonymous',
-      preload: 'auto',
-      playsinline: 'true',
       z: 'z'
     })
   })

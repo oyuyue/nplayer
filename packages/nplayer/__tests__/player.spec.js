@@ -26,7 +26,6 @@ describe('Player', () => {
     expect(opts.settings).toEqual(['speed']);
     expect(opts.contextMenus).toEqual(['loop', 'pip', 'version']);
     expect(opts.videoProps).toEqual({
-      crossorigin: 'anonymous',
       preload: 'auto',
       playsinline: 'true',
     });

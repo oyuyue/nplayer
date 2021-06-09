@@ -11,7 +11,6 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   openEdgeInIE: true,
   posterEnable: true,
   videoProps: {
-    crossorigin: 'anonymous',
     preload: 'auto',
     playsinline: 'true',
   },
@@ -25,10 +24,6 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
     || (navigator.maxTouchPoints > 0)
     || (navigator.msMaxTouchPoints > 0)),
     ...opts,
-    videoProps: {
-      ...dOpts.videoProps,
-      ...opts?.videoProps,
-    },
   } as Required<PlayerOptions>;
 
   res.controls = res.controls || [
