@@ -1542,10 +1542,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@nplayer/danmaku@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/@nplayer/danmaku/-/danmaku-1.0.6.tgz#9286d196e28626406bd54e109ba291493c92f618"
-  integrity sha512-7GzbKajyeVwzZqhZl3Is0EqfNnRabedqkaPYCQvB8lAG3eN11VqkZbjIeqkG33LMPXp02jH65OFZqn71ISeaOw==
+"@nplayer/danmaku@1.0.7":
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/@nplayer/danmaku/-/danmaku-1.0.7.tgz#865a8a2ed594b43740f1a74be4591f93591b59cb"
+  integrity sha512-qZ01tPuvgHqS6kYrLGjWqmrD1sauKW5wM5AZ43ufe31tt0u2oC4TTsWFlKzdliOyM3nwhq3OsGe6OimsBRSb8w==
 
 "@polka/url@^1.0.0-next.9":
   version "1.0.0-next.12"
@@ -6312,10 +6312,10 @@ normalize-url@^4.1.0, normalize-url@^4.5.0:
   resolved "https://registry.npm.taobao.org/normalize-url/download/normalize-url-4.5.0.tgz?cache=0&sync_timestamp=1602432435724&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnormalize-url%2Fdownload%2Fnormalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha1-RTNUCH5sqWlXvY9br3U/WYIUISk=
 
-nplayer@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/nplayer/-/nplayer-1.0.6.tgz#c2799402e66f4ad8285b3e0d8103eb17e5d06fbe"
-  integrity sha512-ADyZz3jMq5QdtfYuFEYYqJwqPPI0rTziwcRn1La3K6rZo/cRdZwrU9aPKwtWY5qHCRDDWvOPknNGtbGcxA3pdQ==
+nplayer@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/nplayer/-/nplayer-1.0.7.tgz#feca2bc95cd0e2792dacdf7a799072bbc6f203bc"
+  integrity sha512-VDboK70pS9PsyYMIETpSLXRGtSaNX0m0BpOsYNtyWRs2/5yRPHyy4EbCUAf900Db3cd3CHxtxx/lmjUsVO5X1A==
 
 npm-run-path@^2.0.0:
   version "2.0.2"
