@@ -66,7 +66,7 @@ new Player({ video, videoSources: [{ src: 'video.webm', type: 'video/webm' }] })
 相当于下面代码。
 
 ```html
-<video class="nplayer_video" crossorigin="anonymous" preload="auto" playsinline="true">
+<video class="nplayer_video" preload="auto" playsinline="true">
   <source src="video.webm" type="video/webm">
 </video>
 ```

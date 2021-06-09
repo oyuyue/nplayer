@@ -62,7 +62,6 @@ console.log(player.opts)
   openEdgeInIE: true,
   posterEnable: true,
   videoProps: {
-    crossorigin: 'anonymous',
     preload: 'auto',
     playsinline: 'true',
   },
