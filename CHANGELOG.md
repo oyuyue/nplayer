@@ -1,3 +1,12 @@
+## [1.0.7](https://github.com/woopen/nplayer/compare/v1.0.6...v1.0.7) (2021-06-09)
+
+
+### Bug Fixes
+
+* remove default crossorigin prop ([4637776](https://github.com/woopen/nplayer/commit/463777650fdb5e1a2f581449b8f099c271fe3679))
+
+
+
 ## [1.0.6](https://github.com/woopen/nplayer/compare/v1.0.5...v1.0.6) (2021-06-05)
 
 

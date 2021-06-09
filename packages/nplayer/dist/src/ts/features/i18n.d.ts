@@ -1,7 +1,7 @@
 export declare const FULL_SCREEN = "Fullscreen";
 export declare const EXIT_FULL_SCREEN = "Exit fullscreen";
 export declare const WEB_FULL_SCREEN = "Web fullscreen";
-export declare const WEB_EXIT_FULL_SCREEN = "Web exit fullscreen";
+export declare const WEB_EXIT_FULL_SCREEN = "Exit web fullscreen";
 export declare const SETTINGS = "Settings";
 export declare const PLAY = "Play";
 export declare const PAUSE = "Pause";
