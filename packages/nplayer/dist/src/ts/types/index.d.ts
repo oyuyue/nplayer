@@ -43,6 +43,7 @@ export interface PlayerOptions {
     progressDot?: HTMLElement;
     volumeProgressBg?: string;
     volumeBarLength?: number | string;
+    volumeVertical?: boolean;
     loadingEl?: HTMLElement;
     openEdgeInIE?: boolean;
     poster?: string;

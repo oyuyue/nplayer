@@ -9,6 +9,7 @@ declare class Volume extends Component implements ControlItem {
     private mutedIcon;
     private bar;
     private rect;
+    private isVer;
     tooltip: Tooltip;
     init(player: Player, _: any, tooltip: Tooltip): void;
     private onDragStart;

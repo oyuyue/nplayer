@@ -1,3 +1,12 @@
+## [1.0.8](https://github.com/woopen/nplayer/compare/v1.0.7...v1.0.8) (2021-06-10)
+
+
+### Features
+
+* **volume:** vertical mode ([a2cf241](https://github.com/woopen/nplayer/commit/a2cf2417525ecc560229dd68984bd52637b59e85))
+
+
+
 ## [1.0.7](https://github.com/woopen/nplayer/compare/v1.0.6...v1.0.7) (2021-06-09)
 
 
