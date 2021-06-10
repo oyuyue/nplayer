@@ -21,19 +21,26 @@ class Volume extends Component implements ControlItem {
 
   private rect!: Rect;
 
+  private isVer!: boolean;
+
   tooltip!: Tooltip;
 
   init(player: Player, _: any, tooltip: Tooltip) {
     this.player = player;
     this.tooltip = tooltip;
+    this.isVer = player.opts.volumeVertical;
 
     addClass(this.el, 'control_volume');
+    addClass(this.el, `control_volume-${this.isVer ? 'ver' : 'hor'}`);
+
+    if (this.isVer) tooltip.hide();
+
     this.volumeIcon = this.el.appendChild(Icon.volume());
     this.mutedIcon = this.el.appendChild(Icon.muted());
 
     const bars = this.el.appendChild($('.control_volume_bars'));
-    const barWidth = player.opts.volumeBarWidth;
-    bars.style.width = isString(barWidth) ? barWidth : `${barWidth}px`;
+    const len = player.opts.volumeBarLength;
+    bars.style[this.isVer ? 'height' : 'width'] = isString(len) ? len : `${len}px`;
 
     this.bar = bars.appendChild($('.control_volume_bar'));
 
@@ -57,9 +64,10 @@ class Volume extends Component implements ControlItem {
   }
 
   private onDragging = (ev: PointerEvent) => {
-    const x = ev.pageX - this.rect.x;
-    const v = clamp(x / this.rect.width);
-    this.player.volume = v;
+    this.player.volume = clamp(
+      (this.isVer ? this.rect.height - ev.pageY + this.rect.y : ev.pageX - this.rect.x)
+      / (this.isVer ? this.rect.height : this.rect.width),
+    );
   }
 
   private onVolumeChange = () => {
@@ -68,7 +76,7 @@ class Volume extends Component implements ControlItem {
     } else {
       this.unmute();
     }
-    this.bar.style.transform = `scaleX(${this.player.volume})`;
+    this.bar.style.transform = `scale${this.isVer ? 'Y' : 'X'}(${this.player.volume})`;
   };
 
   mute(): void {

@@ -4,7 +4,7 @@ const defaultOptions = (): Partial<PlayerOptions> => ({
   shortcut: true,
   seekStep: 10,
   volumeStep: 0.1,
-  volumeBarWidth: 100,
+  volumeBarLength: 100,
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,

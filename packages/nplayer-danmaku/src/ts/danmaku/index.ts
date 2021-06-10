@@ -84,7 +84,7 @@ export class Danmaku implements Disposable {
     this.el = player.el.appendChild($('.danmaku_screen'));
     this.el.style.zIndex = String(this.opts.zIndex);
 
-    this.items = this.opts.items;
+    this.items = Array.isArray(this.opts.items) ? this.opts.items : [];
 
     this.timer = createTimer();
 

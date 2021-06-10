@@ -11,7 +11,7 @@ describe('Player', () => {
     expect(opts.posterEnable).toBe(true);
     expect(opts.seekStep).toBe(10);
     expect(opts.volumeStep).toBe(0.1);
-    expect(opts.volumeBarWidth).toBe(100);
+    expect(opts.volumeBarLength).toBe(100);
     expect(opts.controls).toEqual([
       ['play', 'volume', 'time', 'spacer', 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
       ['progress']

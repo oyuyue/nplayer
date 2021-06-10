@@ -31,7 +31,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-  z-index: 0;
+  z-index: auto;
   user-select: none;
 
   * { box-sizing: content-box; }
@@ -528,14 +528,20 @@
       position: relative;
       z-index: 1;
 
-      &_bars, &_bar {
-        position: absolute;
+      &-ver &_bars {
+        left: 0;
+        right: 0;
+        bottom: 100%;
+      }
+
+      &-hor &_bars {
         top: 0;
         bottom: 0;
+        left: 100%;
       }
 
       &_bars {
-        left: 100%;
+        position: absolute;
         font-size: 0;
         background: rgba(255, 255, 255, .3);
         opacity: 0;
@@ -546,15 +552,14 @@
 
       &:hover &_bars {
         opacity: 1;
-        transform: translateX(0);
         pointer-events: auto;
       }
 
       &_bar {
-        left: 0;
-        right: 0;
-        transform-origin: 0 0;
-        transform: scaleX(0);
+        width: 100%;
+        height: 100%;
+        transform-origin: 0 100%;
+        transform: scaleX(0) scaleY(0);
         will-change: transform;
         background: var(--volume-progress-bg);
       }

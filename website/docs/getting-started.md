@@ -29,7 +29,7 @@ npm i -S nplayer
 ```js
 import Player from 'nplayer'
 
-const player = new NPlayer({
+const player = new Player({
   src: 'https://v-cdn.zjol.com.cn/280443.mp4'
 })
 

@@ -7,7 +7,7 @@ describe('Player Options', () => {
     expect(opts.shortcut).toBe(true)
     expect(opts.seekStep).toBe(10)
     expect(opts.volumeStep).toBe(0.1)
-    expect(opts.volumeBarWidth).toBe(100)
+    expect(opts.volumeBarLength).toBe(100)
     expect(opts.settings).toEqual(['speed'])
     expect(opts.contextMenus).toEqual(['loop', 'pip', 'version'])
     expect(opts.contextMenuToggle).toBe(true)

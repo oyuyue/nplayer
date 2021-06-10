@@ -104,7 +104,11 @@ new Player({ loadingEl: loading })
 
 ## 音量进度条宽度
 
-音量按钮的宽度可以通过 `volumeBarWidth` 修改，它是一个 `number` 或 `string` 类型。默认是 `100px`。
+音量按钮的宽度可以通过 `volumeBarLength` 修改，它是一个 `number` 或 `string` 类型。默认是 `100px`。
+
+## 垂直音量进度条
+
+如果将 `volumeVertical` 设置为 `true`，音量控制条将是垂直的，而不是横向的。
 
 ## 例子
 

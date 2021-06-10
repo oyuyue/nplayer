@@ -41,7 +41,8 @@ console.log(player.opts)
 | progressBg | 进度条背景，请查看 [定制主题](theme.md) |
 | progressDot | 进度条上的点，请查看 [定制主题](theme.md) |
 | volumeProgressBg | 音量条背景，请查看 [定制主题](theme.md) |
-| volumeBarWidth | 音量条宽度，请查看 [定制主题](theme.md) |
+| volumeBarLength | 音量条长度，请查看 [定制主题](theme.md) |
+| volumeVertical | 垂直音量条，请查看 [定制主题](theme.md) |
 | loadingEl | 自定义视频 loading 元素，请查看 [定制主题](theme.md) |
 | openEdgeInIE | 是否在 Win10 的 IE 中自动打开 Edge，请查看 [IE 11 兼容](ie11.md) |
 | poster | 海报图片地址，请查看 [海报](poster.md) |
@@ -55,7 +56,7 @@ console.log(player.opts)
   shortcut: true,
   seekStep: 10,
   volumeStep: 0.1,
-  volumeBarWidth: 100,
+  volumeBarLength: 100,
   settings: ['speed'],
   contextMenus: ['loop', 'pip', 'version'],
   contextMenuToggle: true,
@@ -112,7 +113,8 @@ interface PlayerOptions {
   progressBg?: string;
   progressDot?: HTMLElement;
   volumeProgressBg?: string;
-  volumeBarWidth?: number | string;
+  volumeBarLength?: number | string;
+  volumeVertical?: boolean;
   loadingEl?: HTMLElement;
   openEdgeInIE?: boolean;
   poster?: string;
