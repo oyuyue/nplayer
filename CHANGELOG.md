@@ -1,3 +1,12 @@
+## [1.0.9](https://github.com/woopen/nplayer/compare/v1.0.8...v1.0.9) (2021-06-11)
+
+
+### Bug Fixes
+
+* drag position when dragging bar ([#185](https://github.com/woopen/nplayer/issues/185)) ([afef0eb](https://github.com/woopen/nplayer/commit/afef0eb191d71fd4b278ae2065a983f1c8cc6c6f))
+
+
+
 ## [1.0.8](https://github.com/woopen/nplayer/compare/v1.0.7...v1.0.8) (2021-06-10)
 
 
