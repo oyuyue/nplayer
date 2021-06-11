@@ -64,8 +64,9 @@ class Volume extends Component implements ControlItem {
   }
 
   private onDragging = (ev: PointerEvent) => {
+    this.rect.update();
     this.player.volume = clamp(
-      (this.isVer ? this.rect.height - ev.pageY + this.rect.y : ev.pageX - this.rect.x)
+      (this.isVer ? this.rect.height - ev.clientY + this.rect.y : ev.clientX - this.rect.x)
       / (this.isVer ? this.rect.height : this.rect.width),
     );
   }

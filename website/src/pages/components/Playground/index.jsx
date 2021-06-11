@@ -42,6 +42,7 @@ const Playground = () => {
         images: [M1, M2, M3]
       },
       i18n: locale,
+      volumeVertical: true,
       controls: [
         ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
         ['progress']

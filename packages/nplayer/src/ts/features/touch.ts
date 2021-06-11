@@ -57,7 +57,7 @@ export class Touch implements Disposable {
     ev.preventDefault();
 
     if (this.dragged) {
-      const distance = ev.touches[0].pageX - this.startX;
+      const distance = ev.touches[0].clientX - this.startX;
       if (Math.abs(distance) < 15) return;
       this.seekTime = clamp(this.currentTime + distance / 5, 0, this.duration) | 0;
       this.toastItem = this.player.toast.show(`${formatTime(this.seekTime)} · ${this.durationStr}`, 'center', 0);
@@ -66,7 +66,7 @@ export class Touch implements Disposable {
       if (!this.player.opts.live && this.duration) {
         this.durationStr = formatTime(this.duration);
         this.currentTime = this.player.currentTime;
-        this.startX = ev.touches[0].pageX;
+        this.startX = ev.touches[0].clientX;
         this.seekTime = -1;
         this.dragged = true;
       }

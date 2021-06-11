@@ -46,7 +46,7 @@ export class Slider extends Component {
   }
 
   private onDrag = (ev: PointerEvent) => {
-    const x = ev.pageX - this.rect.x;
+    const x = ev.clientX - this.rect.x;
     this.update(x / this.rect.width, x);
   }
 

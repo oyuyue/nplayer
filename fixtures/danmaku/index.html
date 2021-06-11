@@ -17,11 +17,18 @@
     body {
       background: #000;
     }
+    body {
+      display: flex;
+    }
+    body > div {
+      min-width: 1000px;
+    }
   </style>
   <script src="../polyfill.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.js"></script>
 </head>
 <body>
+  <div style="height: 1000px;"></div>
   <!-- <div id="app"></div> -->
   <script src="nplayer/dist/index.min.js"></script>
   <script defer src="danmaku/index.js"></script>

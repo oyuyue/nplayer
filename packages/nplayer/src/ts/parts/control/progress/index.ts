@@ -50,7 +50,7 @@ export class Progress extends Component implements ControlItem {
       this.rect.update();
       this.resetPlayedBar();
     }));
-    addDisposableListener(this, this.el, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.pageX)), true);
+    addDisposableListener(this, this.el, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.clientX)), true);
 
     if (player.opts.isTouch) {
       addDisposableListener(this, this.el, 'touchstart', (ev: Event) => ev.preventDefault());
@@ -77,17 +77,18 @@ export class Progress extends Component implements ControlItem {
   }
 
   private onDragging = (ev: PointerEvent) => {
-    const x = ev.pageX - this.rect.x;
+    const x = ev.clientX - this.rect.x;
     this.setPlayedBarLength(x / this.rect.width);
-    this.updateThumbnail(ev.pageX);
+    this.updateThumbnail(ev.clientX);
   }
 
   private onDragEnd = (ev: PointerEvent) => {
     this.dragging = false;
-    this.player.seek(this.getCurrentTime(ev.pageX));
+    this.player.seek(this.getCurrentTime(ev.clientX));
   }
 
   private updateThumbnail(x: number): void {
+    this.rect.update();
     this.thumbnail.update(this.getCurrentTime(x), x - this.rect.x, this.rect.width);
   }
 
