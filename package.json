@@ -48,7 +48,7 @@
     "postcss": "^8.3.5",
     "postcss-loader": "^6.1.1",
     "react": "^17.0.2",
-    "sass": "^1.35.1",
+    "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
     "semver": "^7.3.5",
     "style-loader": "^3.0.0",
