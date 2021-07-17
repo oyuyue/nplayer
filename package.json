@@ -9,6 +9,7 @@
     "serve:danmaku": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-danmaku  fixture=danmaku",
     "serve:vue": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-vue  fixture=vue",
     "serve:react": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-react  fixture=react",
+    "serve:hls": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-hls  fixture=hls",
     "build:nplayer": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=nplayer",
     "test": "jest",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
