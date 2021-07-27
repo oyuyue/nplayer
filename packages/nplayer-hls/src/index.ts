@@ -1,6 +1,10 @@
 import { parseMedia } from './m3u8';
 
 export default class Hls {
+  avcData = { data: [], size: 0 }
+
+  audioData = { data: [], size: 0 }
+
   load(url: string): void {
     fetch(url)
       .then((res) => res.text())
@@ -19,5 +23,6 @@ export default class Hls {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   demux(data: Uint8Array) {
+
   }
 }
