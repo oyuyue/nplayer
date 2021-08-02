@@ -48,7 +48,7 @@ export class AVC {
       }
     }
 
-    return { units, remaining: data.subarray(start - 3) };
+    return { units, remaining: start - 3 < len ? data.subarray(start - 3) : undefined };
   }
 
   static parseSPS(unit: Uint8Array) {
