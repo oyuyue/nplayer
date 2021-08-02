@@ -26,7 +26,6 @@ export class MP4 {
     'stco',
     'stsc',
     'stsd',
-    'stsz',
     'stts',
     'tfdt',
     'tfhd',
@@ -104,13 +103,6 @@ export class MP4 {
   static STTS = MP4.box(MP4.types.stts, MP4.StblTable)
 
   static STSC = MP4.box(MP4.types.stsc, MP4.StblTable)
-
-  static STSZ = MP4.box(MP4.types.stsz, new Uint8Array([
-    0x00, // version
-    0x00, 0x00, 0x00, // flags
-    0x00, 0x00, 0x00, 0x00, // sample_size
-    0x00, 0x00, 0x00, 0x00, // sample_count
-  ]))
 
   static STCO = MP4.box(MP4.types.stco, MP4.StblTable)
 
@@ -235,7 +227,7 @@ export class MP4 {
   }
 
   static stbl(track: Track): Uint8Array {
-    return MP4.box(MP4.types.stbl, MP4.stsd(track), MP4.STTS, MP4.STSC, MP4.STSZ, MP4.STCO);
+    return MP4.box(MP4.types.stbl, MP4.stsd(track), MP4.STTS, MP4.STSC, MP4.STCO);
   }
 
   static stsd(track: Track): Uint8Array {
@@ -330,8 +322,6 @@ export class MP4 {
       0x00, 0x00, 0xda, 0xc0, // avgBitrate
       0x05, // tag, DecoderSpecificInfoTag
       0x02, // length
-      // ISO/IEC 14496-3, AudioSpecificConfig
-      // for samplingFrequencyIndex see ISO/IEC 13818-7:2006, 8.1.3.2.2, Table 35
       (track.audioObjectType << 3) | (track.samplingFrequencyIndex >>> 1),
       (track.samplingFrequencyIndex << 7) | (track.channelCount << 3),
       0x06, 0x01, 0x02, // GASpecificConfig
