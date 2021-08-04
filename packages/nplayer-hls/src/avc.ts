@@ -56,7 +56,7 @@ export class AVC {
     eg.readUByte();
 
     const profileIdc = eg.readUByte();
-    eg.readUByte();
+    const profileCompatibility = eg.readUByte();
     const levelIdc = eg.readUByte();
     eg.skipUEG();
 
@@ -181,6 +181,7 @@ export class AVC {
 
     return {
       profileIdc,
+      profileCompatibility,
       levelIdc,
       chromaFormat,
       width: Math.ceil(

@@ -2,6 +2,7 @@ import { AacTrack } from './aac-track';
 import { ADTS } from './adts';
 import { AVC } from './avc';
 import { AvcSample, AvcTrack } from './avc-track';
+import { ExpGolomb } from './exp-golomb';
 import { concatUint8Array } from './utils';
 
 export class TsDemuxer {
@@ -11,11 +12,13 @@ export class TsDemuxer {
 
   private readonly aacTrack = new AacTrack();
 
-  private remainingPacketData: Uint8Array | undefined;
+  private remainingPacketData?: Uint8Array;
 
-  private remainingNALuData: Uint8Array | undefined;
+  private remainingNALuData?: Uint8Array;
 
-  private remainingAacData: Uint8Array | undefined;
+  private remainingAacData?: Uint8Array;
+
+  private prevAvcSample?: AvcSample;
 
   private avcPesData: Uint8Array[] = []
 
@@ -40,8 +43,8 @@ export class TsDemuxer {
       dataLen -= remainingLength;
     }
 
-    const avcPid = this.avcTrack.pid;
-    const aacPid = this.avcTrack.pid;
+    let avcPid = this.avcTrack.pid;
+    let aacPid = this.avcTrack.pid;
 
     for (let start = syncOffset, len = data.length; start < len; start += 188) {
       if (data[start] !== 0x47) throw new Error('TS packet did not start with 0x47');
@@ -73,10 +76,10 @@ export class TsDemuxer {
 
             switch (data[offset]) {
               case 0x0f:
-                this.aacTrack.pid = esPid;
+                this.aacTrack.pid = aacPid = esPid;
                 break;
               case 0x1b:
-                this.avcTrack.pid = esPid;
+                this.avcTrack.pid = avcPid = esPid;
                 break;
             }
 
@@ -127,7 +130,7 @@ export class TsDemuxer {
               this.aacTrack.objectType = ret.objectType;
               this.aacTrack.sampleRate = ret.sampleRate;
               this.aacTrack.samplingFrequencyIndex = ret.samplingFrequencyIndex;
-              this.aacTrack.samples.push(...ret.frames);
+              this.aacTrack.pushSamples(ret.frames);
 
               // TODO: ret.skip warning
 
@@ -153,23 +156,43 @@ export class TsDemuxer {
   private createAvcSample(units: Uint8Array[], pts?: number, dts?: number) {
     if (!units.length) return;
     const track = this.avcTrack;
-    let sample = new AvcSample(pts, dts);
+    let sample = this.prevAvcSample || (this.prevAvcSample = new AvcSample(pts!, dts!));
 
     units.forEach((unit) => {
       const type = unit[0] & 0x1f;
       switch (type) {
         case 1: // NDR
           sample.isFrame = true;
+
+          if (track.sps.length && unit.length > 4) {
+            const eg = new ExpGolomb(unit);
+            eg.readUByte();
+            eg.readUEG();
+            const sliceType = eg.readUEG();
+
+            if (
+              sliceType === 2
+              || sliceType === 4
+              || sliceType === 7
+              || sliceType === 9
+            ) {
+              sample.isKeyFrame = true;
+              sample.flag.dependsOn = 2;
+              sample.flag.isNonSyncSample = 0;
+            }
+          }
           break;
         case 5: // IDR
           sample.isKeyFrame = sample.isFrame = true;
+          sample.flag.dependsOn = 2;
+          sample.flag.isNonSyncSample = 0;
           break;
         case 6: // SEI
           AVC.parseSEI(AVC.removeEPB(unit));
           break;
         case 7: // SPS
-          if (!track.sps) {
-            track.sps = unit;
+          if (!track.sps.length) {
+            track.sps = [unit];
             const spsInfo = AVC.parseSPS(unit);
             const codecs = unit.subarray(1, 4);
             let codec = 'avc1.';
@@ -181,22 +204,26 @@ export class TsDemuxer {
             track.codec = codec;
             track.width = spsInfo.width;
             track.height = spsInfo.height;
+            track.sarRatio = spsInfo.sarRatio;
+            track.profileIdc = spsInfo.profileIdc;
+            track.profileCompatibility = spsInfo.profileCompatibility;
+            track.levelIdc = spsInfo.levelIdc;
           }
           break;
         case 8: // PPS
-          if (!track.pps) track.pps = unit;
+          if (!track.pps.length) track.pps = [unit];
           break;
         case 9: // AUD
           if (sample.units.length) {
             track.samples.push(sample);
-            sample = new AvcSample(pts, dts);
+            sample = this.prevAvcSample = new AvcSample(pts!, dts!);
           }
           break;
+        case 12: // filler_data
+          return;
       }
       sample.units.push(unit);
     });
-
-    track.pushSample(sample);
   }
 
   private static parsePES(data: Uint8Array): void | { data: Uint8Array, pts?: number, dts?: number } {

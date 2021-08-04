@@ -3,18 +3,20 @@ export enum TrackType {
   VIDEO = 'video'
 }
 
+type TwoBit = 0 | 1 | 2 | 3;
+
 export interface SampleFlag {
-  isLeading: number;
+  isLeading: TwoBit;
 
-  dependsOn: number;
+  dependsOn: TwoBit;
 
-  isDependedOn: number;
+  isDependedOn: TwoBit;
 
-  hasRedundancy: number;
+  hasRedundancy: TwoBit;
+
+  isNonSyncSample: 0 | 1;
 
   paddingValue: number;
-
-  isNonSyncSample: number;
 
   degradationPriority: number;
 }
@@ -22,11 +24,27 @@ export interface SampleFlag {
 export interface Sample {
   duration: number;
 
+  flag: SampleFlag;
+
   size: number;
 
   cts: number;
 
-  flag: SampleFlag
+  pts: number;
+}
+
+export interface VideoSample extends Sample {
+  dts: number;
+
+  isFrame: boolean;
+
+  isKeyFrame: boolean;
+
+  units: Uint8Array[];
+}
+
+export interface AudioSample extends Sample {
+  data?: Uint8Array;
 }
 
 export interface Track {
@@ -47,12 +65,16 @@ export interface Track {
   duration: number;
 
   timescale: number;
+}
 
-  profileIdc: number;
+export interface VideoTrack extends Track {
+  profileIdc?: number;
 
-  profileCompatibility: number;
+  profileCompatibility?: number;
 
-  levelIdc: number;
+  levelIdc?: number;
+
+  sarRatio: [number, number];
 
   sps: Uint8Array[];
 
@@ -62,15 +84,23 @@ export interface Track {
 
   height: number;
 
-  sarRatio: [number, number];
+  samples: VideoSample[];
+}
 
-  channelCount: number;
+export interface AudioTrack extends Track {
+  channelCount?: number;
+
+  sampleRate?: number;
+
+  objectType?: number;
+
+  samplingFrequencyIndex?: number;
 
   sampleSize: number;
 
-  sampleRate: number;
-
-  audioObjectType: number;
-
-  samplingFrequencyIndex: number;
+  samples: AudioSample[];
 }
+
+export type MixSample = VideoSample | AudioSample;
+
+export type MixTrack = VideoTrack | AudioTrack;

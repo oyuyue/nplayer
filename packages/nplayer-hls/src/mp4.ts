@@ -1,4 +1,8 @@
-import { Sample, Track } from './types';
+import {
+  AudioTrack,
+  MixSample,
+  MixTrack, TrackType, VideoTrack,
+} from './types';
 
 const UINT32_MAX = 2 ** 32 - 1;
 
@@ -122,7 +126,7 @@ export class MP4 {
     return ret;
   }
 
-  static initSegment(tracks: Track[]): Uint8Array {
+  static initSegment(tracks: MixTrack[]): Uint8Array {
     const movie = MP4.moov(tracks);
     const ret = new Uint8Array(MP4.FTYP.byteLength + movie.byteLength);
     ret.set(MP4.FTYP);
@@ -130,7 +134,7 @@ export class MP4 {
     return ret;
   }
 
-  static moov(tracks: Track[]): Uint8Array {
+  static moov(tracks: MixTrack[]): Uint8Array {
     return MP4.box(MP4.types.moov,
       MP4.mvhd(tracks[0].duration, tracks[0].timescale),
       ...tracks.map((t) => MP4.trak(t)),
@@ -169,11 +173,15 @@ export class MP4 {
     ]));
   }
 
-  static trak(track: Track): Uint8Array {
-    return MP4.box(MP4.types.trak, MP4.tkhd(track.id, track.duration, track.width, track.height), MP4.mdia(track));
+  static trak(track: MixTrack): Uint8Array {
+    return MP4.box(
+      MP4.types.trak,
+      MP4.tkhd(track.id, track.duration, (track as VideoTrack).width, (track as VideoTrack).height),
+      MP4.mdia(track),
+    );
   }
 
-  static tkhd(id: number, duration: number, width: number, height: number): Uint8Array {
+  static tkhd(id: number, duration: number, width = 0, height = 0): Uint8Array {
     return MP4.box(MP4.types.tkhd, new Uint8Array([
       0x00, // version
       0x00, 0x00, 0x07, // flags
@@ -201,7 +209,7 @@ export class MP4 {
     ]));
   }
 
-  static mdia(track: Track): Uint8Array {
+  static mdia(track: MixTrack): Uint8Array {
     return MP4.box(MP4.types.mdia, MP4.mdhd(track.duration, track.timescale), MP4.hdlr(track.type), MP4.minf(track));
   }
 
@@ -222,29 +230,23 @@ export class MP4 {
     return MP4.box(MP4.types.hdlr, MP4.HDLR_TYPES[type]);
   }
 
-  static minf(track: Track): Uint8Array {
+  static minf(track: MixTrack): Uint8Array {
     return MP4.box(MP4.types.minf, track.type === 'video' ? MP4.VMHD : MP4.SMHD, MP4.DINF, MP4.stbl(track));
   }
 
-  static stbl(track: Track): Uint8Array {
+  static stbl(track: MixTrack): Uint8Array {
     return MP4.box(MP4.types.stbl, MP4.stsd(track), MP4.STTS, MP4.STSC, MP4.STCO);
   }
 
-  static stsd(track: Track): Uint8Array {
+  static stsd(track: MixTrack): Uint8Array {
     return MP4.box(MP4.types.stsd, new Uint8Array([
       0x00, // version 0
       0x00, 0x00, 0x00, // flags
       0x00, 0x00, 0x00, 0x01, // entry_count
-    ]), track.type === 'video' ? MP4.avc1(track) : MP4.mp4a(track));
+    ]), track.type === TrackType.VIDEO ? MP4.avc1(track as VideoTrack) : MP4.mp4a(track as AudioTrack));
   }
 
-  static avc1(track: Track): Uint8Array {
-    const boxes = [MP4.avcC(track)];
-
-    if (track.sarRatio) {
-      boxes.push(MP4.pasp(track.sarRatio));
-    }
-
+  static avc1(track: VideoTrack): Uint8Array {
     return MP4.box(MP4.types.avc1, new Uint8Array([
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // reserved
       0x00, 0x01, // data_reference_index
@@ -267,15 +269,15 @@ export class MP4 {
       0x00, 0x00, 0x00, 0x00, // compressor name
       0x00, 0x18, // depth
       0x11, 0x11, // pre_defined = -1
-    ]), ...boxes);
+    ]), MP4.avcC(track), MP4.pasp(track.sarRatio));
   }
 
-  static avcC(track: Track): Uint8Array {
+  static avcC(track: VideoTrack): Uint8Array {
     return MP4.box(MP4.types.avcC, new Uint8Array([
       0x01, // configurationVersion
-      track.profileIdc, // AVCProfileIndication
-      track.profileCompatibility, // profile_compatibility
-      track.levelIdc, // AVCLevelIndication
+      track.profileIdc!, // AVCProfileIndication
+      track.profileCompatibility!, // profile_compatibility
+      track.levelIdc!, // AVCLevelIndication
       0xfc | 3, // lengthSizeMinusOne
       0xe0 | track.sps.length, // 3bit reserved (111) + numOfSequenceParameterSets
     ].concat(track.sps as unknown as number[])
@@ -290,22 +292,22 @@ export class MP4 {
     ]));
   }
 
-  static mp4a(track: Track): Uint8Array {
+  static mp4a(track: AudioTrack): Uint8Array {
     return MP4.box(MP4.types.mp4a, new Uint8Array([
       0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, // reserved
       0x00, 0x01, // data_reference_index
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // reserved
-      0x00, track.channelCount,
+      0x00, track.channelCount!,
       (track.sampleSize >> 8) & 0xff, track.sampleSize & 0xff,
       0x00, 0x00, // pre_defined
       0x00, 0x00, // reserved
-      (track.sampleRate >> 8) & 0xff, track.sampleRate & 0xff,
+      (track.sampleRate! >> 8) & 0xff, track.sampleRate! & 0xff,
       0x00, 0x00,
     ]), MP4.esds(track));
   }
 
-  static esds(track: Track): Uint8Array {
+  static esds(track: AudioTrack): Uint8Array {
     return MP4.box(MP4.types.esds, new Uint8Array([
       0x00, // version
       0x00, 0x00, 0x00, // flags
@@ -322,13 +324,13 @@ export class MP4 {
       0x00, 0x00, 0xda, 0xc0, // avgBitrate
       0x05, // tag, DecoderSpecificInfoTag
       0x02, // length
-      (track.audioObjectType << 3) | (track.samplingFrequencyIndex >>> 1),
-      (track.samplingFrequencyIndex << 7) | (track.channelCount << 3),
+      (track.objectType! << 3) | (track.samplingFrequencyIndex! >>> 1),
+      (track.samplingFrequencyIndex! << 7) | (track.channelCount! << 3),
       0x06, 0x01, 0x02, // GASpecificConfig
     ]));
   }
 
-  static mvex(tracks: Track[]): Uint8Array {
+  static mvex(tracks: MixTrack[]): Uint8Array {
     return MP4.box(MP4.types.mvex, ...tracks.map((t) => MP4.trex(t.id)));
   }
 
@@ -344,7 +346,7 @@ export class MP4 {
     ]));
   }
 
-  static moof(sequenceNumber: number, tracks: Track[]): Uint8Array {
+  static moof(sequenceNumber: number, tracks: MixTrack[]): Uint8Array {
     return MP4.box(MP4.types.moof, MP4.mfhd(sequenceNumber), ...tracks.map((t) => MP4.traf(t)));
   }
 
@@ -356,7 +358,7 @@ export class MP4 {
     ]));
   }
 
-  static traf(track: Track): Uint8Array {
+  static traf(track: MixTrack): Uint8Array {
     const offset = 16 // tfhd
                   + 20 // tfdt
                   + 8 // traf header
@@ -393,7 +395,7 @@ export class MP4 {
     ]));
   }
 
-  static trun(samples: Sample[], offset: number): Uint8Array {
+  static trun(samples: MixSample[], offset: number): Uint8Array {
     const sampleLen = samples.length;
     const dataLen = 12 + (16 * sampleLen);
     offset += 8 + dataLen;

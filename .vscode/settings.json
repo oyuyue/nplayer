@@ -7,6 +7,7 @@
     "Demuxer",
     "ENDLIST",
     "EXTINF",
+    "Golomb",
     "Mixins",
     "TARGETDURATION",
     "bilibili",

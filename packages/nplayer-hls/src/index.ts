@@ -1,9 +1,8 @@
 import { parseMedia } from './m3u8';
+import { TsDemuxer } from './ts-demuxer';
 
 export default class Hls {
-  avcData = { data: [], size: 0 }
-
-  audioData = { data: [], size: 0 }
+  demuxer = new TsDemuxer()
 
   load(url: string): void {
     fetch(url)
@@ -23,6 +22,6 @@ export default class Hls {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   demux(data: Uint8Array) {
-
+    // console.log(this.demuxer.demux(data));
   }
 }

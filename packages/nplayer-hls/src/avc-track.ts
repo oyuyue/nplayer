@@ -1,24 +1,63 @@
-import { Track, TrackType } from './types';
+import {
+  SampleFlag,
+  TrackType, VideoSample, VideoTrack,
+} from './types';
 
-export class AvcSample {
+export class AvcSample implements VideoSample {
   isFrame = false;
 
   isKeyFrame = false;
 
-  pts: number | undefined;
+  duration = 0;
 
-  dts: number | undefined;
+  size = 0;
 
   units: Uint8Array[] = [];
 
-  constructor(pts?: number, dts?: number) {
+  flag: SampleFlag = {
+    isLeading: 0,
+    dependsOn: 1,
+    isDependedOn: 0,
+    hasRedundancy: 0,
+    paddingValue: 0,
+    degradationPriority: 0,
+    isNonSyncSample: 1,
+  }
+
+  pts = 0;
+
+  dts = 0;
+
+  debug = '';
+
+  get cts() {
+    return this.pts - this.dts;
+  }
+
+  constructor(pts: number, dts: number) {
     this.pts = pts;
     this.dts = dts;
   }
 }
 
-export class AvcTrack implements Track {
+export class AvcTrack implements VideoTrack {
   type = TrackType.VIDEO
+
+  profileIdc?: number;
+
+  profileCompatibility?: number;
+
+  levelIdc?: number;
+
+  sarRatio: [number, number] = [1, 1];
+
+  id = 0;
+
+  baseMediaDecodeTime = 0;
+
+  duration = 0;
+
+  timescale = 0;
 
   pid = -1;
 
@@ -26,15 +65,15 @@ export class AvcTrack implements Track {
 
   samples: AvcSample[] = [];
 
-  pps: Uint8Array | undefined;
+  pps: Uint8Array[] = [];
 
-  sps: Uint8Array | undefined;
+  sps: Uint8Array[] = [];
 
   codec = '';
 
-  width?: number;
+  width = 0;
 
-  height?: number;
+  height = 0;
 
   get lastSample() {
     return this.samples[this.samples.length - 1];
