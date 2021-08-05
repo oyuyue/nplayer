@@ -1,4 +1,5 @@
 import { parseMedia } from './m3u8';
+import { MP4 } from './mp4';
 import { TsDemuxer } from './ts-demuxer';
 
 export default class Hls {
@@ -22,6 +23,7 @@ export default class Hls {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   demux(data: Uint8Array) {
-    // console.log(this.demuxer.demux(data));
+    const tracks = this.demuxer.demux(data);
+    const init = MP4.initSegment([tracks.videoTrack]);
   }
 }

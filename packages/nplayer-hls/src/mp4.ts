@@ -30,6 +30,7 @@ export class MP4 {
     'stco',
     'stsc',
     'stsd',
+    'stsz',
     'stts',
     'tfdt',
     'tfhd',
@@ -107,6 +108,13 @@ export class MP4 {
   static STTS = MP4.box(MP4.types.stts, MP4.StblTable)
 
   static STSC = MP4.box(MP4.types.stsc, MP4.StblTable)
+
+  static STSZ = MP4.box(MP4.types.stsz, new Uint8Array([
+    0x00, // version
+    0x00, 0x00, 0x00, // flags
+    0x00, 0x00, 0x00, 0x00, // sample_size
+    0x00, 0x00, 0x00, 0x00, // sample_count
+  ]))
 
   static STCO = MP4.box(MP4.types.stco, MP4.StblTable)
 
@@ -235,7 +243,7 @@ export class MP4 {
   }
 
   static stbl(track: MixTrack): Uint8Array {
-    return MP4.box(MP4.types.stbl, MP4.stsd(track), MP4.STTS, MP4.STSC, MP4.STCO);
+    return MP4.box(MP4.types.stbl, MP4.stsd(track), MP4.STTS, MP4.STSC, MP4.STSZ, MP4.STCO);
   }
 
   static stsd(track: MixTrack): Uint8Array {
@@ -273,6 +281,24 @@ export class MP4 {
   }
 
   static avcC(track: VideoTrack): Uint8Array {
+    const sps: number[] = [];
+    const pps: number[] = [];
+
+    let len;
+    track.sps.forEach((s) => {
+      len = s.byteLength;
+      sps.push((len >>> 8) & 0xff);
+      sps.push(len & 0xff);
+      sps.push(...s);
+    });
+
+    track.pps.forEach((p) => {
+      len = p.byteLength;
+      pps.push((len >>> 8) & 0xff);
+      pps.push(len & 0xff);
+      pps.push(...p);
+    });
+
     return MP4.box(MP4.types.avcC, new Uint8Array([
       0x01, // configurationVersion
       track.profileIdc!, // AVCProfileIndication
@@ -280,9 +306,9 @@ export class MP4 {
       track.levelIdc!, // AVCLevelIndication
       0xfc | 3, // lengthSizeMinusOne
       0xe0 | track.sps.length, // 3bit reserved (111) + numOfSequenceParameterSets
-    ].concat(track.sps as unknown as number[])
+    ].concat(sps)
       .concat([track.pps.length]) // numOfPictureParameterSets
-      .concat(track.pps as unknown as number[])));
+      .concat(pps)));
   }
 
   static pasp([hSpacing, vSpacing]: [number, number]): Uint8Array {
