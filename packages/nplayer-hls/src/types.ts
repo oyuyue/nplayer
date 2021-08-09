@@ -44,17 +44,17 @@ export interface VideoSample extends Sample {
 }
 
 export interface AudioSample extends Sample {
-  data?: Uint8Array;
+  data: Uint8Array;
 }
 
 export interface Track {
+  container: string;
+
   type: TrackType;
 
   id: number;
 
   pid: number;
-
-  dropped: number;
 
   samples: Sample[];
 
@@ -79,6 +79,8 @@ export interface VideoTrack extends Track {
   sps: Uint8Array[];
 
   pps: Uint8Array[];
+
+  dropped: number;
 
   width: number;
 

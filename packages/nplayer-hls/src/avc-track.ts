@@ -24,13 +24,13 @@ export class AvcSample implements VideoSample {
     isNonSyncSample: 1,
   }
 
-  pts = 0;
+  pts;
 
-  dts = 0;
+  dts;
 
-  debug = '';
+  debug = ''
 
-  get cts() {
+  get cts(): number {
     return this.pts - this.dts;
   }
 
@@ -41,7 +41,13 @@ export class AvcSample implements VideoSample {
 }
 
 export class AvcTrack implements VideoTrack {
-  type = TrackType.VIDEO
+  readonly container = 'video/mp4'
+
+  readonly id = 1;
+
+  readonly type = TrackType.VIDEO
+
+  timescale = 90000;
 
   profileIdc?: number;
 
@@ -51,13 +57,9 @@ export class AvcTrack implements VideoTrack {
 
   sarRatio: [number, number] = [1, 1];
 
-  id = 0;
-
   baseMediaDecodeTime = 0;
 
   duration = 0;
-
-  timescale = 0;
 
   pid = -1;
 
@@ -75,7 +77,7 @@ export class AvcTrack implements VideoTrack {
 
   height = 0;
 
-  get lastSample() {
+  get lastSample(): AvcSample {
     return this.samples[this.samples.length - 1];
   }
 

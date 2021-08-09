@@ -50,10 +50,9 @@ export class ADTS {
       if ((len - i) < frameLength) break;
 
       protectionSkipBytes = (~data[i + 1] & 0x01) * 2;
-      duration = (sampleCount * 9000) / sampleRate;
+      duration = (sampleCount * 90000) / sampleRate;
       frames.push({
         pts: pts + frameIndex * duration,
-        duration,
         data: data.subarray(i + 7 + protectionSkipBytes, i + frameLength),
       });
 
@@ -72,7 +71,7 @@ export class ADTS {
     };
   }
 
-  static getFrameDuration(rate: number) {
+  static getFrameDuration(rate: number): number {
     return 92160000 / rate;
   }
 }

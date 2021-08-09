@@ -10,6 +10,7 @@ export class AVC {
     }
     start++;
     end = start + 2;
+
     if (end >= len) return {};
 
     const units = [];
@@ -47,7 +48,6 @@ export class AVC {
           break;
       }
     }
-
     return { units, remaining: start - 3 < len ? data.subarray(start - 3) : undefined };
   }
 
@@ -231,7 +231,7 @@ export class AVC {
     };
   }
 
-  static removeEPB(uint: Uint8Array) {
+  static removeEPB(uint: Uint8Array): Uint8Array {
     const length = uint.byteLength;
     const emulationPreventionBytesPositions = [];
     let i = 1;

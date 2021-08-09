@@ -64,6 +64,7 @@ export class TsDemuxer {
         case 0:
           if (payloadUnitStartIndicator) offset += data[offset] + 1;
           this.pmtId = ((data[offset + 10] & 0x1f) << 8) | data[offset + 11];
+          // TODO: cache pes
           break;
         case this.pmtId: {
           if (payloadUnitStartIndicator) offset += data[offset] + 1;
@@ -157,12 +158,12 @@ export class TsDemuxer {
     if (!units.length) return;
     const track = this.avcTrack;
     let sample = this.prevAvcSample || (this.prevAvcSample = new AvcSample(pts!, dts!));
-
     units.forEach((unit) => {
       const type = unit[0] & 0x1f;
       switch (type) {
         case 1: // NDR
           sample.isFrame = true;
+          sample.debug += 'NDR';
 
           if (track.sps.length && unit.length > 4) {
             const eg = new ExpGolomb(unit);
@@ -183,14 +184,17 @@ export class TsDemuxer {
           }
           break;
         case 5: // IDR
+          sample.debug += 'IDR';
           sample.isKeyFrame = sample.isFrame = true;
           sample.flag.dependsOn = 2;
           sample.flag.isNonSyncSample = 0;
           break;
         case 6: // SEI
+          sample.debug += 'SEI';
           AVC.parseSEI(AVC.removeEPB(unit));
           break;
         case 7: // SPS
+          sample.debug += 'SPS';
           if (!track.sps.length) {
             track.sps = [unit];
             const spsInfo = AVC.parseSPS(unit);
@@ -211,16 +215,31 @@ export class TsDemuxer {
           }
           break;
         case 8: // PPS
+          sample.debug += 'PPS';
           if (!track.pps.length) track.pps = [unit];
           break;
         case 9: // AUD
+          sample.debug += 'AUD';
+
           if (sample.units.length) {
-            track.samples.push(sample);
+            if (sample.isFrame) {
+              if (sample.pts == null) {
+                const lastSample = track.lastSample;
+                if (lastSample) {
+                  sample.pts = lastSample.pts;
+                  sample.dts = lastSample.dts;
+                } else {
+                  track.dropped++;
+                }
+              }
+
+              track.samples.push(sample);
+            }
+
             sample = this.prevAvcSample = new AvcSample(pts!, dts!);
           }
+
           break;
-        case 12: // filler_data
-          return;
       }
       sample.units.push(unit);
     });
