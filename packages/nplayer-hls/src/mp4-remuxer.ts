@@ -2,8 +2,35 @@ import { MP4 } from './mp4';
 import { AudioTrack, VideoTrack } from './types';
 
 export class MP4Remuxer {
-  remux() {
+  private initSegmentCreated = false;
 
+  constructor(readonly videoTrack: VideoTrack, readonly audioTrack: AudioTrack) {
+    this.videoTrack = videoTrack;
+    this.audioTrack = audioTrack;
+  }
+
+  remux() {
+    const ret: {
+      video?: Uint8Array,
+      audio?: Uint8Array,
+      videoInitSegment?: Uint8Array,
+      audioInitSegment?: Uint8Array
+    } = {};
+
+    if (!this.initSegmentCreated) {
+      const initSegment = this.createInitSegment(video, audio);
+      ret.videoInitSegment = initSegment.video;
+      ret.audioInitSegment = initSegment.audio;
+      this.initSegmentCreated = true;
+    }
+
+    ret.video = this.remuxVideo(video);
+    ret.audio = this.remuxAudio(audio);
+
+    video.samples = [];
+    audio.samples = [];
+
+    return ret;
   }
 
   createInitSegment(videoTrack: VideoTrack, audioTrack: AudioTrack) {
@@ -12,11 +39,12 @@ export class MP4Remuxer {
     audioTrack.timescale = audioTrack.sampleRate!;
     audioTrack.duration *= audioTrack.timescale;
 
-    const videoInitSegmnt = MP4.initSegment([videoTrack]);
+    const videoInitSegment = MP4.initSegment([videoTrack]);
     const audioInitSegment = MP4.initSegment([audioTrack]);
 
     return {
-      video: videoInitSegmnt,
+      video: videoInitSegment,
+      audio: audioInitSegment,
     };
   }
 
@@ -70,5 +98,7 @@ export class MP4Remuxer {
     const chunk = new Uint8Array(moof.byteLength + mdat.byteLength);
     chunk.set(moof);
     chunk.set(mdat, moof.byteLength);
+
+    return chunk;
   }
 }

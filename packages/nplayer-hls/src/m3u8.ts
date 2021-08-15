@@ -1,10 +1,12 @@
+import { Fragment } from './fragment';
+
 export function parseMedia(text = '', baseUrl = '') {
   const lines = getLines(text);
-  const level: any = { frags: [] };
+  const level: { frags: Fragment[] } = { frags: [] };
 
   let curSN = 0;
   let curCC = 0;
-  let curFrag: any = {};
+  let curFrag = new Fragment();
   let index = 0;
   let line;
   // eslint-disable-next-line no-cond-assign
@@ -14,7 +16,7 @@ export function parseMedia(text = '', baseUrl = '') {
       curFrag.cc = curCC;
       curFrag.sn = curSN;
       level.frags.push(curFrag);
-      curFrag = {};
+      curFrag = new Fragment();
       curSN++;
       continue;
     }
@@ -23,15 +25,15 @@ export function parseMedia(text = '', baseUrl = '') {
     if (!ret) continue;
     const [name, val] = ret;
     switch (name) {
-      case 'PLAYLIST-TYPE':
-        level.type = val?.toUpperCase();
-        break;
-      case 'TARGETDURATION':
-        level.targetDuration = parseFloat(val);
-        break;
-      case 'ENDLIST':
-        level.live = false;
-        break;
+      // case 'PLAYLIST-TYPE':
+      //   level.type = val?.toUpperCase();
+      //   break;
+      // case 'TARGETDURATION':
+      //   level.targetDuration = parseFloat(val);
+      //   break;
+      // case 'ENDLIST':
+      //   level.live = false;
+      //   break;
       case 'MEDIA-SEQUENCE':
         curSN = parseInt(val);
         break;
@@ -55,7 +57,7 @@ export function parseMedia(text = '', baseUrl = '') {
         } else {
           curFrag.byteRange[0] = parseInt(bytes[1]);
         }
-        curFrag.byteRange[1] = curFrag[0] + parseInt(bytes[0]);
+        curFrag.byteRange[1] = curFrag.byteRange[0] + parseInt(bytes[0]);
       }
         break;
       case 'KEY':

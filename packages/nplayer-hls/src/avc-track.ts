@@ -4,9 +4,9 @@ import {
 } from './types';
 
 export class AvcSample implements VideoSample {
-  isFrame = false;
+  frame = false;
 
-  isKeyFrame = false;
+  key = false;
 
   duration = 0;
 
@@ -47,6 +47,8 @@ export class AvcTrack implements VideoTrack {
 
   readonly type = TrackType.VIDEO
 
+  sequenceNumber = 0;
+
   timescale = 90000;
 
   profileIdc?: number;
@@ -65,7 +67,7 @@ export class AvcTrack implements VideoTrack {
 
   dropped = 0;
 
-  samples: AvcSample[] = [];
+  samples: VideoSample[] = [];
 
   pps: Uint8Array[] = [];
 
@@ -77,14 +79,10 @@ export class AvcTrack implements VideoTrack {
 
   height = 0;
 
-  get lastSample(): AvcSample {
-    return this.samples[this.samples.length - 1];
-  }
-
-  pushSample(sample: AvcSample): boolean {
-    if (sample && sample.units.length && sample.isFrame) {
+  pushSample(sample: VideoSample): boolean {
+    if (sample && sample.units.length && sample.frame) {
       if (sample.pts == null) {
-        const lastSample = this.lastSample;
+        const lastSample = this.samples[this.samples.length - 1];
         if (lastSample) {
           sample.pts = lastSample.pts;
           sample.dts = lastSample.dts;

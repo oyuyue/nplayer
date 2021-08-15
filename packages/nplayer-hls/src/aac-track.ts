@@ -23,10 +23,11 @@ export class AacSample implements AudioSample {
     isNonSyncSample: 1,
   }
 
-  constructor(pts: number, data: Uint8Array) {
+  constructor(pts: number, data: Uint8Array, duration?: number) {
     this.pts = pts;
     this.data = data;
     this.size = data.byteLength;
+    if (duration) this.duration = duration;
   }
 }
 
@@ -36,6 +37,8 @@ export class AacTrack implements AudioTrack {
   readonly id = 2;
 
   readonly type = TrackType.AUDIO;
+
+  sequenceNumber = 0;
 
   sampleSize = 16;
 
@@ -58,14 +61,4 @@ export class AacTrack implements AudioTrack {
   objectType?: number
 
   channelCount?: number
-
-  get lastSample(): AudioSample {
-    return this.samples[this.samples.length - 1];
-  }
-
-  pushSamples(samples: { data: Uint8Array, pts: number }[]): void {
-    if (samples && samples.length) {
-      this.samples.push(...samples.map((s) => new AacSample(s.pts, s.data)));
-    }
-  }
 }

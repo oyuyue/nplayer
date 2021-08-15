@@ -435,10 +435,8 @@ export class MP4 {
 
     for (let i = 0; i < sampleLen; i++) {
       const {
-        duration, size, flag, cts,
+        duration, size, flag, cts = 0,
       } = samples[i];
-
-      // console.log(duration, size, flag, cts);
 
       data.set([
         (duration >>> 24) & 0xff, (duration >>> 16) & 0xff, (duration >>> 8) & 0xff, duration & 0xff,

@@ -36,9 +36,9 @@ export interface Sample {
 export interface VideoSample extends Sample {
   dts: number;
 
-  isFrame: boolean;
+  frame: boolean;
 
-  isKeyFrame: boolean;
+  key: boolean;
 
   units: Uint8Array[];
 }
@@ -51,6 +51,8 @@ export interface Track {
   container: string;
 
   type: TrackType;
+
+  sequenceNumber: number;
 
   id: number;
 
@@ -87,6 +89,8 @@ export interface VideoTrack extends Track {
   height: number;
 
   samples: VideoSample[];
+
+  pushSample(sample: VideoSample): boolean;
 }
 
 export interface AudioTrack extends Track {

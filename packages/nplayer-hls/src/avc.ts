@@ -1,7 +1,7 @@
 import { ExpGolomb } from './exp-golomb';
 
 export class AVC {
-  static parseAnnexBNALus(data: Uint8Array): { units?: Uint8Array[], remaining?: Uint8Array } {
+  static parseAnnexBNALus(data: Uint8Array): Uint8Array[] {
     const len = data.length;
     let start = 2;
     let end = 0;
@@ -11,7 +11,7 @@ export class AVC {
     start++;
     end = start + 2;
 
-    if (end >= len) return {};
+    if (end >= len) return [];
 
     const units = [];
 
@@ -48,7 +48,10 @@ export class AVC {
           break;
       }
     }
-    return { units, remaining: start - 3 < len ? data.subarray(start - 3) : undefined };
+
+    if (start < len) units.push(data.subarray(start));
+
+    return units;
   }
 
   static parseSPS(unit: Uint8Array) {
@@ -186,8 +189,7 @@ export class AVC {
       chromaFormat,
       width: Math.ceil(
         (picWidthInMbsMinus1 + 1) * 16
-          - frameCropLeftOffset * 2
-          - frameCropRightOffset * 2,
+          - 2 * (frameCropLeftOffset + frameCropRightOffset),
       ),
       height:
         (2 - frameMbsOnlyFlag) * (picHeightInMapUnitsMinus1 + 1) * 16
