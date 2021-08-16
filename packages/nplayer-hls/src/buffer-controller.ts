@@ -9,6 +9,8 @@ export class BufferController {
 
   sourceBufferQueue: Record<string, any[]> = {}
 
+  video!: HTMLMediaElement;
+
   attachMedia(video: HTMLMediaElement) {
     this.ms = new MediaSource();
     this.ms.addEventListener('sourceopen', this.onMediaSourceOpen);
@@ -17,6 +19,7 @@ export class BufferController {
 
     this.msUrl = URL.createObjectURL(this.ms);
     video.src = this.msUrl;
+    this.video = video;
   }
 
   createSourceBuffer(track: Track) {
@@ -32,6 +35,8 @@ export class BufferController {
             const buffer = queue.shift();
             if (buffer) sb.appendBuffer(buffer);
           }
+
+          if (this.video.buffered.length) console.log(this.video.buffered.end(this.video.buffered.length - 1));
         });
 
         sb.addEventListener('error', console.error);

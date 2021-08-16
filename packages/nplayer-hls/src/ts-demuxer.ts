@@ -4,11 +4,10 @@ import { AVC } from './avc';
 import { AvcSample } from './avc-track';
 import { ExpGolomb } from './exp-golomb';
 import {
-  AudioTrack, Sample, VideoSample, VideoTrack,
+  AudioTrack, VideoSample, VideoTrack,
 } from './types';
 import { concatUint8Array } from './utils';
 
-const MAX_SEGMENT_HOLE = 90000;
 const TS_SECOND = 90000;
 
 export class TsDemuxer {
@@ -24,13 +23,15 @@ export class TsDemuxer {
 
   private aacPesData: Uint8Array[] = []
 
-  private nextVideoPts?: number;
+  private nextVideoDts?: number;
+
+  private nextExpectVideoDts?: number;
 
   private nextAudioPts?: number;
 
-  private initPts?: number;
+  private nextExpectAudioPts?: number;
 
-  private initPtsMap: Record<number, number> = Object.create(null);
+  private refDts?: number;
 
   constructor(readonly videoTrack: VideoTrack, readonly audioTrack: AudioTrack) {
     this.videoTrack = videoTrack;
@@ -40,15 +41,10 @@ export class TsDemuxer {
   demux(
     data: Uint8Array,
     timeOffset: number,
-    duration: number,
-    cc: number,
     contiguous = true,
-    fix = true,
   ) {
     if (!contiguous) {
-      this.remainingPacketData = this.prevAvcSample = this.remainingAacData = undefined;
-      this.avcPesData = [];
-      this.aacPesData = [];
+      this.reset();
     }
 
     if (this.remainingPacketData) {
@@ -119,54 +115,21 @@ export class TsDemuxer {
           break;
         case avcPid:
           if (payloadUnitStartIndicator && this.avcPesData.length) {
-            const pes = TsDemuxer.parsePES(concatUint8Array(...this.avcPesData));
-            if (pes) {
-              const units = AVC.parseAnnexBNALus(pes.data);
-              if (units) this.createVideoSample(units, pes.pts, pes.dts);
-            }
-            this.avcPesData = [];
+            this.parseAvcData();
           }
           this.avcPesData.push(data.subarray(offset, start + 188));
           break;
         case aacPid:
           if (payloadUnitStartIndicator && this.aacPesData.length) {
-            const pes = TsDemuxer.parsePES(concatUint8Array(...this.aacPesData));
-            if (pes) {
-              let pts = pes.pts;
-              if (pts == null) {
-                if (!this.audioTrack.samples.length || !this.audioTrack.sampleRate) break;
-                pts = this.audioTrack.samples[this.audioTrack.samples.length - 1].pts!
-                      + ADTS.getFrameDuration(this.audioTrack.sampleRate);
-              }
-
-              let buffer = pes.data;
-              if (this.remainingAacData) {
-                buffer = new Uint8Array(this.remainingAacData.length + pes.data.length);
-                buffer.set(this.remainingAacData);
-                buffer.set(pes.data, this.remainingAacData.length);
-              }
-
-              const ret = ADTS.parse(buffer, pts);
-              if (!ret) break;
-
-              this.audioTrack.codec = ret.codec;
-              this.audioTrack.channelCount = ret.channelCount;
-              this.audioTrack.objectType = ret.objectType;
-              this.audioTrack.sampleRate = ret.sampleRate;
-              this.audioTrack.samplingFrequencyIndex = ret.samplingFrequencyIndex;
-              this.audioTrack.samples.push(...ret.frames.map((s) => new AacSample(s.pts, s.data)));
-
-              // TODO: ret.skip warning
-
-              this.remainingAacData = ret.remaining;
-            }
-            this.aacPesData = [];
+            this.parseAacData();
           }
           this.aacPesData.push(data.subarray(offset, start + 188));
           break;
       }
     }
 
+    this.parseAvcData();
+    this.parseAacData();
     if (this.prevAvcSample && this.videoTrack.pushSample(this.prevAvcSample)) {
       this.prevAvcSample = undefined;
     }
@@ -174,9 +137,7 @@ export class TsDemuxer {
     this.videoTrack.timescale = TS_SECOND;
     this.audioTrack.timescale = this.audioTrack.sampleRate || 0;
 
-    if (fix) {
-      this.fix(timeOffset, duration, cc, contiguous);
-    }
+    this.fix(timeOffset, contiguous);
 
     return {
       videoTrack: this.videoTrack,
@@ -184,108 +145,143 @@ export class TsDemuxer {
     };
   }
 
-  fix(timeOffset: number, duration: number, cc: number, contiguous = true) {
+  private parseAvcData() {
+    if (!this.avcPesData.length) return;
+    const pes = TsDemuxer.parsePES(concatUint8Array(...this.avcPesData));
+    if (pes) {
+      const units = AVC.parseAnnexBNALus(pes.data);
+      if (units) this.createVideoSample(units, pes.pts, pes.dts);
+    }
+    this.avcPesData = [];
+  }
+
+  private parseAacData() {
+    if (!this.aacPesData.length) return;
+    const pes = TsDemuxer.parsePES(concatUint8Array(...this.aacPesData));
+    if (pes) {
+      let pts = pes.pts;
+      if (pts == null) {
+        if (!this.audioTrack.samples.length || !this.audioTrack.sampleRate) return;
+        pts = this.audioTrack.samples[this.audioTrack.samples.length - 1].pts!
+              + ADTS.getFrameDuration(this.audioTrack.sampleRate);
+      }
+      let buffer = pes.data;
+      if (this.remainingAacData) {
+        buffer = new Uint8Array(this.remainingAacData.length + pes.data.length);
+        buffer.set(this.remainingAacData);
+        buffer.set(pes.data, this.remainingAacData.length);
+      }
+
+      const ret = ADTS.parse(buffer, pts);
+      if (!ret) return;
+
+      this.audioTrack.codec = ret.codec;
+      this.audioTrack.channelCount = ret.channelCount;
+      this.audioTrack.objectType = ret.objectType;
+      this.audioTrack.sampleRate = ret.sampleRate;
+      this.audioTrack.samplingFrequencyIndex = ret.samplingFrequencyIndex;
+      this.audioTrack.samples.push(...ret.frames.map((s) => new AacSample(s.pts, s.data)));
+
+      // TODO: ret.skip warning
+
+      this.remainingAacData = ret.remaining;
+    }
+    this.aacPesData = [];
+  }
+
+  reset() {
+    this.remainingPacketData = this.remainingAacData = this.prevAvcSample = this.refDts = undefined;
+    this.avcPesData = [];
+    this.aacPesData = [];
+  }
+
+  fix(timeOffset: number, contiguous = true) {
     const audioSamples = this.audioTrack.samples;
-    let videoSamples = this.videoTrack.samples;
+    const videoSamples = this.videoTrack.samples;
 
     const hasAudio = audioSamples.length > 1;
     const hasVideo = videoSamples.length > 1;
 
-    this.initPts = this.initPtsMap[cc];
-    if (this.initPts == null) {
-      const startOffset = timeOffset * TS_SECOND;
-      this.initPts = Infinity;
-      if (hasAudio) {
-        this.initPts = audioSamples[0].pts - startOffset;
-      } else if (hasAudio) {
-        this.initPts = Math.min(this.initPts, TsDemuxer.getStartPts(videoSamples) - startOffset);
-      }
-      if (!Number.isFinite(this.initPts)) return;
+    if (!hasAudio && !hasVideo) return;
 
-      this.initPtsMap[cc] = this.initPts;
+    if (!this.refDts) {
+      this.refDts = videoSamples[0]?.dts || audioSamples[0]?.pts;
     }
 
-    if (hasVideo && !contiguous) {
-      let keyIndex = 0;
-      for (let i = 0, l = videoSamples.length; i < l; i++) {
-        if (videoSamples[i].key) {
-          keyIndex = i;
-          break;
-        }
+    if (hasVideo && hasAudio) {
+      console.log('BEFORE ', {
+        audioStartPts: audioSamples[0].pts,
+        videoStartPts: videoSamples[0].pts,
+        videoStartDts: videoSamples[0].dts,
+        nextVideoDts: this.nextVideoDts,
+        nextExpectVideoDts: this.nextExpectVideoDts,
+        nextAudioPts: this.nextAudioPts,
+        nextExpectAudioPts: this.nextExpectAudioPts,
+      });
+
+      if (!contiguous || this.nextVideoDts == null) {
+        const firstVideoPts = TsDemuxer.normalizePts(videoSamples[0].pts, this.refDts);
+        const firstVideoDts = TsDemuxer.normalizePts(videoSamples[0].dts, this.refDts);
+        const firstAudioPts = TsDemuxer.normalizePts(audioSamples[0].pts, this.refDts);
+        const delta = firstVideoPts - firstAudioPts;
+        videoSamples[0].pts = Math.max(firstVideoDts, firstVideoDts + delta);
+        console.log('FIX FIRST');
       }
 
-      if (keyIndex > 0 && keyIndex < videoSamples.length - 1) {
-        this.videoTrack.samples = videoSamples = videoSamples.slice(keyIndex);
-        this.videoTrack.dropped += keyIndex;
-      }
+      const delta = this.fixVideo(timeOffset, contiguous);
+      this.fixAudio(timeOffset, contiguous, delta);
+
+      console.log('AFTER ', {
+        audioStartPts: audioSamples[0].pts,
+        videoStartPts: videoSamples[0].pts,
+        videoStartDts: videoSamples[0].dts,
+        nextVideoDts: this.nextVideoDts,
+        nextExpectVideoDts: this.nextExpectVideoDts,
+        nextAudioPts: this.nextAudioPts,
+        nextExpectAudioPts: this.nextExpectAudioPts,
+        baseAudioDecode: this.audioTrack.baseMediaDecodeTime,
+        baseVideoDecode: this.videoTrack.baseMediaDecodeTime,
+      });
+    } else if (hasVideo) {
+      this.fixVideo(timeOffset, contiguous);
+    } else {
+      this.fixAudio(timeOffset, contiguous);
     }
 
-    if (hasAudio) this.fixAudio(timeOffset, duration, contiguous);
     if (hasVideo) {
-      this.fixVideo(timeOffset, duration, contiguous, this.audioTrack.samples[0]?.pts);
-    }
-
-    if (hasAudio) {
-      const audioDts = audioSamples[0]?.pts;
-      if (audioDts != null) this.audioTrack.baseMediaDecodeTime = audioDts * TS_SECOND / this.audioTrack.timescale;
-    }
-
-    if (hasVideo) {
-      const videoDts = videoSamples[0]?.dts;
-      if (videoDts != null) this.videoTrack.baseMediaDecodeTime = videoDts;
+      this.refDts = videoSamples[videoSamples.length - 1].dts;
+    } else {
+      this.refDts = audioSamples[audioSamples.length - 1].pts;
     }
   }
 
-  private fixVideo(timeOffset: number, duration: number, contiguous: boolean, audioStartPts?: number) {
+  private fixVideo(timeOffset: number, contiguous: boolean) {
     timeOffset *= TS_SECOND;
-    duration *= TS_SECOND;
     const samples = this.videoTrack.samples;
 
-    let sortSamples = false;
-    let ptsDtsShift = 0;
-
-    if (!contiguous || this.nextVideoPts == null) {
-      if (audioStartPts != null) timeOffset = audioStartPts;
-      this.nextVideoPts = Math.max(0, timeOffset);
+    if (!contiguous || this.nextVideoDts == null) {
+      this.nextVideoDts = Math.max(0, timeOffset - samples[0].cts);
+      this.nextExpectVideoDts = 0;
     }
 
+    let sortSamples = false;
     samples.forEach((sample, i) => {
-      sample.pts = TsDemuxer.normalizePts(sample.pts - this.initPts!, this.nextVideoPts);
-      sample.dts = TsDemuxer.normalizePts(sample.dts - this.initPts!, this.nextVideoPts);
-
-      if (sample.dts > sample.pts) {
-        ptsDtsShift = Math.min(sample.pts - sample.dts, ptsDtsShift);
-      }
-
+      sample.pts = TsDemuxer.normalizePts(sample.pts, this.refDts);
+      sample.dts = TsDemuxer.normalizePts(sample.dts, this.refDts);
+      if (sample.dts > sample.pts) sample.dts = sample.pts;
       if (sample.dts < samples[i > 0 ? i - 1 : i].dts) {
         sortSamples = true;
       }
     });
 
-    if (sortSamples) samples.sort((a, b) => a.dts - b.dts || a.pts - a.pts);
-
-    if (ptsDtsShift < 0) {
-      samples.forEach((sample) => sample.dts += ptsDtsShift);
+    if (sortSamples) {
+      console.log('SORT');
+      samples.sort((a, b) => a.dts - b.dts || a.pts - b.pts);
     }
 
-    const delta = samples[0].pts - this.nextVideoPts;
-
-    if (delta) {
-      const sample0 = samples[0];
-      const sample1 = samples[1];
-
-      let cts = sample0.pts - sample0.dts;
-      sample0.pts = this.nextVideoPts;
-      sample0.dts = Math.max(this.nextVideoPts - cts, 0);
-
-      if (sample1.dts <= sample0.dts || sample1.dts > sample0.dts + MAX_SEGMENT_HOLE) {
-        for (let i = 1, l = samples.length, sample: VideoSample; i < l; i++) {
-          sample = samples[i];
-          cts = sample.pts - sample.dts;
-          sample.pts -= delta;
-          sample.dts = Math.max(sample.pts - cts, 0);
-        }
-      }
+    let delta = 0;
+    if (this.nextExpectVideoDts) {
+      delta = this.nextExpectVideoDts - samples[0].dts;
     }
 
     for (let i = 0, l = this.videoTrack.samples.length, curSample: VideoSample, nextSample: VideoSample; i < l; i++) {
@@ -293,88 +289,66 @@ export class TsDemuxer {
       nextSample = this.videoTrack.samples[i + 1];
 
       if (nextSample) {
-        curSample.duration = nextSample.pts - curSample.pts;
+        curSample.duration = nextSample.dts - curSample.dts;
       } else {
-        let sampleDuration = 0;
-        if (this.nextAudioPts) sampleDuration = this.nextAudioPts - curSample.pts;
-        if (sampleDuration < 0) sampleDuration = duration - curSample.pts;
-        curSample.duration = sampleDuration > 0 ? sampleDuration : samples[i - 1].duration;
+        curSample.duration = samples[i - 1].duration;
       }
     }
 
+    this.videoTrack.baseMediaDecodeTime = this.nextVideoDts;
     const lastSample = samples[samples.length - 1];
-    this.nextVideoPts = lastSample.pts + lastSample.duration;
+    this.nextVideoDts += (lastSample.dts - samples[0].dts + lastSample.duration);
+    this.nextExpectVideoDts = lastSample.dts + lastSample.duration;
+
+    return delta;
   }
 
-  private fixAudio(timeOffset: number, duration: number, contiguous: boolean) {
+  private fixAudio(timeOffset: number, contiguous: boolean, videoDelta = 0) {
     timeOffset *= TS_SECOND;
-    duration *= TS_SECOND;
     const track = this.audioTrack;
     const samples = track.samples;
+
+    console.log(samples.length, 'samples.length');
+
     samples.forEach((sample) => {
-      sample.pts = TsDemuxer.normalizePts(sample.pts - this.initPts!, timeOffset);
+      sample.pts = TsDemuxer.normalizePts(sample.pts, this.refDts);
     });
+
+    if (!contiguous || this.nextAudioPts == null) {
+      this.nextAudioPts = Math.max(timeOffset, 0);
+      this.nextExpectAudioPts = 0;
+    }
 
     const sampleDuration = 1024 * TS_SECOND / track.timescale;
 
-    if (this.nextAudioPts == null) {
-      this.nextAudioPts = timeOffset;
-    }
-
-    if (!contiguous) {
-      this.nextAudioPts = samples[0].pts;
-    } else if (this.nextVideoPts != null) {
-      const delta = this.nextVideoPts - this.nextAudioPts;
-      if (delta > 0) duration += delta;
-    }
-
-    let nextPts = this.nextAudioPts;
-    samples.slice().forEach((sample, i) => {
-      const delta = sample.pts - nextPts;
-
-      if (delta > sampleDuration) {
-        let missing = delta / sampleDuration;
-        if (missing > 1.5) {
-          missing = Math.floor(missing);
-
-          while (missing--) {
-            const frame = ADTS.getSilentFrame(track.codec, track.channelCount) || sample.data.subarray();
-            samples.splice(i, 0, new AacSample(nextPts, frame, 1024));
-            nextPts += sampleDuration;
+    if (this.nextExpectAudioPts) {
+      const delta = this.nextExpectAudioPts - samples[0].pts + videoDelta;
+      console.log(this.nextExpectAudioPts - samples[0].pts, delta, videoDelta);
+      let frames = Math.floor(Math.abs(delta) / sampleDuration);
+      if (frames) {
+        if (delta > 0) {
+          console.log('REMOVE FRAME', frames);
+          while (frames--) samples.shift();
+        } else {
+          const frame = ADTS.getSilentFrame(track.codec, track.channelCount) || samples[0].data.subarray();
+          let nextPts = samples[0].pts;
+          console.log('ADD FRAME', frames);
+          while (frames--) {
+            nextPts -= sampleDuration;
+            samples.unshift(new AacSample(nextPts, frame, 1024));
           }
         }
       }
-
-      sample.pts = nextPts;
-      sample.duration = 1024;
-      nextPts += sampleDuration;
-    });
-
-    const lastPts = samples[samples.length - 1].pts;
-    const expectLastPts = samples[0].pts + duration;
-    const delta = expectLastPts - lastPts;
-    if (delta > sampleDuration) {
-      const lastSample = samples[samples.length - 1];
-      let missing = Math.floor(delta / sampleDuration);
-      if (missing > 0) {
-        while (missing--) {
-          const frame = ADTS.getSilentFrame(track.codec, track.channelCount) || lastSample.data.subarray();
-          samples.push(new AacSample(nextPts, frame, 1024));
-          nextPts += sampleDuration;
-        }
-      }
-    } else if (-delta > MAX_SEGMENT_HOLE) {
-      let sample = samples.pop();
-      while (sample) {
-        if (sample.pts <= expectLastPts) {
-          samples.push(sample);
-          break;
-        }
-        sample = samples.pop();
-      }
     }
 
-    this.nextAudioPts = samples[samples.length - 1].pts + sampleDuration;
+    console.log(samples[samples.length - 1].pts, sampleDuration);
+    this.audioTrack.baseMediaDecodeTime = Math.round(this.nextAudioPts * track.timescale / TS_SECOND);
+
+    const totalDuration = Math.round(samples.length * sampleDuration);
+    this.nextAudioPts += totalDuration;
+    this.nextExpectAudioPts = samples[0].pts + totalDuration;
+
+    console.log(samples.length, 'out samples.length');
   }
 
   private createVideoSample(units: Uint8Array[], pts?: number, dts?: number) {
@@ -513,19 +487,5 @@ export class TsDemuxer {
       if (data[i] === 0x47) return i;
     }
     return -1;
-  }
-
-  private static getStartPts(samples: Sample[]) {
-    const startPTS = samples.reduce((minPTS, sample) => {
-      const delta = sample.pts - minPTS;
-      if (delta < -4294967296) {
-        return TsDemuxer.normalizePts(minPTS, sample.pts);
-      } if (delta > 0) {
-        return minPTS;
-      }
-      return sample.pts;
-    }, samples[0].pts);
-
-    return startPTS;
   }
 }

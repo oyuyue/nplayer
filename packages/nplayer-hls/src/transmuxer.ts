@@ -15,25 +15,24 @@ export class Transmuxer {
   demux(
     data: Uint8Array,
     timeOffset: number,
-    duration: number,
-    cc: number,
     contiguous?: boolean,
-    fix?: boolean,
   ) {
-    this.demuxer.demux(data, timeOffset, duration, cc, contiguous, fix);
+    this.demuxer.demux(data, timeOffset, contiguous);
   }
 
   transmux(
     data: Uint8Array,
     timeOffset: number,
-    duration: number,
-    cc: number,
-    totalDuration = 0xffffffff,
+    totalDuration = 0,
     contiguous?: boolean,
-    fix?: boolean,
   ) {
-    this.videoTrack.duration = this.audioTrack.duration = totalDuration;
-    this.demux(data, timeOffset, duration, cc, contiguous, fix);
-    this.remuxer.remux();
+    this.demux(data, timeOffset, contiguous);
+    if (totalDuration) {
+      this.videoTrack.duration = totalDuration * this.videoTrack.timescale;
+      this.audioTrack.duration = totalDuration * this.audioTrack.timescale;
+    } else {
+      this.videoTrack.duration = this.audioTrack.duration = 0xffffffff;
+    }
+    return this.remuxer.remux();
   }
 }

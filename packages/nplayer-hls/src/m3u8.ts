@@ -2,12 +2,13 @@ import { Fragment } from './fragment';
 
 export function parseMedia(text = '', baseUrl = '') {
   const lines = getLines(text);
-  const level: { frags: Fragment[] } = { frags: [] };
+  const level: { frags: Fragment[], totalDuration: number } = { frags: [], totalDuration: 0 };
 
   let curSN = 0;
   let curCC = 0;
   let curFrag = new Fragment();
   let index = 0;
+  let totalDuration = 0;
   let line;
   // eslint-disable-next-line no-cond-assign
   while (line = lines[index++]) {
@@ -46,6 +47,8 @@ export function parseMedia(text = '', baseUrl = '') {
       case 'EXTINF': {
         const [duration, title] = val.split(',');
         curFrag.duration = parseFloat(duration);
+        curFrag.start = totalDuration;
+        totalDuration += curFrag.duration;
         curFrag.title = title;
       }
         break;
@@ -66,6 +69,8 @@ export function parseMedia(text = '', baseUrl = '') {
         break;
     }
   }
+
+  level.totalDuration = totalDuration;
 
   return level;
 }

@@ -10,45 +10,35 @@ export class MP4Remuxer {
   }
 
   remux() {
-    const ret: {
-      video?: Uint8Array,
-      audio?: Uint8Array,
-      videoInitSegment?: Uint8Array,
-      audioInitSegment?: Uint8Array
-    } = {};
+    const hasVideo = this.videoTrack.samples.length && this.videoTrack.pps.length && this.videoTrack.sps.length;
+    const hasAudio = this.audioTrack.samples.length && this.audioTrack.channelCount && this.audioTrack.sampleRate;
 
+    let videoInitSegment: Uint8Array | undefined;
+    let audioInitSegment: Uint8Array | undefined;
     if (!this.initSegmentCreated) {
-      const initSegment = this.createInitSegment(video, audio);
-      ret.videoInitSegment = initSegment.video;
-      ret.audioInitSegment = initSegment.audio;
+      if (hasVideo) videoInitSegment = MP4.initSegment([this.videoTrack]);
+      if (hasAudio) audioInitSegment = MP4.initSegment([this.audioTrack]);
       this.initSegmentCreated = true;
     }
 
-    ret.video = this.remuxVideo(video);
-    ret.audio = this.remuxAudio(audio);
+    let videoChunk: Uint8Array | undefined;
+    let audioChunk: Uint8Array | undefined;
+    if (hasVideo) videoChunk = this.remuxVideo();
+    if (hasAudio) audioChunk = this.remuxAudio();
 
-    video.samples = [];
-    audio.samples = [];
-
-    return ret;
-  }
-
-  createInitSegment(videoTrack: VideoTrack, audioTrack: AudioTrack) {
-    videoTrack.duration *= videoTrack.timescale;
-
-    audioTrack.timescale = audioTrack.sampleRate!;
-    audioTrack.duration *= audioTrack.timescale;
-
-    const videoInitSegment = MP4.initSegment([videoTrack]);
-    const audioInitSegment = MP4.initSegment([audioTrack]);
+    this.videoTrack.samples = [];
+    this.audioTrack.samples = [];
 
     return {
-      video: videoInitSegment,
-      audio: audioInitSegment,
+      videoInitSegment,
+      audioInitSegment,
+      videoChunk,
+      audioChunk,
     };
   }
 
-  remuxVideo(track: VideoTrack) {
+  remuxVideo() {
+    const track = this.videoTrack;
     let mdatSize = 0;
     track.samples.forEach((s) => {
       mdatSize += s.units.reduce((t, c) => (t + c.byteLength), 0);
@@ -58,15 +48,8 @@ export class MP4Remuxer {
     const mdatData = new Uint8Array(mdatSize);
     const mdatView = new DataView(mdatData.buffer);
 
-    for (let i = 0, l = track.samples.length, offset = 0, sample, nextSample; i < l; i++) {
+    for (let i = 0, l = track.samples.length, offset = 0, sample; i < l; i++) {
       sample = track.samples[i];
-      nextSample = track.samples[i + 1];
-
-      if (nextSample) {
-        sample.duration = nextSample.dts - sample.dts;
-      } else {
-        sample.duration = track.samples[i - 1]?.duration || 0;
-      }
 
       let sampleSize = 0;
       sample.units.forEach((u) => {
@@ -80,7 +63,7 @@ export class MP4Remuxer {
     }
 
     const mdat = MP4.mdat(mdatData);
-    const moof = MP4.moof(1, [track]);
+    const moof = MP4.moof(this.videoTrack.sequenceNumber++, [track]);
 
     const chunk = new Uint8Array(moof.byteLength + mdat.byteLength);
     chunk.set(moof);
@@ -89,8 +72,9 @@ export class MP4Remuxer {
     return chunk;
   }
 
-  remuxAudio(track: AudioTrack) {
-    const moof = MP4.moof(0, [track]);
+  remuxAudio() {
+    const track = this.audioTrack;
+    const moof = MP4.moof(this.audioTrack.sequenceNumber++, [track]);
     const mdatData = new Uint8Array(track.samples.reduce((t, c) => (t + c.size), 0));
     track.samples.reduce((offset, s) => (mdatData.set(s.data, offset), offset + s.size), 0);
     const mdat = MP4.mdat(mdatData);

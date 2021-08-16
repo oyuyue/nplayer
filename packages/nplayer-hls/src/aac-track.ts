@@ -7,9 +7,9 @@ export class AacSample implements AudioSample {
 
   readonly size: number;
 
-  duration = 1024;
+  readonly cts = 0;
 
-  cts = 0;
+  duration = 1024;
 
   pts = 0;
 
