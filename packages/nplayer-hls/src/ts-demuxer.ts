@@ -220,12 +220,38 @@ export class TsDemuxer {
       });
 
       if (!contiguous || this.nextVideoDts == null) {
+        const firstAudioPts = TsDemuxer.normalizePts(audioSamples[0].pts, this.refDts);
         const firstVideoPts = TsDemuxer.normalizePts(videoSamples[0].pts, this.refDts);
         const firstVideoDts = TsDemuxer.normalizePts(videoSamples[0].dts, this.refDts);
-        const firstAudioPts = TsDemuxer.normalizePts(audioSamples[0].pts, this.refDts);
-        const delta = firstVideoPts - firstAudioPts;
-        videoSamples[0].pts = Math.max(firstVideoDts, firstVideoDts + delta);
-        console.log('FIX FIRST');
+        const audioSampleDuration = Math.round(1024 * TS_SECOND / this.audioTrack.timescale);
+        let delta = firstVideoPts - firstAudioPts;
+
+        if (delta < 0) {
+          let frames = Math.floor(-delta / audioSampleDuration);
+          frames++;
+          console.log('ADD INIT FRAME', frames);
+          const frame = ADTS.getSilentFrame(
+            this.audioTrack.codec, this.audioTrack.channelCount,
+          ) || audioSamples[0].data.subarray();
+          let nextPts = firstAudioPts;
+          while (frames--) {
+            nextPts -= audioSampleDuration;
+            audioSamples.unshift(new AacSample(nextPts, frame, 1024));
+          }
+          delta = firstVideoPts - nextPts;
+        } else {
+          const dtsDelta = firstVideoDts - firstAudioPts;
+          if (dtsDelta > 0) {
+            let frames = Math.floor(dtsDelta / audioSampleDuration) + 1;
+            console.log('REMOVE INIT FRAME', frames);
+            delta -= frames * audioSampleDuration;
+            while (frames--) audioSamples.shift();
+          }
+        }
+
+        if (delta) {
+          this.videoTrack.samples[0].pts = firstVideoDts + delta;
+        }
       }
 
       const delta = this.fixVideo(timeOffset, contiguous);
