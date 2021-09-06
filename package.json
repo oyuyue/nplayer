@@ -18,7 +18,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.14.9",
     "@babel/preset-typescript": "^7.13.0",
     "@types/babel__generator": "^7.6.3",
