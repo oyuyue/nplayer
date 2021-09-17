@@ -1,12 +1,9 @@
-import { AudioSample, AudioTrack } from './audio-track';
-import { AAC } from './aac';
-import { AVC } from './avc';
-import { AvcSample } from './avc-track';
-import { ExpGolomb } from './exp-golomb';
 import {
-  VideoSample, VideoTrack,
-} from './types';
-import { concatUint8Array } from './utils';
+  VideoSample, VideoTrack, AudioSample, AudioTrack,
+} from '../domain';
+import { AVC, AAC } from '../codec';
+import { ExpGolomb } from '../helper';
+import { concatUint8Array } from '../../utils';
 
 const TS_SECOND = 90000;
 
@@ -15,13 +12,9 @@ export class TsDemuxer {
 
   private remainingPacketData?: Uint8Array;
 
-  private remainingAacData?: Uint8Array;
+  private videoPesData: Uint8Array[] = [];
 
-  private prevAvcSample?: AvcSample;
-
-  private avcPesData: Uint8Array[] = []
-
-  private aacPesData: Uint8Array[] = []
+  private audioPesData: Uint8Array[] = [];
 
   private nextVideoDts?: number;
 
@@ -33,18 +26,30 @@ export class TsDemuxer {
 
   private refDts?: number;
 
-  constructor(readonly videoTrack: VideoTrack, readonly audioTrack: AudioTrack) {
-    this.videoTrack = videoTrack;
-    this.audioTrack = audioTrack;
+  readonly videoTrack;
+
+  readonly audioTrack;
+
+  constructor(videoTrack?: VideoTrack, audioTrack?: AudioTrack) {
+    this.videoTrack = videoTrack || new VideoTrack();
+    this.audioTrack = audioTrack || new AudioTrack();
   }
 
   demux(
     data: Uint8Array,
-    timeOffset: number,
+    startTime: number,
     contiguous = true,
+    discontinuity: boolean,
   ) {
     if (!contiguous) {
-      this.reset();
+      this.remainingPacketData = undefined;
+      this.videoPesData = [];
+      this.audioPesData = [];
+    }
+
+    if (discontinuity) {
+      this.videoTrack.reset();
+      this.audioTrack.reset();
     }
 
     if (this.remainingPacketData) {
@@ -52,26 +57,17 @@ export class TsDemuxer {
       this.remainingPacketData = undefined;
     }
 
-    const syncOffset = TsDemuxer.getSyncOffset(data);
-    if (syncOffset === -1) {
-      this.remainingPacketData = undefined;
-      throw new Error('TS packet did not start with 0x47');
-    }
-
     let dataLen = data.length;
-    const remainingLength = (dataLen - syncOffset) % 188;
+    const remainingLength = dataLen % 188;
     if (remainingLength) {
       this.remainingPacketData = data.subarray(dataLen - remainingLength);
       dataLen -= remainingLength;
     }
 
-    this.videoTrack.samples = [];
-    this.audioTrack.samples = [];
+    let videoPid = this.videoTrack.pid;
+    let audioPid = this.audioTrack.pid;
 
-    let avcPid = this.videoTrack.pid;
-    let aacPid = this.audioTrack.pid;
-
-    for (let start = syncOffset, len = data.length; start < len; start += 188) {
+    for (let start = 0, len = data.length; start < len; start += 188) {
       if (data[start] !== 0x47) throw new Error('TS packet did not start with 0x47');
       const payloadUnitStartIndicator = !!(data[start + 1] & 0x40);
       const pid = ((data[start + 1] & 0x1f) << 8) + data[start + 2];
@@ -89,7 +85,6 @@ export class TsDemuxer {
         case 0:
           if (payloadUnitStartIndicator) offset += data[offset] + 1;
           this.pmtId = ((data[offset + 10] & 0x1f) << 8) | data[offset + 11];
-          // TODO: cache pes
           break;
         case this.pmtId: {
           if (payloadUnitStartIndicator) offset += data[offset] + 1;
@@ -101,43 +96,41 @@ export class TsDemuxer {
             const esPid = ((data[offset + 1] & 0x1f) << 8) | data[offset + 2];
 
             switch (data[offset]) {
-              case 0x0f:
-                this.audioTrack.pid = aacPid = esPid;
+              case 0x0f: // AAC
+                this.audioTrack.pid = audioPid = esPid;
                 break;
-              case 0x1b:
-                this.videoTrack.pid = avcPid = esPid;
+              case 0x1b: // AVC
+                this.videoTrack.pid = videoPid = esPid;
                 break;
+              default:
+                // TODO: waring
             }
 
             offset += (((data[offset + 3] & 0x0f) << 8) | data[offset + 4]) + 5;
           }
         }
           break;
-        case avcPid:
-          if (payloadUnitStartIndicator && this.avcPesData.length) {
-            this.parseAvcData();
+        case videoPid:
+          if (payloadUnitStartIndicator && this.videoPesData.length) {
+            this.parseAvc();
           }
-          this.avcPesData.push(data.subarray(offset, start + 188));
+          this.videoPesData.push(data.subarray(offset, start + 188));
           break;
-        case aacPid:
-          if (payloadUnitStartIndicator && this.aacPesData.length) {
-            this.parseAacData();
+        case audioPid:
+          if (payloadUnitStartIndicator && this.audioPesData.length) {
+            this.parseAac();
           }
-          this.aacPesData.push(data.subarray(offset, start + 188));
+          this.audioPesData.push(data.subarray(offset, start + 188));
           break;
+        default:
+          // TODO: waring
       }
-    }
-
-    this.parseAvcData();
-    this.parseAacData();
-    if (this.prevAvcSample && this.videoTrack.pushSample(this.prevAvcSample)) {
-      this.prevAvcSample = undefined;
     }
 
     this.videoTrack.timescale = TS_SECOND;
     this.audioTrack.timescale = this.audioTrack.sampleRate || 0;
 
-    this.fix(timeOffset, contiguous);
+    this.fix(startTime, contiguous);
 
     return {
       videoTrack: this.videoTrack,
@@ -145,19 +138,30 @@ export class TsDemuxer {
     };
   }
 
-  private parseAvcData() {
-    if (!this.avcPesData.length) return;
-    const pes = TsDemuxer.parsePES(concatUint8Array(...this.avcPesData));
-    if (pes) {
-      const units = AVC.parseAnnexBNALus(pes.data);
-      if (units) this.createVideoSample(units, pes.pts, pes.dts);
-    }
-    this.avcPesData = [];
+  static probe(data: Uint8Array) {
+    if (!data.length) return false;
+    return data[0] === 0x47 && data[188] === 0x47 && data[376] === 0x47;
   }
 
-  private parseAacData() {
-    if (!this.aacPesData.length) return;
-    const pes = TsDemuxer.parsePES(concatUint8Array(...this.aacPesData));
+  private parseAvc() {
+    if (!this.videoPesData.length) return;
+    const pes = TsDemuxer.parsePES(concatUint8Array(...this.videoPesData));
+    if (pes) {
+      const units = AVC.parseAnnexBNALus(pes.data);
+      if (units) {
+        this.createVideoSample(units, pes.pts, pes.dts);
+      } else {
+        // TODO: waring
+      }
+      this.videoPesData = [];
+    } else {
+      // TODO: waring
+    }
+  }
+
+  private parseAac() {
+    if (!this.audioPesData.length) return;
+    const pes = TsDemuxer.parsePES(concatUint8Array(...this.audioPesData));
     if (pes) {
       let pts = pes.pts;
       if (pts == null) {
@@ -165,15 +169,12 @@ export class TsDemuxer {
         pts = this.audioTrack.samples[this.audioTrack.samples.length - 1].pts!
               + AAC.getFrameDuration(this.audioTrack.sampleRate);
       }
-      let buffer = pes.data;
-      if (this.remainingAacData) {
-        buffer = new Uint8Array(this.remainingAacData.length + pes.data.length);
-        buffer.set(this.remainingAacData);
-        buffer.set(pes.data, this.remainingAacData.length);
-      }
 
-      const ret = AAC.parseAdts(buffer, pts);
-      if (!ret) return;
+      const ret = AAC.parseAdts(pes.data, pts);
+      if (!ret) {
+        // TODO: waring
+        return;
+      }
 
       this.audioTrack.codec = ret.codec;
       this.audioTrack.channelCount = ret.channelCount;
@@ -183,19 +184,115 @@ export class TsDemuxer {
       this.audioTrack.samples.push(...ret.frames.map((s) => new AudioSample(s.pts, s.data)));
 
       // TODO: ret.skip warning
+      // TODO: remaining warning
 
-      this.remainingAacData = ret.remaining;
+      this.audioPesData = [];
+    } else {
+      // TODO: waring
     }
-    this.aacPesData = [];
   }
 
-  reset() {
-    this.remainingPacketData = this.remainingAacData = this.prevAvcSample = this.refDts = undefined;
-    this.avcPesData = [];
-    this.aacPesData = [];
+  private createVideoSample(units: Uint8Array[], pts?: number, dts?: number) {
+    if (!units.length) return;
+    const track = this.videoTrack;
+    let sample = new VideoSample(pts!, dts!);
+    units.forEach((unit) => {
+      const type = unit[0] & 0x1f;
+      switch (type) {
+        case 1: // NDR
+          sample.frame = true;
+
+          if (track.sps.length && unit.length > 4) {
+            const eg = new ExpGolomb(unit);
+            eg.readUByte();
+            eg.readUEG();
+            const sliceType = eg.readUEG();
+
+            if (
+              sliceType === 2
+              || sliceType === 4
+              || sliceType === 7
+              || sliceType === 9
+            ) {
+              sample.key = true;
+              sample.flag.dependsOn = 2;
+              sample.flag.isNonSyncSample = 0;
+            }
+          }
+          break;
+        case 5: // IDR
+          sample.key = sample.frame = true;
+          sample.flag.dependsOn = 2;
+          sample.flag.isNonSyncSample = 0;
+          break;
+        case 6: // SEI
+          AVC.parseSEI(AVC.removeEPB(unit));
+          break;
+        case 7: // SPS
+          if (!track.sps.length) {
+            track.sps = [unit];
+            const spsInfo = AVC.parseSPS(AVC.removeEPB(unit));
+            const codecs = unit.subarray(1, 4);
+            let codec = 'avc1.';
+            for (let i = 0; i < 3; i++) {
+              let h = codecs[i].toString(16);
+              if (h.length < 2) h = `0${h}`;
+              codec += h;
+            }
+            track.codec = codec;
+            track.width = spsInfo.width;
+            track.height = spsInfo.height;
+            track.sarRatio = spsInfo.sarRatio;
+            track.profileIdc = spsInfo.profileIdc;
+            track.profileCompatibility = spsInfo.profileCompatibility;
+            track.levelIdc = spsInfo.levelIdc;
+          }
+          break;
+        case 8: // PPS
+          if (!track.pps.length) track.pps = [unit];
+          break;
+        case 9: // AUD
+
+          if (sample.units.length) {
+            if (!this.pushVideoSample(sample)) {
+              // TODO: warning
+            }
+            sample = new VideoSample(pts!, dts!);
+          }
+
+          break;
+      }
+      sample.units.push(unit);
+    });
+
+    if (sample.units.length) {
+      if (!this.pushVideoSample(sample)) {
+        // TODO: warning
+      }
+    }
   }
 
-  fix(timeOffset: number, contiguous = true) {
+  private pushVideoSample(sample: VideoSample) {
+    if (sample && sample.units.length && sample.frame) {
+      const track = this.videoTrack;
+      if (sample.pts == null) {
+        const lastSample = track.samples[track.samples.length - 1];
+        if (lastSample) {
+          sample.pts = lastSample.pts;
+          sample.dts = lastSample.dts;
+        } else {
+          // TODO: waring
+          track.dropped++;
+          return false;
+        }
+      }
+      track.samples.push(sample);
+      return true;
+    }
+    return false;
+  }
+
+  private fix(startTime: number, contiguous: boolean) {
     const audioSamples = this.audioTrack.samples;
     const videoSamples = this.videoTrack.samples;
 
@@ -204,21 +301,11 @@ export class TsDemuxer {
 
     if (!hasAudio && !hasVideo) return;
 
-    if (!this.refDts) {
+    if (!contiguous || !this.refDts) {
       this.refDts = videoSamples[0]?.dts || audioSamples[0]?.pts;
     }
 
     if (hasVideo && hasAudio) {
-      console.log('BEFORE ', {
-        audioStartPts: audioSamples[0].pts,
-        videoStartPts: videoSamples[0].pts,
-        videoStartDts: videoSamples[0].dts,
-        nextVideoDts: this.nextVideoDts,
-        nextExpectVideoDts: this.nextExpectVideoDts,
-        nextAudioPts: this.nextAudioPts,
-        nextExpectAudioPts: this.nextExpectAudioPts,
-      });
-
       if (!contiguous || this.nextVideoDts == null) {
         const firstAudioPts = TsDemuxer.normalizePts(audioSamples[0].pts, this.refDts);
         const firstVideoPts = TsDemuxer.normalizePts(videoSamples[0].pts, this.refDts);
@@ -229,7 +316,7 @@ export class TsDemuxer {
         if (delta < 0) {
           let frames = Math.floor(-delta / audioSampleDuration);
           frames++;
-          console.log('ADD INIT FRAME', frames);
+          // TODO: waring
           const frame = AAC.getSilentFrame(
             this.audioTrack.codec, this.audioTrack.channelCount,
           ) || audioSamples[0].data.subarray();
@@ -243,35 +330,24 @@ export class TsDemuxer {
           const dtsDelta = firstVideoDts - firstAudioPts;
           if (dtsDelta > 0) {
             let frames = Math.floor(dtsDelta / audioSampleDuration) + 1;
-            console.log('REMOVE INIT FRAME', frames);
             delta -= frames * audioSampleDuration;
+            // TODO: waring
             while (frames--) audioSamples.shift();
           }
         }
 
         if (delta) {
+          // TODO: waring
           this.videoTrack.samples[0].pts = firstVideoDts + delta;
         }
       }
 
-      const delta = this.fixVideo(timeOffset, contiguous);
-      this.fixAudio(timeOffset, contiguous, delta);
-
-      console.log('AFTER ', {
-        audioStartPts: audioSamples[0].pts,
-        videoStartPts: videoSamples[0].pts,
-        videoStartDts: videoSamples[0].dts,
-        nextVideoDts: this.nextVideoDts,
-        nextExpectVideoDts: this.nextExpectVideoDts,
-        nextAudioPts: this.nextAudioPts,
-        nextExpectAudioPts: this.nextExpectAudioPts,
-        baseAudioDecode: this.audioTrack.baseMediaDecodeTime,
-        baseVideoDecode: this.videoTrack.baseMediaDecodeTime,
-      });
+      const delta = this.fixVideo(startTime, contiguous);
+      this.fixAudio(startTime, contiguous, delta);
     } else if (hasVideo) {
-      this.fixVideo(timeOffset, contiguous);
+      this.fixVideo(startTime, contiguous);
     } else {
-      this.fixAudio(timeOffset, contiguous);
+      this.fixAudio(startTime, contiguous);
     }
 
     if (hasVideo) {
@@ -281,12 +357,12 @@ export class TsDemuxer {
     }
   }
 
-  private fixVideo(timeOffset: number, contiguous: boolean) {
-    timeOffset *= TS_SECOND;
+  private fixVideo(startTime: number, contiguous: boolean) {
+    startTime *= TS_SECOND;
     const samples = this.videoTrack.samples;
 
     if (!contiguous || this.nextVideoDts == null) {
-      this.nextVideoDts = Math.max(0, timeOffset - samples[0].cts);
+      this.nextVideoDts = Math.max(0, startTime - samples[0].cts);
       this.nextExpectVideoDts = 0;
     }
 
@@ -301,7 +377,7 @@ export class TsDemuxer {
     });
 
     if (sortSamples) {
-      console.log('SORT');
+      // TODO: waring
       samples.sort((a, b) => a.dts - b.dts || a.pts - b.pts);
     }
 
@@ -329,19 +405,17 @@ export class TsDemuxer {
     return delta;
   }
 
-  private fixAudio(timeOffset: number, contiguous: boolean, videoDelta = 0) {
-    timeOffset *= TS_SECOND;
+  private fixAudio(startTime: number, contiguous: boolean, videoDelta = 0) {
+    startTime *= TS_SECOND;
     const track = this.audioTrack;
     const samples = track.samples;
-
-    console.log(samples.length, 'samples.length');
 
     samples.forEach((sample) => {
       sample.pts = TsDemuxer.normalizePts(sample.pts, this.refDts);
     });
 
     if (!contiguous || this.nextAudioPts == null) {
-      this.nextAudioPts = Math.max(timeOffset, 0);
+      this.nextAudioPts = Math.max(startTime, 0);
       this.nextExpectAudioPts = 0;
     }
 
@@ -349,16 +423,15 @@ export class TsDemuxer {
 
     if (this.nextExpectAudioPts) {
       const delta = this.nextExpectAudioPts - samples[0].pts + videoDelta;
-      console.log(this.nextExpectAudioPts - samples[0].pts, delta, videoDelta);
       let frames = Math.floor(Math.abs(delta) / sampleDuration);
       if (frames) {
         if (delta > 0) {
-          console.log('REMOVE FRAME', frames);
+          // TODO: waring
           while (frames--) samples.shift();
         } else {
+          // TODO: waring
           const frame = AAC.getSilentFrame(track.codec, track.channelCount) || samples[0].data.subarray();
           let nextPts = samples[0].pts;
-          console.log('ADD FRAME', frames);
           while (frames--) {
             nextPts -= sampleDuration;
             samples.unshift(new AudioSample(nextPts, frame, 1024));
@@ -367,92 +440,11 @@ export class TsDemuxer {
       }
     }
 
-    console.log(samples[samples.length - 1].pts, sampleDuration);
     this.audioTrack.baseMediaDecodeTime = Math.round(this.nextAudioPts * track.timescale / TS_SECOND);
 
     const totalDuration = Math.round(samples.length * sampleDuration);
     this.nextAudioPts += totalDuration;
     this.nextExpectAudioPts = samples[0].pts + totalDuration;
-
-    console.log(samples.length, 'out samples.length');
-  }
-
-  private createVideoSample(units: Uint8Array[], pts?: number, dts?: number) {
-    if (!units.length) return;
-    const track = this.videoTrack;
-    let sample = this.prevAvcSample || (this.prevAvcSample = new AvcSample(pts!, dts!));
-    units.forEach((unit) => {
-      const type = unit[0] & 0x1f;
-      switch (type) {
-        case 1: // NDR
-          sample.frame = true;
-          sample.debug += 'NDR';
-
-          if (track.sps.length && unit.length > 4) {
-            const eg = new ExpGolomb(unit);
-            eg.readUByte();
-            eg.readUEG();
-            const sliceType = eg.readUEG();
-
-            if (
-              sliceType === 2
-              || sliceType === 4
-              || sliceType === 7
-              || sliceType === 9
-            ) {
-              sample.key = true;
-              sample.flag.dependsOn = 2;
-              sample.flag.isNonSyncSample = 0;
-            }
-          }
-          break;
-        case 5: // IDR
-          sample.debug += 'IDR';
-          sample.key = sample.frame = true;
-          sample.flag.dependsOn = 2;
-          sample.flag.isNonSyncSample = 0;
-          break;
-        case 6: // SEI
-          sample.debug += 'SEI';
-          AVC.parseSEI(AVC.removeEPB(unit));
-          break;
-        case 7: // SPS
-          sample.debug += 'SPS';
-          if (!track.sps.length) {
-            track.sps = [unit];
-            const spsInfo = AVC.parseSPS(AVC.removeEPB(unit));
-            const codecs = unit.subarray(1, 4);
-            let codec = 'avc1.';
-            for (let i = 0; i < 3; i++) {
-              let h = codecs[i].toString(16);
-              if (h.length < 2) h = `0${h}`;
-              codec += h;
-            }
-            track.codec = codec;
-            track.width = spsInfo.width;
-            track.height = spsInfo.height;
-            track.sarRatio = spsInfo.sarRatio;
-            track.profileIdc = spsInfo.profileIdc;
-            track.profileCompatibility = spsInfo.profileCompatibility;
-            track.levelIdc = spsInfo.levelIdc;
-          }
-          break;
-        case 8: // PPS
-          sample.debug += 'PPS';
-          if (!track.pps.length) track.pps = [unit];
-          break;
-        case 9: // AUD
-          sample.debug += 'AUD';
-
-          if (sample.units.length) {
-            track.pushSample(sample);
-            sample = this.prevAvcSample = new AvcSample(pts!, dts!);
-          }
-
-          break;
-      }
-      sample.units.push(unit);
-    });
   }
 
   private static normalizePts(value: number, reference?: number): number {
@@ -460,11 +452,9 @@ export class TsDemuxer {
     if (reference == null) return value;
 
     if (reference < value) {
-      // - 2^33
-      offset = -8589934592;
+      offset = -8589934592; // - 2^33
     } else {
-      // + 2^33
-      offset = 8589934592;
+      offset = 8589934592; // + 2^33
     }
 
     while (Math.abs(value - reference) > 4294967296) {
@@ -505,13 +495,5 @@ export class TsDemuxer {
     }
 
     return { data: data.subarray(9 + headerDataLen), pts, dts };
-  }
-
-  private static getSyncOffset(data: Uint8Array) {
-    const len = Math.min(1000, data.length);
-    for (let i = 0; i < len; i++) {
-      if (data[i] === 0x47) return i;
-    }
-    return -1;
   }
 }

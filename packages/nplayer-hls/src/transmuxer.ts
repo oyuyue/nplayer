@@ -1,10 +1,10 @@
-import { AacTrack } from './aac-track';
+import { AudioTrack } from './audio-track';
 import { AvcTrack } from './avc-track';
 import { MP4Remuxer } from './mp4-remuxer';
 import { TsDemuxer } from './ts-demuxer';
 
 export class Transmuxer {
-  readonly audioTrack = new AacTrack()
+  readonly audioTrack = new AudioTrack()
 
   readonly videoTrack = new AvcTrack();
 

@@ -28,8 +28,6 @@ export interface Sample {
 
   size: number;
 
-  cts: number;
-
   pts: number;
 }
 
@@ -40,11 +38,9 @@ export interface VideoSample extends Sample {
 
   key: boolean;
 
-  units: Uint8Array[];
-}
+  cts: number;
 
-export interface AudioSample extends Sample {
-  data: Uint8Array;
+  units: Uint8Array[];
 }
 
 export interface Track {
@@ -92,21 +88,3 @@ export interface VideoTrack extends Track {
 
   pushSample(sample: VideoSample): boolean;
 }
-
-export interface AudioTrack extends Track {
-  channelCount?: number;
-
-  sampleRate?: number;
-
-  objectType?: number;
-
-  samplingFrequencyIndex?: number;
-
-  sampleSize: number;
-
-  samples: AudioSample[];
-}
-
-export type MixSample = VideoSample | AudioSample;
-
-export type MixTrack = VideoTrack | AudioTrack;

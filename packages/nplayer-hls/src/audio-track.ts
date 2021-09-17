@@ -1,13 +1,11 @@
 import {
-  AudioSample, AudioTrack, TrackType, SampleFlag,
+  Sample, Track, TrackType, SampleFlag,
 } from './types';
 
-export class AacSample implements AudioSample {
+export class AudioSample implements Sample {
   readonly data: Uint8Array;
 
   readonly size: number;
-
-  readonly cts = 0;
 
   duration = 1024;
 
@@ -31,7 +29,7 @@ export class AacSample implements AudioSample {
   }
 }
 
-export class AacTrack implements AudioTrack {
+export class AudioTrack implements Track {
   readonly container = 'audio/mp4'
 
   readonly id = 2;
