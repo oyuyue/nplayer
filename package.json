@@ -22,7 +22,7 @@
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-typescript": "^7.13.0",
     "@types/babel__generator": "^7.6.3",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.31.1",
     "autoprefixer": "^10.3.4",
