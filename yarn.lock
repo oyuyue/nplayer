@@ -1503,10 +1503,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^27.0.1":
-  version "27.0.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.1.tgz#fafcc997da0135865311bb1215ba16dba6bdf4ca"
-  integrity sha512-HTLpVXHrY69556ozYkcq47TtQJXpcWAWfkoqz+ZGz2JnmZhzlRjprCIyFnetSy8gpDWwTTGBcRVv1J1I1vBrHw==
+"@types/jest@^27.0.2":
+  version "27.0.2"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.2.tgz#ac383c4d4aaddd29bbf2b916d8d105c304a5fcd7"
+  integrity sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA==
   dependencies:
     jest-diff "^27.0.0"
     pretty-format "^27.0.0"
@@ -7699,10 +7699,10 @@ sass-loader@^12.1.0:
     klona "^2.0.4"
     neo-async "^2.6.2"
 
-sass@^1.41.1:
-  version "1.41.1"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.41.1.tgz#bca5bed2154192779c29f48fca9c644c60c38d98"
-  integrity sha512-vIjX7izRxw3Wsiez7SX7D+j76v7tenfO18P59nonjr/nzCkZuoHuF7I/Fo0ZRZPKr88v29ivIdE9BqGDgQD/Nw==
+sass@^1.42.0:
+  version "1.42.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.42.0.tgz#dc485e5cf7890a22fd6ccc6856c64f297239d595"
+  integrity sha512-kcjxsemgaOnfl43oZgO/IePLvXQI0ZKzo0/xbCt6uyrg3FY/FF8hVK9YoO8GiZBcEG2Ebl79EKnUc+aiE4f2Vw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
@@ -8234,10 +8234,10 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.npm.taobao.org/strip-json-comments/download/strip-json-comments-3.1.1.tgz?cache=0&sync_timestamp=1606706346538&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fstrip-json-comments%2Fdownload%2Fstrip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha1-MfEoGzgyYwQ0gxwxDAHMzajL4AY=
 
-style-loader@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-3.1.0.tgz#e52a22ca2fd1f54c03f2c3e69b10182e68120908"
-  integrity sha512-HYVvBMX3RX7zx71pquZV6EcnPN7Deba+zQteSxCLqt3bxYRphmeMr+2mZMrIZjZ7IMa6aOUhNGn8cXGvWMjClw==
+style-loader@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-3.3.0.tgz#d66ea95fc50b22f8b79b69a9e414760fcf58d8d8"
+  integrity sha512-szANub7ksJtQioJYtpbWwh1hUl99uK15n5HDlikeCRil/zYMZgSxucHddyF/4A3qJMUiAjPhFowrrQuNMA7jwQ==
 
 stylehacks@^5.0.1:
   version "5.0.1"
