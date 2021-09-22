@@ -25,7 +25,7 @@
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.31.2",
-    "autoprefixer": "^10.3.4",
+    "autoprefixer": "^10.3.5",
     "babel-jest": "^27.2.1",
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.2",
