@@ -1,5 +1,3 @@
-import { Track } from './types';
-
 export class BufferController {
   ms?: MediaSource;
 
@@ -22,15 +20,14 @@ export class BufferController {
     this.video = video;
   }
 
-  createSourceBuffer(track: Track) {
+  createSourceBuffer(type: string, mimeType: string) {
     if (this.ms && this.ms.readyState === 'open') {
-      if (!this.sourceBufferMap[track.type]) {
-        const mime = `${track.container};codecs=${track.codec}`;
-        console.log(mime);
-        console.log(MediaSource.isTypeSupported(mime));
-        const sb = this.sourceBufferMap[track.type] = this.ms.addSourceBuffer(`${track.container};codecs=${track.codec}`);
+      if (!this.sourceBufferMap[type]) {
+        console.log(mimeType);
+        console.log(MediaSource.isTypeSupported(mimeType));
+        const sb = this.sourceBufferMap[type] = this.ms.addSourceBuffer(mimeType);
         sb.addEventListener('updateend', () => {
-          const queue = this.sourceBufferQueue[track.type];
+          const queue = this.sourceBufferQueue[type];
           if (queue) {
             const buffer = queue.shift();
             if (buffer) sb.appendBuffer(buffer);

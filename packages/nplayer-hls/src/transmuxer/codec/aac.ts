@@ -1,5 +1,5 @@
 export class AAC {
-  static FREQ = [
+  static readonly FREQ = [
     96000,
     88200,
     64000,
@@ -15,16 +15,17 @@ export class AAC {
     7350,
   ];
 
-  static parseAdts(data: Uint8Array, pts: number, frameIndex = 0) {
+  static parseAdts(data: Uint8Array, pts: number) {
     const spec = AAC.parseSpec(data);
     if (!spec) return;
 
+    const frames = [];
+    const duration = AAC.getFrameDuration(spec.sampleRate);
     const len = data.length;
     let i = spec.skip;
-
-    const frames = [];
-
+    let frameIndex = 0;
     let frameLength;
+
     while ((i + 7) < len) {
       if ((data[i] !== 0xff) || (data[i + 1] & 0xF6) !== 0xf0) {
         i++;
@@ -35,9 +36,11 @@ export class AAC {
       if ((len - i) < frameLength) break;
 
       frames.push({
-        pts: pts + frameIndex * AAC.getFrameDuration(spec.sampleRate),
+        pts: pts + frameIndex * duration,
         data: data.subarray(i + 7 + (~data[i + 1] & 0x01) * 2, i + frameLength),
       });
+
+      frameIndex++;
 
       i += frameLength;
     }
@@ -76,8 +79,8 @@ export class AAC {
     };
   }
 
-  static getFrameDuration(rate: number): number {
-    return 92160000 / rate;
+  static getFrameDuration(rate: number, timescale = 90000): number {
+    return 1024 * timescale / rate;
   }
 
   static getSilentFrame(

@@ -3,7 +3,7 @@ import { Fragment } from './fragment';
 import { parseMedia } from './m3u8';
 import { Playlist } from './playlist';
 import { Stream } from './stream';
-import { Transmuxer } from './transmuxer';
+import { Transmuxer } from './x-transmuxer';
 import { TrackType } from './types';
 
 export class StreamController {
@@ -14,6 +14,12 @@ export class StreamController {
   bufferController = new BufferController();
 
   totalDuration = 0
+
+  constructor() {
+    const video = document.createElement('video');
+    document.body.appendChild(video);
+    this.bufferController.attachMedia(video);
+  }
 
   load(url: string) {
     fetch(url)
@@ -45,21 +51,23 @@ export class StreamController {
   }
 
   transmux(data: Uint8Array, frag: Fragment) {
-    const ret = this.transmuxer.transmux(data, frag.start, this.totalDuration, true);
+    const ret = this.transmuxer.transmux(data, frag.start, true);
+
+    console.log(ret);
 
     if (ret.videoInitSegment) {
-      this.bufferController.createSourceBuffer(this.transmuxer.videoTrack);
+      this.bufferController.createSourceBuffer('video', `video/mp4;codecs=${this.transmuxer.demuxer.videoTrack.codec}`);
       this.bufferController.append(TrackType.VIDEO, ret.videoInitSegment);
     }
     if (ret.audioInitSegment) {
-      this.bufferController.createSourceBuffer(this.transmuxer.audioTrack);
+      this.bufferController.createSourceBuffer('audio', `audio/mp4;codecs=${this.transmuxer.demuxer.audioTrack.codec}`);
       this.bufferController.append(TrackType.AUDIO, ret.audioInitSegment);
     }
-    if (ret.videoChunk) {
-      this.bufferController.append(TrackType.VIDEO, ret.videoChunk);
+    if (ret.videoSegment) {
+      this.bufferController.append(TrackType.VIDEO, ret.videoSegment);
     }
-    if (ret.audioChunk) {
-      this.bufferController.append(TrackType.AUDIO, ret.audioChunk);
+    if (ret.audioSegment) {
+      this.bufferController.append(TrackType.AUDIO, ret.audioSegment);
     }
   }
 }
