@@ -265,8 +265,19 @@ export class Danmaku implements Disposable {
 
   addItem(opts: BulletOption): number {
     if (opts.time == null) return -1;
+
+    const l = this.items.length;
+    if (!l || opts.time >= this.items[l - 1].time) {
+      this.items.push(opts);
+      return l;
+    }
+    if (opts.time <= this.items[0].time) {
+      this.items.unshift(opts);
+      return 0;
+    }
+
     let index = 0;
-    for (let i = 0, l = this.items.length; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       if (this.items[i].time > opts.time) {
         index = i;
         break;

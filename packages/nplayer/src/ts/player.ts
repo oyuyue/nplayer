@@ -2,7 +2,7 @@ import { Disposable, PlayerOptions, Plugin } from './types';
 import { processOptions } from './options';
 import {
   $, addClass, getEl, Rect, EventEmitter, clamp, isString,
-  dispose, removeNode, addDisposable, isBrowser, patchProps, internalUtils,
+  dispose, removeNode, addDisposable, patchProps, internalUtils,
 } from './utils';
 import { Control, ControlItem } from './parts/control';
 import { Loading } from './parts/loading';
@@ -369,13 +369,3 @@ export class Player extends EventEmitter implements Disposable {
 
 Player.prototype.Player = Player;
 Player.prototype.EVENT = EVENT;
-
-if (isBrowser) {
-  // eslint-disable-next-line no-console
-  console.log(
-    `%c NPlayer %c v${__VERSION__} %c https://github.com/woopen/nplayer `,
-    'padding: 1px; border-radius: 3px 0 0 3px; color: #fff; background: #606060;',
-    'padding: 1px; color: #fff; background: #1475b2;',
-    'padding: 1px; border-radius: 0 3px 3px 0; color: #fff; background: #42c02e;',
-  );
-}
