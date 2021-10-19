@@ -1,3 +1,12 @@
+## [1.0.10](https://github.com/woopen/nplayer/compare/v1.0.9...v1.0.10) (2021-10-19)
+
+
+### Bug Fixes
+
+* danmaku addItem [#415](https://github.com/woopen/nplayer/issues/415) ([a995237](https://github.com/woopen/nplayer/commit/a99523706652ac56854de3467451cced7ad5c7ce))
+
+
+
 ## [1.0.9](https://github.com/woopen/nplayer/compare/v1.0.8...v1.0.9) (2021-06-11)
 
 
