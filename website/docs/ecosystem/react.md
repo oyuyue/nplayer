@@ -54,6 +54,7 @@ export default function App() {
         className=" "
         style={{  }}
         options={{ src: url }}
+        onStreamLoad: handleStreamLoad,
       />
     </div>
   );
