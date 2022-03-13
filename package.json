@@ -6,11 +6,13 @@
   ],
   "scripts": {
     "serve:nplayer": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer",
+    "serve:nplayer2": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer2",
     "serve:danmaku": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-danmaku  fixture=danmaku",
     "serve:vue": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-vue  fixture=vue",
     "serve:react": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-react  fixture=react",
     "serve:hls": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-hls  fixture=hls",
     "build:nplayer": "cross-env NODE_ENV=production && npm run lint && node ./scripts/build.js --name=nplayer",
+    "build:nplayer2": "cross-env NODE_ENV=production && node ./scripts/build.js --name=nplayer2",
     "test": "jest",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "release": "node ./scripts/release.js",
@@ -44,24 +46,25 @@
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
     "html-webpack-plugin": "^5.3.2",
+    "husky": "^7.0.2",
     "jest": "^26.6.3",
+    "mini-css-extract-plugin": "^2.5.3",
     "minimist": "^1.2.5",
     "postcss": "^8.3.7",
     "postcss-loader": "^6.1.1",
     "react": "^17.0.2",
     "sass": "^1.42.1",
-    "sass-loader": "^12.1.0",
+    "sass-loader": "^12.6.0",
     "semver": "^7.3.5",
     "style-loader": "^3.3.0",
     "terser-webpack-plugin": "^5.2.4",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.3",
     "vue": "^3.2.18",
-    "webpack": "^5.53.0",
+    "webpack": "^5.69.1",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.1",
-    "webpack-merge": "^5.8.0",
-    "husky": "^7.0.2"
+    "webpack-merge": "^5.8.0"
   },
   "browserslist": [
     "> 1%",
@@ -69,5 +72,6 @@
     "not dead",
     "not op_mini all",
     "IE 11"
-  ]
+  ],
+  "dependencies": {}
 }

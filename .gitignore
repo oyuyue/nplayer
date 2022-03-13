@@ -4,3 +4,5 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 .idea
+packages/*/dist/
+packages/*/lib/

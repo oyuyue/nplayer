@@ -1,0 +1,35 @@
+.nplayer_list {
+  position: relative;
+  font-size: 14px;
+
+  &:hover &_items {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &_items {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    padding: 5px 0;
+    border-radius: 3px;
+    background: rgba(28, 28, 28, .9);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity ease .2s;
+  }
+
+  &_i {
+    padding: 5px 12px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255,255,255,0.1);
+    }
+  }
+
+  &_select {
+    cursor: pointer;
+  }
+}

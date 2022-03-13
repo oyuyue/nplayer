@@ -16,13 +16,21 @@ module.exports = env => {
 
     target: ['web', 'es5'],
 
-    entry: ['webpack-dev-server/client', path.resolve(pkgDir, 'src', 'index.ts')],
+    // entry: ['webpack-dev-server/client', path.resolve(pkgDir, 'src', 'index.ts')],
 
     devServer: {
-      contentBase: [fixtureDir, path.resolve(__dirname, '..', 'packages')],
-      watchContentBase: true,
+      // contentBase: [fixtureDir, path.resolve(__dirname, '..', 'packages')],
+      // watchContentBase: true,
       liveReload: true,
-      injectClient: false,
+      static: {
+        directory: fixtureDir,
+        serveIndex: true,
+        watch: true
+      },
+      client: {
+        overlay: false
+      },
+      // injectClient: false,
       host: '0.0.0.0'
     },
 

@@ -1,0 +1,38 @@
+.nplayer {
+  &_ctrl_time {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #ddd;
+
+    &_live {
+      display: flex;
+      align-items: center;
+
+      &::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        margin-right: 5px;
+        display: block;
+        border-radius: 50%;
+        background: #f00;
+      }
+
+      &-dark {
+        &::before {
+          background: #757575;
+        }
+
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 10px;
+        background: rgb(51, 51, 51, .5);
+      }
+    }
+
+    &_sep {
+      margin: 0 5px;
+    }
+  }
+}

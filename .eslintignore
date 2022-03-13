@@ -4,3 +4,4 @@ build
 scripts
 website
 *.js
+*.d.ts

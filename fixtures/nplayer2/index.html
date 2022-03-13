@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Document</title>
+  <style>
+  </style>
+  <script src="../polyfill.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flv.js@1.5.0/dist/flv.min.js"></script> -->
+</head>
+<body>
+  <div style="width: 500px; margin: 100px auto; background: yellowgreen; resize: both; overflow: scroll;" id="c"></div>
+  <!-- <div class="app"></div>
+  <div class="app2"></div> -->
+  <!-- <div style="height: 1000px;"></div> -->
+  <!-- <script defer src="nplayer/index.js"></script> -->
+  <script>
+    onload = () => {
+      const player = new NPlayer2({
+        container: '#c',
+        live: true
+      })
+      player.mount()
+    }
+  </script>
+</body>
+</html>

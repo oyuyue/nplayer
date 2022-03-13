@@ -1,0 +1,66 @@
+.nplayer {
+  &_ctrl {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    user-select: none;
+    z-index: $z-ctrl;
+
+    &-hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:hover {
+      opacity: 1 !important;
+      pointer-events: initial !important;
+      cursor: default !important;
+    }
+
+    &:hover ~ &_bg {
+      opacity: 1 !important;
+    }
+
+    &_bg {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100px;
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==) repeat-x bottom;
+      pointer-events: none;
+      transition: opacity .2s ease;
+      z-index: $z-ctrl-bg;
+
+      &-top {
+        top: 0;
+        bottom: auto;
+        background-position: top;
+      }
+
+      &-hide {
+        opacity: 0;
+      }
+    }
+
+    &_bar {
+      display: flex;
+      align-items: center;
+
+      &-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        transition: opacity .2s ease;
+        padding-top: 5px;
+      }
+
+      &-hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+}

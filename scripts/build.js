@@ -1,5 +1,8 @@
 const path = require('path')
 const fs = require('fs-extra')
+const glob = require('glob')
+const sass = require('sass')
+const postcss = require('postcss')
 const { error, run } = require('./utils')
 
 const name = require('minimist')(process.argv.slice(2)).name
@@ -11,6 +14,14 @@ function main(target) {
   }
 
   const pkgDir = path.resolve(__dirname, '..', 'packages', target)
+  const srcDir = path.resolve(pkgDir, 'src')
+  const libDir = path.resolve(pkgDir, 'lib')
+  const distDir = path.resolve(pkgDir, 'dist')
+
+  fs.removeSync(distDir)
+  fs.removeSync(libDir)
+
+  process.env.NODE_ENV = 'production'
 
   run('npx', [
       'webpack',
@@ -22,32 +33,59 @@ function main(target) {
     ]
   )
 
-  const re = /((?:import|export)\s+.+\s+from\s+['"])(.+)(['"])/mg
+  if (path.resolve(srcDir, 'index.lite.ts')) {
+    run('npx', [
+        'webpack',
+        '--config', 
+        './scripts/webpack.prod.js', 
+        '--progress',
+        '--env',
+        `target=${target}`,
+        'lite=true'
+      ]
+    )
+  }
 
-  const sym = 'src'
-  const rep = './src/'
-  const symS = 'src/'
-  const bashPath = path.resolve(pkgDir, 'dist');
+  run('npx', [
+    'tsc',
+    '--project',
+    path.resolve(pkgDir, 'tsconfig.json')
+  ])
 
-  const files = require("glob").sync("./src/**/*.d.ts", { cwd: bashPath, absolute: true })
-  let changed = false;
-  files.forEach(f => {
-    changed = false;
-    const source = fs.readFileSync(f, { encoding: 'utf8' })
-    const replaced = source.replace(re, (str, a, b, c) => {
-      if (b !== sym && !b.startsWith(symS)) return str;
-      changed = true;
-      const dir = path.dirname(f)
-      let target = path.resolve(dir, path.normalize(path.relative(dir, bashPath) + '/' + b.replace(sym, rep)))
-      if (target.startsWith('/')) target = '.' + target
-      let rel = path.relative(dir, target)
-      if (!rel.startsWith('.')) rel = './' + rel
-      if (path.sep !== '/') rel = rel.replace(/\\/g, '/');
-      return a + rel + c;
+  const hasCss = fs.existsSync(path.resolve(srcDir, 'styles/index.scss'))
+
+  if (!hasCss) return
+
+  glob.sync('./src/**/*.scss', { cwd: pkgDir, absolute: true }).forEach(f => {
+    const { css } = sass.renderSync({
+      file: f,
+      sourceMap: false,
     })
-    if (changed) {
-      fs.writeFileSync(f, replaced, { encoding: 'utf8' })
+    const text = css.toString()
+    if (text) {
+      postcss([require('autoprefixer')])
+        .process(text, { from: f, map: false })
+        .then(res => {
+          if (res.css) {
+            fs.outputFileSync(
+              path.resolve(libDir, path.relative(srcDir, f)).replace(/\.scss$/, '.css'),
+              res.css
+            )
+          }
+        })
     }
+  })
+
+  const importScssRe = /import ['"].+?\.scss['"];?/mg
+  glob.sync("./lib/**/*.d.ts", { cwd: pkgDir, absolute: true }).forEach(f => {
+    const text = fs.readFileSync(f, 'utf8')
+    fs.writeFileSync(f, text.replace(importScssRe, ''))
+  })
+
+  const cssImportRe = /(import\s*['"].+?\.)scss(['"])/mg
+  glob.sync("./lib/**/*.js", { cwd: pkgDir, absolute: true }).forEach(f => {
+    const text = fs.readFileSync(f, 'utf8')
+    fs.writeFileSync(f, text.replace(cssImportRe, '$1css$2'))
   })
 }
 

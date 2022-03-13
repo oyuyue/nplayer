@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const ESLintPlugin = require('eslint-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { getPkgDir } = require('./utils')
 const version = require('../package.json').version
 
@@ -10,16 +11,17 @@ const rename = (target) => {
 
 module.exports = (env) => {
   const pkgDir = getPkgDir(env.target)
-  const pkg = require(path.resolve(pkgDir, 'package.json'))
+  const sassVariableDir = path.resolve(pkgDir, 'src/styles/variables')
+  const isProd = process.env.NODE_ENV === 'production'
 
   /**@type {import('webpack').Configuration} */
   const config = {
-    entry: path.resolve(pkgDir, 'src', 'index.ts'),
+    entry: path.resolve(pkgDir, 'src', env.lite ? 'index.lite.ts' : 'index.ts'),
 
     output: {
       libraryTarget: 'umd',
       library: rename(env.target),
-      globalObject: 'this',
+      libraryExport: 'default',
       umdNamedDefine: true
     },
 
@@ -66,8 +68,7 @@ module.exports = (env) => {
         {
           test: /\.scss$/,
           use: [
-            path.resolve(__dirname, './style-loader.js'),
-            // 'style-loader',
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
             {
               loader: 'css-loader',
               options: {
@@ -80,11 +81,11 @@ module.exports = (env) => {
               options: {
                 sourceMap: false,
                 postcssOptions: {
-                  plugins: [require('autoprefixer'), require('cssnano')({ preset: ['default',{
+                  plugins: [require('autoprefixer'), isProd ? require('cssnano')({ preset: ['default',{
                     discardComments: {
                       removeAll: true
                     }
-                  }] })]
+                  }] }) : undefined].filter(Boolean)
                 },
               },
             },
@@ -92,6 +93,9 @@ module.exports = (env) => {
               loader: 'sass-loader',
               options: {
                 sourceMap: false,
+                additionalData (content, { resourcePath }) {
+                  return `@import '${path.relative(path.dirname(resourcePath), sassVariableDir).replaceAll('\\', '/')}';\n${content}`
+                }
               }
             },
           ],
@@ -100,16 +104,15 @@ module.exports = (env) => {
     },
   
     plugins: [
+      isProd ? new MiniCssExtractPlugin({ filename: env.lite ? 'index.lite.min.css' : 'index.min.css' }) : undefined,
       new webpack.DefinePlugin({
         __VERSION__: `"${version}"`,
       }),
       new ESLintPlugin({
         extensions: ['.js', '.ts', '.d.ts']
       })
-    ],
+    ].filter(Boolean),
   }
-
-  if (pkg.umdDefault) config.output.libraryExport = 'default'
 
   return config
 }

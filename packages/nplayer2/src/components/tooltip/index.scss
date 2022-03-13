@@ -1,0 +1,44 @@
+.nplayer {
+  &_tip {
+    position: relative;
+    cursor: pointer;
+
+    &:hover &_text {
+      opacity: 1;
+    }
+  
+    &_text {
+      position: absolute;
+      bottom: 100%;
+      font-size: 12px;
+      border-radius: 2px;
+      margin-bottom: 10px;
+      padding: 3px 6px;
+      white-space: nowrap;
+      background: rgba(0, 0, 0, .7);
+      pointer-events: none;
+      opacity: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: opacity .2s ease;
+    }
+
+    &-l {
+      left: 0;
+      transform: translateX(0);
+    }
+  
+    &-r {
+      left: auto;
+      right: 0;
+      transform: translateX(0);
+    }
+  
+    &-b {
+      top: 100%;
+      bottom: auto;
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+  }
+}
