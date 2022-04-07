@@ -32,6 +32,6 @@
     "nplayer": "1.0.9"
   },
   "devDependencies": {
-    "@types/react": "^17.0.24"
+    "@types/react": "^18.0.0"
   }
 }
