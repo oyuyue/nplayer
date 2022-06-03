@@ -31,6 +31,7 @@ export class Play extends Component implements ControlItem {
 
     addDestroyable(this, player.on(EVENT.PLAY, this.onPlay));
     addDestroyable(this, player.on(EVENT.PLAY, this.onPause));
+    addDestroyable(this, player.on(EVENT.ENDED, this.onEnded));
     addDestroyableListener(this, this.el, 'click', player.toggle);
   }
 
@@ -44,5 +45,9 @@ export class Play extends Component implements ControlItem {
     show(this.playIcon);
     hide(this.pauseIcon);
     this.tooltip.text = I18n.t(I18nKey.PLAY);
+  }
+
+  private onEnded = () => {
+
   }
 }

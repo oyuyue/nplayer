@@ -125,11 +125,19 @@ export class Control extends Component {
     const curBar = this.controlBars[index];
     if (!curBar) return;
     curBar.update(items || []);
-    // const barItems = curBar.getItems();
-    // this.controlBars.forEach((bar, i) => {
-    //   if (i === index) return;
-    //   bar.setItems(this.filterItems(barItems, bar.getItems()));
-    // });
+    const barItems = curBar.getItems();
+    this.controlBars.forEach((bar, i) => {
+      if (i === index) return;
+      bar.setItems(this.filterItems(barItems, bar.getItems()));
+    });
+  }
+
+  private filterItems(items: ControlItem[], toFilter: ControlItem[]): ControlItem[] | undefined {
+    if (items.length && toFilter.length) {
+      const map = new Map();
+      items.forEach((i) => map.set(i, true));
+      return toFilter.filter((item) => !map.get(item));
+    }
   }
 
   private onResize = () => {

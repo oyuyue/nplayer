@@ -48,6 +48,16 @@ export class ControlBar extends Component {
     }
   }
 
+  getItems(): ControlItem[] {
+    return this.prevItems;
+  }
+
+  setItems(items?: ControlItem[]): void {
+    if (items) {
+      this.prevItems = items;
+    }
+  }
+
   private getItem(item: ControlItem | string): ControlItem | void {
     if (isString(item)) item = this.player.getControlItem(item) as ControlItem;
     if (!item || (item.isSupported && !item.isSupported(this.player))) return;
