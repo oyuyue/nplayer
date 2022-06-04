@@ -33,6 +33,7 @@ declare class Setting extends Component implements ControlItem {
     private homeEl;
     private popover;
     private currentOptionEl;
+    private probeEl;
     tooltip: Tooltip;
     tip: string;
     init(player: Player, position: number, tooltip: Tooltip): void;

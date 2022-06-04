@@ -1,3 +1,31 @@
+## [1.0.11](https://github.com/woopen/nplayer/compare/v1.0.9...v1.0.11) (2022-06-04)
+
+
+### Bug Fixes
+
+* danmaku addItem [#415](https://github.com/woopen/nplayer/issues/415) ([5d6faf5](https://github.com/woopen/nplayer/commit/5d6faf517ce3ab4f3fbb1ca29415687ff235b70b))
+
+
+### Features
+
+* compatible with 90deg rotation ([415f185](https://github.com/woopen/nplayer/commit/415f185404d4ef4dc6154da116ae21c6dcbe2fb9))
+
+
+
+## [1.0.10](https://github.com/woopen/nplayer/compare/v1.0.9...v1.0.10) (2022-06-04)
+
+
+### Bug Fixes
+
+* danmaku addItem [#415](https://github.com/woopen/nplayer/issues/415) ([5d6faf5](https://github.com/woopen/nplayer/commit/5d6faf517ce3ab4f3fbb1ca29415687ff235b70b))
+
+
+### Features
+
+* compatible with 90deg rotation ([415f185](https://github.com/woopen/nplayer/commit/415f185404d4ef4dc6154da116ae21c6dcbe2fb9))
+
+
+
 ## [1.0.9](https://github.com/woopen/nplayer/compare/v1.0.8...v1.0.9) (2021-06-11)
 
 
