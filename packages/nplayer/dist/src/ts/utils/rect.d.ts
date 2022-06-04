@@ -5,6 +5,7 @@ export declare class Rect implements Disposable {
     private player?;
     private rect;
     constructor(el: HTMLElement, player?: Player | undefined);
+    get isHeightGtWidth(): boolean;
     get width(): number;
     get height(): number;
     get x(): number;

@@ -50,7 +50,7 @@ export class Progress extends Component implements ControlItem {
       this.rect.update();
       this.resetPlayedBar();
     }));
-    addDisposableListener(this, this.el, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev.clientX)), true);
+    addDisposableListener(this, this.el, 'mousemove', throttle((ev: MouseEvent) => this.updateThumbnail(ev)), true);
 
     if (player.opts.isTouch) {
       addDisposableListener(this, this.el, 'touchstart', (ev: Event) => ev.preventDefault());
@@ -63,7 +63,8 @@ export class Progress extends Component implements ControlItem {
 
   private setPlayedBarLength(percentage: number): void {
     this.playedBar.style.transform = `scaleX(${clamp(percentage)})`;
-    this.dot.style.transform = `translate(${clamp(percentage * this.rect.width, 0, this.rect.width)}px, -50%)`;
+    const w = (this.rect.isHeightGtWidth ? this.rect.height : this.rect.width);
+    this.dot.style.transform = `translate(${clamp(percentage * w, 0, w)}px, -50%)`;
   }
 
   private setBufBarLength(percentage: number): void {
@@ -77,19 +78,26 @@ export class Progress extends Component implements ControlItem {
   }
 
   private onDragging = (ev: PointerEvent) => {
-    const x = ev.clientX - this.rect.x;
-    this.setPlayedBarLength(x / this.rect.width);
-    this.updateThumbnail(ev.clientX);
+    const isHeightGtWidth = this.rect.isHeightGtWidth;
+    const x = isHeightGtWidth ? (ev.clientY - this.rect.y) : (ev.clientX - this.rect.x);
+    this.setPlayedBarLength(x / (isHeightGtWidth ? this.rect.height : this.rect.width));
+    this.updateThumbnail(ev);
   }
 
   private onDragEnd = (ev: PointerEvent) => {
     this.dragging = false;
-    this.player.seek(this.getCurrentTime(ev.clientX));
+    const isHeightGtWidth = this.rect.isHeightGtWidth;
+    this.player.seek(this.getCurrentTime(isHeightGtWidth ? ev.clientY : ev.clientX, isHeightGtWidth));
   }
 
-  private updateThumbnail(x: number): void {
+  private updateThumbnail(ev: MouseEvent): void {
     this.rect.update();
-    this.thumbnail.update(this.getCurrentTime(x), x - this.rect.x, this.rect.width);
+    const isHeightGtWidth = this.rect.isHeightGtWidth;
+    const x = isHeightGtWidth ? ev.clientY : ev.clientX;
+    this.thumbnail.update(
+      this.getCurrentTime(x, isHeightGtWidth),
+      x - (isHeightGtWidth ? this.rect.y : this.rect.x), isHeightGtWidth ? this.rect.height : this.rect.width,
+    );
   }
 
   private updateBufBar = (): void => {
@@ -115,8 +123,10 @@ export class Progress extends Component implements ControlItem {
     this.setPlayedBarLength(this.player.currentTime / this.player.duration);
   }
 
-  private getCurrentTime(x: number): number {
-    return clamp(((x - this.rect.x) / this.rect.width)) * this.player.duration;
+  private getCurrentTime(x: number, isHeightGtWidth: boolean): number {
+    return clamp(
+      ((x - (isHeightGtWidth ? this.rect.y : this.rect.x)) / (isHeightGtWidth ? this.rect.height : this.rect.width)),
+    ) * this.player.duration;
   }
 }
 

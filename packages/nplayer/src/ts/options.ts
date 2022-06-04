@@ -22,7 +22,7 @@ export function processOptions(opts?: PlayerOptions): Required<PlayerOptions> {
     ...dOpts,
     isTouch: (('ontouchstart' in window)
     || (navigator.maxTouchPoints > 0)
-    || (navigator.msMaxTouchPoints > 0)),
+    || ((navigator as any).msMaxTouchPoints > 0)),
     ...opts,
   } as Required<PlayerOptions>;
 

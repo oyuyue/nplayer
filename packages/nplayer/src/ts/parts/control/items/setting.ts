@@ -54,6 +54,8 @@ class Setting extends Component implements ControlItem {
 
   private currentOptionEl!: HTMLElement;
 
+  private probeEl!: HTMLElement;
+
   tooltip!: Tooltip;
 
   tip = I18n.t(SETTINGS);
@@ -66,6 +68,14 @@ class Setting extends Component implements ControlItem {
     this.el.appendChild(Icon.cog());
     this.popover = new Popover(this.el, this.hide, { willChange: 'width, height' });
     this.homeEl = this.popover.panelEl.appendChild($());
+
+    this.probeEl = this.el.appendChild($());
+    const probeElStyle = this.probeEl.style;
+    probeElStyle.position = 'absolute';
+    probeElStyle.zIndex = '-9';
+    probeElStyle.width = '2px';
+    probeElStyle.height = '1px';
+    probeElStyle.opacity = '0';
 
     this.setPos(position);
 
@@ -180,9 +190,12 @@ class Setting extends Component implements ControlItem {
 
     const { width, height } = measureElementSize(opt);
 
+    const { width: w, height: h } = this.probeEl.getBoundingClientRect();
+    const hGtw = h > w;
+
     this.popover.applyPanelStyle({
-      width: `${width}px`,
-      height: `${height}px`,
+      width: `${hGtw ? height : width}px`,
+      height: `${hGtw ? width : height}px`,
     });
 
     this.currentOptionEl = opt;
@@ -195,9 +208,12 @@ class Setting extends Component implements ControlItem {
 
     const { width, height } = measureElementSize(this.homeEl);
 
+    const { width: w, height: h } = this.probeEl.getBoundingClientRect();
+    const hGtw = h > w;
+
     this.popover.applyPanelStyle({
-      width: `${width}px`,
-      height: `${height}px`,
+      width: `${hGtw ? height : width}px`,
+      height: `${hGtw ? width : height}px`,
     });
   }
 

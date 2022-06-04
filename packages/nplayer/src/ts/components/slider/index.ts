@@ -46,8 +46,9 @@ export class Slider extends Component {
   }
 
   private onDrag = (ev: PointerEvent) => {
-    const x = ev.clientX - this.rect.x;
-    this.update(x / this.rect.width, x);
+    const isHeightGtWidth = this.rect.isHeightGtWidth;
+    const x = isHeightGtWidth ? (ev.clientY - this.rect.y) : (ev.clientX - this.rect.x);
+    this.update(x / (isHeightGtWidth ? this.rect.height : this.rect.width), x);
   }
 
   update(value: number, x?: number, trigger = true): void {
@@ -65,9 +66,10 @@ export class Slider extends Component {
       x = null!;
     }
 
-    x = x != null ? x : value * this.rect.width;
+    const w = this.rect.isHeightGtWidth ? this.rect.height : this.rect.width;
+    x = x != null ? x : value * w;
     this.trackEl.style.transform = `scaleX(${clamp(value)})`;
-    this.dotEl.style.transform = `translateX(${clamp(x, 0, this.rect.width)}px)`;
+    this.dotEl.style.transform = `translateX(${clamp(x, 0, w)}px)`;
 
     if (trigger && this.opts.change) this.opts.change(value);
   }

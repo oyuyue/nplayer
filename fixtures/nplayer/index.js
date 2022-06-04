@@ -42,7 +42,7 @@ window.onload = function () {
     // videoAttrs: { src: 'http://vjs.zencdn.net/v/oceans.mp4' },
     // poster: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1625100497,827999043&fm=26&gp=0.jpg',
     // controls: ['play', 'volume', 'time', 'spacer', Quantity, 'airplay', 'settings', 'web-fullscreen', 'fullscreen'],
-    src: 'https://v-cdn.zjol.com.cn/280443.mp4',
+    src: '//lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/byted-player-videos/1.0.0/xgplayer-demo.mp4',
     themeColor: 'rgba(35,173,229, 1)',
     progressBg: 'rgba(35,173,229, 1)',
     volumeProgressBg: 'rgba(35,173,229, 1)',

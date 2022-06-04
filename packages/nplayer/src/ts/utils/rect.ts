@@ -12,6 +12,10 @@ export class Rect implements Disposable {
     }
   }
 
+  get isHeightGtWidth() {
+    return this.width < this.height;
+  }
+
   get width(): number {
     this.tryUpdate(this.rect.width);
     return this.rect.width;
