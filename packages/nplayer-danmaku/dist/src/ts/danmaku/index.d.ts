@@ -32,6 +32,8 @@ export declare class Danmaku implements Disposable {
     track: number;
     trackHeight: number;
     timer: ReturnType<typeof createTimer>;
+    heightGtWidth: boolean;
+    private probeEl;
     private bulletPool;
     private aliveBullets;
     private scrollBullets;

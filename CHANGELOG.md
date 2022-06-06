@@ -1,3 +1,12 @@
+## [1.0.12](https://github.com/woopen/nplayer/compare/v1.0.11...v1.0.12) (2022-06-06)
+
+
+### Bug Fixes
+
+* danmaku rotate 90deg ([2196f4e](https://github.com/woopen/nplayer/commit/2196f4edfa9fe9a0618d07a49f52c7623da98179))
+
+
+
 ## [1.0.11](https://github.com/woopen/nplayer/compare/v1.0.9...v1.0.11) (2022-06-04)
 
 
