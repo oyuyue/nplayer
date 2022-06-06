@@ -63,7 +63,8 @@ export class Bullet {
 
     if (this.type === 'scroll') {
       this.el.addEventListener('transitionend', this.end);
-      this.width = this.el.getBoundingClientRect().width + 20;
+      const rect = this.el.getBoundingClientRect();
+      this.width = (this.danmaku.heightGtWidth ? rect.height : rect.width) + 20;
       const danmakuWidth = this.danmaku.width;
       const prev = setting.prev;
       this.left = danmakuWidth;

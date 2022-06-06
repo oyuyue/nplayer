@@ -61,6 +61,10 @@ export class Danmaku implements Disposable {
 
   timer: ReturnType<typeof createTimer>;
 
+  heightGtWidth = false;
+
+  private probeEl: HTMLElement;
+
   private bulletPool: Bullet[] = [];
 
   private aliveBullets: Set<Bullet> = new Set();
@@ -84,6 +88,14 @@ export class Danmaku implements Disposable {
     this.el = player.el.appendChild($('.danmaku_screen'));
     this.el.style.zIndex = String(this.opts.zIndex);
 
+    this.probeEl = this.el.appendChild($());
+    const probeElStyle = this.probeEl.style;
+    probeElStyle.position = 'absolute';
+    probeElStyle.zIndex = '-9';
+    probeElStyle.width = '2px';
+    probeElStyle.height = '1px';
+    probeElStyle.opacity = '0';
+
     this.items = Array.isArray(this.opts.items) ? this.opts.items : [];
 
     this.timer = createTimer();
@@ -97,7 +109,7 @@ export class Danmaku implements Disposable {
   }
 
   get width(): number {
-    return this.player.rect.width;
+    return this.heightGtWidth ? this.player.rect.height : this.player.rect.width;
   }
 
   get currentTime(): number {
@@ -178,8 +190,11 @@ export class Danmaku implements Disposable {
   }
 
   private updateTrack = (): void => {
+    const { width: w, height: h } = this.probeEl.getBoundingClientRect();
+    this.heightGtWidth = h > w;
+    const height = this.heightGtWidth ? this.player.rect.width : this.player.rect.height;
     this.trackHeight = this.fontsize + 5;
-    this.track = Math.floor(this.player.rect.height * this.opts.area / this.trackHeight);
+    this.track = Math.floor(height * this.opts.area / this.trackHeight);
   }
 
   private onSeeked = () => {
