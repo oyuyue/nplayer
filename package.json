@@ -48,7 +48,7 @@
     "minimist": "^1.2.5",
     "postcss": "^8.3.7",
     "postcss-loader": "^6.1.1",
-    "react": "^17.0.2",
+    "react": "^18.1.0",
     "sass": "^1.42.1",
     "sass-loader": "^12.1.0",
     "semver": "^7.3.5",
