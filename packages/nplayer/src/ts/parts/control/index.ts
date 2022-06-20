@@ -52,7 +52,7 @@ export class Control extends Component {
     const bpControls = player.opts.bpControls;
     this.controls = Object.keys(bpControls)
       .map((bp) => ({ bp: Number(bp), controls: bpControls[bp] }))
-      .sort((a, b) => b.bp - a.bp);
+      .sort((a, b) => a.bp - b.bp);
 
     if (this.controls.length) {
       addDisposable(this, player.on(EVENT.UPDATE_SIZE, this.emitAndUpdateBp));
