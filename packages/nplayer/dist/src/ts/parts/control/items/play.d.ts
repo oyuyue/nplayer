@@ -1,6 +1,6 @@
-import { Component } from '../../../utils';
-import { Player } from '../../../player';
-import { Tooltip } from '../../../components/tooltip';
+import { Component } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
+import { Player } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/player';
+import { Tooltip } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/components/tooltip';
 import { ControlItem } from '..';
 declare class Play extends Component implements ControlItem {
     readonly id = "play";

@@ -1,7 +1,7 @@
-import { Switch } from '../../../components/switch';
-import { Player } from '../../../player';
-import { Component } from '../../../utils';
-import { Tooltip } from '../../../components/tooltip';
+import { Switch } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/components/switch';
+import { Player } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/player';
+import { Component } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
+import { Tooltip } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/components/tooltip';
 import { ControlItem } from '..';
 export interface SettingItemOption<T = any> {
     html?: string;

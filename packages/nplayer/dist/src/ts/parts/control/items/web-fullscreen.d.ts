@@ -1,6 +1,6 @@
-import { Player } from '../../../player';
-import { Component } from '../../../utils';
-import { Tooltip } from '../../../components/tooltip';
+import { Player } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/player';
+import { Component } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
+import { Tooltip } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/components/tooltip';
 import { ControlItem } from '..';
 declare class WebFullscreen extends Component implements ControlItem {
     readonly id = "web-fullscreen";

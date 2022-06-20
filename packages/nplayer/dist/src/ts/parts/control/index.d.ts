@@ -1,7 +1,7 @@
-import { Player } from '../../player';
-import { Disposable } from '../../types';
-import { Tooltip } from '../../components/tooltip';
-import { Component } from '../../utils';
+import { Player } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/player';
+import { Disposable } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/types';
+import { Tooltip } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/components/tooltip';
+import { Component } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
 import { ControlBar } from './items';
 export interface ControlItem extends Partial<Disposable> {
     el: HTMLElement;

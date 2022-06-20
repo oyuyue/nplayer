@@ -1,4 +1,4 @@
-import { Component, Rect } from '../../utils';
+import { Component, Rect } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
 export interface SliderOption {
     value?: number;
     stops?: {

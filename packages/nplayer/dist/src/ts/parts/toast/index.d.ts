@@ -1,5 +1,5 @@
-import { Disposable } from '../../types';
-import { Component } from '../../utils';
+import { Disposable } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/types';
+import { Component } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
 declare type Position = 'center' | 'left-top' | 'right-top' | 'left-bottom' | 'right-bottom';
 export declare class ToastItem extends Component {
     readonly position: Position;

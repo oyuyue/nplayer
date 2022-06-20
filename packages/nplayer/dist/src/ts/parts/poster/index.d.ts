@@ -1,5 +1,5 @@
-import { Player } from '../../player';
-import { Component } from '../../utils';
+import { Player } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/player';
+import { Component } from '../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
 export declare class Poster extends Component {
     private player;
     private playEl;

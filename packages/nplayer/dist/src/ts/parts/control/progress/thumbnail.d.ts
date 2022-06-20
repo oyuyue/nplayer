@@ -1,4 +1,4 @@
-import { Component } from '../../../utils';
+import { Component } from '../../../../../../../../mnt/c/Users/wopen/Projects/rplayer/packages/nplayer/dist/src/ts/utils';
 export interface ThumbnailOptions {
     startSecond?: number;
     gapSecond?: number;
