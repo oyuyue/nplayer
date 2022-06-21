@@ -4,7 +4,7 @@ import { Fullscreen, WebFullscreen } from './features';
 import { Contextmenu, Control, Loading } from './parts';
 import { transferEvent } from './transfer-event';
 import {
-  ControlItem, Destroyable, PlayerConfig, PlayerEventTypes,
+  ControlItem, Destroyable, MediaItem, PlayerConfig, PlayerEventTypes,
 } from './types';
 import {
   addDestroyable, destroy, EventEmitter, Rect,
@@ -26,9 +26,15 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
 
   rect: Rect;
 
-  private prevVolume = 1;
+  readonly current: MediaItem;
 
-  private control: Control;
+  readonly prev?: MediaItem;
+
+  readonly next?: MediaItem;
+
+  readonly control: Control;
+
+  private prevVolume = 1;
 
   private contextmenu: Contextmenu;
 
@@ -44,14 +50,19 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
 
   constructor(config: PlayerConfig<M>) {
     super();
-    this.config = getPlayerConfig(config);
+    config = this.config = getPlayerConfig(config);
     this.media = this.config.media;
     this.container = getEl(this.config.container);
     this.el = $('.nplayer', { tabindex: '0' }, undefined, '');
+    this.el.appendChild(this.media);
 
-    if (this.config.addMediaToDom) {
-      this.el.appendChild(this.media);
-    }
+    this.current = {
+      src: config.src,
+      title: config.title,
+      poster: config.poster,
+    };
+    this.prev = config.prev;
+    this.next = config.next;
 
     this.rect = addDestroyable(this, new Rect(this.el, this));
     this.fullscreen = addDestroyable(this, new Fullscreen(this));
@@ -127,7 +138,7 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     this.media.pause();
   }
 
-  toggle = () => {
+  toggle() {
     if (this.paused) {
       this.play();
     } else {
@@ -143,6 +154,14 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
       this.prevVolume = this.volume;
       this.volume = 0;
     }
+  }
+
+  backward() {
+
+  }
+
+  forward() {
+
   }
 
   mount(container?: PlayerConfig<M>['container']) {
@@ -210,7 +229,7 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     }
   }
 
-  enterAirplay(): boolean {
+  enterAirplay() {
     if ((this.media as any).webkitShowPlaybackTargetPicker) {
       (this.media as any).webkitShowPlaybackTargetPicker();
       return true;

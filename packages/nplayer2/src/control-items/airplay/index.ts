@@ -9,7 +9,7 @@ import {
 export class Airplay extends Component implements ControlItem {
   id = 'airplay'
 
-  tip = I18n.t(I18nKey.AIRPLAY);
+  tipText = I18n.t(I18nKey.AIRPLAY);
 
   onInit(player: PlayerBase) {
     this.el.appendChild(Icon.airplay());
@@ -21,9 +21,7 @@ export class Airplay extends Component implements ControlItem {
         hide(this.el);
       }
     });
-    addDestroyableListener(this, this.el, 'click', () => {
-      player.enterAirplay();
-    });
+    addDestroyableListener(this, this.el, 'click', () => player.enterAirplay());
   }
 
   isSupported() {

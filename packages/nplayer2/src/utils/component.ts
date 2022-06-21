@@ -7,7 +7,7 @@ export class Component implements Destroyable {
   el: HTMLElement;
 
   constructor(
-    container?: HTMLElement,
+    container?: HTMLElement | DocumentFragment,
     desc?: string | HTMLElement,
     attrs?: { [key: string]: any; },
     children?: string | Array<Node>,

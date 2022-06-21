@@ -2,12 +2,53 @@ import { Tooltip } from './components';
 import { EVENT } from './constants';
 import { PlayerBase } from './player-base';
 
+export type Source = string | ({ src?: string; srcset?: string; type?: string;})[]
+
+export interface MediaItem {
+  src?: Source;
+  title?: string;
+  poster?: string;
+  duration?: number;
+}
+
+export interface ProgressConfig {
+  duration?: number;
+  heatMap?: {
+    points: (number | { duration?: number; score: number })[];
+    defaultDuration?: number;
+  };
+  chapters?: { time?: number, title: string }[];
+  markers?: {
+    time: number,
+    title?: string,
+    image?: string,
+    el?: HTMLElement,
+    size?: number[],
+    [key: string]: any
+  }[];
+  thumbnail?: {
+    start?: number;
+    gap?: number;
+    row?: number;
+    col?: number;
+    width?: number;
+    height?: number;
+    images?: string[];
+  }
+}
+
 export interface PlayerConfig<M extends HTMLMediaElement> {
   container?: HTMLElement | string;
   media?: M;
-  src?: string | ({ media: string; sizes: string; src: string; srcset: string; type: string;})[];
   mediaAttrs?: Record<string, string>;
+
+  src?: Source;
+  poster?: string;
+  title?: string;
+  prev?: MediaItem;
+  next?: MediaItem;
   live?: boolean;
+
   control?: {
     disabled?: boolean;
     items?: (ControlItem | string)[][];
@@ -17,18 +58,21 @@ export interface PlayerConfig<M extends HTMLMediaElement> {
     qualitiesDefault?: number;
     volumeLength?: number | string;
     volumeHorizontal?: boolean;
+    progress?: ProgressConfig;
   };
+
   contextmenu?: {
     disabled?: boolean;
     toggleNative?: boolean;
     items?: ContextmenuItem[];
   };
+
   loading?: {
     disabled?: boolean;
     el?: HTMLElement;
   };
+
   plugins?: [];
-  addMediaToDom?: boolean;
 
   [key: string]: any;
 }
@@ -42,18 +86,19 @@ export interface ListItem {
 }
 
 export interface ControlItem extends Partial<Destroyable> {
-  el?: HTMLElement;
   id: string;
-  tip?: string;
+  el?: HTMLElement;
+  tipText?: string;
   tooltip?: Tooltip;
-  _created?: boolean;
-  disabled?: boolean;
   create?: (player: PlayerBase) => ControlItem;
-  onInit?: (player: PlayerBase, position: number, tooltip?: Tooltip) => void;
-  onUpdate?: (position: number) => void;
-  onShow?: () => void;
-  onHide?: () => void;
+  onInit?: (player: PlayerBase, posX: number, posY: number, tooltip?: Tooltip) => void;
+  onShow?: (posX: number, posY: number) => void;
+  onHide?: (posX: number) => void;
   isSupported?: (player: PlayerBase) => boolean;
+
+  created__?: boolean;
+  pos__?: number;
+
   [key: string]: any;
 }
 
@@ -77,6 +122,8 @@ export interface PlayerEventTypes {
   [EVENT.QUALITY_CHANGE]: (e: { item: ListItem, select: () => void }) => void;
   [EVENT.PREV]: () => void;
   [EVENT.NEXT]: () => void;
+  [EVENT.PREV_CLICK]: () => void;
+  [EVENT.NEXT_CLICK]: () => void;
 
   [EVENT.ABORT]: (p: PlayerBase) => void;
   [EVENT.CANPLAY]: (p: PlayerBase) => void;

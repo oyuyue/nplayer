@@ -10,7 +10,7 @@ import { EVENT, I18nKey } from '../../constants';
 export class WebFullscreen extends Component implements ControlItem {
   id = 'web-fullscreen';
 
-  tip = '1';
+  tipText = '1';
 
   tooltip!: Tooltip;
 
@@ -21,13 +21,17 @@ export class WebFullscreen extends Component implements ControlItem {
   onInit(player: PlayerBase) {
     this.enterIcon = this.el.appendChild(Icon.webEnterFullscreen());
     this.exitIcon = this.el.appendChild(Icon.webExitFullscreen());
+
     if (player.isWebFullscreen) {
       this.enter();
     } else {
       this.exit();
     }
+
     addDestroyable(this, player.on(EVENT.ENTER_WEB_FULLSCREEN, this.enter));
     addDestroyable(this, player.on(EVENT.EXIT_WEB_FULLSCREEN, this.exit));
+    addDestroyable(this, player.on(EVENT.ENTER_FULLSCREEN, () => hide(this.el)));
+    addDestroyable(this, player.on(EVENT.EXIT_FULLSCREEN, () => show(this.el)));
     addDestroyableListener(this, this.el, 'click', () => player.toggleWebFullscreen());
   }
 

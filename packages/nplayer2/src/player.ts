@@ -3,7 +3,7 @@ import { I18n } from './features';
 import { en } from './langs/en';
 import { zh } from './langs/zh';
 import {
-  Play, Time, Speed, Airplay, Fullscreen, WebFullscreen, Quality, Volume, Spacer,
+  Play, Time, Speed, Airplay, Fullscreen, WebFullscreen, Quality, Volume, Spacer, Progress,
 } from './control-items';
 
 I18n.add('zh-cn', zh);
@@ -17,6 +17,7 @@ PlayerBase.addControlItem(new WebFullscreen());
 PlayerBase.addControlItem(new Quality());
 PlayerBase.addControlItem(new Volume());
 PlayerBase.addControlItem(new Spacer());
+PlayerBase.addControlItem(new Progress());
 
 export class Player extends PlayerBase {
 

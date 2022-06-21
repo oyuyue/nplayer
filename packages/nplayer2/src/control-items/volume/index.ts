@@ -11,7 +11,7 @@ import './index.scss';
 export class Volume extends Component implements ControlItem {
   id = 'volume';
 
-  tip = '1';
+  tipText = '1';
 
   tooltip!: Tooltip;
 

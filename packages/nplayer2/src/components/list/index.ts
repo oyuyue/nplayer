@@ -9,9 +9,9 @@ const clsI = cls('i');
 const clsA = cls('i-a', '_', false);
 
 export class List extends Component {
-  private selectedEl!: HTMLElement;
+  private selectedEl: HTMLElement;
 
-  private listEl!: HTMLElement;
+  private listEl: HTMLElement;
 
   private selected?: ListItem;
 

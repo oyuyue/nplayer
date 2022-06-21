@@ -45,7 +45,7 @@ export class Control extends Component {
     const bpItems = config.bpItems || {};
     this.controls = Object.keys(bpItems)
       .map((bp) => ({ bp: Number(bp), controls: bpItems[bp] }))
-      .sort((a, b) => b.bp - a.bp);
+      .sort((a, b) => a.bp - b.bp);
 
     if (this.controls.length) {
       addDestroyable(this, player.on(EVENT.RESIZE, this.onResize));
@@ -122,22 +122,16 @@ export class Control extends Component {
   }
 
   updateItems(items: Parameters<ControlBar['update']>[0], index = 0): void {
-    const curBar = this.controlBars[index];
-    if (!curBar) return;
-    curBar.update(items || []);
-    const barItems = curBar.getItems();
-    this.controlBars.forEach((bar, i) => {
-      if (i === index) return;
-      bar.setItems(this.filterItems(barItems, bar.getItems()));
-    });
+    const bar = this.controlBars[index];
+    if (bar) bar.update(items || []);
   }
 
-  private filterItems(items: ControlItem[], toFilter: ControlItem[]): ControlItem[] | undefined {
-    if (items.length && toFilter.length) {
-      const map = new Map();
-      items.forEach((i) => map.set(i, true));
-      return toFilter.filter((item) => !map.get(item));
-    }
+  /**
+   * @internal
+   */
+  removeControlItem(item: ControlItem) {
+    const bar = this.controlBars[item.pos__ as number];
+    if (bar) bar.removeItem(item);
   }
 
   private onResize = () => {

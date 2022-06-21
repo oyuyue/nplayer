@@ -18,14 +18,16 @@ export class ControlBar extends Component {
     if (pos === 2) addClass(this.el, 'ctrl_bar-top');
     if (items) {
       const frag = document.createDocumentFragment();
+      let i = 0;
       items.forEach((item) => {
-        item = this.initItem(item) as ControlItem;
+        item = this.initItem(item, i) as ControlItem;
         if (item && item.el) {
           frag.appendChild(item.el);
           this.prevItems.push(item);
+          i++;
         }
       });
-      // this.updateTooltipPos();
+      this.updateTooltipPos();
       this.el.appendChild(frag);
     }
   }
@@ -39,23 +41,31 @@ export class ControlBar extends Component {
       });
 
       patch(this.prevItems, items, this.el, {
-        mount: this.initItem as any,
-        unmount: () => {},
+        mount: this.initOrUpdateItem as any,
+        unmount: this.onUnmount as any,
+        update: this.onUpdate as any,
       });
       this.prevItems = items;
-      // this.updateTooltipPos();
-      // this.player.emit(EVENT.CONTROL_ITEM_UPDATE);
+      this.updateTooltipPos();
     }
   }
 
-  getItems(): ControlItem[] {
-    return this.prevItems;
+  removeItem(item: ControlItem) {
+    this.prevItems = this.prevItems.filter((x) => x !== item);
   }
 
-  setItems(items?: ControlItem[]): void {
-    if (items) {
-      this.prevItems = items;
-    }
+  private updateTooltipPos() {
+    const lastIndex = this.prevItems.length - 1;
+    this.prevItems.forEach((item, i) => {
+      if (item.tooltip) {
+        if (this.pos === 2) item.tooltip.bottom();
+        if (i === 0) {
+          item.tooltip.left();
+        } else if (i === lastIndex) {
+          item.tooltip.right();
+        }
+      }
+    });
   }
 
   private getItem(item: ControlItem | string): ControlItem | void {
@@ -65,32 +75,56 @@ export class ControlBar extends Component {
     return item;
   }
 
-  private initItem = (item: ControlItem | string): ControlItem | void => {
+  private initItem(item: ControlItem | string, posY: number) {
     item = this.getItem(item) as ControlItem;
     if (!item) return;
-    if (item._created) {
+    return this.initOrUpdateItem(item, posY);
+  }
+
+  private initOrUpdateItem = (item: ControlItem, posY: number) => {
+    if (item.created__) {
+      if (item.pos__ !== this.pos) {
+        if (item.onHide) {
+          item.onHide(item.pos__ as number);
+        }
+      }
+      this.player.control.removeControlItem(item);
+
+      item.pos__ = this.pos;
+
       if (item.tooltip) {
         item.tooltip.reset();
         if (this.pos === 2) item.tooltip.bottom();
       }
-      if (item.onUpdate) item.onUpdate(this.pos);
+      if (item.onShow) item.onShow(this.pos, posY);
       return;
     }
 
     if (!item.el) item.el = $();
     let tooltip: Tooltip | undefined;
-    if (item.tip) tooltip = new Tooltip(item.el, item.tip);
+    if (item.tipText) tooltip = new Tooltip(item.el, item.tipText);
     item.tooltip = tooltip;
-    if (item.onInit) {
-      item.onInit(this.player, this.pos, tooltip);
-    }
+    if (item.onInit) item.onInit(this.player, this.pos, posY, tooltip);
     if (item.destroy) addDestroyable(this, item as Destroyable);
     if (tooltip) {
       tooltip.reset();
       if (this.pos === 2) tooltip.bottom();
     }
 
-    item._created = true;
+    item.pos__ = this.pos;
+    item.created__ = true;
     return item;
+  }
+
+  private onUpdate = (item: ControlItem, pos: number) => {
+    if (item.onShow) {
+      item.onShow(this.pos, pos);
+    }
+  }
+
+  private onUnmount = (item: ControlItem) => {
+    if (item.onHide) {
+      item.onHide(this.pos);
+    }
   }
 }

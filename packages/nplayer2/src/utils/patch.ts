@@ -5,7 +5,7 @@ export interface Node {
   el?: HTMLElement;
 }
 
-function isSameNode(a: Node, b: Node): boolean {
+function isSameNode(a: Node, b: Node) {
   if (!a || !b) return false;
   return a === b || a.id === b.id;
 }
@@ -15,9 +15,9 @@ function unmount(node: Node, unmountNode?: (n: Node) => void) {
   if (unmountNode) unmountNode(node);
 }
 
-function mountOrMove(node: Node, container: HTMLElement, anchor?: Node, op?:(n: Node) => void) {
+function mountOrMove(node: Node, container: HTMLElement, anchor?: Node, op?:(n: Node, pos: number) => void, pos?: number) {
   if (node.el) container.insertBefore(node.el, anchor?.el || null);
-  if (op) op(node);
+  if (op) op(node, pos as number);
 }
 
 function lis(arr: number[]): number[] {
@@ -67,8 +67,8 @@ export function patch(
   nextNodes: Node[],
   container: HTMLElement,
   op: {
-    mount?: (node: Node) => void;
-    update?: (node: Node) => void;
+    mount?: (node: Node, pos: number) => void;
+    update?: (node: Node, pos: number) => void;
     unmount?: (node: Node) => void;
   } = {},
 ) {
@@ -98,7 +98,7 @@ export function patch(
 
   if (startIndex > prevEnd) {
     for (let i = startIndex; i <= nextEnd; i++) {
-      mountOrMove(nextNodes[i], container, undefined, op.mount);
+      mountOrMove(nextNodes[i], container, undefined, op.mount, i);
     }
   } else if (startIndex > nextEnd) {
     for (let i = startIndex; i <= prevEnd; i++) {
@@ -139,12 +139,12 @@ export function patch(
       nextIndex = startIndex + i;
       anchor = nextNodes[nextIndex + 1];
       if (item === -1) {
-        mountOrMove(nextNodes[nextIndex], container, anchor, op.mount);
+        mountOrMove(nextNodes[nextIndex], container, anchor, op.mount, nextIndex);
       } else if (moved) {
         if (i === incSeq[j]) {
           j--;
         } else {
-          mountOrMove(nextNodes[nextIndex], container, anchor, op.update);
+          mountOrMove(nextNodes[nextIndex], container, anchor, op.update, nextIndex);
         }
       }
     }

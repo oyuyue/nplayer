@@ -1,18 +1,20 @@
+import { MediaSwitcher } from '../../components';
 import { EVENT, I18nKey } from '../../constants';
 import { I18n } from '../../features';
 import { PlayerBase } from '../../player-base';
 import { ControlItem } from '../../types';
-import { addDestroyableListener, Component, Icon } from '../../utils';
+import { addDestroyable, addDestroyableListener, Icon } from '../../utils';
 
-export class Prev extends Component implements ControlItem {
+export class Prev extends MediaSwitcher implements ControlItem {
   id = 'prev'
 
-  tip = I18n.t(I18nKey.NEXT)
+  constructor() {
+    super(I18n.t(I18nKey.PREV), Icon.play());
+  }
 
   onInit(player: PlayerBase) {
-    this.el.appendChild(Icon.play());
-    addDestroyableListener(this, this.el, 'click', () => {
-      player.emit(EVENT.PREV);
-    });
+    this.setMediaItem(player.prev);
+    addDestroyableListener(this, this.el, 'click', () => player.emit(EVENT.PREV_CLICK));
+    addDestroyable(this, player.on(EVENT.PREV, () => this.setMediaItem(player.prev)));
   }
 }

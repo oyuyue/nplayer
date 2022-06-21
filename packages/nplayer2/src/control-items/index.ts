@@ -10,3 +10,4 @@ export * from './web-fullscreen';
 export * from './fullscreen';
 export * from './quality';
 export * from './airplay';
+export * from './progress';

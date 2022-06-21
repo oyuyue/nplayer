@@ -6,12 +6,18 @@ export function getPlayerConfig<M extends HTMLMediaElement>(config: PlayerConfig
   return {
     media,
     control: {
-      items: [['play', 'volume', 'time', 'spacer', 'speed', 'airplay', 'fullscreen', 'web-fullscreen']],
-      bpItems: {
-        650: [
-          ['play', 'time', 'fullscreen'],
-        ],
-      },
+      items: [
+        ['play'],
+        ['setting'],
+      ],
+      // bpItems: {
+      //   650: [
+      //     ['play', 'time', 'fullscreen'],
+      //   ],
+      //   350: [
+      //     ['play'],
+      //   ],
+      // },
     },
     contextmenu: {},
     loading: {},

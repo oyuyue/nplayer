@@ -19,6 +19,8 @@ export const EVENT = {
 
   PREV: 'prev',
   NEXT: 'next',
+  PREV_CLICK: 'prevClick',
+  NEXT_CLICK: 'nextClick',
 
   QUALITY_CHANGE: 'qualityChange',
 
@@ -58,6 +60,7 @@ export const I18nKey = {
   SETTING: 'setting',
   PLAY: 'play',
   PAUSE: 'pause',
+  REPLAY: 'replay',
   MUTE: 'mute',
   UNMUTE: 'unmute',
   NORMAL: 'normal',

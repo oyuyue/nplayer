@@ -8,9 +8,9 @@ import {
 } from '../../utils';
 
 export class Fullscreen extends Component implements ControlItem {
-   id = 'fullscreen'
+  id = 'fullscreen'
 
-  tip = '1';
+  tipText = '1';
 
   tooltip!: Tooltip;
 
@@ -21,13 +21,11 @@ export class Fullscreen extends Component implements ControlItem {
   onInit(player: PlayerBase) {
     this.exitIcon = this.el.appendChild(Icon.exitFullscreen());
     this.enterIcon = this.el.appendChild(Icon.enterFullscreen());
-
     if (player.isFullscreen) {
       this.enter();
     } else {
       this.exit();
     }
-
     addDestroyable(this, player.on(EVENT.ENTER_FULLSCREEN, this.enter));
     addDestroyable(this, player.on(EVENT.EXIT_FULLSCREEN, this.exit));
     addDestroyableListener(this, this.el, 'click', () => player.toggleFullscreen());
