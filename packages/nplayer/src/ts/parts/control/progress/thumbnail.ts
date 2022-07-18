@@ -57,7 +57,7 @@ export class Thumbnail extends Component {
     if (!url) return;
 
     const x = (i % this.opts.col) * this.opts.width;
-    const y = ~~((i % this.thumbImgPrePic!) / this.opts.row) * this.opts.height;
+    const y = ~~((i % this.thumbImgPrePic!) / this.opts.col) * this.opts.height;
 
     return { url, x, y };
   }
