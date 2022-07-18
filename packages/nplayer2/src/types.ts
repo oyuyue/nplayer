@@ -4,6 +4,8 @@ import { PlayerBase } from './player-base';
 
 export type Source = string | ({ src?: string; srcset?: string; type?: string;})[]
 
+export type IconSource = string | HTMLElement | SVGElement;
+
 export interface MediaItem {
   src?: Source;
   title?: string;
@@ -37,6 +39,23 @@ export interface ProgressConfig {
   }
 }
 
+export interface SettingItem<T = any> {
+  id?: string;
+  type?: 'switch' | 'select';
+  icon?: IconSource;
+  label?: string | HTMLElement;
+  checked?: boolean;
+  value?: T;
+  options?: {
+    value: T;
+    label?: string | HTMLElement;
+    selectedLabel?: string | HTMLElement;
+  }[];
+  onInit?: (player: PlayerBase) => void;
+  onChange?: (value: T, player: PlayerBase) => void;
+  [key: string]: any;
+}
+
 export interface PlayerConfig<M extends HTMLMediaElement> {
   container?: HTMLElement | string;
   media?: M;
@@ -53,6 +72,8 @@ export interface PlayerConfig<M extends HTMLMediaElement> {
     disabled?: boolean;
     items?: (ControlItem | string)[][];
     bpItems?: Record<string | number, (ControlItem | string)[][]>;
+    settings?: SettingItem[];
+    drawerItems?: SettingItem[];
     speeds?: ListItem[];
     qualities?: ListItem[];
     qualitiesDefault?: number;

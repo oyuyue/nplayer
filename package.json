@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "serve:nplayer": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer",
-    "serve:nplayer2": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer2",
+    "dev": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer2",
     "serve:danmaku": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-danmaku  fixture=danmaku",
     "serve:vue": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-vue  fixture=vue",
     "serve:react": "webpack serve --config ./scripts/webpack.dev.js --env target=nplayer-react  fixture=react",
@@ -42,7 +42,6 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-webpack-plugin": "^3.0.1",
     "execa": "^5.1.1",
-    "fibers": "^5.0.0",
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
     "html-webpack-plugin": "^5.3.2",
