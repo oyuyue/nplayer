@@ -1,9 +1,9 @@
 {
   "name": "nplayer",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "description": "powerful danmaku video player",
   "main": "dist/index.min.js",
-  "typings": "dist/src/index.d.ts",
+  "typings": "dist/index.d.ts",
   "license": "MIT",
   "authors": "wopen <nepow@foxmail.com>",
   "files": [
