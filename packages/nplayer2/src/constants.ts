@@ -29,6 +29,8 @@ export const EVENT = {
   TO_LIVE: 'toLive',
   TO_VOD: 'toVod',
 
+  MEDIA_CHANGED: 'mediaChanged',
+
   ABORT: 'abort',
   CANPLAY: 'canplay',
   CANPLAYTHROUGH: 'canplaythrough',
@@ -50,6 +52,7 @@ export const EVENT = {
   TIMEUPDATE: 'timeupdate',
   VOLUMECHANGE: 'volumechange',
   WAITING: 'waiting',
+  ERROR: 'error',
 } as const;
 
 export const I18nKey = {

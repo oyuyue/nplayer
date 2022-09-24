@@ -47,6 +47,7 @@ export function transferEvent(player: PlayerBase) {
   trans(player, 'waiting', EVENT.WAITING);
   trans(player, 'enterpictureinpicture', EVENT.ENTER_PIP);
   trans(player, 'leavepictureinpicture', EVENT.EXIT_PIP);
+  trans(player, 'error', EVENT.ERROR);
 
   if ((window as any).ResizeObserver) {
     const ro = new ResizeObserver(throttle(() => player.emit(EVENT.RESIZE)));

@@ -5,6 +5,8 @@ export function getPlayerConfig<M extends HTMLMediaElement>(config: PlayerConfig
 
   return {
     media,
+    volumeStep: 10,
+    seekStep: 10,
     control: {
       items: [
         ['play'],

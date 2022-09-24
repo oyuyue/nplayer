@@ -72,5 +72,8 @@
     "not op_mini all",
     "IE 11"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "detect-autoplay": "^0.0.1",
+    "wblib": "^1.0.12"
+  }
 }

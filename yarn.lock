@@ -3480,6 +3480,11 @@ destroy@~1.0.4:
   resolved "https://registry.nlark.com/destroy/download/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
+detect-autoplay@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmmirror.com/detect-autoplay/-/detect-autoplay-0.0.1.tgz#d2da102a560cd728ad297fd579f628fb0f3e0bd5"
+  integrity sha512-mGj2RcBRJ1Hhmmab3LKOVelJFL9tNY/cQ++0L62zExVk9o3hUEbTO8sw5KsdKxMTXNS4wBi97CXCJ6UsJBDRXg==
+
 detect-newline@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npm.taobao.org/detect-newline/download/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
@@ -8927,6 +8932,11 @@ watchpack@^2.3.1:
   dependencies:
     glob-to-regexp "^0.4.1"
     graceful-fs "^4.1.2"
+
+wblib@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.npmmirror.com/wblib/-/wblib-1.0.12.tgz#d66ccd828b5acb169e5f2f397115e65e6b33029d"
+  integrity sha512-XdfJU2Fojs0FJAK/JXPpmGGiKhQ+1R9PH6fPkcACFegGb5VgQIdJSP9yWflSIab4a2oslYHNdqux/MaGQTLjdw==
 
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"

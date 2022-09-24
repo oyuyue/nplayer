@@ -27,5 +27,9 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "dependencies": {
+    "detect-autoplay": "^0.0.1",
+    "wblib": "^1.0.12"
   }
 }

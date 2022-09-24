@@ -2,15 +2,24 @@ import { Tooltip } from './components';
 import { EVENT } from './constants';
 import { PlayerBase } from './player-base';
 
-export type Source = string | ({ src?: string; srcset?: string; type?: string;})[]
+export type Source = string | MediaSource | ({ src?: string; srcset?: string; type?: string;})[]
 
 export type IconSource = string | HTMLElement | SVGElement;
 
 export interface MediaItem {
   src?: Source;
   title?: string;
+  artist?: string;
   poster?: string;
   duration?: number;
+  bg?: string;
+  live?: boolean;
+  startPlayTime?: number;
+}
+
+export interface MediaInfo extends MediaItem {
+  prev?: MediaItem;
+  next?: MediaItem;
 }
 
 export interface ProgressConfig {
@@ -56,17 +65,14 @@ export interface SettingItem<T = any> {
   [key: string]: any;
 }
 
-export interface PlayerConfig<M extends HTMLMediaElement> {
+export interface PlayerConfig<M extends HTMLMediaElement> extends MediaInfo {
   container?: HTMLElement | string;
   media?: M;
   mediaAttrs?: Record<string, string>;
+  seekStep?: number;
+  volumeStep?: number;
 
-  src?: Source;
-  poster?: string;
-  title?: string;
-  prev?: MediaItem;
-  next?: MediaItem;
-  live?: boolean;
+  autoplay?: boolean;
 
   control?: {
     disabled?: boolean;
@@ -146,6 +152,8 @@ export interface PlayerEventTypes {
   [EVENT.PREV_CLICK]: () => void;
   [EVENT.NEXT_CLICK]: () => void;
 
+  [EVENT.MEDIA_CHANGED]: (info: MediaInfo) => void;
+
   [EVENT.ABORT]: (p: PlayerBase) => void;
   [EVENT.CANPLAY]: (p: PlayerBase) => void;
   [EVENT.CANPLAYTHROUGH]: (p: PlayerBase) => void;
@@ -167,6 +175,7 @@ export interface PlayerEventTypes {
   [EVENT.TIMEUPDATE]: (p: PlayerBase) => void;
   [EVENT.VOLUMECHANGE]: (p: PlayerBase) => void;
   [EVENT.WAITING]: (p: PlayerBase) => void;
+  [EVENT.ERROR]: (p: PlayerBase) => void;
 
   [key: string]: any;
 }

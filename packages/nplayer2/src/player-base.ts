@@ -1,10 +1,11 @@
 import { getPlayerConfig } from './config';
 import { EVENT } from './constants';
 import { Fullscreen, WebFullscreen } from './features';
+import { PlayerMediaSession } from './features/media-session';
 import { Contextmenu, Control, Loading } from './parts';
 import { transferEvent } from './transfer-event';
 import {
-  ControlItem, Destroyable, MediaItem, PlayerConfig, PlayerEventTypes,
+  ControlItem, Destroyable, MediaInfo, MediaItem, PlayerConfig, PlayerEventTypes, Source,
 } from './types';
 import {
   addDestroyable, destroy, EventEmitter, Rect,
@@ -26,11 +27,13 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
 
   rect: Rect;
 
-  readonly current: MediaItem;
+  current: MediaItem;
 
-  readonly prev?: MediaItem;
+  prev?: MediaItem;
 
-  readonly next?: MediaItem;
+  next?: MediaItem;
+
+  mediaSession?: PlayerMediaSession;
 
   readonly control: Control;
 
@@ -56,10 +59,14 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     this.el = $('.nplayer', { tabindex: '0' }, undefined, '');
     this.el.appendChild(this.media);
 
+    this.mediaSession = PlayerMediaSession.create(this);
+
     this.current = {
       src: config.src,
       title: config.title,
       poster: config.poster,
+      live: config.live,
+      duration: config.duration,
     };
     this.prev = config.prev;
     this.next = config.next;
@@ -75,6 +82,14 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     transferEvent(this);
   }
 
+  get readyState() {
+    return this.media.readyState;
+  }
+
+  get networkState() {
+    return this.media.networkState;
+  }
+
   get isFullscreen() {
     return this.fullscreen.isActive;
   }
@@ -83,8 +98,60 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     return this.webFullscreen.isActive;
   }
 
+  get currentSrc() {
+    return this.media.currentSrc;
+  }
+
+  get src() {
+    return this.media.src;
+  }
+
+  set src(src: Source) {
+    if (src instanceof MediaSource) {
+      this.media.srcObject = src;
+    } else if (Array.isArray(src)) {
+      this.media.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      src.forEach((s) => {
+        const source = document.createElement('source');
+        Object.keys(s).forEach((k) => {
+          source.setAttribute(k, (s as any)[k]);
+        });
+        frag.appendChild(source);
+      });
+      this.media.appendChild(frag);
+    } else {
+      this.media.src = src;
+    }
+  }
+
+  get srcObject() {
+    return this.media.srcObject as (MediaSource | null);
+  }
+
+  set srcObject(ms: MediaSource | null) {
+    if (this.media.srcObject !== undefined) {
+      this.media.srcObject = ms;
+    } else if (ms) {
+      const onOpen = () => {
+        URL.revokeObjectURL(this.media.src);
+        ms.removeEventListener('sourceopen', onOpen);
+      };
+      ms.addEventListener('sourceopen', onOpen);
+      this.media.src = URL.createObjectURL(ms);
+    }
+  }
+
   get currentTime() {
     return this.media.currentTime;
+  }
+
+  set currentTime(time) {
+    this.media.currentTime = time;
+  }
+
+  get seeking() {
+    return this.media.seeking;
   }
 
   get duration() {
@@ -121,6 +188,22 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     this.media.muted = v;
   }
 
+  get loop() {
+    return this.media.loop;
+  }
+
+  set loop(loop) {
+    this.media.loop = loop;
+  }
+
+  get ended() {
+    return this.media.ended;
+  }
+
+  get error() {
+    return this.media.error;
+  }
+
   static addControlItem(item: ControlItem) {
     if (!item || !item.id) return;
     PlayerBase.controlItemMap[item.id] = item;
@@ -130,12 +213,27 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     return PlayerBase.controlItemMap[id];
   }
 
-  play() {
-    this.media.play();
+  load() {
+    if (!this.srcObject && this.currentSrc && !this.currentSrc.startsWith('blob')) {
+      this.media.load();
+      return true;
+    }
+    return false;
+  }
+
+  play(): Promise<void> {
+    return Promise.resolve(this.media.play());
   }
 
   pause() {
     this.media.pause();
+  }
+
+  stop() {
+    if (!this.current.live) {
+      this.currentTime = 0;
+    }
+    this.pause();
   }
 
   toggle() {
@@ -143,6 +241,14 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
       this.play();
     } else {
       this.pause();
+    }
+  }
+
+  fastSeek(time: number) {
+    if (this.media.fastSeek) {
+      this.media.fastSeek(time);
+    } else {
+      this.currentTime = time;
     }
   }
 
@@ -156,12 +262,33 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     }
   }
 
-  backward() {
-
+  incVolume(v = this.config.volumeStep) {
+    this.volume += v;
   }
 
-  forward() {
+  decVolume(v = this.config.volumeStep) {
+    this.volume -= v;
+  }
 
+  backward(time = this.config.seekStep) {
+    this.currentTime -= time;
+  }
+
+  forward(time = this.config.seekStep) {
+    this.currentTime += time;
+  }
+
+  changeMedia(info: MediaInfo) {
+    this.current = {
+      src: info.src,
+      title: info.title,
+      poster: info.poster,
+      live: info.live,
+      duration: info.duration,
+    };
+    this.prev = info.prev;
+    this.next = info.next;
+    this.emit(EVENT.MEDIA_CHANGED, info);
   }
 
   mount(container?: PlayerConfig<M>['container']) {
@@ -179,6 +306,10 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
       this.container.appendChild(this.el);
       this.emitAsync(EVENT.MOUNTED, this);
     }
+  }
+
+  getVideoPlaybackQuality() {
+
   }
 
   enterFullscreen() {
