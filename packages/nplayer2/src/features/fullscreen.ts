@@ -1,5 +1,5 @@
+import type { PlayerBase } from '../player-base';
 import { CLASS_PLAYER, EVENT } from '../constants';
-import { PlayerBase } from '../player-base';
 import { Destroyable } from '../types';
 import {
   addClass, addDestroyableListener, destroy, isFunction, isIOS, removeClass,

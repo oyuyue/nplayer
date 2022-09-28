@@ -31,6 +31,9 @@ export const EVENT = {
 
   MEDIA_CHANGED: 'mediaChanged',
 
+  AUTOPLAY_MUTED: 'autoplayMuted',
+  AUTOPLAY_FAILED: 'autoplayFailed',
+
   ABORT: 'abort',
   CANPLAY: 'canplay',
   CANPLAYTHROUGH: 'canplaythrough',

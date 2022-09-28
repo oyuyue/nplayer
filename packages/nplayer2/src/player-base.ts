@@ -1,7 +1,8 @@
 import { getPlayerConfig } from './config';
 import { EVENT } from './constants';
-import { Fullscreen, WebFullscreen } from './features';
-import { PlayerMediaSession } from './features/media-session';
+import {
+  Fullscreen, WebFullscreen, PlayerMediaSession, Autoplay, Disable,
+} from './features';
 import { Contextmenu, Control, Loading } from './parts';
 import { transferEvent } from './transfer-event';
 import {
@@ -27,7 +28,7 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
 
   rect: Rect;
 
-  current: MediaItem;
+  current!: MediaItem;
 
   prev?: MediaItem;
 
@@ -47,9 +48,15 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
 
   private webFullscreen: WebFullscreen;
 
+  private autoplay: Autoplay;
+
+  private disable: Disable;
+
   static version: string = __VERSION__;
 
   private static readonly controlItemMap: Record<string, ControlItem> = Object.create(null)
+
+  private timerChangeMedia: any;
 
   constructor(config: PlayerConfig<M>) {
     super();
@@ -59,18 +66,9 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     this.el = $('.nplayer', { tabindex: '0' }, undefined, '');
     this.el.appendChild(this.media);
 
-    this.mediaSession = PlayerMediaSession.create(this);
+    this.changeMedia(config);
 
-    this.current = {
-      src: config.src,
-      title: config.title,
-      poster: config.poster,
-      live: config.live,
-      duration: config.duration,
-    };
-    this.prev = config.prev;
-    this.next = config.next;
-
+    this.mediaSession = PlayerMediaSession.create(this); // TODO: destroy
     this.rect = addDestroyable(this, new Rect(this.el, this));
     this.fullscreen = addDestroyable(this, new Fullscreen(this));
     this.webFullscreen = addDestroyable(this, new WebFullscreen(this));
@@ -80,6 +78,9 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
     this.loading = addDestroyable(this, new Loading(this.el, this));
 
     transferEvent(this);
+
+    this.autoplay = addDestroyable(this, new Autoplay(this));
+    this.disable = addDestroyable(this, new Disable(this));
   }
 
   get readyState() {
@@ -130,7 +131,7 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
   }
 
   set srcObject(ms: MediaSource | null) {
-    if (this.media.srcObject !== undefined) {
+    if ('srcObject' in this.media) {
       this.media.srcObject = ms;
     } else if (ms) {
       const onOpen = () => {
@@ -285,10 +286,20 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
       poster: info.poster,
       live: info.live,
       duration: info.duration,
+      startPlayTime: info.startPlayTime,
     };
     this.prev = info.prev;
     this.next = info.next;
-    this.emit(EVENT.MEDIA_CHANGED, info);
+    clearTimeout(this.timerChangeMedia);
+    this.timerChangeMedia = setTimeout(() => {
+      this.emit(EVENT.MEDIA_CHANGED, info);
+      this.autoplay.setup();
+      if (this.current.startPlayTime) {
+        this.once(EVENT.LOADEDMETADATA, () => {
+          if (this.current.startPlayTime) this.fastSeek(this.current.startPlayTime);
+        });
+      }
+    });
   }
 
   mount(container?: PlayerConfig<M>['container']) {
@@ -374,6 +385,22 @@ export class PlayerBase<M extends HTMLMediaElement = HTMLMediaElement>
 
   getControlItem(id: string) {
     return PlayerBase.getControlItem(id);
+  }
+
+  disableSeek() {
+    this.disable.disableSeek();
+  }
+
+  enableSeek() {
+    this.disable.enableSeek();
+  }
+
+  disablePlay() {
+    this.disable.disablePlay();
+  }
+
+  enablePlay() {
+    this.disable.enablePlay();
   }
 
   destroy() {

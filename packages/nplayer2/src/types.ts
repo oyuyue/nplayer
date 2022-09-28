@@ -74,6 +74,9 @@ export interface PlayerConfig<M extends HTMLMediaElement> extends MediaInfo {
 
   autoplay?: boolean;
 
+  disableSeek?: boolean;
+  disablePlay?: boolean;
+
   control?: {
     disabled?: boolean;
     items?: (ControlItem | string)[][];
