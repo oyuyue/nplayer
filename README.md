@@ -72,14 +72,6 @@ player.mount(document.body);
 - [迷你播放器](https://nplayer.js.org/docs/examples/mini)
 - [自定义 Bilibili 主题](https://nplayer.js.org/docs/examples/bilibili-theme)
 
-## 推荐文章
-
-- [NPlayer 支持任何流媒体和 B 站弹幕体验的视频播放器](https://juejin.cn/post/6953803485636722702)
-- [从零开发弹幕视频播放器1](https://juejin.cn/post/6953429334937829384)
-- [流媒体视频基础 MSE 入门 & FFmpeg 制作视频预览缩略图和 fmp4](https://juejin.cn/post/6953777965838630926)
-- [原来爱优腾等视频网站都是用这个来播放流媒体的](https://juejin.cn/post/6954761121727250439)
-- [如何保护会员或付费视频？优酷是怎么做的？ - HLS 流媒体加密](https://juejin.cn/post/6955287754670342174)
-
 ## 问题 & 新功能
 
 如果你遇到 BUG 或者是想要新功能，欢迎提交 [issue](https://github.com/woopen/nplayer/issues/new/choose)。
