@@ -29,13 +29,23 @@ npm i -S nplayer @nplayer/react
 ```jsx
 import { useEffect, useRef } from "react";
 import NPlayer from "@nplayer/react";
+import Hls from 'hls.js';
 
 export default function App() {
   const player = useRef();
+  const url = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
 
   useEffect(() => {
     console.log(player.current);
   }, []);
+
+  const handleStreamLoad = (playerInstance) => {
+    const hls = new Hls();
+    hls.attachMedia(playerInstance.video);
+    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+      hls.loadSource(url);
+    });
+  }
 
   return (
     <div>
@@ -43,7 +53,8 @@ export default function App() {
         ref={player}
         className=" "
         style={{  }}
-        options={{ src: "https://v-cdn.zjol.com.cn/280443.mp4" }}
+        options={{ src: url }}
+        onStreamLoad={handleStreamLoad}
       />
     </div>
   );
@@ -51,6 +62,8 @@ export default function App() {
 ```
 
 NPlayer 组件接收一个 `options` prop。它是 NPlayer 构造函数参数，详情请查看 [配置](api/config.md)。
+
+NPlayer 组件接受一个 `onStreamLoad` prop。方便处理流媒体协议的接入。
 
 NPlayer 内部把播放器包裹在一个 `width` 和 `height` 都是 `100%` 的 div 中，你可以通过 `className` 和 `style` prop，设置它的 css 类名和样式。
 

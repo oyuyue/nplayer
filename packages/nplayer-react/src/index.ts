@@ -11,6 +11,7 @@ export type NPlayerProps = {
   options?: PlayerOptions;
   style?: Partial<CSSStyleDeclaration>;
   className?: string;
+  onStreamLoad?: (instance: Player) => void;
   [key: string]: any;
 }
 
@@ -18,12 +19,16 @@ export const NPlayer = React.forwardRef<Player, NPlayerProps>(
   (props = {}, ref) => {
     const divRef = useRef<HTMLDivElement>();
     const playerRef = useRef<Player>();
-    const { options, ...rest } = props;
+    const { options, onStreamLoad, ...rest } = props;
 
     useEffect(() => {
       if (!divRef.current || typeof document === 'undefined') return;
       if (!playerRef.current) {
         playerRef.current = new Player.Player(options);
+      }
+
+      if (typeof onStreamLoad === 'function') {
+        onStreamLoad(playerRef.current);
       }
 
       playerRef.current.mount(divRef.current);
