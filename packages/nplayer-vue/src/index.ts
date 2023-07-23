@@ -24,6 +24,11 @@ const plugin = {
         this.player.mount(this.$refs.el);
         if (this.set) this.set(this.player);
       },
+      created() {
+        this.$watch('options', (newOptions: Object) => {
+          this.player.updateOptions(newOptions);
+        });
+      },
       [isVue3 ? 'beforeUnmount' : 'beforeDestroy']() {
         if ((this as any).player) {
           (this as any).player.dispose();
