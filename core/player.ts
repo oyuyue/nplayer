@@ -1,12 +1,20 @@
+import type { PlayerConfig } from './config';
+import { Fullscreen } from './features/fullscreen';
+import { WebFullscreen } from './features/web-fullscreen';
 import type { Source } from './type'
 
 export class Player {
-
   el = document.createElement('div');
 
   media: HTMLMediaElement;
 
+  config: PlayerConfig;
+
   private prevVolume = 1;
+
+  private fullscreen = new Fullscreen(this);
+
+  private webFullscreen = new WebFullscreen(this);
 
   constructor() {
     this.media.controls = false;

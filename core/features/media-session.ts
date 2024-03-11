@@ -23,7 +23,6 @@ export class PlayerMediaSession implements Destroyable {
     }));
 
     mediaSession.setActionHandler('play', () => player.play());
-    mediaSession.setActionHandler('hangup', () => player.pause());
     mediaSession.setActionHandler('pause', () => player.pause());
     mediaSession.setActionHandler('stop', () => player.stop());
     mediaSession.setActionHandler('seekbackward', () => player.backward());
@@ -33,13 +32,14 @@ export class PlayerMediaSession implements Destroyable {
   destroy() {
     const { mediaSession } = navigator;
     mediaSession.setActionHandler('play', null);
-    mediaSession.setActionHandler('hangup', null);
     mediaSession.setActionHandler('pause', null);
     mediaSession.setActionHandler('stop', null);
     mediaSession.setActionHandler('seekbackward', null);
     mediaSession.setActionHandler('seekforward', null);
     mediaSession.setActionHandler('previoustrack', null);
     mediaSession.setActionHandler('nexttrack', null);
+    mediaSession.setActionHandler('seekto', null);
+    mediaSession.setActionHandler('skipad', null);
     destroy(this);
   }
 

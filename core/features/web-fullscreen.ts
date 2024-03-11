@@ -1,33 +1,27 @@
-import { CLASS_PLAYER, EVENT } from '../constants';
-import { PlayerBase } from '../player-base';
-import { Destroyable } from '../types';
-import { addClass, containClass, removeClass } from '../utils';
+import { ClassPrefix } from '../constants';
+import { Events } from '../event';
+import type { Player } from '../player'
 
-const classFull = '-web-full';
+const classFull = ClassPrefix + '-web-full';
 
-export class WebFullscreen implements Destroyable {
-  private player: PlayerBase
+export class WebFullscreen  {
 
-  constructor(player: PlayerBase) {
-    this.player = player;
-  }
+  constructor(private player: Player) {}
 
-  get isActive(): boolean {
-    return containClass(this.player.el, classFull, CLASS_PLAYER);
+  get isActive() {
+    return this.player.el.classList.contains(classFull)
   }
 
   enter() {
-    addClass(this.player.el, classFull, CLASS_PLAYER);
-    this.player.emit(EVENT.ENTER_WEB_FULLSCREEN);
-    this.player.emit(EVENT.RESIZE);
+    if (this.isActive) return;
+    this.player.el.classList.add(classFull)
+    this.player.emit(Events.EnterWebFullscreen);
   }
 
   exit() {
-    if (!this.isActive) return false;
-    removeClass(this.player.el, classFull, CLASS_PLAYER);
-    this.player.emit(EVENT.EXIT_WEB_FULLSCREEN);
-    this.player.emit(EVENT.RESIZE);
-    return true;
+    if (!this.isActive) return;
+    this.player.el.classList.remove(classFull);
+    this.player.emit(Events.ExitWebFullscreen);
   }
 
   toggle = () => {
@@ -36,12 +30,5 @@ export class WebFullscreen implements Destroyable {
     } else {
       this.enter();
     }
-  }
-
-  destroy() {
-    if (!this.player) return;
-    this.player.off(EVENT.ENTER_WEB_FULLSCREEN);
-    this.player.off(EVENT.EXIT_WEB_FULLSCREEN);
-    this.player = null!;
   }
 }

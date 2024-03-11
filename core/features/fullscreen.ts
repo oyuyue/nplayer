@@ -1,50 +1,26 @@
-import type { PlayerBase } from '../player-base';
-import { CLASS_PLAYER, EVENT } from '../constants';
-import { Destroyable } from '../types';
-import {
-  addClass, addDestroyableListener, destroy, isFunction, isIOS, removeClass,
-} from '../utils';
+import type { Player } from '../player'
+import { isFunction } from '../utils';
+import { Events } from '../event'
+import { isBrowser, isIOS } from '../env'
 
-const CLASS_FULL = '-full';
+const prefix = isBrowser ? getPrefix() : ''
 
-export class Fullscreen implements Destroyable {
+export class Fullscreen {
   private target!: HTMLElement;
 
-  private readonly prefix = this.getPrefix();
-
-  constructor(private player: PlayerBase) {
-    addDestroyableListener(this, document, this.prefix === 'ms' ? 'MSFullscreenChange' : `${this.prefix}fullscreenchange` as any, () => {
-      let evt = '';
-      if (this.isActive) {
-        this.addClass();
-        evt = EVENT.ENTER_FULLSCREEN;
-      } else {
-        this.removeClass();
-        evt = EVENT.EXIT_FULLSCREEN;
-      }
-      this.player.emit(evt);
-      this.player.emit(EVENT.RESIZE);
-    });
-
-    this.enableDblclick();
+  constructor(private player: Player) {
+    document.addEventListener(prefix, this.onFullscreen)
     this.setTarget();
-    if (this.isActive) this.addClass();
   }
 
-  private getPrefix(): string {
-    if (isFunction(document.exitFullscreen)) return '';
-
-    let prefix = '';
-    ['webkit', 'moz', 'ms'].forEach((p) => {
-      if (
-        isFunction((document as any)[`${p}ExitFullscreen`])
-        || isFunction((document as any)[`${p}CancelFullScreen`])
-      ) {
-        prefix = p;
-      }
-    });
-
-    return prefix;
+  private onFullscreen = () => {
+    let evt = '';
+    if (this.isActive) {
+      evt = Events.EnterFullscreen;
+    } else {
+      evt = Events.ExitFullscreen;
+    }
+    this.player.emit(evt);
   }
 
   get requestFullscreen(): Element['requestFullscreen'] {
@@ -57,12 +33,13 @@ export class Fullscreen implements Destroyable {
   }
 
   get exitFullscreen(): Document['exitFullscreen'] {
+    const p = (Document || HTMLDocument).prototype;
     return (
-      HTMLDocument.prototype.exitFullscreen
-      || (HTMLDocument.prototype as any).webkitExitFullscreen
-      || (HTMLDocument.prototype as any).cancelFullScreen
-      || (HTMLDocument.prototype as any).mozCancelFullScreen
-      || (HTMLDocument.prototype as any).msExitFullscreen
+      p.exitFullscreen
+      || (p as any).webkitExitFullscreen
+      || (p as any).cancelFullScreen
+      || (p as any).mozCancelFullScreen
+      || (p as any).msExitFullscreen
     );
   }
 
@@ -75,32 +52,16 @@ export class Fullscreen implements Destroyable {
     );
   }
 
-  get isActive(): boolean {
+  get isActive() {
     return this.fullscreenElement === this.target;
   }
 
-  private addClass(): void {
-    addClass(this.player.el, CLASS_FULL, CLASS_PLAYER);
-  }
-
-  private removeClass(): void {
-    removeClass(this.player.el, CLASS_FULL, CLASS_PLAYER);
-  }
-
-  enableDblclick(): void {
-    this.player.media.addEventListener('dblclick', this.toggle);
-  }
-
-  disableDblclick(): void {
-    this.player.media.removeEventListener('dblclick', this.toggle);
-  }
-
-  setTarget(dom?: HTMLElement, video?: HTMLVideoElement): void {
+  setTarget(dom?: HTMLElement, video?: HTMLVideoElement) {
     this.target = (dom && isIOS ? video : dom) || (isIOS ? this.player.media : this.player.el);
     if (this.isActive) this.enter();
   }
 
-  enter(): void {
+  enter() {
     if (isIOS) {
       (this.target as any).webkitEnterFullscreen();
     } else {
@@ -108,7 +69,7 @@ export class Fullscreen implements Destroyable {
     }
   }
 
-  exit(): boolean {
+  exit() {
     if (!this.isActive) return false;
     if (isIOS) {
       (this.target as any).webkitExitFullscreen();
@@ -118,7 +79,7 @@ export class Fullscreen implements Destroyable {
     return true;
   }
 
-  toggle = (): void => {
+  toggle = () => {
     if (this.isActive) {
       this.exit();
     } else {
@@ -127,11 +88,22 @@ export class Fullscreen implements Destroyable {
   }
 
   destroy() {
-    if (!this.player) return;
-    this.player.off(EVENT.ENTER_FULLSCREEN);
-    this.player.off(EVENT.EXIT_FULLSCREEN);
-    this.disableDblclick();
-    this.player = null!;
-    destroy(this);
+    document.removeEventListener(prefix, this.onFullscreen)
   }
+}
+
+function getPrefix() {
+  if (isFunction(document.exitFullscreen)) return '';
+
+  let prefix = '';
+  ['webkit', 'moz', 'ms'].forEach((p) => {
+    if (
+      isFunction((document as any)[`${p}ExitFullscreen`])
+      || isFunction((document as any)[`${p}CancelFullScreen`])
+    ) {
+      prefix = p;
+    }
+  });
+
+  return prefix === 'ms' ? 'MSFullscreenChange' : `${prefix}fullscreenchange`
 }
