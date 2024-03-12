@@ -2,7 +2,7 @@ import { Tooltip } from './components';
 import { EVENT } from './constants';
 import { PlayerBase } from './player-base';
 
-export type Source = string | MediaSource | ({ src?: string; srcset?: string; type?: string;})[]
+export type Source = string | MediaSource | ({ src?: string; media?: string; type?: string;})[]
 
 export type IconSource = string | HTMLElement | SVGElement;
 

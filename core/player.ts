@@ -166,9 +166,7 @@ export class Player {
   }
 
   stop() {
-    if (!this.current.live) {
-      this.currentTime = 0;
-    }
+    this.currentTime = 0;
     this.pause();
   }
 
@@ -186,6 +184,14 @@ export class Player {
 
   decVolume(v = this.config.volumeStep) {
     this.volume -= v;
+  }
+
+  seekBackward() {
+
+  }
+
+  seekForward() {
+    
   }
 
   toggleVolume() {

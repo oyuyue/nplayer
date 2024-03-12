@@ -1,11 +1,21 @@
-import type { PlayerBase } from '../player-base';
-import { EVENT } from '../constants';
-import { Destroyable } from '../types';
-import { addDestroyable, destroy } from '../utils';
+import type { Player } from '../player'
 
-export class PlayerMediaSession implements Destroyable {
-  private constructor(player: PlayerBase) {
+export class PlayerMediaSession  {
+  private constructor(player: Player) {
     const { mediaSession } = navigator;
+    mediaSession.setActionHandler('play', () => player.play());
+    mediaSession.setActionHandler('pause', () => player.pause());
+    mediaSession.setActionHandler('stop', () => player.stop());
+    mediaSession.setActionHandler('seekbackward', () => player.seekBackward());
+    mediaSession.setActionHandler('seekforward', () => player.seekForward());
+    mediaSession.setActionHandler('seekto', (info) => {
+      if (info.seekTime == null) return;
+      player.seek(info.seekTime)
+    });
+    if (player.config.onSkipad) {
+      mediaSession.setActionHandler('skipad', player.config.onSkipad);
+    }
+
     addDestroyable(this, player.on(EVENT.PLAY, () => mediaSession.playbackState = 'playing'));
     addDestroyable(this, player.on(EVENT.PAUSE, () => mediaSession.playbackState = 'paused'));
     addDestroyable(this, player.on(EVENT.MEDIA_CHANGED, (info) => {
@@ -21,16 +31,11 @@ export class PlayerMediaSession implements Destroyable {
         player.emit(EVENT.NEXT_CLICK);
       } : null);
     }));
-
-    mediaSession.setActionHandler('play', () => player.play());
-    mediaSession.setActionHandler('pause', () => player.pause());
-    mediaSession.setActionHandler('stop', () => player.stop());
-    mediaSession.setActionHandler('seekbackward', () => player.backward());
-    mediaSession.setActionHandler('seekforward', () => player.forward());
   }
 
   destroy() {
     const { mediaSession } = navigator;
+    mediaSession.metadata = null;
     mediaSession.setActionHandler('play', null);
     mediaSession.setActionHandler('pause', null);
     mediaSession.setActionHandler('stop', null);
@@ -40,10 +45,9 @@ export class PlayerMediaSession implements Destroyable {
     mediaSession.setActionHandler('nexttrack', null);
     mediaSession.setActionHandler('seekto', null);
     mediaSession.setActionHandler('skipad', null);
-    destroy(this);
   }
 
-  static create(player: PlayerBase) {
+  static create(player: Player) {
     if ('mediaSession' in navigator) {
       return new PlayerMediaSession(player);
     }
