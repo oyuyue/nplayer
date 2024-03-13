@@ -1,9 +1,13 @@
-import type { PlayerConfig } from './config';
-import { Fullscreen } from './features/fullscreen';
-import { WebFullscreen } from './features/web-fullscreen';
+import type { MediaInfo, PlayerConfig } from './config';
 import type { Source } from './type'
+import { transferEvent, type PlayerEvents, Events, MediaInfoEvent } from './event';
+import { EventEmitter } from './event-emitter';
+import { Fullscreen } from './features/fullscreen';
+import { Hotkey } from './features/hotkey';
+import { PlayerMediaSession } from './features/media-session';
+import { WebFullscreen } from './features/web-fullscreen';
 
-export class Player {
+export class Player extends EventEmitter<PlayerEvents> {
   el = document.createElement('div');
 
   media: HTMLMediaElement;
@@ -16,7 +20,15 @@ export class Player {
 
   private webFullscreen = new WebFullscreen(this);
 
+  private hotkey = new Hotkey(this);
+
+  private mediaSession?: PlayerMediaSession = PlayerMediaSession.create(this);
+
+  private destroyFns: (() => void)[] = [];
+
   constructor() {
+    super()
+    this.destroyFns.push(transferEvent(this))
     this.media.controls = false;
   }
 
@@ -36,7 +48,7 @@ export class Player {
     return this.media.src;
   }
 
-  set src(src: Source) {
+  set src(src: Source | undefined) {
     if (src instanceof MediaSource) {
       this.media.srcObject = src;
     } else if (Array.isArray(src)) {
@@ -50,8 +62,11 @@ export class Player {
         frag.appendChild(source);
       });
       this.media.appendChild(frag);
-    } else {
+    } else if (src) {
       this.media.src = src;
+    } else {
+      this.media.src = '';
+      this.media.srcObject = null;
     }
   }
 
@@ -148,6 +163,13 @@ export class Player {
 
   }
 
+  changeMediaInfo(info: MediaInfo) {
+    const { src, ...other } = info
+    this.src = src;
+    Object.assign(this.config, other)
+    this.emit(Events.mediaInfoChange, new MediaInfoEvent(this, info))
+  }
+
   // promise
   seek(time: number) {
     if (this.media.fastSeek) {
@@ -179,11 +201,11 @@ export class Player {
   }
 
   incVolume(v = this.config.volumeStep) {
-    this.volume += v;
+    this.volume += (v || 0.05);
   }
 
   decVolume(v = this.config.volumeStep) {
-    this.volume -= v;
+    this.volume -= (v || 0.05);
   }
 
   seekBackward() {
@@ -236,27 +258,40 @@ export class Player {
     return this.webFullscreen.toggle();
   }
 
-  enterPIP(): boolean {
+  enterPIP(): Promise<PictureInPictureWindow | void> {
     if ((this.media as any).requestPictureInPicture) {
-      (this.media as any).requestPictureInPicture();
-      return true;
+      return (this.media as HTMLVideoElement).requestPictureInPicture();
     }
-    return false;
+    return Promise.resolve();
   }
 
   exitPIP() {
-    if ((document as any).exitPictureInPicture) {
-      (document as any).exitPictureInPicture();
-      return true;
+    if (document.exitPictureInPicture) {
+      return document.exitPictureInPicture();
     }
-    return false;
+    return Promise.resolve();
   }
 
   togglePIP() {
-    if ((document as any).pictureInPictureElement !== this.media) {
-      this.enterPIP();
+    if (document.pictureInPictureElement) {
+      return this.exitPIP();
     } else {
-      this.exitPIP();
+      return this.enterPIP();
     }
+  }
+
+  destroy() {
+    this.off();
+    this.fullscreen.destroy()
+    this.hotkey.disable();
+    this.mediaSession?.destroy()
+
+    this.destroyFns.forEach((fn) => {
+      try {
+        fn();
+      } catch (error) {
+        //
+      }
+    })
   }
 }

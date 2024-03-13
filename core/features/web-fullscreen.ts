@@ -1,5 +1,5 @@
 import { ClassPrefix } from '../constants';
-import { Events } from '../event';
+import { Events, PlayerEvent, emit } from '../event';
 import type { Player } from '../player'
 
 const classFull = ClassPrefix + '-web-full';
@@ -13,15 +13,21 @@ export class WebFullscreen  {
   }
 
   enter() {
-    if (this.isActive) return;
-    this.player.el.classList.add(classFull)
-    this.player.emit(Events.EnterWebFullscreen);
+    if (
+      !this.isActive &&
+      emit(Events.enterWebFullscreen, new PlayerEvent(this.player))
+    ) {
+      this.player.el.classList.add(classFull)
+    }
   }
 
   exit() {
-    if (!this.isActive) return;
-    this.player.el.classList.remove(classFull);
-    this.player.emit(Events.ExitWebFullscreen);
+    if (
+      this.isActive && 
+      emit(Events.exitWebFullscreen, new PlayerEvent(this.player))
+    ) {
+      this.player.el.classList.remove(classFull);
+    }
   }
 
   toggle = () => {

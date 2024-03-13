@@ -1,3 +1,4 @@
+import { Events } from '../event';
 import type { Player } from '../player'
 
 export class PlayerMediaSession  {
@@ -16,21 +17,26 @@ export class PlayerMediaSession  {
       mediaSession.setActionHandler('skipad', player.config.onSkipad);
     }
 
-    addDestroyable(this, player.on(EVENT.PLAY, () => mediaSession.playbackState = 'playing'));
-    addDestroyable(this, player.on(EVENT.PAUSE, () => mediaSession.playbackState = 'paused'));
-    addDestroyable(this, player.on(EVENT.MEDIA_CHANGED, (info) => {
+    player.on(Events.play, () => {
+      mediaSession.playbackState = 'playing'
+    })
+    player.on(Events.pause, () => {
+      mediaSession.playbackState = 'paused'
+    })
+    player.on(Events.mediaInfoChange, (ev) => {
+      const { info } = ev
       mediaSession.metadata = new MediaMetadata({
         title: info.title,
         artist: info.artist,
         artwork: info.poster ? [{ src: info.poster }] : undefined,
       });
-      mediaSession.setActionHandler('previoustrack', info.prev ? () => {
-        player.emit(EVENT.PREV_CLICK);
+      mediaSession.setActionHandler('previoustrack', info.hasPrev ? () => {
+        player.emit(Events.clickPrev);
       } : null);
-      mediaSession.setActionHandler('nexttrack', info.next ? () => {
-        player.emit(EVENT.NEXT_CLICK);
+      mediaSession.setActionHandler('nexttrack', info.hasNext ? () => {
+        player.emit(Events.clickNext);
       } : null);
-    }));
+    })
   }
 
   destroy() {

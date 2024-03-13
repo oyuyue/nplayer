@@ -1,12 +1,8 @@
 import { detectAutoplay } from 'detect-autoplay';
-import { EVENT } from '../constants';
 import type { Player } from '../player';
-import { Destroyable } from '../types';
-import { addDestroyable, destroy } from '../utils';
 
-export class Autoplay implements Destroyable {
+export class Autoplay  {
   constructor(private player: Player) {
-    addDestroyable(this, player.on(EVENT.MOUNTED, this.setup));
   }
 
   setup = () => {
@@ -31,9 +27,5 @@ export class Autoplay implements Destroyable {
     } else {
       player.media.autoplay = false;
     }
-  }
-
-  destroy() {
-    destroy(this);
   }
 }

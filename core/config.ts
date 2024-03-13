@@ -13,7 +13,7 @@ export interface MediaInfo {
   // duration?: number;
   // bg?: string;
   // live?: boolean;
-  // startTime?: number;
+  startTime?: number;
 
   hasPrev?: boolean;
   hasNext?: boolean;
@@ -37,8 +37,6 @@ export interface PlayerConfig<T extends HTMLMediaElement = HTMLMediaElement> ext
   seekStep?: number;
 
   volumeStep?: number;
-
-  startTime?: number;
 
   volume?: number;
 

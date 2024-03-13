@@ -1,6 +1,6 @@
 import type { Player } from '../player'
 import { isFunction } from '../utils';
-import { Events } from '../event'
+import { Events, UnCancellableEvent } from '../event'
 import { isBrowser, isIOS } from '../env'
 
 const prefix = isBrowser ? getPrefix() : ''
@@ -10,17 +10,15 @@ export class Fullscreen {
 
   constructor(private player: Player) {
     document.addEventListener(prefix, this.onFullscreen)
-    this.setTarget();
+    this.target = isIOS ? this.player.media : this.player.el;
+    if (this.isActive) this.enter();
   }
 
   private onFullscreen = () => {
-    let evt = '';
-    if (this.isActive) {
-      evt = Events.EnterFullscreen;
-    } else {
-      evt = Events.ExitFullscreen;
-    }
-    this.player.emit(evt);
+    this.player.emit(
+      this.isActive ? Events.enterFullscreen : Events.exitFullscreen, 
+      new UnCancellableEvent(this.player)
+    );
   }
 
   get requestFullscreen(): Element['requestFullscreen'] {
@@ -54,11 +52,6 @@ export class Fullscreen {
 
   get isActive() {
     return this.fullscreenElement === this.target;
-  }
-
-  setTarget(dom?: HTMLElement, video?: HTMLVideoElement) {
-    this.target = (dom && isIOS ? video : dom) || (isIOS ? this.player.media : this.player.el);
-    if (this.isActive) this.enter();
   }
 
   enter() {
