@@ -19,11 +19,7 @@ export interface MediaInfo {
   hasNext?: boolean;
 }
 
-export interface PlayerConfig<T extends HTMLMediaElement = HTMLMediaElement> extends MediaInfo {
-  container?: HTMLElement;
-
-  media?: T;
-
+export interface Reconfigurable {
   getPrev?: () => MediaInfo | void;
 
   getNext?: () => MediaInfo | void;
@@ -33,6 +29,8 @@ export interface PlayerConfig<T extends HTMLMediaElement = HTMLMediaElement> ext
   hotkeys?: Record<string, HotkeyFn | { handler: HotkeyFn, global: boolean }> | false,
 
   autoplay?: boolean;
+
+  autoplayMuted?: boolean;
 
   seekStep?: number;
 
@@ -48,7 +46,7 @@ export interface PlayerConfig<T extends HTMLMediaElement = HTMLMediaElement> ext
 
   playsInline?: boolean;
 
-  disablePIP?: boolean;
+  disablePictureInPicture?: boolean;
 
   disableRemotePlayback?: boolean;
 
@@ -57,7 +55,47 @@ export interface PlayerConfig<T extends HTMLMediaElement = HTMLMediaElement> ext
   preload?: 'none' | 'metadata' | 'auto' | '';
 }
 
-export function getConfig(config: PlayerConfig) {
+export interface PlayerConfig<T extends HTMLMediaElement = HTMLMediaElement> extends MediaInfo {
+  container?: HTMLElement | null;
+
+  media?: T | null;
+
+  getPrev?: () => MediaInfo | void;
+
+  getNext?: () => MediaInfo | void;
+
+  onSkipad?: () => void;
+
+  hotkeys?: Record<string, HotkeyFn | { handler: HotkeyFn, global: boolean }> | false,
+
+  autoplay?: boolean;
+
+  autoplayMuted?: boolean;
+
+  seekStep?: number;
+
+  volumeStep?: number;
+
+  volume?: number;
+
+  muted?: boolean;
+
+  speed?: number;
+
+  loop?: boolean;
+
+  playsInline?: boolean;
+
+  disablePictureInPicture?: boolean;
+
+  disableRemotePlayback?: boolean;
+
+  crossOrigin?: 'use-credentials' | 'anonymous' | ''
+
+  preload?: 'none' | 'metadata' | 'auto' | '';
+}
+
+export function getConfig(config?: PlayerConfig) {
   return Object.assign({
     seekStep: 5,
     volumeStep: 0.05,
@@ -66,6 +104,7 @@ export function getConfig(config: PlayerConfig) {
     muted: false,
     loop: false,
     autoplay: false,
+    autoplayMuted: true,
     playsInline: true,
     hotkeys: {
       ' ': ({ player }) => {

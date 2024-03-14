@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  detect-autoplay:
+    specifier: ^0.0.1
+    version: 0.0.1
   solid-js:
     specifier: ^1.8.15
     version: 1.8.15
@@ -703,6 +706,10 @@ packages:
     dependencies:
       ms: 2.1.2
     dev: true
+
+  /detect-autoplay@0.0.1:
+    resolution: {integrity: sha512-mGj2RcBRJ1Hhmmab3LKOVelJFL9tNY/cQ++0L62zExVk9o3hUEbTO8sw5KsdKxMTXNS4wBi97CXCJ6UsJBDRXg==}
+    dev: false
 
   /electron-to-chromium@1.4.690:
     resolution: {integrity: sha512-+2OAGjUx68xElQhydpcbqH50hE8Vs2K6TkAeLhICYfndb67CVH0UsZaijmRUE3rHlIxU1u0jxwhgVe6fK3YANA==}

@@ -1,5 +1,6 @@
 import { detectAutoplay } from 'detect-autoplay';
 import type { Player } from '../player';
+import { Events, UnCancellableEvent } from '../event';
 
 export class Autoplay  {
   constructor(private player: Player) {
@@ -8,18 +9,17 @@ export class Autoplay  {
   setup = () => {
     const { player } = this;
     if (player.config.autoplay) {
-      player.load();
       detectAutoplay()
         .then((canplay) => {
           if (!canplay) {
-            player.muted = true;
-            player.emit(EVENT.AUTOPLAY_MUTED);
+            if (player.config.autoplayMuted) player.muted = true;
+            player.emit(Events.autoplayMuted, new UnCancellableEvent(player));
           }
           player.media.autoplay = true;
-          player.once(EVENT.CANPLAY, () => {
+          player.once(Events.canplay, () => {
             if (player.config.autoplay) {
               player.play().catch(() => {
-                player.emit(EVENT.AUTOPLAY_FAILED);
+                player.emit(Events.autoplayFailed, new UnCancellableEvent(player));
               });
             }
           });

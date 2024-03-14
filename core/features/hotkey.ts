@@ -24,7 +24,13 @@ export class Hotkey {
 
   private map?: Record<string, HotKeyInfo>;
 
+  private onKeyDown: (ev: KeyboardEvent) => void;
+  private onKeyDownGlobal: (ev: KeyboardEvent) => void;
+
   constructor(private player: Player) {
+    this.onKeyDown = this.createListener(false, this.player.el);
+    this.onKeyDownGlobal = this.createListener(true, document)
+
     this.parseConfig()
     if (this.map) {
       this.enable()
@@ -73,10 +79,6 @@ export class Hotkey {
       }
     }
   }
-
-  private onKeyDown = this.createListener(false, this.player.el);
-
-  private onKeyDownGlobal = this.createListener(true, document)
 
   private parseConfig() {
     const { hotkeys } = this.player.config    

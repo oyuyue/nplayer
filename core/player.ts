@@ -1,4 +1,4 @@
-import type { MediaInfo, PlayerConfig } from './config';
+import { getConfig, type MediaInfo, type PlayerConfig } from './config';
 import type { Source } from './type'
 import { transferEvent, type PlayerEvents, Events, MediaInfoEvent } from './event';
 import { EventEmitter } from './event-emitter';
@@ -6,30 +6,80 @@ import { Fullscreen } from './features/fullscreen';
 import { Hotkey } from './features/hotkey';
 import { PlayerMediaSession } from './features/media-session';
 import { WebFullscreen } from './features/web-fullscreen';
+import { isString } from './utils';
+import { CanvasVideo } from './features/canvas';
 
 export class Player extends EventEmitter<PlayerEvents> {
-  el = document.createElement('div');
+  readonly el = document.createElement('div');
 
-  media: HTMLMediaElement;
+  readonly media: HTMLMediaElement;
 
-  config: PlayerConfig;
+  readonly config: PlayerConfig;
 
   private prevVolume = 1;
 
-  private fullscreen = new Fullscreen(this);
+  private fullscreen: Fullscreen;
 
-  private webFullscreen = new WebFullscreen(this);
+  private webFullscreen: WebFullscreen;
 
-  private hotkey = new Hotkey(this);
+  private hotkey: Hotkey;
 
-  private mediaSession?: PlayerMediaSession = PlayerMediaSession.create(this);
+  private mediaSession?: PlayerMediaSession;
+
+  private canvasVideo?: CanvasVideo;
 
   private destroyFns: (() => void)[] = [];
 
-  constructor() {
+  constructor(config?: PlayerConfig) {
     super()
-    this.destroyFns.push(transferEvent(this))
+    this.config = getConfig(config);
+    this.el = document.createElement('div');
+    this.media = this.config.media || document.createElement('video')
+    this.el.appendChild(this.media)
+
+    this.fullscreen = new Fullscreen(this);
+    this.webFullscreen = new WebFullscreen(this);
+    this.hotkey = new Hotkey(this);
+    this.mediaSession = PlayerMediaSession.create(this);
+
     this.media.controls = false;
+
+    // this.media.src = 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+
+    this.destroyFns.push(transferEvent(this))
+
+    const cfg = this.config;
+
+
+    this.media.crossOrigin = '';
+  }
+
+  updateConfig(cfg: PlayerConfig) {
+    const { media } = this
+    if (cfg.volume != null) this.volume = cfg.volume;
+    if (cfg.muted != null) this.muted = cfg.muted;
+    if (cfg.speed != null) this.speed = cfg.speed;
+    if (cfg.loop != null) media.loop = cfg.loop;
+    if (cfg.crossOrigin != null) media.crossOrigin = cfg.crossOrigin;
+    if (cfg.preload != null) media.preload = cfg.preload;
+
+    if (cfg.disablePictureInPicture != null) {
+      (media as HTMLVideoElement).disablePictureInPicture = cfg.disablePictureInPicture;
+    }
+    if (cfg.disableRemotePlayback != null) {
+      media.disableRemotePlayback = cfg.disableRemotePlayback;
+    }
+    if (cfg.playsInline != null) {
+      const str = String(cfg.playsInline);
+      media.setAttribute('playsinline', str);
+      media.setAttribute('x5-playsinline', str);
+      media.setAttribute('webkit-playsinline', str);
+    }
+
+    if (cfg.src != null) this.src = cfg.src;
+    if (cfg.poster) {
+      
+    }
   }
 
   get isFullscreen() {
@@ -108,11 +158,11 @@ export class Player extends EventEmitter<PlayerEvents> {
     return this.media.paused;
   }
 
-  get playbackRate(): number {
+  get speed() {
     return this.media.playbackRate;
   }
 
-  set playbackRate(v: number) {
+  set speed(v: number) {
     this.media.playbackRate = v;
   }
 
@@ -293,5 +343,12 @@ export class Player extends EventEmitter<PlayerEvents> {
         //
       }
     })
+  }
+
+  mount(container: Element | string) {
+    if (isString(container)) {
+      container = document.querySelector(container) as Element;
+    }
+    if (container) container.appendChild(this.el);
   }
 }

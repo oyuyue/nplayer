@@ -11,6 +11,8 @@ export enum Events {
   mediaInfoChange = 'mediaInfoChange',
   clickPrev = 'clickPrev',
   clickNext = 'clickNext',
+  autoplayMuted = 'autoplayMuted',
+  autoplayFailed = 'autoplayFailed',
 
   abort = 'abort',
   canplay = 'canplay',
@@ -84,6 +86,8 @@ export interface PlayerEvents {
   [Events.mediaInfoChange]: MediaInfoEvent;
   [Events.clickPrev]: UnCancellableEvent;
   [Events.clickNext]: UnCancellableEvent;
+  [Events.autoplayMuted]: UnCancellableEvent;
+  [Events.autoplayFailed]: UnCancellableEvent;
 
   [Events.abort]: UnCancellableEvent;
   [Events.canplay]: UnCancellableEvent;
